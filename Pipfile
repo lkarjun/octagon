@@ -10,6 +10,8 @@ face-recognition = "==1.3.0"
 jupyter = "*"
 notebook = "*"
 fastapi = "*"
+uvicorn = "*"
+aiofiles = "*"
 
 [dev-packages]
 
