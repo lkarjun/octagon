@@ -12,6 +12,7 @@ notebook = "*"
 fastapi = "*"
 uvicorn = "*"
 aiofiles = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 

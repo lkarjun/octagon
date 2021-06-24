@@ -52,7 +52,7 @@ function upload(image_data){
     data = JSON.stringify({"file": image_data.split(',')[1], "username": user});
     $.ajax({
         type: 'POST',
-        url: '/analyse',
+        url: '/login',
         async: true,
         data: data,
         dataType: 'json',

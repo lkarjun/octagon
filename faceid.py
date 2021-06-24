@@ -16,7 +16,7 @@ def get_encoding(image: TypeVar('numpy.ndarray')) -> TypeVar('numpy.ndarray'):
     encodings = fr.face_encodings(image)
     return encodings
 
-def decoded_image(base64_image: str):
+def decoded_image(base64_image: str) -> None:
     img = base64.b64decode(base64_image)
     img = Image.open(BytesIO(img))
     img = np.asarray(img)
