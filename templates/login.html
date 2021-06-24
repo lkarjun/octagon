@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Exo&family=Pattaya&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet" />
+    <script src="{{ url_for('static', path='/main.js') }}"></script>
 </head>
 <body>
 
@@ -21,17 +22,17 @@
         <div class="content">
             <div class="ui container">
                 <h1 class="display-3" style="font-family: 'Exo', sans-serif;"> Teacher's Login</h1>
-                <select multiple="" class="ui search dropdown" id='username'>
+                <select class="ui search dropdown" id='username'>
                     <option value="none" selected>None</option>
-                    <option value="hod">HOD</option>
-                    <option value="miss_veena">VEENA</option>
+                    <option value="HOD">HOD</option>
+                    <option value="VEENA">VEENA</option>
                     <option value="SABEERATH">SABEERATH</option>
-                    <option value="Anju">ANJU</option>
+                    <option value="ANJU">ANJU</option>
                 </select><br><br>
                 
                 <button class="positive ui button" onclick="capit()" id="btn_login">Login</button>
                 <video id="stream" width="160" height="160" style="display: none;"></video>
-                <canvas id="capture" width="160" height="160" style="display: none;"></canvas>
+                <canvas id="capture" width="1000" height="1000" style="display: none;"></canvas>
                 
             </div>
         </div>
@@ -39,102 +40,20 @@
 </section>
 <!-- ------------Landing page ending ------------ -->
     
-
-
 <script>
-        var cameraStream = null;
-        var stream = document.getElementById( "stream" );
-        var capture = document.getElementById( "capture" );
 
-        startStreaming()
-  
-            function capit(){
-                data = captureSnapshot();
-                stopStreaming();
-                upload(data);
+    var cameraStream = null;
+    var stream = document.getElementById( "stream" );
+    var capture = document.getElementById( "capture" );
 
-                
-            }
-
-            function upload(image_data){
-                $("#btn_login").addClass("loading");
-                console.log(image_data);
-                user = $('#username').val()
-                $.ajax({
-
-                    type:'get',
-                    url: '/analyse',
-                    data:{file: image_data.split(',')[1], username: user},
-                    
-                    contentType: "application/json",
-
-                    success: function(data){
-                                console.log(data)
-                                window.location.href = data;
-                },
-                    error: function(data){alert("note OKayyyyyyyyyyyy")}
-                })
-            }
-        // Start Streaming
-            function startStreaming() {
-
-            var mediaSupport = 'mediaDevices' in navigator;
-
-            if( mediaSupport && null == cameraStream ) {
-
-                    navigator.mediaDevices.getUserMedia( { video: true } )
-                    .then( function( mediaStream ) {
-
-                    cameraStream = mediaStream;
-
-                    stream.srcObject = mediaStream;
-
-                    stream.play();
-                })
-                    .catch( function( err ) {
-                    alert("Unable to access camera: " + err );
-                    console.log( "Unable to access camera: " + err );
-                });
-                }
-            else {
-                alert( 'Your browser does not support media devices.' );
-                return;
-            }
-            }
-
-
-        // Stop Streaming
-        function stopStreaming() {
-
-        if( null != cameraStream ) {
-
-            var track = cameraStream.getTracks()[ 0 ];
-
-            track.stop();
-            stream.load();
-            cameraStream = null;
-        }
-        }
-
-        function captureSnapshot() {
-
-            if( null != cameraStream ) {
-
-            var ctx = capture.getContext( '2d' );
-            var img = new Image();
-
-            ctx.drawImage( stream, 0, 0, capture.width, capture.height );
-            var dataURL = capture.toDataURL("image/jpeg");
-            return dataURL;
-        }
-        }
-
-</script>
+    startStreaming()
     
-    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
-    <script>
-        $('select.dropdown').dropdown();
-    </script>
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    $('select.dropdown').dropdown();
+</script>
 
 <script
 type="text/javascript"
