@@ -10,3 +10,6 @@ class CreateHod(BaseModel):
 class ShowHods(CreateHod):
     class Config():
         orm_mode = True
+
+class Admin(BaseModel):
+    password: str
