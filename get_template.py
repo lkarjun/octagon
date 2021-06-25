@@ -20,3 +20,9 @@ class AdminTemplates():
 
     def login_sucess_redirect(status):
         return RedirectResponse(url = '/admin/workspace', status_code=status)
+
+
+class OthersTemplates():
+    
+    def login_page(request):
+        return templates.TemplateResponse('login.html', context={'request': request})
