@@ -1,6 +1,4 @@
-from os import stat
-from fastapi import APIRouter, Depends, status
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi import APIRouter, Depends, status, Request
 from sqlalchemy.orm.session import Session
 from sqlalchemy import and_
 from typing import List
@@ -10,7 +8,15 @@ from repository import admin
 
 router = APIRouter(tags=['Admin'], prefix='/admin')
 get_db = database.get_db
+template = admin.AdminTemplates
 
+@router.get('')
+async def admin_login_page(request: Request):
+    return template.admin_login_page_(request)
+
+@router.get('/workspace')
+async def admin_portal(request: Request):
+    return template.login_success(request)
 
 @router.post('/create_hod', status_code=status.HTTP_201_CREATED, response_model=Schemas.ShowHods)
 async def create_hod(request: Schemas.CreateHod, db: Session = Depends(get_db),\
