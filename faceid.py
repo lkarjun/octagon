@@ -1,5 +1,5 @@
 import face_recognition as fr
-from typing import TypeVar, Dict, List
+from typing import TypeVar, Dict
 import base64
 from io import BytesIO
 from PIL import Image

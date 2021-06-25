@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class CreateHod(BaseModel):
     name: str
@@ -13,3 +14,12 @@ class ShowHods(CreateHod):
 
 class Admin(BaseModel):
     password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    admin: Optional[str] = None
+

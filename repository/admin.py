@@ -1,0 +1,57 @@
+from sqlalchemy.orm.session import Session
+import Schemas, models, hashing, login_token
+from fastapi import status, HTTPException, Response
+from sqlalchemy import and_
+
+def check_credential(request):
+    admin_pass = '$2b$12$PMcz2cegebsN7r7WFcwR1elyaGZf/hZdlwREF5pzsVPHy86e7UwO2'
+    verifying = hashing.Hash.verify(admin_pass, request.password)
+    if not verifying: 
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"Invalid Password!")
+    
+    # generate a jwt token and return it
+    
+    access_token = login_token.create_access_token(data={"sub": '**Admin**'})
+    return {"access_token": access_token, "token_type": "bearer"}
+
+def get_all(db: Session):
+    hods = db.query(models.Hod).all()
+    if not hods:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
+            detail = 'No content in the database')
+    return hods
+
+def get_one(db: Session, user_name: str):
+    if user_name is None: return 'Please pass hod name to get details'
+    hod = db.query(models.Hod).filter(models.Hod.user_name == user_name).first()
+    if not hod:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
+            detail = f'THERE IS NO HOD IN USER NAME: {user_name}')
+    return hod  
+
+def update(user_name: str, request: Schemas.CreateHod, db: Session):
+    hod = db.query(models.Hod).filter(models.Hod.user_name == user_name)
+    if not hod.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with {user_name}") 
+    hod.update(dict(request))
+    db.commit()
+    return 'done'
+
+def delete(name:str, department: str, db: Session):
+    hod = db.query(models.Hod).filter(and_(models.Hod.name == name,
+                                models.Hod.department == department))
+    if not hod.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {name} and department: {department}") 
+
+    hod.delete(synchronize_session=False)
+    db.commit()
+    return Response(status_code=204)
+
+def create(request: Schemas.CreateHod, db: Session):
+    new_hod = models.Hod(name = request.name, email = request.email, \
+                        phone_num = request.phone_num, user_name = request.user_name, \
+                        department = request.department)
+    db.add(new_hod)
+    db.commit()
+    db.refresh(new_hod)
+    return new_hod

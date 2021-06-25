@@ -14,6 +14,8 @@ uvicorn = "*"
 aiofiles = "*"
 sqlalchemy = "*"
 passlib = {extras = ["bcrypt"], version = "*"}
+python-jose = {extras = ["cryptography"], version = "*"}
+python-multipart = "*"
 
 [dev-packages]
 
