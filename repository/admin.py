@@ -1,18 +1,40 @@
+from os import name
 from sqlalchemy.orm.session import Session
 import Schemas, models, hashing, login_token
 from fastapi import status, HTTPException, Response
 from sqlalchemy import and_
 
-def check_credential(request):
-    admin_pass = '$2b$12$PMcz2cegebsN7r7WFcwR1elyaGZf/hZdlwREF5pzsVPHy86e7UwO2'
-    verifying = hashing.Hash.verify(admin_pass, request.password)
-    if not verifying: 
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"Invalid Password!")
+def check_credential(request, db: Session, response: Response):
+    admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username).first()
     
+    if not admin_pass:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invalid Credentials")
+    
+    if not hashing.Hash.verify(admin_pass.password, request.password):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Incorrect password")
+
     # generate a jwt token and return it
     
     access_token = login_token.create_access_token(data={"sub": '**Admin**'})
     return {"access_token": access_token, "token_type": "bearer"}
+
+def change_admin_pass(request: Schemas.AdminPass, db: Session):
+    admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)
+    
+    if not admin_pass.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Invalid Credentials")
+    
+    if not hashing.Hash.verify(admin_pass.first().password, request.current_pass):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Incorrect password")
+    # generate a jwt token and return it
+    updating = {'name': request.username, 'password': hashing.Hash.bcrypt(request.new_pass)}
+    admin_pass.update(updating)
+    db.commit()
+    return 'changed'
 
 def get_all(db: Session):
     hods = db.query(models.Hod).all()

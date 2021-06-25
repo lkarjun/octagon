@@ -9,3 +9,8 @@ class Hod(Base):
     phone_num = Column(String)
     user_name = Column(String)
     department = Column(String)
+
+class Admin(Base):
+    __tablename__ = 'Admin'
+    name = Column(String, primary_key=True, index=True)
+    password = Column(String)
