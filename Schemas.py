@@ -1,8 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
 
-from sqlalchemy.sql.functions import current_date
-
 class CreateHod(BaseModel):
     name: str
     email: str
@@ -20,7 +18,7 @@ class AdminPass(BaseModel):
     new_pass: str
 
 class Admin(BaseModel):
-    password: str
+    username: str
 
 class Token(BaseModel):
     access_token: str

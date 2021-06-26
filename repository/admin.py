@@ -1,29 +1,8 @@
 from sqlalchemy.orm.session import Session
-import Schemas, models, hashing, login_token
+import Schemas, models, hashing
 from fastapi import status, HTTPException, Response
 from sqlalchemy import and_
-from get_template import AdminTemplates
 
-def check_credential(req, request, db: Session, response: Response):
-    admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username).first()
-    
-    if not admin_pass:
-        return AdminTemplates.login_error(req)
-    
-    if not hashing.Hash.verify(admin_pass.password, request.password):
-        return AdminTemplates.login_error(req)
-    
-    # generate a jwt token and return it
-    access_token = login_token.create_access_token(data={"sub": 'admin'})
-    token = {"access_token": access_token, "token_type": "Bearer"}
-    header = {'authorization': 'Bearer '+token['access_token']}
-    # res = AdminTemplates.login_success(status.HTTP_302_FOUND,\
-    #              header=header)
-    # return token
-    res = AdminTemplates.login_success(req, header=header)
-    res.set_cookie(key='admin-token', value=header['authorization'],\
-         secure = True, httponly=True)
-    return res
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)

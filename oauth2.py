@@ -1,21 +1,27 @@
-from fastapi import Depends, HTTPException, status 
-from fastapi.security import OAuth2PasswordBearer
-import login_token
+from fastapi_login import LoginManager
+from fastapi_login.exceptions import InvalidCredentialsException
+from fastapi.responses import RedirectResponse
+import database
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/admin/workspace")
-oauth2_scheme_hodlogin = OAuth2PasswordBearer(tokenUrl="/hod/login")
+class NotAuthenticatedException(Exception):
+    pass
 
-def get_admin(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    return login_token.verify_token(token, credentials_exception)
+def exc_handler(request, exc):
+    return RedirectResponse(url='/error')
 
-def get_teacher_name(token: str = Depends(oauth2_scheme_hodlogin)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+manager_admin = LoginManager(
+                '1fb047dad3e488183c22e1ec5f982cba2daed79f15f0b357',
+                token_url='/admin/login',
+                use_cookie=True,
+                use_header=True,
+            )
+manager_admin.cookie_name = 'adminToken'
+
+manager_admin.not_authenticated_exception = NotAuthenticatedException
+
+@manager_admin.user_loader
+async def get_user(username: str):
+    db = database.SessionLocal()
+    a = None if username == 'ada' else username
+    db.close()
+    return a
