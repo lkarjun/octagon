@@ -19,8 +19,10 @@ def check_credential(req, request, db: Session, response: Response):
     header = {'authorization': 'Bearer '+token['access_token']}
     # res = AdminTemplates.login_success(status.HTTP_302_FOUND,\
     #              header=header)
+    # return token
     res = AdminTemplates.login_success(req, header=header)
-    res.set_cookie(key='admin-token', value=token)
+    res.set_cookie(key='admin-token', value=header['authorization'],\
+         secure = True, httponly=True)
     return res
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):

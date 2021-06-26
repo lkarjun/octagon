@@ -2,7 +2,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 import login_token
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/admin/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/admin/workspace")
 oauth2_scheme_hodlogin = OAuth2PasswordBearer(tokenUrl="/hod/login")
 
 def get_admin(token: str = Depends(oauth2_scheme)):

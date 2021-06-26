@@ -1,5 +1,6 @@
 from fastapi.templating import Jinja2Templates
 from fastapi import status
+from starlette.responses import RedirectResponse
 
 templates = Jinja2Templates('templates')
 
@@ -18,6 +19,8 @@ class AdminTemplates():
     def login_success(request, header):
         return templates.TemplateResponse('welcome.html', context={'request': request}, headers=header)
 
+    def login_success_redirect(header):
+        return RedirectResponse('/admin/workspace', headers=header)
 
 class OthersTemplates():
     
