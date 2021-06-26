@@ -14,10 +14,14 @@ def check_credential(req, request, db: Session, response: Response):
         return AdminTemplates.login_error(req)
     
     # generate a jwt token and return it
-    access_token = login_token.create_access_token(data={"sub": '**Admin**'})
-    token = {"access_token": access_token, "token_type": "bearer"}
-    return token
-    return AdminTemplates.login_sucess_redirect(status.HTTP_302_FOUND)
+    access_token = login_token.create_access_token(data={"sub": 'admin'})
+    token = {"access_token": access_token, "token_type": "Bearer"}
+    header = {'authorization': 'Bearer '+token['access_token']}
+    # res = AdminTemplates.login_success(status.HTTP_302_FOUND,\
+    #              header=header)
+    res = AdminTemplates.login_success(req, header=header)
+    res.set_cookie(key='admin-token', value=token)
+    return res
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)

@@ -1,5 +1,5 @@
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import RedirectResponse
+from fastapi import status
 
 templates = Jinja2Templates('templates')
 
@@ -13,13 +13,10 @@ class AdminTemplates():
 
     def login_error(request):
         return templates.TemplateResponse('admin_login.html', 
-                context={'request': request, 'title': 'Admin Portal', 'verify': 'block'})
+                context={'request': request, 'title': 'Admin Portal', 'verify': 'block'}, status_code=status.HTTP_401_UNAUTHORIZED)
     
-    def login_success(request):
-        return templates.TemplateResponse('welcome.html', context={'request': request})
-
-    def login_sucess_redirect(status):
-        return RedirectResponse(url = '/admin/workspace', status_code=status)
+    def login_success(request, header):
+        return templates.TemplateResponse('welcome.html', context={'request': request}, headers=header)
 
 
 class OthersTemplates():

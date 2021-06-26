@@ -16,6 +16,7 @@ sqlalchemy = "*"
 passlib = {extras = ["bcrypt"], version = "*"}
 python-jose = {extras = ["cryptography"], version = "*"}
 python-multipart = "*"
+fastapi-login = "*"
 
 [dev-packages]
 

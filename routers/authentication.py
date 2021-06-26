@@ -8,7 +8,7 @@ import database
 router = APIRouter(tags = ['Authentication'])
 
 
-@router.post('/admin/login', status_code=status.HTTP_202_ACCEPTED)
+@router.post('/admin/workspace', status_code=status.HTTP_202_ACCEPTED)
 async def admin_login(req:Request, response: Response, request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(database.get_db)):
     return admin.check_credential(req, request, db, response)
 
