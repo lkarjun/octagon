@@ -27,3 +27,15 @@ async def admin_login(request: Request, data: OAuth2PasswordRequestForm = Depend
 @router.post('/error', status_code=status.HTTP_401_UNAUTHORIZED)
 async def error():
     return {"Error": "Warning"}
+
+@router.get('/error', status_code=status.HTTP_401_UNAUTHORIZED)
+async def error():
+    return {'Error': "Warning"}
+
+@router.put('/error', status_code=status.HTTP_401_UNAUTHORIZED)
+async def error():
+    return {'Error': "Warning"}
+
+@router.delete('/error', status_code=status.HTTP_401_UNAUTHORIZED)
+async def error():
+    return {'Error': "Warning"}

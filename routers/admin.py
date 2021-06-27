@@ -50,3 +50,17 @@ async def all_departments(db: Session = Depends(get_db), user=Depends(oauth2.man
 async def delete_department(request: Schemas.AddDepartment, db: Session = Depends(get_db),\
                  user=Depends(oauth2.manager_admin)):
     return admin.delete_department(request, db)
+
+@router.post('/AddCourse', status_code=status.HTTP_201_CREATED)
+async def add_course(request: Schemas.AddCourse, db: Session = Depends(get_db),\
+            user=Depends(oauth2.manager_admin)):
+    return admin.add_course(request, db)
+
+@router.delete('/deletecourse', status_code=status.HTTP_201_CREATED)
+async def delete_course(request: Schemas.DeleteCourse, db: Session = Depends(get_db), \
+            user=Depends(oauth2.manager_admin)):
+    return admin.delete_course(request, db)
+
+@router.get('/courses', status_code=status.HTTP_202_ACCEPTED, response_model=List)
+async def get_all_courses(db: Session = Depends(get_db), user=Depends(oauth2.manager_admin)):
+    return admin.get_all_course(db)

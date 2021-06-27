@@ -2,7 +2,7 @@ from sqlalchemy.orm.session import Session
 import Schemas, models, hashing
 from fastapi import status, HTTPException, Response
 from sqlalchemy import and_
-
+from repository.attendence import CreateAttendence
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)
@@ -85,3 +85,31 @@ def delete_department(request: Schemas.AddDepartment, db: Session):
     depart.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
+
+def add_course(request: Schemas.AddCourse, db: Session):
+    course = models.Courses(Course_name = request.course_name, Course_name_alias = request.course_alias,
+                            Department = request.department,
+                            Duration = request.duration)
+    CreateAttendence(request.duration, request.course_alias)
+    db.add(course)
+    db.commit()
+    db.refresh(course)
+    return "Course Added"
+
+def delete_course(request: Schemas.DeleteCourse, db: Session):
+    course = db.query(models.Courses).filter(and_(models.Courses.Course_name == request.course_name,
+                        models.Courses.Department == request.department))
+    if not course.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
+                    detail=f"No Department in name {request.department} and Course {request.course_name}")
+
+    course.delete(synchronize_session=False)
+    db.commit()
+    return Response(status_code=204)
+
+def get_all_course(db: Session):
+    courses = db.query(models.Courses).all()
+    if not courses:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
+            detail = 'No content in the database')
+    return courses

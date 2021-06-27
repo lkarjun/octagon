@@ -16,6 +16,16 @@ class AddDepartment(BaseModel):
     Department: str
     Alias: str
 
+class AddCourse(BaseModel):
+    course_name: str
+    course_alias: str
+    duration: int
+    department: str
+
+class DeleteCourse(BaseModel):
+    course_name: str
+    department: str
+
 class AdminPass(BaseModel):
     username: str
     current_pass: str
