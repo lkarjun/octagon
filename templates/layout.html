@@ -9,11 +9,14 @@
     <link rel="stylesheet" href="{{ url_for('static', path='admin.css') }}">
     <title>{{ title }}</title>
 </head>
-<body>
+<body style="background-color: rgb(240, 240, 240);">
     
-{% block content %}
+    <div class="container">
+        {% block content %}
 
-{% endblock %}
+        {% endblock %}
+    </div>
+
 
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
