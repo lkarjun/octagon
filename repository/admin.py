@@ -61,3 +61,27 @@ def create(request: Schemas.CreateHod, db: Session):
     db.commit()
     db.refresh(new_hod)
     return new_hod
+
+def new_department(request: Schemas.AddDepartment, db: Session):
+    department = models.Departments(Department = request.Department, Alias = request.Alias)
+    db.add(department)
+    db.commit()
+    db.refresh(department)
+    return "Department Added"
+
+def get_all_departments(db: Session):
+    departments = db.query(models.Departments).all()
+    if not departments:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
+            detail = 'No content in the database')
+    return departments
+
+def delete_department(request: Schemas.AddDepartment, db: Session):
+    depart = db.query(models.Departments).filter(and_(models.Departments.Alias == request.Alias,
+                                            models.Departments.Department == request.Department))
+    if not depart.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
+                    detail=f"No Department in name {request.Department} and alias {request.Alias}") 
+    depart.delete(synchronize_session=False)
+    db.commit()
+    return Response(status_code=204)

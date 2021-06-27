@@ -12,6 +12,10 @@ class ShowHods(CreateHod):
     class Config():
         orm_mode = True
 
+class AddDepartment(BaseModel):
+    Department: str
+    Alias: str
+
 class AdminPass(BaseModel):
     username: str
     current_pass: str

@@ -8,9 +8,9 @@ templates = Jinja2Templates('templates')
 
 class AdminTemplates():
 
-    def admin_login_page(request):
+    def admin_login_page(request, verify = 'none'):
         return templates.TemplateResponse('admin_login.html', 
-                context={'request': request, 'title': 'Admin Portal', 'verify': 'none'})
+                context={'request': request, 'title': 'Admin Portal', 'verify': verify})
 
     def login_success(request):
         return templates.TemplateResponse('welcome.html', context={'request': request})

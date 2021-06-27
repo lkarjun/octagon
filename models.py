@@ -14,3 +14,8 @@ class Admin(Base):
     __tablename__ = 'Admin'
     name = Column(String, primary_key=True, index=True)
     password = Column(String)
+
+class Departments(Base):
+    __tablename__ = 'Departments'
+    Department = Column(String, primary_key=True, index=True, nullable=False)
+    Alias = Column(String)

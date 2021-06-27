@@ -36,3 +36,17 @@ async def hod_detail(db: Session = Depends(get_db), user_name = None, user=Depen
 async def update_admin_password(request: Schemas.AdminPass, db: Session = Depends(get_db),\
             user=Depends(oauth2.manager_admin)):
     return admin.change_admin_pass(request, db)
+
+@router.post('/Adddepartment', status_code=status.HTTP_201_CREATED)
+async def add_department(request: Schemas.AddDepartment, db: Session = Depends(get_db),\
+                user=Depends(oauth2.manager_admin)):
+    return admin.new_department(request, db)
+
+@router.get('/departments', status_code=status.HTTP_202_ACCEPTED, response_model=List)
+async def all_departments(db: Session = Depends(get_db), user=Depends(oauth2.manager_admin)):
+    return admin.get_all_departments(db)
+
+@router.delete('/deletedepartment', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_department(request: Schemas.AddDepartment, db: Session = Depends(get_db),\
+                 user=Depends(oauth2.manager_admin)):
+    return admin.delete_department(request, db)
