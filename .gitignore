@@ -3,3 +3,5 @@ __pycache__
 Images
 *.ipynb
 *.csv
+mail_it.py
+database.db
