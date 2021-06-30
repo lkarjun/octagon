@@ -19,3 +19,7 @@ def admin_login_page(request: Request):
 @router.get("/admin/portal")
 def admin_portal(request: Request, user=Depends(oauth2.manager_admin)):
     return AdminTemplates.login_success(request)
+
+@router.get('hod/workspace')
+async def workspace(request: Request):
+    return {"Okay": "gotit"}
