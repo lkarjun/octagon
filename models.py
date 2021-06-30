@@ -28,3 +28,23 @@ class Courses(Base):
     Duration = Column(Integer, nullable=False)
     Department = Column(String, nullable=False)
 
+class Teachers(Base):
+    __tablename__ = 'Teachers'
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    department = Column(String, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    phone_number = Column(String, nullable=True)
+
+class Timetable(Base):
+    __tablename__ = 'Timetables'
+    id = Column(Integer, primary_key=True, index=True)
+    department = Column(String)
+    course = Column(String)
+    year = Column(Integer)
+    days = Column(String)
+    hour_1 = Column(String)
+    hour_2 = Column(String)
+    hour_3 = Column(String)
+    hour_4 = Column(String)
+    hour_5 = Column(String)

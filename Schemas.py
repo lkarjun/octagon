@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 class CreateHod(BaseModel):
     name: str
@@ -42,3 +42,35 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     admin: Optional[str] = None
 
+
+class AddTeacher(BaseModel):
+    name: str
+    department: str
+    email: str
+    phone_number: Optional[int]
+
+class ShowTeacher(AddTeacher):
+    class Config():
+        orm_mode = True
+
+class TimeTable(BaseModel):
+    department: Optional[str]
+    course: str
+    days: List[str] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    year: int
+    day_1: Optional[List[str]]
+    day_2: Optional[List[str]]
+    day_3: Optional[List[str]]
+    day_4: Optional[List[str]]
+    day_5: Optional[List[str]]
+
+class TimeTableChecker(BaseModel):
+    day: str 
+    name: str
+    hour: str
+
+class CurrentHour(BaseModel):
+    name: str
+    course: str
+    year: str
+    hour: str
