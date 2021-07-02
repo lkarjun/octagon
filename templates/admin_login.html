@@ -2,33 +2,42 @@
 {% block content %}
 
 <section>
-    <div class="row">
-        <div class="col-md-12 col-sm-12 pt-md-5 mt-md-5 pt-sm-4 mt-sm-4 pt-5 mt-4">
-            <div class="d-flex justify-content-center pt-md-5 mt-md-4 pt-sm-5 mt-sm-5 pt-5 mt-4">
-                <div class="card md-w-50 sm-w-100">
-                    <div class="card-body">
-                        <h5 class="card-title font-weight-bold">Admin Portal</h5>
+    <div class="d-flex align-items-center justify-content-center" style="height: 95vh;">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card shadow-lg rounded">
+                    <div class="card-body p-5">
+                        <p class="card-title font-weight-bold h5 text-center"><i class="lock icon"></i>Admin Portal</p>
                         <form action="/admin/login" method="POST">
-                            <div class="form-group pt-2">
+                            <div class="form-group pt-2" style="display: block;">
                                 <label for="staticEmail" >Username</label>
-                                <input type="text" readonly class='form-control md-w-50' id="staticEmail" name="username" value="admin">
+                                <input type="text" readonly class='form-control md-w-50' id="staticEmail" name="username" value="Admin">
                             </div>
                 
-                            <div class="form-group pt-2">
-                                <label for="inputPassword">Password</label>
-                                <input type="password" required class="form-control md-w-50" name="password" id="inputPassword" placeholder="Password">
+                            <div class="form-group pt-3">
+                                <label for="inputPassword">Password </label>
+                                <input type="password" required class="form-control md-w-50" name="password" id="inputPassword" placeholder="Admin Password">
                                 <p class="text-danger font-weight-bold" style="display: {{ verify }};">Incorrect credential...</p>
                             </div>
             
-                            <div class="form-group pt-2">
-                                <button type="submit" class="md-w-25 btn btn-primary" loading>Login</button>
+                            <div class="form-group pt-3">
+                                <button type="submit" onclick="check()" class="ui teal  button">Login</button>
                             </div>
                         </form>
                     </div>
                 </div>
-            
+            </div>
         </div>
     </div>
+
+    <script>
+        function check(){
+            value = $('#inputPassword').val();
+            if(value.length!=0){
+                $('button').addClass('loading disabled');
+            }
+        }
+    </script>
 </section>
 
 {% endblock %}
