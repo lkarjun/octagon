@@ -1,6 +1,5 @@
 $.uiAlert = function(options) {
     var setUI = $.extend({
-      textHead: 'Your user registration was successful.',
       text: 'You may now log-in with the username you have chosen',
       textcolor: '#19c3aa',
       bgcolors: '#fff',
@@ -54,7 +53,7 @@ $.uiAlert = function(options) {
 
   
 // Success alert
-function success_alert(text, position = 'top-left'){
+function success_alert(text, position = 'bottom-right'){
     $.uiAlert({
     text: text,
     bgcolor: '#00B74A',
@@ -65,7 +64,7 @@ function success_alert(text, position = 'top-left'){
 };
 
 // Error alert
-function error_alert(text, position = 'top-left'){
+function error_alert(text, position = 'bottom-right'){
     $.uiAlert({
       text: text,
       bgcolor: '#F93154',
@@ -76,7 +75,7 @@ function error_alert(text, position = 'top-left'){
 }
 
 // Warning Alert
-function warning_alert(text, position = 'top-left'){
+function warning_alert(text, position = 'bottom-right'){
   $.uiAlert({
     text: text,
     bgcolor: '#FFA900',

@@ -116,16 +116,94 @@
     </section>
 
     <!--Department Section starts here-->
-    <section id='dep' class="p-4 m-4" style="display: none;">
+    <section id='dep' class="p-4 m-4" style="display: block;">
     
       <div class="jumbotron text-center">
         <p class="h1" style="font-family: 'Exo', sans-serif;">Department</p>
       </div>
-    
+
+      <div class="p-md-4 m-md-3">
+        
+        <div class="row">
+          
+          <div class="col-md-6 col-sm-12 col-12 pt-md-5 mt-md-3 pb-md-3 pb-4 mb-2">
+            <p class="h3 text-center pt-3 pt-md-0" style="font-family: 'Exo', sans-serif;">Add New Department</p>
+          </div>
+
+          <div class="col-md-6 col-sm-12 col-12">
+            <form class="ui form align-items-center" id='Department_form'>
+              
+              <div class="field">
+                <label>Department Name</label>
+                <input class="w-75" required type="text" placeholder="Department Name">
+              </div>
+
+              <div class="field">
+                <label>Short Form</label>
+                <input class = "w-75" required type="text" placeholder="Short Form (Without any space)">
+              </div>
+
+              <button type="submit" class="btn btn-success" onclick="success_alert('Added Department')">Add</button>
+            
+            </form>
+
+          </div>
+        </div>
+        
+        <br>
+        <hr>
+        <br>
+
+        <div class="row">
+          
+          <div class="col-md-6">
+            <p class="h3 text-center pb-3" style="font-family: 'Exo', sans-serif;">Add Course</p>
+            
+            <form class="ui form align-items-center" id='Course_form'>
+              <div class="field">
+                <label>Course Name</label>
+                <input class="w-75" required type="text" placeholder="Course Name">
+              </div>
+
+              <div class="field">
+                <label>Short Form</label>
+                <input class="w-75" required type="text" placeholder="eg: bca(without any space)">
+              </div>
+
+              <button type="submit" class="btn btn-success" onclick="success_alert('Added Course')">Add</button>
+
+            </form>
+
+          </div>
+
+          <div class="col-md-6 pt-4 mt-4 mt-md-0 pt-md-0">
+            <p class="h3 text-center pb-3" style="font-family: 'Exo', sans-serif;">Remove Course</p>
+
+            <form class="ui form align-items-center" id='Course_Remove_form'>
+              <div class="field">
+                <label>Choose Course</label>
+                <select required class="ui search dropdown w-75" id='course_options'>
+                  <option value="none" selected>None</option>
+                  {% for i in course %}
+                  <option value="{{ i['Course_name_alias'] }}"> {{ i['Course_name_alias'] }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <button type="submit" class="btn btn-danger" onclick="success_alert('Removed Course')">Remove</button>
+            </form>
+
+            <br><br><br><br>
+
+          </div>
+
+
+        </div>
+
+      </div>
     </section>
     
     <!--Hod Section starts here-->
-    <section id='hod' class="p-4 m-4" style="display: block;">
+    <section id='hod' class="p-4 m-4" style="display: none;">
       
       <div class="jumbotron text-center">
         <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Head of Department</p>

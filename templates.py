@@ -18,9 +18,10 @@ class AdminTemplates():
         db = database.SessionLocal()
         hods = admin.get_all(db)
         dep = admin.get_all_departments(db)
+        course = admin.get_all_course(db)
         db.close()
         return templates.TemplateResponse('adminPortal.html', 
-                    context={'request': request, 'title': 'Admin Portal', 'hods': hods, 'dep': dep})
+                    context={'request': request, 'title': 'Admin Portal', 'hods': hods, 'dep': dep, 'course': course})
 
     def login_success_redirect():
         return RedirectResponse(url = '/admin/portal', status_code=status.HTTP_302_FOUND)
