@@ -1,6 +1,8 @@
 from fastapi.templating import Jinja2Templates
 from fastapi import status
 from starlette.responses import RedirectResponse
+from repository import admin
+import database
 
 templates = Jinja2Templates('templates')
 
@@ -10,10 +12,15 @@ class AdminTemplates():
 
     def admin_login_page(request, verify = 'none'):
         return templates.TemplateResponse('admin_login.html', 
-                context={'request': request, 'title': 'Admin Portal', 'verify': verify})
+                context={'request': request, 'title': 'Admin Login', 'verify': verify})
 
     def login_success(request):
-        return templates.TemplateResponse('welcome.html', context={'request': request})
+        db = database.SessionLocal()
+        hods = admin.get_all(db)
+        dep = admin.get_all_departments(db)
+        db.close()
+        return templates.TemplateResponse('adminPortal.html', 
+                    context={'request': request, 'title': 'Admin Portal', 'hods': hods, 'dep': dep})
 
     def login_success_redirect():
         return RedirectResponse(url = '/admin/portal', status_code=status.HTTP_302_FOUND)

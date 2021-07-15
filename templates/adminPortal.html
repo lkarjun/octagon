@@ -1,0 +1,209 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <!-- Toggle button -->
+      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarCenteredExample"
+        aria-controls="navbarCenteredExample" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="ellipsis horizontal icon"></i>
+      </button>
+  
+      <!-- Collapsible wrapper -->
+      <div class="collapse navbar-collapse justify-content-center" id="navbarCenteredExample">
+        <!-- Left links -->
+        <ul class="navbar-nav mb-2 mb-lg-0">
+
+          <li class="nav-item">
+            <a class="nav-link font-weight-bold" onclick="hider('dH')" aria-current="page" href="#">Detail of Hods</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link font-weight-bold" onclick="hider('dD')" aria-current="page" href="#">Detail of Departments</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link font-weight-bold" onclick="hider('dep')" aria-current="page" href="#">Department</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link font-weight-bold" onclick="hider('hod')" aria-current="page" href="#">HOD</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link font-weight-bold" onclick="hider('cr')" aria-current="page" href="#"><i class="lock icon"></i>Credientials</a>
+          </li>
+        </ul>
+        <!-- Left links -->
+      </div>
+      <!-- Collapsible wrapper -->
+    </div>
+  </nav>
+  
+  <!--Starting Here-->
+
+  <div class="container">
+
+    <!--Hod Details Section starts here-->
+    <section id='dH' class="p-4 m-4" style="display: none;">
+    
+      <div class="jumbotron text-center">
+        <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Hod Details</p>
+      </div>
+      
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th scope="col" class="font-weight-bold">Name</th>
+              <th scope="col" class="font-weight-bold">Email</th>
+              <th scope='col' class="font-weight-bold">Phone No:</th>
+              <th scope="col" class="font-weight-bold">User Name</th>
+              <th scope="col" class="font-weight-bold">Department</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in hods %}
+            <tr>
+              <th scope="row">{{i['name']}}</th>
+              <td>{{ i['email'] }}</td>
+              <td>{{ i['phone_num'] }}</td>
+              <td>{{ i['user_name'] }}</td>
+              <td>{{ i['department'] }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      
+    </section>
+
+    <!--Department Details Section starts here-->
+    <section id='dD' class="p-4 m-4" style="display: none;">
+    
+      <div class="jumbotron text-center">
+        <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Department Details</p>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th scope="col" class="font-weight-bold">Department</th>
+              <th scope="col" class="font-weight-bold">Alias</th>
+              <th scope='col' class="font-weight-bold">Courses Under Department</th>
+              <th scope='col' class="font-weight-bold">Remove Department</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in dep %}
+            <tr>
+              <th scope="row">{{i['Department']}}</th>
+              <td>{{ i['Alias'] }}</td>
+              <td>-</td>
+              <td>
+                <button type="button" class="btn btn-danger btn-sm px-3">
+                  <i class="x icon"></i>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+
+    </section>
+
+    <!--Department Section starts here-->
+    <section id='dep' class="p-4 m-4" style="display: none;">
+    
+      <div class="jumbotron text-center">
+        <p class="h1" style="font-family: 'Exo', sans-serif;">Department</p>
+      </div>
+    
+    </section>
+    
+    <!--Hod Section starts here-->
+    <section id='hod' class="p-4 m-4" style="display: block;">
+      
+      <div class="jumbotron text-center">
+        <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Head of Department</p>
+      </div>
+
+      <div class="p-3 m-3">
+        <p class="h3 text-left" style="font-family: 'Exo', sans-serif;">Appoint New HOD</p>
+
+        
+    
+      </div>
+    
+    
+
+    </section>
+    
+    <!--Admin Credential Section starts here-->
+    <section id='cr' class="p-4 m-4" style="display: none;">
+      
+      <div class="jumbotron text-center">
+        <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Admin Credientials</p>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-center" style="height: 60vh;">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card shadow-lg rounded">
+                    <div class="card-body p-5">
+                        <p class="card-title font-weight-bold h5 text-center"><i class="lock icon"></i>Credential Update</p>
+                        <form action="" method="">
+                                            
+                            <div class="form-group pt-3">
+                                <label for="inputPassword">Current Password </label>
+                                <input type="password" required class="form-control md-w-50" name="password" id="inputPassword" placeholder="Admin Password">
+                            </div>
+
+                            <div class="form-group pt-3">
+                              <label for="inputPassword">New Password </label>
+                              <input type="password" required class="form-control md-w-50" name="newpassword" id="inputPassword" placeholder="4-8 Alphanumeric digit">
+                          </div>
+            
+                            <div class="form-group pt-3">
+                                <button type="submit" class="ui teal  button">Change</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+  <script>
+    function hider(id){
+      console.log(id)
+      $('#dep').css('display', 'none');
+      $('#hod').css('display', 'none');
+      $('#dD').css('display', 'none');
+      $('#dH').css('display', 'none');
+      $('#cr').css('display', 'none');
+      $('#'+id).css('display', 'block');
+    }
+  </script>
+
+{% endblock %}
