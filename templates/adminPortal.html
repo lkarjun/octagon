@@ -102,7 +102,7 @@
               <td>{{ i['Alias'] }}</td>
               <td>-</td>
               <td>
-                <button type="button" class="btn btn-danger btn-sm px-3">
+                <button type="button" class="btn btn-danger btn-sm px-3" onclick="success_alert('Successfully Removed Hod')">
                   <i class="x icon"></i>
                 </button>
               </td>
@@ -225,7 +225,7 @@
               </div>
 
               <div class="pt-3 pt-md-0">
-                  <button class="btn btn-danger font-weight-bold">Remove</button>
+                  <button class="btn btn-danger font-weight-bold" onclick="error_alert('Removed Error')">Remove</button>
               </div>
             </div>
           </div>
@@ -256,8 +256,8 @@
                             </div>
 
                             <div class="form-group pt-3">
-                              <label for="inputPassword">New Password </label>
-                              <input type="password" required class="form-control md-w-50" name="newpassword" id="inputPassword" placeholder="4-8 Alphanumeric digit">
+                              <label for="inputPasswordNew">New Password </label>
+                              <input type="password" required class="form-control md-w-50" name="newpassword" id="inputPasswordNew" placeholder="4-8 Alphanumeric digit">
                           </div>
             
                             <div class="form-group pt-3">

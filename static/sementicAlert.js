@@ -54,34 +54,34 @@ $.uiAlert = function(options) {
 
   
 // Success alert
-function success_alert(text){
+function success_alert(text, position = 'top-left'){
     $.uiAlert({
     text: text,
     bgcolor: '#00B74A',
     textcolor: '#FBFBFB',
-    position: 'top-right',
+    position: position,
     time: 3,
   })
 };
 
 // Error alert
-function error_alert(text){
+function error_alert(text, position = 'top-left'){
     $.uiAlert({
       text: text,
       bgcolor: '#F93154',
       textcolor: '#FBFBFB',
-      position: 'top-right',
+      position: position,
       time: 3,
     })
 }
 
 // Warning Alert
-function warning_alert(text){
+function warning_alert(text, position = 'top-left'){
   $.uiAlert({
     text: text,
     bgcolor: '#FFA900',
     textcolor: '#FBFBFB',
-    position: 'top-right',
+    position: position,
     time: 3,
   })
 }
