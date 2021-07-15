@@ -1,6 +1,7 @@
 .ui-alert-content{
   position: fixed;
   width: 360px;
+  padding-bottom: 10px;
   z-index: 2060;
 }
 .ui-alert-content-top-right{
