@@ -17,7 +17,7 @@ $.uiAlert = function(options) {
       if(!$('body > .' + ui_alert).length) {
         $('body').append('<div class="ui-alert-content ' + ui_alert + '" style="width: inherit;"></div>');
       }
-      var message = $('<div id="messages" class="ui icon message" ' + setUI.bgcolors + '><i class="'+setUI.icon+' icon" style="color: '+setUI.textcolor+';"></i><i class="close icon" style="color: '+setUI.textcolor+';" id="messageclose"></i><div style="color: '+setUI.textcolor+'; margin-right: 10px;">   <div class="header">'+setUI.textHead+'</div>  <p> '+setUI.text+'</p></div>  </div>');
+      var message = $('<div id="messages" class="ui icon message" ' + setUI.bgcolors + '></i><i class="close icon" style="color: '+setUI.textcolor+';" id="messageclose"></i><div style="color: '+setUI.textcolor+'; margin-right: 10px;">   <div class="header">'+setUI.text+'</div> </div>  </div>');
       $('.' + ui_alert).prepend(message);
       message.animate({
         opacity: '1',
@@ -51,3 +51,37 @@ $.uiAlert = function(options) {
     ;
   
     };
+
+  
+// Success alert
+function success_alert(text){
+    $.uiAlert({
+    text: text,
+    bgcolor: '#00B74A',
+    textcolor: '#FBFBFB',
+    position: 'top-right',
+    time: 3,
+  })
+};
+
+// Error alert
+function error_alert(text){
+    $.uiAlert({
+      text: text,
+      bgcolor: '#F93154',
+      textcolor: '#FBFBFB',
+      position: 'top-right',
+      time: 3,
+    })
+}
+
+// Warning Alert
+function warning_alert(text){
+  $.uiAlert({
+    text: text,
+    bgcolor: '#FFA900',
+    textcolor: '#FBFBFB',
+    position: 'top-right',
+    time: 3,
+  })
+}
