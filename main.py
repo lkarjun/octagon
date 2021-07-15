@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from database import engine
-import models, oauth2
+from database import models, database
+from security import oauth2
 from routers import admin, authentication, pages, hod
 
 #docs_url=None, redoc_url=None
@@ -15,4 +15,4 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_exception_handler(oauth2.NotAuthenticatedException, oauth2.exc_handler)
 
-models.Base.metadata.create_all(engine)
+models.Base.metadata.create_all(database.engine)

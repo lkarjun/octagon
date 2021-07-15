@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status, Request, Depends
 from get_template import OthersTemplates, AdminTemplates
-import oauth2
+from security import oauth2
 
 router = APIRouter(tags = ['Pages'])
 

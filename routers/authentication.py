@@ -1,7 +1,9 @@
 from fastapi import APIRouter, status, Depends, Request
 from fastapi.security import OAuth2PasswordRequestForm
-from faceid import decoded_image, Dict
-import oauth2, get_template
+from security.faceid import decoded_image, Dict
+from security import oauth2
+import get_template
+
 
 router = APIRouter(tags = ['Authentication'])
 
@@ -26,11 +28,11 @@ async def admin_login(request: Request, data: OAuth2PasswordRequestForm = Depend
 
 @router.post('/error', status_code=status.HTTP_401_UNAUTHORIZED)
 async def error():
-    return {"Error": "Warning"}
+    return get_template.AdminTemplates.login_error_redirect()
 
 @router.get('/error', status_code=status.HTTP_401_UNAUTHORIZED)
 async def error():
-    return {'Error': "Warning"}
+    return get_template.AdminTemplates.login_error_redirect()
 
 @router.put('/error', status_code=status.HTTP_401_UNAUTHORIZED)
 async def error():

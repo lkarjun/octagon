@@ -2,8 +2,10 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm.session import Session
 from sqlalchemy import and_
 from typing import List
-import Schemas, database, oauth2
-from repository import admin
+# import Schemas, database, oauth2
+from database import database
+from security import oauth2
+from repository import admin, Schemas
 
 
 router = APIRouter(tags=['Admin'], prefix='/admin')

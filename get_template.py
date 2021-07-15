@@ -1,8 +1,8 @@
 from fastapi.templating import Jinja2Templates
 from fastapi import status
-from starlette.responses import RedirectResponse
+from fastapi.responses import RedirectResponse
 from repository import admin
-import database
+from database import database
 
 templates = Jinja2Templates('templates')
 
@@ -24,6 +24,11 @@ class AdminTemplates():
 
     def login_success_redirect():
         return RedirectResponse(url = '/admin/portal', status_code=status.HTTP_302_FOUND)
+
+
+    def login_error_redirect():
+        return RedirectResponse(url='/admin', status_code=status.HTTP_302_FOUND)
+
 
 class OthersTemplates():
     

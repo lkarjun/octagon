@@ -1,7 +1,7 @@
 from fastapi_login import LoginManager
 from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi.responses import RedirectResponse
-import database
+from database import database
 
 class NotAuthenticatedException(Exception):
     pass

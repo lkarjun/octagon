@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Request, Depends, status
 from sqlalchemy.orm.session import Session
-from repository import hod, mail_it
-import repository, oauth2, Schemas, database
+from repository import hod, mail_it, Schemas
+from database import database
+from security import oauth2
 from typing import List
 
 router = APIRouter(tags = ['Head Of Department'], prefix='/hod')

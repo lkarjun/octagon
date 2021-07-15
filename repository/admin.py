@@ -1,8 +1,10 @@
 from sqlalchemy.orm.session import Session
-import Schemas, models, hashing
+from database import models
+from security import hashing
 from fastapi import status, HTTPException, Response
 from sqlalchemy import and_
 from repository.attendence import CreateAttendence
+from repository import Schemas
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)
