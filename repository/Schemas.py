@@ -1,6 +1,7 @@
 from database.models import Courses
 from pydantic import BaseModel
 from typing import Optional, List
+from fastapi import UploadFile, File
 
 class CreateHod(BaseModel):
     name: str
@@ -12,6 +13,10 @@ class CreateHod(BaseModel):
 class ShowHods(CreateHod):
     class Config():
         orm_mode = True
+
+class DeleteHod(BaseModel):
+    name: str
+    department: str
 
 class AddDepartment(BaseModel):
     Department: str
@@ -28,7 +33,6 @@ class DeleteDepartment(BaseModel):
 
 class DeleteCourse(BaseModel):
     course_name: str
-    department: str
 
 class AdminPass(BaseModel):
     username: str

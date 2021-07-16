@@ -79,7 +79,7 @@
     </section>
 
     <!--Department Details Section starts here-->
-    <section id='dD' class="p-4 m-4" style="display: block;">
+    <section id='dD' class="p-4 m-4" style="display: none;">
     
       <div class="jumbotron text-center">
         <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Department Details</p>
@@ -115,6 +115,118 @@
 
     </section>
 
+    <!--Hod Section starts here-->
+    <section id='hod' class="p-4 m-4" style="display: block;">
+      
+      <div class="jumbotron text-center">
+        <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Head of Department</p>
+      </div>
+
+      <div class="p-md-3 m-md-3">
+        
+        
+        <div class="row">
+          <div class="col-md-6 col-sm-12 col-12 pt-md-5 mt-md-5 pb-md-3 pb-4 mb-2">
+            <p class="h3 text-center " style="font-family: 'Exo', sans-serif;">Appoint New HOD</p>
+          </div>
+
+          <div class="col-md-6 col-sm-12 col-12">
+              <form class="ui form align-items-center" id='Appointment_form'>
+                <div class="fields">
+                  <div class="field">
+                    <label>Name</label>
+                    <input id='name' required type="text" placeholder="Name">
+                  </div>
+                  <div class="field">
+                    <label>Email</label>
+                    <input id='email' required type="text" placeholder="Email">
+                  </div>
+                  <div class="field">
+                    <label>User Name</label>
+                    <input id='username' required type="text" placeholder="User Name">
+                  </div>
+                </div>
+
+                <div class="fields">
+                  <div class="field">
+                    <label>Phone Number</label>
+                    <input id='number' required type="text" placeholder="Phone Number">
+                  </div>
+
+                  <div class="field">
+                    <label>Department</label>
+                    <select class="ui search dropdown" id='department_options'>
+                      {% for i in dep %}
+                      <option value="{{ i['Alias'] }}">{{ i['Department'] }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="fields">
+                  <div class="field">
+                    <label>Verification Image 1
+                    <input id='vimage1' required type="file" accept="image/*"capture="camera"></label>
+                  </div>
+                  
+                  <div class="field">
+                    <label>Verification Image 2
+                      <input id='vimage2' required type="file" accept="image/*"capture="camera">
+                    </label>
+                  </div>
+
+                  <div class="field pb-2 pb-md-0">
+                    <label>Verification Image 3
+                      <input id='vimage3' required type="file" accept="image/*"capture="camera">
+                    </label>
+                  </div>
+                </div>
+                <button class="ui button green" id='upload_button' type="submit">Submit</button>
+                <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+              </form>
+          </div>
+        </div>
+
+        <div class="row pt-md-5 mt-md-5 pt-5 mt-4 pb-3 mb-3">
+          
+          <div class="col-md-6 col-sm-12 col-12 pt-md-4 mt-md-3">
+            <p class="h3 text-center " style="font-family: 'Exo', sans-serif;">Remove an Hod</p>
+          </div>
+
+          <div class="col-md-6 pt-3 pt-md-0">
+            <form class="ui form align-items-center" id="Hod_remove">
+              <div class="fields">
+                <div class="field">
+                  <label>Name</label>
+                  <select class="ui search dropdown" id="hod_name">
+                    <option value="none" selected>None</option>
+                    {% for i in hods %}
+                      <option value="{{ i['user_name'] }}">{{ i['name'] }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+  
+                <div class="field">
+                  <label>Department</label>
+                  <select class="ui search dropdown" id='department_options2'>
+                  </select>
+                </div>
+
+                <script>$('#department_options option').clone().appendTo('#department_options2');</script>
+              </div>
+
+              <div class="pt-3 pt-md-0">
+                  <button class="ui button red font-weight-bold">Remove</button>
+              </div>
+            </form>
+          
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
     <!--Department Section starts here-->
     <section id='dep' class="p-4 m-4" style="display: none;">
     
@@ -135,15 +247,15 @@
               
               <div class="field">
                 <label>Department Name</label>
-                <input class="w-75" required type="text" placeholder="Department Name">
+                <input class="w-75" required id='dep_name' name='Department' type="text" placeholder="Department Name">
               </div>
 
               <div class="field">
                 <label>Short Form</label>
-                <input class = "w-75" required type="text" placeholder="Short Form (Without any space)">
+                <input class = "w-75" id='dep_alias' name = 'Alias' required type="text" placeholder="Short Form (Without any space)">
               </div>
 
-              <button type="submit" class="btn btn-success" onclick="success_alert('Added Department')">Add</button>
+              <button type="submit" class="btn btn-success">Add</button>
             
             </form>
 
@@ -160,20 +272,41 @@
             <p class="h3 text-center pb-3" style="font-family: 'Exo', sans-serif;">Add Course</p>
             
             <form class="ui form align-items-center" id='Course_form'>
-              <div class="field">
-                <label>Course Name</label>
-                <input class="w-75" required type="text" placeholder="Course Name">
-              </div>
+              <div class="fields">
+                <div class="field">
+                  <label>Course Name</label>
+                  <input class="w-75" id="course_name" required type="text" placeholder="Course Name">
+                </div>
 
-              <div class="field">
-                <label>Short Form</label>
-                <input class="w-75" required type="text" placeholder="eg: bca(without any space)">
+                <div class="field">
+                  <label>Duration</label>
+                  <select class="ui search dropdown" id='course_duration'>
+                    <option value="1">1 Year</option>
+                    <option value="2">2 Year</option>
+                    <option value="3">3 Year</option>
+                    <option value="4">4 Year</option>
+                    <option value="5">5 Year</option>
+                  </select>
+                </div>
               </div>
+              <div class="fields">
+                <div class="field">
+                  <label>Short Form</label>
+                  <input class="w-75" id="course_shortform" required type="text" placeholder="eg: bca(without any space)">
+                </div>
+                
+                <div class="field">
+                  <label>Department</label>
+                  <select class="ui search dropdown" id='department_options3'>
+                  </select>
+                </div>
 
-              <button type="submit" class="btn btn-success" onclick="success_alert('Added Course')">Add</button>
+                <script>$('#department_options option').clone().appendTo('#department_options3');</script>
+              </div>
+              
+              <button type="submit" class="btn btn-success">Add</button>
 
             </form>
-
           </div>
 
           <div class="col-md-6 pt-4 mt-4 mt-md-0 pt-md-0">
@@ -185,128 +318,16 @@
                 <select required class="ui search dropdown w-75" id='course_options'>
                   <option value="none" selected>None</option>
                   {% for i in course %}
-                  <option value="{{ i['Course_name_alias'] }}"> {{ i['Course_name_alias'] }}</option>
+                  <option value="{{ i['Course_name_alias'] }}"> {{ i['Course_name'] }}</option>
                   {% endfor %}
                 </select>
               </div>
-              <button type="submit" class="btn btn-danger" onclick="success_alert('Removed Course')">Remove</button>
+              <button type="submit" class="btn btn-danger">Remove</button>
             </form>
 
             <br><br><br><br>
-
           </div>
 
-
-        </div>
-
-      </div>
-    </section>
-    
-    <!--Hod Section starts here-->
-    <section id='hod' class="p-4 m-4" style="display: none;">
-      
-      <div class="jumbotron text-center">
-        <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Head of Department</p>
-      </div>
-
-      <div class="p-md-3 m-md-3">
-        
-        
-        <div class="row">
-          <div class="col-md-6 col-sm-12 col-12 pt-md-5 mt-md-5 pb-md-3 pb-4 mb-2">
-            <p class="h3 text-center " style="font-family: 'Exo', sans-serif;">Appoint New HOD</p>
-          </div>
-
-          <div class="col-md-6 col-sm-12 col-12">
-              <form class="ui form align-items-center" id='Appointment_form'>
-                <div class="fields">
-                  <div class="field">
-                    <label>Name</label>
-                    <input required type="text" placeholder="Name">
-                  </div>
-                  <div class="field">
-                    <label>Email</label>
-                    <input required type="text" placeholder="Email">
-                  </div>
-                  <div class="field">
-                    <label>User Name</label>
-                    <input required type="text" placeholder="User Name">
-                  </div>
-                </div>
-
-                <div class="fields">
-                  <div class="field">
-                    <label>Phone Number</label>
-                    <input required type="text" placeholder="Phone Number">
-                  </div>
-
-                  <div class="field">
-                    <label>Department</label>
-                    <select class="ui search dropdown" id='department_options'>
-                      {% for i in dep %}
-                      <option value="{{ i['Department'] }}">{{ i['Department'] }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                </div>
-
-                <div class="fields">
-                  <div class="field">
-                    <label>Verification Image 1
-                    <input required type="file" accept="image/*"capture="camera"></label>
-                  </div>
-                  
-                  <div class="field">
-                    <label>Verification Image 2
-                      <input required type="file" accept="image/*"capture="camera">
-                    </label>
-                  </div>
-
-                  <div class="field pb-2 pb-md-0">
-                    <label>Verification Image 3
-                      <input required type="file" accept="image/*"capture="camera">
-                    </label>
-                  </div>
-                </div>
-                <button class="btn btn-success" type="submit">Submit</button>
-                <div class="btn-danger btn" onclick='$("#Appointment_form")[0].reset();'><i class="times icon"></i></div>
-              </form>
-          </div>
-        </div>
-
-        <div class="row pt-md-5 mt-md-5 pt-5 mt-4 pb-3 mb-3">
-          
-          <div class="col-md-6 col-sm-12 col-12 pt-md-4 mt-md-3">
-            <p class="h3 text-center " style="font-family: 'Exo', sans-serif;">Remove an Hod</p>
-          </div>
-
-          <div class="col-md-6 pt-3 pt-md-0">
-            <div class="ui form align-items-center">
-              <div class="fields">
-                <div class="field">
-                  <label>Name</label>
-                  <select class="ui search dropdown">
-                    <option value="none" selected>None</option>
-                    {% for i in hods %}
-                      <option value="{{ i['email'] }}">{{ i['name'] }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-  
-                <div class="field">
-                  <label>Department</label>
-                  <select class="ui search dropdown" id='department_options2'>
-                  </select>
-                </div>
-
-                <script>$('#department_options option').clone().appendTo('#department_options2');</script>
-              </div>
-
-              <div class="pt-3 pt-md-0">
-                  <button class="btn btn-danger font-weight-bold" onclick="error_alert('Removed Error')">Remove</button>
-              </div>
-            </div>
-          </div>
 
         </div>
 

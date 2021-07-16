@@ -2,7 +2,7 @@ from sqlalchemy.orm.session import Session
 from database import models
 from security import hashing
 from fastapi import status, HTTPException, Response
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 from repository.attendence import CreateAttendence
 from repository import Schemas
 
@@ -45,24 +45,33 @@ def update(user_name: str, request: Schemas.CreateHod, db: Session):
     db.commit()
     return 'done'
 
-def delete(name:str, department: str, db: Session):
-    hod = db.query(models.Hod).filter(and_(models.Hod.name == name,
-                                models.Hod.department == department))
+def delete(request: Schemas.DeleteHod, db: Session):
+    hod = db.query(models.Hod).filter(and_(models.Hod.user_name == request.name,
+                                models.Hod.department == request.department))
     if not hod.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {name} and department: {department}") 
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {request.name} and department: {request.department}") 
 
     hod.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
 
 def create(request: Schemas.CreateHod, db: Session):
+    user_name_check = db.query(models.Hod).filter(or_(
+                        models.Hod.user_name == request.user_name,
+                        models.Hod.email == request.email,
+                        models.Hod.phone_num == request.phone_num
+                    )).first()
+    if user_name_check:
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                                detail = f"User already exists: check username '{request.user_name}', email '{request.email}', phone number '{request.phone_num}'")
+
     new_hod = models.Hod(name = request.name, email = request.email, \
                         phone_num = request.phone_num, user_name = request.user_name, \
                         department = request.department)
     db.add(new_hod)
     db.commit()
     db.refresh(new_hod)
-    return new_hod
+    return True
 
 def new_department(request: Schemas.AddDepartment, db: Session):
     department = models.Departments(Department = request.Department, Alias = request.Alias)
@@ -98,11 +107,10 @@ def add_course(request: Schemas.AddCourse, db: Session):
     return "Course Added"
 
 def delete_course(request: Schemas.DeleteCourse, db: Session):
-    course = db.query(models.Courses).filter(and_(models.Courses.Course_name == request.course_name,
-                        models.Courses.Department == request.department))
+    course = db.query(models.Courses).filter(models.Courses.Course_name_alias == request.course_name)
     if not course.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
-                    detail=f"No Department in name {request.department} and Course {request.course_name}")
+                    detail=f"No Course in name {request.course_name}")
 
     course.delete(synchronize_session=False)
     db.commit()
