@@ -122,3 +122,14 @@ def get_all_course(db: Session):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
             detail = 'No content in the database')
     return courses
+
+def reset_pass(request: Schemas.AdminPass, db: Session):
+    current = db.query(models.Admin).filter(models.Admin.name == request.username)
+    if not hashing.Hash.verify(current.first().password, request.current_pass):
+        raise HTTPException(status.HTTP_406_NOT_ACCEPTABLE, detail="Wrong password")
+    if not current.first():
+        raise HTTPException(status.HTTP_203_NON_AUTHORITATIVE_INFORMATION, detail="Something Went wrong")
+    hashing_pass = hashing.Hash.bcrypt(request.new_pass)
+    current.update({'name': request.username, 'password': hashing_pass})
+    db.commit()
+    return "Password changed successfully..."

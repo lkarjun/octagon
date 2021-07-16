@@ -209,3 +209,38 @@ $("#Appointment_form").submit((e)=>{
   $("#upload_button").addClass("loading disabled");
   verification_image_upload(data, name, username)
 })
+
+
+// Admin password change...
+$("#admin_reset").submit((e)=>{
+  e.preventDefault()
+  var base = window.location.origin + '/admin/portal/reset_password';
+  var data = JSON.stringify({"current_pass": $('#inputPassword').val(), "new_pass": $("#inputPasswordNew").val()})
+  $("#pass_change_button").addClass("loading disabled");
+  $.ajax({
+    url: base,
+    type: 'POST',
+    async: true,
+    data: data,
+    dataType: 'json',
+    contentType: "application/json",
+    success: function(result){
+      $("#pass_change_button").removeClass("loading disabled");
+      success_alert(result)
+      $("#admin_reset")[0].reset()
+    },
+    error: function(result){
+      $("#pass_change_button").removeClass("loading disabled");
+      if(result.status == 406){
+        var message = JSON.parse(result.responseText)
+        warning_alert(message.detail);
+        $("#admin_reset")[0].reset()
+      }
+      else{
+        error_alert("Something Went Wrong. Please try to contact the techincal team...");
+        location.reload();
+      }
+    }
+
+  })
+});

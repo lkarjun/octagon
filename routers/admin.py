@@ -73,3 +73,7 @@ async def delete_course(request: Schemas.DeleteCourse, db: Session = Depends(get
 @router.get('/courses', status_code=status.HTTP_202_ACCEPTED, response_model=List)
 async def get_all_courses(db: Session = Depends(get_db), user=Depends(oauth2.manager_admin)):
     return admin.get_all_course(db)
+
+@router.post('/reset_password', status_code=status.HTTP_202_ACCEPTED)
+async def reset(request: Schemas.AdminPass, db: Session = Depends(get_db), user=Depends(oauth2.manager_admin)):
+    return admin.reset_pass(request, db)
