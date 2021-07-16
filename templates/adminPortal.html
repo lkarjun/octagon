@@ -79,7 +79,7 @@
     </section>
 
     <!--Department Details Section starts here-->
-    <section id='dD' class="p-4 m-4" style="display: none;">
+    <section id='dD' class="p-4 m-4" style="display: block;">
     
       <div class="jumbotron text-center">
         <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Department Details</p>
@@ -97,12 +97,12 @@
           </thead>
           <tbody>
             {% for i in dep %}
-            <tr>
+            <tr id = '{{ i["Alias"] }}'>
               <th scope="row">{{i['Department']}}</th>
               <td>{{ i['Alias'] }}</td>
               <td>-</td>
               <td>
-                <button type="button" class="btn btn-danger btn-sm px-3" onclick="success_alert('Successfully Removed Hod')">
+                <button type="button" class="btn btn-danger btn-sm px-3" onclick="remove_departement('{{ i['Alias'] }}')">
                   <i class="x icon"></i>
                 </button>
               </td>
@@ -116,7 +116,7 @@
     </section>
 
     <!--Department Section starts here-->
-    <section id='dep' class="p-4 m-4" style="display: block;">
+    <section id='dep' class="p-4 m-4" style="display: none;">
     
       <div class="jumbotron text-center">
         <p class="h1" style="font-family: 'Exo', sans-serif;">Department</p>

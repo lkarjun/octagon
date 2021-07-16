@@ -78,9 +78,8 @@ def get_all_departments(db: Session):
             detail = 'No content in the database')
     return departments
 
-def delete_department(request: Schemas.AddDepartment, db: Session):
-    depart = db.query(models.Departments).filter(and_(models.Departments.Alias == request.Alias,
-                                            models.Departments.Department == request.Department))
+def delete_department(request: Schemas.DeleteDepartment, db: Session):
+    depart = db.query(models.Departments).filter(models.Departments.Alias == request.department)
     if not depart.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
                     detail=f"No Department in name {request.Department} and alias {request.Alias}") 

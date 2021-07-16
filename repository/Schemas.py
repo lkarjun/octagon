@@ -23,6 +23,9 @@ class AddCourse(BaseModel):
     duration: int
     department: str
 
+class DeleteDepartment(BaseModel):
+    department: str
+
 class DeleteCourse(BaseModel):
     course_name: str
     department: str

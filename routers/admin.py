@@ -1,13 +1,12 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm.session import Session
-from sqlalchemy import and_
-from typing import List
+from typing import Dict, List
 from database import database
 from security import oauth2
 from repository import admin, Schemas
 
 
-router = APIRouter(tags=['Admin'], prefix='/admin')
+router = APIRouter(tags=['Admin'], prefix='/admin/portal')
 get_db = database.get_db
 
 @router.post('/create_hod', status_code=status.HTTP_201_CREATED, response_model=Schemas.ShowHods)
@@ -48,8 +47,8 @@ async def all_departments(db: Session = Depends(get_db), user=Depends(oauth2.man
     return admin.get_all_departments(db)
 
 @router.delete('/deletedepartment', status_code=status.HTTP_204_NO_CONTENT)
-async def delete_department(request: Schemas.AddDepartment, db: Session = Depends(get_db),\
-                 user=Depends(oauth2.manager_admin)):
+async def delete_department(request: Schemas.DeleteDepartment, db: Session = Depends(get_db),\
+                    user=Depends(oauth2.manager_admin)):
     return admin.delete_department(request, db)
 
 @router.post('/AddCourse', status_code=status.HTTP_201_CREATED)
