@@ -23,10 +23,10 @@ class Departments(Base):
 
 class Courses(Base):
     __tablename__ = 'Courses'
-    Course_name = Column(String, primary_key=True, index=True, nullable=False)
-    Course_name_alias = Column(String, nullable=False)
-    Duration = Column(Integer, nullable=False)
-    Department = Column(String, nullable=False)
+    Course_name = Column(String, primary_key=True, index=True)
+    Course_name_alias = Column(String)
+    Duration = Column(Integer)
+    Department = Column(String)
 
 class Teachers(Base):
     __tablename__ = 'Teachers'
