@@ -15,23 +15,23 @@
         <ul class="navbar-nav mb-2 mb-lg-0">
 
           <li class="nav-item">
-            <a class="nav-link font-weight-bold" onclick="hider('dH')" aria-current="page" href="#">Detail of Hods</a>
+            <a class="nav-link font-weight-bold text-decoration-underline active" id='depart' onclick="hider('dD', 'depart')" aria-current="page" href="#">Detail of Departments</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link font-weight-bold" onclick="hider('dD')" aria-current="page" href="#">Detail of Departments</a>
+            <a class="nav-link font-weight-bold" onclick="hider('dH', 'hodss')" id='hodss' aria-current="page" href="#">Detail of Hods</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link font-weight-bold" onclick="hider('dep')" aria-current="page" href="#">Department</a>
+            <a class="nav-link font-weight-bold" onclick="hider('dep', 'departt')" id='departt' aria-current="page" href="#">Department</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link font-weight-bold" onclick="hider('hod')" aria-current="page" href="#">HOD</a>
+            <a class="nav-link font-weight-bold" onclick="hider('hod', 'hodd')" id='hodd' aria-current="page" href="#">HOD</a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link font-weight-bold" onclick="hider('cr')" aria-current="page" href="#"><i class="lock icon"></i>Credientials</a>
+            <a class="nav-link font-weight-bold" onclick="hider('cr', 'credd')" id='credd' aria-current="page" href="#"><i class="lock icon"></i>Credientials</a>
           </li>
         </ul>
         <!-- Left links -->
@@ -45,7 +45,7 @@
   <div class="container">
 
     <!--Hod Details Section starts here-->
-    <section id='dH' class="p-4 m-4" style="display: block;">
+    <section id='dH' class="p-4 m-4" style="display: none;">
     
       <div class="jumbotron text-center">
         <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Hod Details</p>
@@ -79,7 +79,7 @@
     </section>
 
     <!--Department Details Section starts here-->
-    <section id='dD' class="p-4 m-4" style="display: none;">
+    <section id='dD' class="p-4 m-4" style="display: block;">
     
       <div class="jumbotron text-center">
         <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Department Details</p>
@@ -91,16 +91,16 @@
             <tr>
               <th scope="col" class="font-weight-bold">Department</th>
               <th scope="col" class="font-weight-bold">Alias</th>
-              <th scope='col' class="font-weight-bold">Courses Under Department</th>
+              <th scope='col' class="font-weight-bold">Courses Under Departments</th>
               <th scope='col' class="font-weight-bold">Remove Department</th>
             </tr>
           </thead>
           <tbody>
             {% for i in dep %}
             <tr id = '{{ i["Alias"] }}'>
-              <th scope="row">{{i['Department']}}</th>
-              <td>{{ i['Alias'] }}</td>
-              <td>-</td>
+              <th scope="row" class="text-uppercase font-weight-bold">{{i['Department']}}</th>
+              <td class="text-uppercase">{{ i['Alias'] }}</td>
+              <td class="font-weight-bold text-uppercase">{{ cw[i['Alias']]|join(", ") }}</td>
               <td>
                 <button type="button" class="btn btn-danger btn-sm px-3" onclick="remove_departement('{{ i['Alias'] }}')">
                   <i class="x icon"></i>
@@ -373,14 +373,22 @@
 
   </div>
   <script>
-    function hider(id){
+    function hider(id, navid){
       console.log(id)
       $('#dep').css('display', 'none');
+      
       $('#hod').css('display', 'none');
       $('#dD').css('display', 'none');
       $('#dH').css('display', 'none');
       $('#cr').css('display', 'none');
+      $('#hodd').removeClass("active text-decoration-underline")
+      $('#hodss').removeClass("active text-decoration-underline")
+      $('#depart').removeClass("active text-decoration-underline")
+      $('#departt').removeClass("active text-decoration-underline")
+      $('#credd').removeClass("active text-decoration-underline")
+
       $('#'+id).css('display', 'block');
+      $('#'+navid).addClass("active text-decoration-underline")
     }
   </script>
 

@@ -12,11 +12,11 @@ async def home(request: Request):
 async def workspace(request: Request):
     return AdminTemplates.login_success(request)
 
-@router.get('/admin', status_code=status.HTTP_200_OK)
+@router.get('/admin/login', status_code=status.HTTP_200_OK)
 def admin_login_page(request: Request):
     return AdminTemplates.admin_login_page(request)
 
-@router.get("/admin/portal")
+@router.get("/admin")
 def admin_portal(request: Request, user=Depends(oauth2.manager_admin)):
     return AdminTemplates.login_success(request)
 

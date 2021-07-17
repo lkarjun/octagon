@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends, Request
+from fastapi import APIRouter, status, Depends, Request, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from security.faceid import decoded_image, Dict
 from security import oauth2
@@ -16,7 +16,7 @@ async def login(file: Dict):
 async def admin_login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
     user = await oauth2.get_user(username)
-    if not user: raise oauth2.InvalidCredentialsException
+    if not user: return temp.AdminTemplates.admin_login_page(request, 'block')
 
     access_token = oauth2.manager_admin.create_access_token(
                         data = dict(sub = user)
@@ -28,7 +28,7 @@ async def admin_login(request: Request, data: OAuth2PasswordRequestForm = Depend
 
 @router.post('/error', status_code=status.HTTP_401_UNAUTHORIZED)
 async def error():
-    return temp.AdminTemplates.login_error_redirect()
+    return temp.AdminTemplates.admin_login_page(Request, 'block')
 
 @router.get('/error', status_code=status.HTTP_401_UNAUTHORIZED)
 async def error():
