@@ -36,7 +36,7 @@
                                 <option value="4">Year 4</option>
                                 <option value="5">Year 5</option>
                             </select>
-                            <a class = "ui inverted green button" onclick="submitTimeTable()" id="finalize">Finalize</a>
+                            <a class = "ui inverted green button disabled" onclick="submitTimeTable()" id="finalize">Finalize</a>
                         </div>
                     </div>
                 </form>
@@ -109,7 +109,7 @@
                                     </div>
                                     <div class="field" id="mt1f">
                                         <select class="ui search dropdown" id='mt1' onchange="checkConflict('#mt1')">
-                                            <option value="d"  selected>Teacher</option>
+                                            <option value="" disabled selected>Teacher</option>
                                             <option value="none">None</option>
                                             {% for i in teachers %}
                                             <option value="{{ i.username }}">{{ i.name }}</option>

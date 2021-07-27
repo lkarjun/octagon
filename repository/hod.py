@@ -56,8 +56,7 @@ def mail_(who: str, message: str, db: Session):
 
 def set_timetable(request: Schemas.TimeTable, db: Session):
     data = [request.day_1, request.day_2, request.day_3, request.day_4, request.day_5]
-    print(data)
-    return "Okay"
+    
     
     for i, d1 in enumerate(data):
         hours = models.Timetable(
@@ -80,7 +79,7 @@ def check_timetable(request: Schemas.TimeTableChecker, db: Session):
     name = db.query(models.Teachers).filter(models.Teachers.username == request.name).first()
     checker = db.query(models.Timetable).filter(and_(
                         models.Timetable.days == request.day,
-                        helper_timetable_check(request.hour) == name.name,
+                        helper_timetable_check(request.hour) == name.username,
                 )).first()
     if checker: raise HTTPException(status.HTTP_406_NOT_ACCEPTABLE, detail=f"{request.day} {request.hour} {name.name} have class in {checker.course} year {checker.year}...")
     return "No Issue..."
