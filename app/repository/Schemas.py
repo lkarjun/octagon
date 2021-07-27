@@ -77,6 +77,11 @@ class TimeTableChecker(BaseModel):
     name: str
     hour: str
 
+class TimeTableEdit(BaseModel):
+    course: str
+    year: int
+    department: str
+
 class CurrentHour(BaseModel):
     name: str
     course: str

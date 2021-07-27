@@ -3,21 +3,41 @@
 
 <div class="container">
         
-    <section id="CreateTimeTable" class="pb-5 mb-5">
+    <section id="head">
+        <div class="row">
 
-        <div class="jumbotron text-center">
-            <p class="h3 p-5" style="font-family: 'Exo', sans-serif;">Draft New Time Table</p>
+            <div class="col-md-12">
+                <div class="text-left pt-5 pb-5 pr-5 pl-3">
+                    <div class="ui buttons">
+                        <button class="ui button green"  onclick="show('#CreateTimeTable')">Draft New Time Table</button>
+                        <button class="ui button red" onclick="show('#removeTimeTable')">Remove</button>
+                        <button class="ui button green" onclick="show('#viewp')">View</button>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function show(id){
+                    $("#CreateTimeTable").hide();
+                    $("#viewp").hide();
+                    $("#removeTimeTable").hide();
+                    $(id).show();
+
+                }
+            </script>
         </div>
-
+    </section>
+        
+    <section id="CreateTimeTable" class="pb-5 mb-5" style="display: none;">
         <div class="row">
             <div class="col-md-12">
-
+                <div class="jumbotron text-left pb-4">
+                    <p class="h3" style="font-family: 'Exo', sans-serif;">Draft New Time Table</p>
+                </div>
                 <form class="ui form align-items-center" id='CourseAndYear'>
                     <div class="fields">
                         <div class="field">
                             <select class="ui search dropdown w-25" id='department' required>
                                 <option value="" disabled selected>Choose Department</option>
-                                <option value="None">None (Optional)</option>
                                 {% for i in department %}
                                 <option value="{{ i.Alias }}">{{ i.Alias }}</option>
                                 {% endfor %}
@@ -36,54 +56,11 @@
                                 <option value="4">Year 4</option>
                                 <option value="5">Year 5</option>
                             </select>
-                            <a class = "ui inverted green button disabled" onclick="submitTimeTable()" id="finalize">Finalize</a>
+                            <button type="submit" class = "ui inverted green button disabled" id="finalize">Finalize</button>
                         </div>
                     </div>
                 </form>
             </div>
-
-
-            <script>
-                function submitTimeTable(){
-                    $("#finalize").addClass("loading")
-                    var depart = $("#department").val()
-                    var course = $("#course").val()
-                    var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-                    var year = parseInt($("#year").val())
-                    var day_1 = [$("#mt1").val(), $("#mt2").val(), $("#mt3").val(), $("#mt4").val(), $("#mt5").val()]
-                    var day_2 = [$("#tt1").val(), $("#tt2").val(), $("#tt3").val(), $("#tt4").val(), $("#tt5").val()]
-                    var day_3 = [$("#wt1").val(), $("#wt2").val(), $("#wt3").val(), $("#wt4").val(), $("#wt5").val()]
-                    var day_4 = [$("#tut1").val(), $("#tut2").val(), $("#tut3").val(), $("#tut4").val(), $("#tut5").val()]
-                    var day_5 = [$("#ft1").val(), $("#ft2").val(), $("#ft3").val(), $("#ft4").val(), $("#ft5").val()]
-                    var data = JSON.stringify({"department": depart, "course": course, "year": year,
-                                            "day_1": day_1, "day_2": day_2, "day_3": day_3, "day_4": day_4,
-                                            "day_5": day_5})
-
-                    var base = window.location.origin + '/hod/CreateTimeTable';
-                    $.ajax({
-                        url: base,
-                        type: 'POST',
-                        async: true,
-                        data: data,
-                        dataType: 'json',
-                        contentType: "application/json",
-                        success: function(result){
-                                success_alert("Succesfully created new timetable for "+course+" "+year)
-                                $("#finalize").removeClass("loading")
-                            },
-                       error: function(result){
-                                $("#finalize").removeClass("loading")
-                                if(result.status == 422){
-                                    warning_alert("Please fill all necessary columns...")
-                                }
-                                else{
-                                    error_alert("Something went wrong please try to contact techinal team...")
-                                }
-                            }
-                    });
-                    
-                }
-            </script>
 
             <div class="col-md-12">
 
@@ -421,13 +398,87 @@
         </div>
     </section>
     
-    
-    <section id="ViewTimeTable">
+    <section id="removeTimeTable" style="display: none;">
+        <div class="jumbotron text-left">
+            <p class="h3 pb-4" style="font-family: 'Exo', sans-serif;">Remove Time Table</p>
+        </div>
+
+        <form class="ui form align-items-center" id="RemoveTT">
+            <div class="fields">
+                <div class="field">
+                    <select class="ui search dropdown" id="departR">
+                        <option value="" disabled selected>Choose department</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <select class="ui search dropdown" id="yearR">
+                        <option value="" disabled selected>Choose Year</option>
+                        <option value="1">Year 1</option>
+                        <option value="2">Year 2</option>
+                        <option value="3">Year 3</option>
+                        <option value="4">Year 4</option>
+                        <option value="5">Year 5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fields">
+                <div class="field">
+                    <select class="ui search dropdown" id = "courseR">
+                        <option value="" disabled selected>Choose Course</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <button type = "submit" class="button ui red" id = "RemoveBtn">Remove</button>
+                </div>
+            </div>
+        </form>
 
     </section>
 
+    <section id="viewTimeTable">
+        <div class="jumbotron text-left">
+            <p class="h3 pb-4" style="font-family: 'Exo', sans-serif;">View Time Table</p>
+        </div>
+        <form class="ui form align-items-center" id="viewTT">
+            <div class="fields">
+                <div class="field">
+                    <select class="ui search dropdown" id="departV">
+                        <option value="" disabled selected>Choose department</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <select class="ui search dropdown" id="yearV">
+                        <option value="" disabled selected>Choose Year</option>
+                        <option value="1">Year 1</option>
+                        <option value="2">Year 2</option>
+                        <option value="3">Year 3</option>
+                        <option value="4">Year 4</option>
+                        <option value="5">Year 5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fields">
+                <div class="field">
+                    <select class="ui search dropdown" id = "courseV">
+                        <option value="" disabled selected>Choose Course</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <button type = "submit" class="button ui teal" id = "ViewBtn">View</button>
+                </div>
+            </div>
+        </form>
+    </section>
 
 <script src="{{ url_for('static', path='timetable.js') }}"></script>
 <script>clone_it()</script>
+<script>
+    $('#course option').clone().appendTo('#courseR');
+    $('#year option').clone().appendTo('#yearR');
+    $('#department option').clone().appendTo('#departR');
+    $('#course option').clone().appendTo('#courseV');
+    $('#year option').clone().appendTo('#yearV');
+    $('#department option').clone().appendTo('#departV');
+</script>
 </div>
 {% endblock %}

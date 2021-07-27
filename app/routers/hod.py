@@ -60,8 +60,8 @@ async def display_timetable(course: str, year: int, db: Session = Depends(get_db
     return hod.display_timetable(course, year, db)
 
 @router.delete('/delete_timetable', status_code=status.HTTP_204_NO_CONTENT)
-async def remove_timetable(course: str, year: int, db: Session = Depends(get_db)):
-    return hod.remove_timetable(course, year, db)
+async def remove_timetable(request: Schemas.TimeTableEdit, db: Session = Depends(get_db)):
+    return hod.remove_timetable(request, db)
 
 @router.get('/CurrentHour', response_model=List[Schemas.CurrentHour], status_code=status.HTTP_202_ACCEPTED)
 async def get_current_hour_detail(department: str, day: str, hour: str, db: Session = Depends(get_db)):

@@ -100,13 +100,13 @@ def display_timetable(course: str, year: int, db: Session):
         result[day].append(i.hour_5)
     return result
 
-def remove_timetable(course: str, year: int, db: Session):
-    timetable = db.query(models.Timetable).filter(and_(models.Timetable.course == course,
-                                models.Timetable.year == year))
-
-    if not timetable:
+def remove_timetable(request: Schemas.TimeTableEdit, db: Session):
+    timetable = db.query(models.Timetable).filter(and_(models.Timetable.course == request.course,
+                                models.Timetable.year == request.year,
+                                models.Timetable.department == request.department))
+    if not timetable.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"No Timetable sets course: {course} and year: {year}") 
+            detail=f"No Timetable sets course: {request.course} and year: {request.year}") 
     timetable.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)

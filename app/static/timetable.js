@@ -100,3 +100,95 @@ function checkConflict(id){
     }
     
 }
+
+
+$("#CourseAndYear").submit((e)=>{
+    e.preventDefault()
+
+    $("#finalize").addClass("loading")
+    var depart = $("#department").val()
+    var course = $("#course").val()
+    var days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+    var year = parseInt($("#year").val())
+    var day_1 = [$("#mt1").val(), $("#mt2").val(), $("#mt3").val(), $("#mt4").val(), $("#mt5").val()]
+    var day_2 = [$("#tt1").val(), $("#tt2").val(), $("#tt3").val(), $("#tt4").val(), $("#tt5").val()]
+    var day_3 = [$("#wt1").val(), $("#wt2").val(), $("#wt3").val(), $("#wt4").val(), $("#wt5").val()]
+    var day_4 = [$("#tut1").val(), $("#tut2").val(), $("#tut3").val(), $("#tut4").val(), $("#tut5").val()]
+    var day_5 = [$("#ft1").val(), $("#ft2").val(), $("#ft3").val(), $("#ft4").val(), $("#ft5").val()]
+    var data = JSON.stringify({"department": depart, "course": course, "year": year,
+                                "day_1": day_1, "day_2": day_2, "day_3": day_3, "day_4": day_4,
+                                "day_5": day_5})
+
+    var base = window.location.origin + '/hod/CreateTimeTable';
+    $.ajax({
+            url: base,
+            type: 'POST',
+            async: true,
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                    var msg = "Succesfully created new timetable for "+course+" year"+year
+                    $("#finalize").removeClass("loading")
+                    swal({
+                        title: "Time Table Created!",
+                        text: msg,
+                        icon: "success",
+                        button: "Okay!",
+                      }).then((value) => {
+                          location.reload();
+                        });
+                    },
+             error: function(result){
+                    $("#finalize").removeClass("loading")
+                        if(result.status == 422){
+                            warning_alert("Please fill all necessary columns...")
+                        }
+                        else{
+                            error_alert("Something went wrong please try to contact techinal team...")
+                            }
+                        }
+    });
+})
+
+
+$("#RemoveTT").submit((e)=>{
+    e.preventDefault()
+    var course = $("#courseR").val()
+    var year = parseInt($("#yearR").val())
+    var depart = $("#departR").val()
+    var data = JSON.stringify({"course": course, "year": year, "department": depart})
+
+    var base = window.location.origin + '/hod/delete_timetable';
+    $.ajax({
+        url: base,
+        type: 'DELETE',
+        async: true,
+        data: data,
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(result){
+            swal({
+                    title: "Removed!",
+                    text: "Removed Time Table "+course+" year "+year,
+                    icon: "success",
+                    button: "Okay!",
+                })
+                
+        },
+        error: function(result){
+            if(result.status == 404){
+                var msg = JSON.parse(result.responseText)
+                swal({
+                        title: "Not Removed!",
+                        text: msg.detail,
+                        icon: "error",
+                        button: "Okay!",
+                    })
+            }
+            else{
+                error_alert("Something went wrong please try to call the techinal team...")
+            }
+        }
+    });
+})
