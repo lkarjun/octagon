@@ -3,7 +3,7 @@ from repository import Schemas
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status, Response
-from . import mail_it
+
 
 def create(request: Schemas.AddTeacher, db: Session):
     new_teacher = models.Teachers(

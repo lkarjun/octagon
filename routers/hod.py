@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, Depends, status
 from sqlalchemy.orm.session import Session
-from repository import hod, mail_it, Schemas
+from repository import hod, Schemas
 from database import database
 from security import oauth2
 from typing import List
