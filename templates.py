@@ -1,7 +1,7 @@
 from fastapi.templating import Jinja2Templates
 from fastapi import status
 from fastapi.responses import RedirectResponse
-from repository import admin
+from repository import admin, hod
 from database import database
 from collections import defaultdict
 
@@ -39,3 +39,16 @@ class OthersTemplates():
     
     def login_page(request):
         return templates.TemplateResponse('login.html', context={'request': request})
+
+
+class CommonTemplates():
+
+    def timetable(request):
+        db = database.SessionLocal()
+        courses = admin.get_all_course(db)
+        teachers = hod.get_techer_details(db)
+        depart = admin.get_all_departments(db)
+        db.close()
+        return templates.TemplateResponse('timeTable.html', 
+                context={'request': request, 'title': 'TimeTable', 
+                        'courses': courses, 'teachers': teachers, 'department': depart})

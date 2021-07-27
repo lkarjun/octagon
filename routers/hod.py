@@ -51,7 +51,7 @@ async def mail(who: str, message: str, db: Session = Depends(get_db)):
 async def create_time_table(request: Schemas.TimeTable, db: Session = Depends(get_db)):
     return hod.set_timetable(request, db)
 
-@router.post('/check_teacher')
+@router.post('/check_teacher', status_code=status.HTTP_202_ACCEPTED)
 async def check_teacher_allocation(request: Schemas.TimeTableChecker, db: Session = Depends(get_db)):
     return hod.check_timetable(request, db)
 

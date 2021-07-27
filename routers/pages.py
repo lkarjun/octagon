@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, Request, Depends
-from templates import OthersTemplates, AdminTemplates
+from templates import CommonTemplates, OthersTemplates, AdminTemplates
 from security import oauth2
 
 router = APIRouter(tags = ['Pages'])
@@ -23,3 +23,7 @@ def admin_portal(request: Request, user=Depends(oauth2.manager_admin)):
 @router.get('hod/workspace')
 async def workspace(request: Request):
     return {"Okay": "gotit"}
+
+@router.get('/timetable')
+async def timetable(request: Request):
+    return CommonTemplates.timetable(request)

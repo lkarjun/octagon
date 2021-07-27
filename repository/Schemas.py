@@ -62,15 +62,15 @@ class ShowTeacher(AddTeacher):
         orm_mode = True
 
 class TimeTable(BaseModel):
-    department: Optional[str]
+    department: str
     course: str
     days: List[str] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
     year: int
-    day_1: Optional[List[str]]
-    day_2: Optional[List[str]]
-    day_3: Optional[List[str]]
-    day_4: Optional[List[str]]
-    day_5: Optional[List[str]]
+    day_1: List[str]
+    day_2: List[str]
+    day_3: List[str]
+    day_4: List[str]
+    day_5: List[str]
 
 class TimeTableChecker(BaseModel):
     day: str 

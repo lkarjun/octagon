@@ -56,6 +56,9 @@ def mail_(who: str, message: str, db: Session):
 
 def set_timetable(request: Schemas.TimeTable, db: Session):
     data = [request.day_1, request.day_2, request.day_3, request.day_4, request.day_5]
+    print(data)
+    return "Okay"
+    
     for i, d1 in enumerate(data):
         hours = models.Timetable(
                     department = request.department, 
@@ -73,18 +76,15 @@ def set_timetable(request: Schemas.TimeTable, db: Session):
         db.refresh(hours)
     return 'okay'
 
-def check_timetable(request: Schemas.TimeTableChecker, db: Session, conflict = True):
-    print(helper_timetable_check(request.hour))
+def check_timetable(request: Schemas.TimeTableChecker, db: Session):
+    name = db.query(models.Teachers).filter(models.Teachers.username == request.name).first()
     checker = db.query(models.Timetable).filter(and_(
                         models.Timetable.days == request.day,
-                        helper_timetable_check(request.hour) == request.name
-                )).all()
-
-    if checker and conflict:
-        name = [conflict_name(teacher, request.hour) for teacher in checker]
-        print(name)
-        return name
-    else: print('NO')
+                        helper_timetable_check(request.hour) == name.name,
+                )).first()
+    if checker: raise HTTPException(status.HTTP_406_NOT_ACCEPTABLE, detail=f"{request.day} {request.hour} {name.name} have class in {checker.course} year {checker.year}...")
+    return "No Issue..."
+    
 
 def display_timetable(course: str, year: int, db: Session):
     timetable = db.query(models.Timetable).filter(and_(models.Timetable.year == year,
