@@ -5,3 +5,4 @@ Images
 *.csv
 mail_it.py
 text.af
+database.db
