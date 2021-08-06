@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Depends, status
 from sqlalchemy.orm.session import Session
 from repository import hod, Schemas
 from database import database
-from security import oauth2
+from templates import HodTemplates
 from typing import List
 
 router = APIRouter(tags = ['Head Of Department'], prefix='/hod')
@@ -11,14 +11,21 @@ get_db = database.get_db
 
 
 # Teacher Related
+@router.get('/timetable')
+async def timetable(request: Request):
+    return HodTemplates.timetable(request)
+
+@router.get("/edit-teacher")
+async def appoint_teacher(request: Request):
+    return HodTemplates.appoint_teacher(request)
 
 @router.post('/Addteacher', status_code=status.HTTP_201_CREATED, response_model=Schemas.ShowTeacher)
 async def add_teacher(request: Schemas.AddTeacher, db: Session = Depends(get_db)):
     return hod.create(request, db)
 
-@router.delete('/Deleteteacher/{name}/{email}', status_code=status.HTTP_204_NO_CONTENT)
-async def delete_teacher(name: str, email: str, db: Session = Depends(get_db)):
-    return hod.delete(name, email, db)
+@router.delete('/Deleteteacher', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_teacher(request: Schemas.DeleteTeacher, db: Session = Depends(get_db)):
+    return hod.delete(request, db)
 
 @router.put('/Updateteacher', status_code=status.HTTP_202_ACCEPTED)
 async def update_teacher(email: str, request: Schemas.AddTeacher, db: Session = Depends(get_db)):
@@ -66,3 +73,7 @@ async def remove_timetable(request: Schemas.TimeTableEdit, db: Session = Depends
 @router.get('/CurrentHour', response_model=List[Schemas.CurrentHour], status_code=status.HTTP_202_ACCEPTED)
 async def get_current_hour_detail(department: str, day: str, hour: str, db: Session = Depends(get_db)):
     return hod.current_hour_detail(department, day, hour, db)
+
+@router.get('/uoc-notification')
+async def uoc_notificaions(request: Request):
+    return HodTemplates.uoc_notification(request)

@@ -13,7 +13,7 @@ class AdminTemplates():
 
     def admin_login_page(request, verify = 'none'):
         return templates.TemplateResponse('admin_login.html', 
-                context={'request': request, 'title': 'Admin Login', 'verify': verify})
+                context={'request': request, 'title': 'ADMIN LOGIN', 'verify': verify})
 
     def login_success(request):
         courses_with_department = defaultdict(lambda: [])
@@ -25,7 +25,9 @@ class AdminTemplates():
         for i in course: courses_with_department[i.Department].append(i.Course_name_alias)
         db.close()
         return templates.TemplateResponse('adminPortal.html', 
-                    context={'request': request, 'title': 'Admin Portal', 'hods': hods, 'dep': dep, 'course': course, 'cw': courses_with_department})
+                    context={'request': request, 'title': 'ADMIN PORTAL',
+                            'hods': hods, 'dep': dep, 'course': course, 
+                            'cw': courses_with_department})
 
     def login_success_redirect():
         return RedirectResponse(url = '/admin', status_code=status.HTTP_302_FOUND)
@@ -41,7 +43,7 @@ class OthersTemplates():
         return templates.TemplateResponse('login.html', context={'request': request})
 
 
-class CommonTemplates():
+class HodTemplates():
 
     def timetable(request):
         db = database.SessionLocal()
@@ -50,5 +52,14 @@ class CommonTemplates():
         depart = admin.get_all_departments(db)
         db.close()
         return templates.TemplateResponse('timeTable.html', 
-                context={'request': request, 'title': 'TimeTable', 
+                context={'request': request, 'title': 'TIME TABLE', 
                         'courses': courses, 'teachers': teachers, 'department': depart})
+
+    def appoint_teacher(request):
+        return templates.TemplateResponse("appointTeacher.html",
+                context={'request': request, "title": "APPOINT TEACHERS"})
+
+    def uoc_notification(request):
+        notifications = hod.uoc.get_notifications()
+        return templates.TemplateResponse("uocNotification.html",
+                context={"request": request, "title": "UOC NOTIFICATION", "notfy": notifications})
