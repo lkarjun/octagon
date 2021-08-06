@@ -63,3 +63,7 @@ class HodTemplates():
         notifications = hod.uoc.get_notifications()
         return templates.TemplateResponse("uocNotification.html",
                 context={"request": request, "title": "UOC NOTIFICATION", "notfy": notifications})
+    
+    def attendenceDataView(request):
+        return templates.TemplateResponse("attendenceDataView.html",
+                context={"request": request, "title": "Attendence Data"})
