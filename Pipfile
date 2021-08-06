@@ -20,6 +20,7 @@ fastapi-login = "*"
 pandas = "*"
 bs4 = "*"
 pydantic = "*"
+urllib3 = "*"
 
 [dev-packages]
 
