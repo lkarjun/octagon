@@ -11,14 +11,14 @@
                     <div class="ui buttons">
                         <button class="ui button green"  onclick="show('#CreateTimeTable')">Draft New Time Table</button>
                         <button class="ui button red" onclick="show('#removeTimeTable')">Remove</button>
-                        <button class="ui button green" onclick="show('#viewp')">View</button>
+                        <button class="ui button green" onclick="show('#viewTimeTable')">View</button>
                     </div>
                 </div>
             </div>
             <script>
                 function show(id){
                     $("#CreateTimeTable").hide();
-                    $("#viewp").hide();
+                    $("#viewTimeTable").hide();
                     $("#removeTimeTable").hide();
                     $(id).show();
 
@@ -406,12 +406,12 @@
         <form class="ui form align-items-center" id="RemoveTT">
             <div class="fields">
                 <div class="field">
-                    <select class="ui search dropdown" id="departR">
+                    <select required class="ui search dropdown" id="departR">
                         <option value="" disabled selected>Choose department</option>
                     </select>
                 </div>
                 <div class="field">
-                    <select class="ui search dropdown" id="yearR">
+                    <select required class="ui search dropdown" id="yearR">
                         <option value="" disabled selected>Choose Year</option>
                         <option value="1">Year 1</option>
                         <option value="2">Year 2</option>
@@ -423,7 +423,7 @@
             </div>
             <div class="fields">
                 <div class="field">
-                    <select class="ui search dropdown" id = "courseR">
+                    <select required class="ui search dropdown" id = "courseR">
                         <option value="" disabled selected>Choose Course</option>
                     </select>
                 </div>
