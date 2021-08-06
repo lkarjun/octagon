@@ -85,10 +85,11 @@ def check_timetable(request: Schemas.TimeTableChecker, db: Session):
     return "No Issue..."
     
 
-def display_timetable(course: str, year: int, db: Session):
-    timetable = db.query(models.Timetable).filter(and_(models.Timetable.year == year,
-                                models.Timetable.course == course))
-    if not timetable.first(): return 'No'
+def display_timetable(request: Schemas.TimeTableEdit, db: Session):
+    timetable = db.query(models.Timetable).filter(and_(models.Timetable.year == request.year,
+                                models.Timetable.course == request.course))
+    if not timetable.first(): raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No Timetable sets course: {request.course} and year: {request.year}")
 
     result = {'Monday': [], 'Tuesday': [], 'Wednesday': [], 'Thursday': [], 'Friday': []}
 

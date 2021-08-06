@@ -192,3 +192,69 @@ $("#RemoveTT").submit((e)=>{
         }
     });
 })
+
+
+function setTimeTable(data, result){
+    var Monday = result['Monday']
+    var Tuesday = result['Tuesday']
+    var Wednesday = result['Wednesday']
+    var Thursday = result['Thursday']
+    var Friday = result['Friday']
+    $("#viewTTData").show()
+    $("#headTimeTableCourse").html(data)
+    // monday
+    $("#vm1").html(Monday[0])
+    $("#vm2").html(Monday[1])
+    $("#vm3").html(Monday[2])
+    $("#vm4").html(Monday[3])
+    $("#vm5").html(Monday[4])
+    // tuesday
+    $("#vt1").html(Tuesday[0])
+    $("#vt2").html(Tuesday[1])
+    $("#vt3").html(Tuesday[2])
+    $("#vt4").html(Tuesday[3])
+    $("#vt5").html(Tuesday[4])
+    // wednesday
+    $("#vw1").html(Wednesday[0])
+    $("#vw2").html(Wednesday[1])
+    $("#vw3").html(Wednesday[2])
+    $("#vw4").html(Wednesday[3])
+    $("#vw5").html(Wednesday[4])
+    // thursday
+    $("#vth1").html(Thursday[0])
+    $("#vth2").html(Thursday[1])
+    $("#vth3").html(Thursday[2])
+    $("#vth4").html(Thursday[3])
+    $("#vth5").html(Thursday[4])
+    // tuesday
+    $("#vf1").html(Friday[0])
+    $("#vf2").html(Friday[1])
+    $("#vf3").html(Friday[2])
+    $("#vf4").html(Friday[3])
+    $("#vf5").html(Friday[4])
+}
+
+$("#viewTT").submit((e)=>{
+    e.preventDefault()
+    var course = $("#courseV").val()
+    var year = parseInt($("#yearV").val())
+    var depart = $("#departV").val()
+    var data = JSON.stringify({"course": course, "year": year, "department": depart})
+
+    var base = window.location.origin + '/hod/display_timetable';
+    $.ajax({
+        url: base,
+        type: 'POST',
+        async: true,
+        data: data,
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(result){
+            var data = course+" "+year+" year"
+            setTimeTable(data, result)
+        },
+    error: function(result){
+        error_alert("Something went wrong please try to call the techinal team...")
+        }
+    });
+})

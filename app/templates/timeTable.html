@@ -27,7 +27,7 @@
         </div>
     </section>
         
-    <section id="CreateTimeTable" class="pb-5 mb-5" style="display: none;">
+    <section id="CreateTimeTable" class="pb-5 mb-5" style="display: block;">
         <div class="row">
             <div class="col-md-12">
                 <div class="jumbotron text-left pb-4">
@@ -435,7 +435,7 @@
 
     </section>
 
-    <section id="viewTimeTable">
+    <section id="viewTimeTable" style="display: none;">
         <div class="jumbotron text-left">
             <p class="h3 pb-4" style="font-family: 'Exo', sans-serif;">View Time Table</p>
         </div>
@@ -449,11 +449,7 @@
                 <div class="field">
                     <select class="ui search dropdown" id="yearV">
                         <option value="" disabled selected>Choose Year</option>
-                        <option value="1">Year 1</option>
-                        <option value="2">Year 2</option>
-                        <option value="3">Year 3</option>
-                        <option value="4">Year 4</option>
-                        <option value="5">Year 5</option>
+                        
                     </select>
                 </div>
             </div>
@@ -468,6 +464,74 @@
                 </div>
             </div>
         </form>
+        <div class="row pb-4 " id = "viewTTData" style="display: none;">
+            <div class="col-md-12">
+                <div class="jumbotron text-center">
+                    <p class="h3 pb-4" style="font-family: 'Exo', sans-serif;" id = 'headTimeTableCourse'></p>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                      <thead>
+                        <tr>
+                          <th scope="col" class="font-weight-bold">Days</th>
+                          <th scope="col" class="font-weight-bold">Hour 1</th>
+                          <th scope="col" class="font-weight-bold">Hour 2</th>
+                          <th scope='col' class="font-weight-bold">Hour 3</th>
+                          <th scope='col' class="font-weight-bold">Hour 4</th>
+                          <th scope='col' class="font-weight-bold">Hour 5</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                            <th class="font-weight-bold">Monday</th>
+                            <td id='vm1'>None</td>
+                            <td id='vm2'>None</td>
+                            <td id='vm3'>None</td>
+                            <td id='vm4'>None</td>
+                            <td id='vm5'>None</td>
+                        </tr>
+
+                        <tr>
+                            <th class="font-weight-bold">Tuesday</th>
+                            <td id='vt1'>None</td>
+                            <td id='vt2'>None</td>
+                            <td id='vt3'>None</td>
+                            <td id='vt4'>None</td>
+                            <td id='vt5'>None</td>
+                        </tr>
+
+                        <tr>
+                            <th class="font-weight-bold">Wednesday</th>
+                            <td id='vw1'>None</td>
+                            <td id='vw2'>None</td>
+                            <td id='vw3'>None</td>
+                            <td id='vw4'>None</td>
+                            <td id='vw5'>None</td>
+                        </tr>
+
+                        <tr>
+                            <th class="font-weight-bold">Thursday</th>
+                            <td id='vth1'>None</td>
+                            <td id='vth2'>None</td>
+                            <td id='vth3'>None</td>
+                            <td id='vth4'>None</td>
+                            <td id='vth5'>None</td>
+                        </tr>
+
+                        <tr>
+                            <th class="font-weight-bold">Friday</th>
+                            <td id='vf1'>None</td>
+                            <td id='vf2'>None</td>
+                            <td id='vf3'>None</td>
+                            <td id='vf4'>None</td>
+                            <td id='vf5'>None</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </section>
 
 <script src="{{ url_for('static', path='timetable.js') }}"></script>

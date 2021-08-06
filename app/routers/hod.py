@@ -55,9 +55,9 @@ async def create_time_table(request: Schemas.TimeTable, db: Session = Depends(ge
 async def check_teacher_allocation(request: Schemas.TimeTableChecker, db: Session = Depends(get_db)):
     return hod.check_timetable(request, db)
 
-@router.get('/display_timetable')
-async def display_timetable(course: str, year: int, db: Session = Depends(get_db)):
-    return hod.display_timetable(course, year, db)
+@router.post('/display_timetable')
+async def display_timetable(request: Schemas.TimeTableEdit, db: Session = Depends(get_db)):
+    return hod.display_timetable(request, db)
 
 @router.delete('/delete_timetable', status_code=status.HTTP_204_NO_CONTENT)
 async def remove_timetable(request: Schemas.TimeTableEdit, db: Session = Depends(get_db)):
