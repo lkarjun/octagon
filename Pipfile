@@ -18,6 +18,9 @@ python-jose = {extras = ["cryptography"], version = "*"}
 python-multipart = "*"
 fastapi-login = "*"
 pandas = "*"
+bs4 = "*"
+pydantic = "*"
+urllib3 = "*"
 
 [dev-packages]
 

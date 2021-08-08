@@ -61,6 +61,10 @@ class ShowTeacher(AddTeacher):
     class Config():
         orm_mode = True
 
+class DeleteTeacher(BaseModel):
+    name: str
+    user_name: str
+
 class TimeTable(BaseModel):
     department: str
     course: str

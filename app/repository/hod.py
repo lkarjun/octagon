@@ -1,9 +1,8 @@
 from database import models
-from repository import Schemas
+from repository import Schemas,uoc
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status, Response
-
 
 def create(request: Schemas.AddTeacher, db: Session):
     new_teacher = models.Teachers(
@@ -16,11 +15,11 @@ def create(request: Schemas.AddTeacher, db: Session):
     db.refresh(new_teacher)
     return new_teacher
 
-def delete(name: str, email: str, db: Session):
-    teacher = db.query(models.Teachers).filter(and_(models.Teachers.name == name,
-                                models.Teachers.email == email))
+def delete(request: Schemas.DeleteTeacher, db: Session):
+    teacher = db.query(models.Teachers).filter(and_(models.Teachers.name == request.name,
+                                models.Teachers.email == request.username))
     if not teacher.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {name} and email: {email}") 
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User in database") 
 
     teacher.delete(synchronize_session=False)
     db.commit()
@@ -126,7 +125,6 @@ def current_hour_detail(department: str, day: str, hour: str, db: Session):
                                    hour=hour) 
                         for i in current_hour]
     return detail
-
 
 #helper function
 def helper_timetable_check(hour: str):

@@ -1,0 +1,185 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+{% extends "commonLayout.html" %}
+{% block content %}
+<div class="container">
+    <!-- <section id="head">
+        <div class="row">
+    
+            <div class="col-md-12">
+                <div class="text-center pt-5 pb-5 pr-5 pl-3">
+                    <div class="ui buttons">
+                        <button class="ui button teal" onclick="show('#displayTeacher')">Display</button>
+                        <button class="ui button blue"  onclick="show('#Addteacher')">Appoint New Teacher</button>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function show(id){
+                    $("#Addteacher").hide();
+                    $("#displayTeacher").hide();
+                    $(id).show();
+    
+                }
+            </script>
+        </div>
+    </section> -->
+    
+    <div class="jumbotron text-left pt-md-5">
+        <p class="h1 p-4" style="font-family: 'Exo', sans-serif;">Attendence Analysis</p>
+    </div>
+
+
+    <section class="pt-md-5 mt-md-3">
+
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <div>
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+                <div class="d-flex justify-content-center">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="p-5">
+                                <div class="jumbotron text-left">
+                                    <p class="h3 pb-4 pt-4" style="font-family: 'Exo', sans-serif;">Select Class</p>
+                                </div>
+
+                                <form class="ui form align-items-center">
+                                    <div class="fields">
+                                        <div class="field">
+                                            <label>Course</label>
+                                            <select required class="ui search dropdown" id='course'>
+                                              <option value="none">None</option>
+                                            </select>
+                                        </div>
+                            
+                                        <div class="field">
+                                            <label>Year</label>
+                                            <select required class="ui search dropdown" id='year'>
+                                              <option value="none">None</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="field pt-md-0 pt-3 pt-sm-3">
+                                        <button class="ui button blue" type="submit">Get Report</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- <div class="jumbotron text-left">
+        <p class="h3 pb-4 pt-4" style="font-family: 'Exo', sans-serif;">Select Class</p>
+    </div>
+
+    <form class="ui form align-items-center">
+        <div class="fields">
+            <div class="field">
+                <label>Course</label>
+                <select required class="ui search dropdown" id='course'>
+                  <option value="none">None</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Year</label>
+                <select required class="ui search dropdown" id='year'>
+                  <option value="none">None</option>
+                </select>
+            </div>
+
+            <div class="field pt-md-4 mt-md-1">
+                <button class="ui button teal" id='upload_button' type="submit">Submit</button>
+            </div>
+        </div>
+    </form> -->
+
+    <section id="attendOverview">
+
+        <div class="jumbotron text-center">
+            <p class="h3 pt-5 mt-5" style="font-family: 'Exo', sans-serif;">Bca Year 1 Attendence Overview</p>
+        </div>
+
+        <!--Take Attendence-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center pt-5 pb-5">
+                    <div class="ui buttons">
+                        <button class="ui button blue">Take Today's Attendence</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!---->
+
+    </section>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="{{ url_for('static', path='attendence.js') }}"></script>
+<script>
+
+var xValues = ["Working Data", "Holidays"]
+var yValues = [50, 30]
+var title = ""
+plot_pie(xValues, yValues, title)
+
+</script>
+{% endblock %}
+
+<script>
+    function plot_pie(xValues, yValues, title){
+    
+    var barColors = ["#b91d47", "#00aba9"];
+    var type = "pie"
+    var data = {}
+    new Chart("myChart", {
+        type: "pie",
+        data: {
+            labels: xValues,
+            datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+            }]
+        },
+    options: {
+        title: {
+                display: true,
+                text: title
+            }
+        }
+    })
+
+}
+</script>

@@ -1,0 +1,115 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+<div class="container">
+  <section id="head">
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="text-center pt-5 pb-5 pr-5 pl-3">
+                <div class="ui buttons">
+                    <button class="ui button teal" onclick="show('#displayTeacher')">Display</button>
+                    <button class="ui button blue"  onclick="show('#Addteacher')">Appoint New Teacher</button>
+                </div>
+            </div>
+        </div>
+        <script>
+            function show(id){
+                $("#Addteacher").hide();
+                $("#displayTeacher").hide();
+                $(id).show();
+
+            }
+        </script>
+    </div>
+  </section>
+  
+  <section id='displayTeacher'style="display: display;">
+    
+    <div class="jumbotron text-left">
+      <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Teacher's Details</p>
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th scope="col" class="font-weight-bold">Name</th>
+            <th scope="col" class="font-weight-bold">Email</th>
+            <th scope='col' class="font-weight-bold">Phone No:</th>
+            <th scope="col" class="font-weight-bold">User Name</th>
+            <td scope="col" class="font-weight-bold">Remove Teacher</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="font-weight-bold">None</th>
+            <td>None</td>
+            <td>None</td>
+            <td>None</td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm px-3">
+                <i class="x icon"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+  </section>
+  
+  <section id="Addteacher" style="display: none;">
+    <div class="row">
+      <div class="jumbotron text-left">
+        <p class="h1 pb-md-5 pb-5" style="font-family: 'Exo', sans-serif;">Appoint New Teacher</p>
+      </div>
+
+      <div class="col-md-8">
+          <form class="ui form align-items-center" id='Appointment_form'>
+            <div class="fields">
+              <div class="field">
+                <label>Name</label>
+                <input id='name' required type="text" placeholder="Name">
+              </div>
+              <div class="field">
+                <label>Email</label>
+                <input id='email' required type="text" placeholder="Email">
+              </div>
+              <div class="field">
+                <label>User Name</label>
+                <input id='username' required type="text" placeholder="User Name">
+              </div>
+              <div class="field">
+                <label>Phone Number</label>
+                <input id='number' required type="text" placeholder="Phone Number">
+              </div>
+            </div>
+            <div class="fields">
+              <div class="field">
+                <label>Verification Image 1
+                <input id='vimage1' required type="file" accept="image/*"capture="camera"></label>
+              </div>
+              
+              <div class="field">
+                <label>Verification Image 2
+                  <input id='vimage2' required type="file" accept="image/*"capture="camera">
+                </label>
+              </div>
+
+            </div>
+            <div class="fields">
+              <div class="field pb-2 pb-md-0">
+                <label>Verification Image 3
+                  <input id='vimage3' required type="file" accept="image/*"capture="camera">
+                </label>
+              </div>
+            </div>
+            <button class="ui button green" id='upload_button' type="submit">Submit</button>
+            <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+          </form>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
