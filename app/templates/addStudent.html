@@ -29,7 +29,7 @@
     
     <section id="New" class="p-md-5 m-md-5 pb-5 pt-5" style="display: block;">
         
-        <form class="ui form">
+        <form class="ui form" id="NewStudent">
             <h3 class="ui dividing header">New Student Details</h3>
     
             <div class="three fields">
@@ -89,7 +89,7 @@
             <div class="ui buttons">
                 <button class="ui button green" type="submit">Submit</button>
                 <div class="or"></div>
-                <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+                <div class="ui button red" onclick='$("#NewStudent")[0].reset();'>clear</div>
             </div>
 
            
@@ -100,7 +100,7 @@
 
     <section id="Edit" class="p-md-5 m-md-5 pb-5 pt-5" style="display: none;">
 
-        <form class="ui form pb-md-5 pb-5">
+        <form class="ui form pb-md-5 pb-5" id="editVerify">
             <h3 class="ui dividing header">Verify First</h3>
             <div class="four fields">
 
@@ -135,11 +135,11 @@
             <div class="ui buttons">
                 <button class="ui button green" type="submit">Verify</button>
                 <div class="or"></div>
-                <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+                <div class="ui button red" onclick='$("#editVerify")[0].reset();'>clear</div>
             </div>
         </form>
         
-        <form class="ui form">
+        <form class="ui form" id="editstudent">
             <h3 class="ui dividing header">Edit Student Details</h3>
     
             <div class="three fields">
@@ -197,9 +197,9 @@
             </div>
 
             <div class="ui buttons">
-                <button class="ui button green" type="submit">Submit</button>
+                <button class="ui button green disabled" type="submit">Submit</button>
                 <div class="or"></div>
-                <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+                <div class="ui button red disabled" onclick='$("#editstudent")[0].reset();'>clear</div>
             </div>
 
            
@@ -210,7 +210,7 @@
 
     <section id="Remove" class="p-md-5 m-md-5 pb-5 pt-5" style="display: none;">
         
-        <form class="ui form pb-md-5 pb-5">
+        <form class="ui form pb-md-5 pb-5" id="removeStudent">
             <h3 class="ui dividing header">Remove Student</h3>
             <div class="four fields">
 
@@ -245,7 +245,7 @@
             <div class="ui buttons">
                 <button class="ui button orange" type="submit">Remove</button>
                 <div class="or"></div>
-                <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+                <div class="ui button red" onclick='$("#removeStudent")[0].reset();'>clear</div>
             </div>
         </form>
 
