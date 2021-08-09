@@ -1,0 +1,299 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+
+<div class="container">
+
+    <section id="head">
+        <div class="row">
+    
+            <div class="col-md-12">
+                <div class="text-center pt-5 pr-5 pl-3">
+                    <div class="ui buttons">
+                        <button class="ui button teal" onclick="show('#New')">New</button>
+                        <button class="ui button blue"  onclick="show('#Edit')">Edit</button>
+                        <button class="ui button red"  onclick="show('#Remove')">Remove</button>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function show(id){
+                    $("#New").hide();
+                    $("#Edit").hide();
+                    $("#Remove").hide();
+                    $(id).show();
+    
+                }
+            </script>
+        </div>
+    </section>
+    
+    <section id="New" class="p-md-5 m-md-5 pb-5 pt-5" style="display: block;">
+        
+        <form class="ui form">
+            <h3 class="ui dividing header">New Student Details</h3>
+    
+            <div class="three fields">
+            
+                <div class="field">
+                    <input type="text" name="id" placeholder="Unique Id">
+                </div>
+    
+                <div class="field">
+                    <input type="text" name="name" placeholder="Full Name">
+                </div>
+    
+                <div class="field">
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+    
+            </div>
+    
+            <div class="three fields">
+    
+                <div class="field">
+                    <input type="text" name="pname" placeholder="Parent Name">
+                </div>
+    
+                <div class="field">
+                    <input type='text' name='pnumber' placeholder="Parent Phone Number">
+                </div>
+                
+                <div class="field">
+                    <input type='text' name='snumber' placeholder="Phone Number 2">
+                </div>
+            
+            </div>
+        
+            <div class="two fields">
+                
+                <div class="field">
+                    <label >Choose Course</label>
+                    <select class="ui dropdown">
+                        <option value="none" selected>None</option>
+                    </select>
+                </div>
+    
+                <div class="field">
+                    <label>Choose Year</label>
+                    <select class="ui dropdown">
+                        <option value="1" selected>Year 1</option>
+                        <option value="2">Year 2</option>
+                        <option value="3">Year 3</option>
+                        <option value="4">Year 4</option>
+                        <option value="5">Year 5</option>
+                    </select>
+                </div>
+    
+            </div>
+
+            <div class="ui buttons">
+                <button class="ui button green" type="submit">Submit</button>
+                <div class="or"></div>
+                <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+            </div>
+
+           
+    
+        </form>
+
+    </section>
+
+    <section id="Edit" class="p-md-5 m-md-5 pb-5 pt-5" style="display: none;">
+
+        <form class="ui form pb-md-5 pb-5">
+            <h3 class="ui dividing header">Verify First</h3>
+            <div class="four fields">
+
+                <div class="field">
+                    <label >Unique Id</label>
+                    <input type="text" name="id" placeholder="Unique Id">
+                </div>
+
+                <div class="field">
+                    <label >Name</label>
+                    <input type="text" name="id" placeholder="Name">
+                </div>
+
+                <div class="field">
+                    <label >Choose Course</label>
+                    <select class="ui dropdown">
+                        <option value="none" selected>None</option>
+                    </select>
+                </div>
+    
+                <div class="field">
+                    <label>Choose Year</label>
+                    <select class="ui dropdown">
+                        <option value="1" selected>Year 1</option>
+                        <option value="2">Year 2</option>
+                        <option value="3">Year 3</option>
+                        <option value="4">Year 4</option>
+                        <option value="5">Year 5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ui buttons">
+                <button class="ui button green" type="submit">Verify</button>
+                <div class="or"></div>
+                <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+            </div>
+        </form>
+        
+        <form class="ui form">
+            <h3 class="ui dividing header">Edit Student Details</h3>
+    
+            <div class="three fields">
+            
+                <div class="field">
+                    <input type="text" name="id" placeholder="Unique Id">
+                </div>
+    
+                <div class="field">
+                    <input type="text" name="name" placeholder="Full Name">
+                </div>
+    
+                <div class="field">
+                    <input type="email" name="email" placeholder="Email">
+                </div>
+    
+            </div>
+    
+            <div class="three fields">
+    
+                <div class="field">
+                    <input type="text" name="pname" placeholder="Parent Name">
+                </div>
+    
+                <div class="field">
+                    <input type='text' name='pnumber' placeholder="Parent Phone Number">
+                </div>
+                
+                <div class="field">
+                    <input type='text' name='snumber' placeholder="Phone Number 2">
+                </div>
+            
+            </div>
+        
+            <div class="two fields">
+                
+                <div class="field">
+                    <label >Choose Course</label>
+                    <select class="ui dropdown">
+                        <option value="none" selected>None</option>
+                    </select>
+                </div>
+    
+                <div class="field">
+                    <label>Choose Year</label>
+                    <select class="ui dropdown">
+                        <option value="1" selected>Year 1</option>
+                        <option value="2">Year 2</option>
+                        <option value="3">Year 3</option>
+                        <option value="4">Year 4</option>
+                        <option value="5">Year 5</option>
+                    </select>
+                </div>
+    
+            </div>
+
+            <div class="ui buttons">
+                <button class="ui button green" type="submit">Submit</button>
+                <div class="or"></div>
+                <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+            </div>
+
+           
+    
+        </form>
+
+    </section>
+
+    <section id="Remove" class="p-md-5 m-md-5 pb-5 pt-5" style="display: none;">
+        
+        <form class="ui form pb-md-5 pb-5">
+            <h3 class="ui dividing header">Remove Student</h3>
+            <div class="four fields">
+
+                <div class="field">
+                    <label >Unique Id</label>
+                    <input type="text" name="id" placeholder="Unique Id">
+                </div>
+
+                <div class="field">
+                    <label>Full Name</label>
+                    <input type="text" name="id" placeholder="Name">
+                </div>
+
+                <div class="field">
+                    <label >Choose Course</label>
+                    <select class="ui dropdown">
+                        <option value="none" selected>None</option>
+                    </select>
+                </div>
+    
+                <div class="field">
+                    <label>Choose Year</label>
+                    <select class="ui dropdown">
+                        <option value="1" selected>Year 1</option>
+                        <option value="2">Year 2</option>
+                        <option value="3">Year 3</option>
+                        <option value="4">Year 4</option>
+                        <option value="5">Year 5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ui buttons">
+                <button class="ui button orange" type="submit">Remove</button>
+                <div class="or"></div>
+                <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+            </div>
+        </form>
+
+        <!-- <section id="remove-students" class="pb-md-5 pb-5">
+
+            <form class="ui form pb-md-5 pb-5">
+                <h3 class="ui dividing header">Remove Entire Batch</h3>
+                <div class="four fields">
+    
+                    <div class="field">
+                        <label >Unique Id</label>
+                        <input type="text" name="id" placeholder="Unique Id">
+                    </div>
+    
+                    <div class="field">
+                        <label>Full Name</label>
+                        <input type="text" name="id" placeholder="Name">
+                    </div>
+    
+                    <div class="field">
+                        <label >Choose Course</label>
+                        <select class="ui dropdown">
+                            <option value="none" selected>None</option>
+                        </select>
+                    </div>
+        
+                    <div class="field">
+                        <label>Choose Year</label>
+                        <select class="ui dropdown">
+                            <option value="1" selected>Year 1</option>
+                            <option value="2">Year 2</option>
+                            <option value="3">Year 3</option>
+                            <option value="4">Year 4</option>
+                            <option value="5">Year 5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="ui buttons">
+                    <button class="ui button orange" type="submit">Remove</button>
+                    <div class="or"></div>
+                    <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+                </div>
+            </form>
+
+        </section> -->
+
+    </section>
+
+</div>
+
+{% endblock %}
