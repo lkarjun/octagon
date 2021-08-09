@@ -23,7 +23,7 @@
     </div>
   </section>
   
-  <section id='displayTeacher'style="display: display;">
+  <section id='displayTeacher'style="display: block;">
     
     <div class="jumbotron text-left">
       <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Teacher's Details</p>
@@ -58,8 +58,65 @@
     
   </section>
   
-  <section id="Addteacher" style="display: none;">
-    <div class="row">
+  <section id="Addteacher" style="display: none;" class="pb-5">
+
+    <form class="ui form">
+      <h2 class="ui dividing header" style="font-family: 'Exo', sans-serif;">Appoint New Teacher</h2>
+
+      <div class="fields four">
+          <div class="field">
+            <label>Name</label>
+            <input id='name' required type="text" placeholder="eg: Rishal">
+          </div>
+          
+          <div class="field">
+            <label>Email</label>
+            <input id='email' required type="text" placeholder="eg: Rishal@gmail.com">
+          </div>
+          
+          <div class="field">
+            <label>User Name</label>
+            <input id='username' required type="text" placeholder="eg: rishal_cs">
+          </div>
+        
+          <div class="field">
+            <label>Phone Number</label>
+            <input id='number' required type="text" placeholder="9934223333">
+          </div>
+      
+      </div>
+
+      <div class="fields three">
+        
+        <div class="field">
+          <label>Verification Image 1
+          <input id='vimage1' required type="file" accept="image/*"capture="camera"></label>
+        </div>
+          
+        <div class="field">
+          <label>Verification Image 2
+            <input id='vimage2' required type="file" accept="image/*"capture="camera">
+          </label>
+        </div>
+
+        <div class="field">
+          <label>Verification Image 3
+            <input id='vimage3' required type="file" accept="image/*"capture="camera">
+          </label>
+        </div>
+
+      </div>
+
+      <div class="ui buttons">
+        <button class="ui button green" type="submit">Appoint</button>
+        <div class="or"></div>
+        <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+      </div>
+
+    </form>
+
+
+    <!-- <div class="row">
       <div class="jumbotron text-left">
         <p class="h1 pb-md-5 pb-5" style="font-family: 'Exo', sans-serif;">Appoint New Teacher</p>
       </div>
@@ -108,7 +165,7 @@
             <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
           </form>
       </div>
-    </div>
+    </div> -->
   </section>
 
 </div>
