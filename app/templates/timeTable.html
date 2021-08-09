@@ -8,10 +8,10 @@
 
             <div class="col-md-12">
                 <div class="text-center pt-5 pb-5 pr-5 pl-3">
-                    <div class="ui buttons">
-                        <button class="ui button green"  onclick="show('#CreateTimeTable')">Draft New Time Table</button>
+                    <div class="ui buttons three">
+                        <button class="ui button teal"  onclick="show('#CreateTimeTable')">Draft New</button>
+                        <button class="ui button blue" onclick="show('#viewTimeTable')">View</button>
                         <button class="ui button red" onclick="show('#removeTimeTable')">Remove</button>
-                        <button class="ui button green" onclick="show('#viewTimeTable')">View</button>
                     </div>
                 </div>
             </div>
@@ -34,21 +34,27 @@
                     <p class="h3" style="font-family: 'Exo', sans-serif;">Draft New Time Table</p>
                 </div>
                 <form class="ui form align-items-center" id='CourseAndYear'>
-                    <div class="fields">
+                    <div class="fields three">
                         <div class="field">
-                            <select class="ui search dropdown w-25" id='department' required>
+                            <select class="ui search dropdown" id='department' required>
                                 <option value="" disabled selected>Choose Department</option>
                                 {% for i in department %}
                                 <option value="{{ i.Alias }}">{{ i.Alias }}</option>
                                 {% endfor %}
                             </select>
-                            <select class="ui search dropdown w-25" id='course' required>
+                        </div>
+
+                        <div class="field">
+                            <select class="ui search dropdown" id='course' required>
                                 <option value="" disabled selected>Choose Course</option>
                                 {% for i in courses %}
                                 <option value="{{ i.Course_name_alias }}">{{ i.Course_name_alias }}</option>
                                 {% endfor %}
                             </select>
-                            <select class="ui search dropdown w-25" required id='year'>
+                        </div>
+                        
+                        <div class="field">
+                            <select class="ui search dropdown" required id='year'>
                                 <option value="" disabled selected>Choose Year</option>
                                 <option value="1">Year 1</option>
                                 <option value="2">Year 2</option>
@@ -56,9 +62,9 @@
                                 <option value="4">Year 4</option>
                                 <option value="5">Year 5</option>
                             </select>
-                            <button type="submit" class = "ui inverted green button disabled" id="finalize">Finalize</button>
                         </div>
                     </div>
+                    <button type="submit" class = "ui teal button disabled" id="finalize">Finalize</button>
                 </form>
             </div>
 
@@ -398,13 +404,13 @@
         </div>
     </section>
     
-    <section id="removeTimeTable" style="display: none;">
+    <section id="removeTimeTable" style="display: none;" class="p-md-5 s-md-5">
         <div class="jumbotron text-left">
             <p class="h3 pb-4" style="font-family: 'Exo', sans-serif;">Remove Time Table</p>
         </div>
 
         <form class="ui form align-items-center" id="RemoveTT">
-            <div class="fields">
+            <div class="fields two">
                 <div class="field">
                     <select required class="ui search dropdown" id="departR">
                         <option value="" disabled selected>Choose department</option>
@@ -420,17 +426,13 @@
                         <option value="5">Year 5</option>
                     </select>
                 </div>
-            </div>
-            <div class="fields">
                 <div class="field">
                     <select required class="ui search dropdown" id = "courseR">
                         <option value="" disabled selected>Choose Course</option>
                     </select>
                 </div>
-                <div class="field">
-                    <button type = "submit" class="button ui red" id = "RemoveBtn">Remove</button>
-                </div>
             </div>
+            <button type = "submit" class="button ui red" id = "RemoveBtn">Remove</button>
         </form>
 
     </section>
@@ -440,7 +442,7 @@
             <p class="h3 pb-4" style="font-family: 'Exo', sans-serif;">View Time Table</p>
         </div>
         <form class="ui form align-items-center" id="viewTT">
-            <div class="fields">
+            <div class="fields three">
                 <div class="field">
                     <select class="ui search dropdown" id="departV">
                         <option value="" disabled selected>Choose department</option>
@@ -449,20 +451,15 @@
                 <div class="field">
                     <select class="ui search dropdown" id="yearV">
                         <option value="" disabled selected>Choose Year</option>
-                        
                     </select>
                 </div>
-            </div>
-            <div class="fields">
                 <div class="field">
                     <select class="ui search dropdown" id = "courseV">
                         <option value="" disabled selected>Choose Course</option>
                     </select>
                 </div>
-                <div class="field">
-                    <button type = "submit" class="button ui teal" id = "ViewBtn">View</button>
-                </div>
             </div>
+            <button type = "submit" class="button ui teal" id = "ViewBtn">View</button>
         </form>
         <div class="row pb-4 " id = "viewTTData" style="display: none;">
             <div class="col-md-12">
