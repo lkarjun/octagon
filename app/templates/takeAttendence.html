@@ -1,9 +1,22 @@
+{% if who == "teacher" %}
 {% extends "teacherLayout.html" %}
+{% else %}
+{% extends "commonLayout.html" %}
+{% endif %}
+
 {% block content %}
+
+{% if who == "teacher" %}
 <script>
     $("#navAttenw").addClass("navisel")
     $("#navAttenm").addClass("navisel")
 </script>
+{% else %}
+<script>
+    $("#navMore").addClass("navisel")
+    $("#navTkAttnm").addClass("navisel")
+</script>
+{% endif %}
 
 <div class="ui container">
 

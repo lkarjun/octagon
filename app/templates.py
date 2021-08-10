@@ -68,12 +68,19 @@ class HodTemplates():
         return templates.TemplateResponse("attendenceDataView.html",
                 context={"request": request, "title": "Attendence Data"})
 
+    def takeAttendence(request):
+        tmp = templates.TemplateResponse("takeAttendence.html",
+                context={"request": request, "title": "Students Attendence",
+                         "who":"hod"})
+
+        return tmp
 
 class TeacherTemplates():
     
     def takeAttendence(request):
         tmp = templates.TemplateResponse("takeAttendence.html",
-                context={"request": request, "title": "Students Attendence"})
+                context={"request": request, "title": "Students Attendence",
+                    "who":"teacher"})
 
         return tmp
 

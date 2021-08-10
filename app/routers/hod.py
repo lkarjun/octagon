@@ -81,3 +81,7 @@ async def uoc_notificaions(request: Request):
 @router.get('/students-attendence')
 async def attendenceDataView(request: Request):
     return HodTemplates.attendenceDataView(request)
+
+@router.get("/take-attendence")
+async def take_attendence(request: Request):
+    return HodTemplates.takeAttendence(request)
