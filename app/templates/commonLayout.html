@@ -15,17 +15,26 @@
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
     <title>{{ title }}</title>
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='Favicon/favicon-32x32.png') }}">
+
 </head>
 <body style="background-color: rgb(255, 255, 255);">
     
     <div class="ui container">
         <div class="ui tablet computer only padded grid">
             <div class="ui borderless fluid huge menu">
-                <a class="header item" style="font-family: 'Exo', sans-serif;">TeachersLogin</a>
+                <a class="header item" style="font-family: 'Exo', sans-serif;">TeacahersLogin</a>
                 <a class="item navi" id='navWorkw' href="#">Workspace</a>
-                <a class="item navi" id='navStudw' href="add-students">Student</a>
-                <a class="item navi" id='navAttenw' href="take-attendence">Attendence</a>
-          
+                <a class="item navi" id='navTchw' href="edit-teacher">Teachers</a>
+                <a class="item navi" id='navTTdw' href="timetable">TimeTable</a>
+
+                <a class="ui dropdown item navi" id="navMore">
+                    More <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <div class="item" onclick="window.location.href='students-attendence'">Attendence Analysis</div>
+                        <div class="item" onclick="window.location.href='uoc-notification'">Uoc Notifications</div>
+                    </div>
+                </a>
+
                 <div class="right menu">
                     <a class="item navi">Messages</a> 
                     <a class="item navi">About</a>
@@ -46,8 +55,10 @@
             
                 <div class="ui vertical borderless fluid menu">
                     <a class="item navi" id='navWorkm' href="#">Workspace</a>
-                    <a class="item navi" id='navStudm' href="add-students">Student</a>
-                    <a class="item navi" id='navAttenm' href="take-attendence">Attendence</a>
+                    <a class="item navi" id='navTchm' href="edit-teacher">Teachers</a>
+                    <a class="item navi" id='navTTdm' href="timetable">TimeTable</a>
+                    <a class="item navi" id='navAttenm' href="students-attendence">Attendence Analysis</a>
+                    <a class="item navi" id='navNotenm' href="uoc-notification">Uoc Notifications</a>
                     <a class="item navi">Messages</a> 
                     <a class="item navi">About</a>
                 </div>
