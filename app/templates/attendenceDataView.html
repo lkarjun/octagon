@@ -46,7 +46,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <button class="ui button blue" type="submit">Get Report</button>
+                                    <div class="ui button blue" onclick="$('#report_main').css('display', 'none')">Get Report</div>
                                 </form>
                             </div>
                         </div>
@@ -57,39 +57,17 @@
         </div>
 
     </section>
-
-    <!-- <div class="jumbotron text-left">
-        <p class="h3 pb-4 pt-4" style="font-family: 'Exo', sans-serif;">Select Class</p>
-    </div>
-
-    <form class="ui form align-items-center">
-        <div class="fields">
-            <div class="field">
-                <label>Course</label>
-                <select required class="ui search dropdown" id='course'>
-                  <option value="none">None</option>
-                </select>
-            </div>
-
-            <div class="field">
-                <label>Year</label>
-                <select required class="ui search dropdown" id='year'>
-                  <option value="none">None</option>
-                </select>
-            </div>
-
-            <div class="field pt-md-4 mt-md-1">
-                <button class="ui button teal" id='upload_button' type="submit">Submit</button>
-            </div>
-        </div>
-    </form> -->
-
-    <section id="attendOverview" style="height: 100vh;">
+    <section id="attendOverview" style="height: 100vh; display: block;" id="report_main">
 
         <div class="jumbotron text-center">
             <p class="h3 pt-5 mt-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">Bca Year 1 Attendence Overview</p>
-            <div class="ui buttons pt-md-4 pt-4">
-                <button class="ui button blue">Take Attendence</button>
+            <div class="pt-md-4 pt-4">
+                <div class="ui vertical animated button blue" tabindex="0" onclick="window.location.href='take-attendence'">
+                    <div class="visible content">Take Attendence</div>
+                    <div class="hidden content">
+                        <i class="external alternate icon"></i>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -98,8 +76,8 @@
             <div class="col-md-12 col-sm-12">
                 <div class="text-center pt-5 pb-5">
                     <div class="ui buttons">
-                        <button class="ui button teal">6 Month Report</button>
-                        <button class="ui button blue">Last Month Report</button>
+                        <button class="ui button teal">6 Month</button>
+                        <button class="ui button blue">Last Month</button>
                     </div>
                 </div>
             </div>
@@ -192,159 +170,6 @@
                     </div>
                 </div>        
             </div>
-            <!-- <div class="col-md-6">
-                <div class="ui list very relaxed">
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/elyse.png') }}">
-                        <div class="content">
-                            <div class="header">Snickerdoodle</div>
-                            50 %
-                        </div>
-                    </div>
-
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            <div class="header">Poodle</div>
-                            50 %
-                        </div>
-                    </div>
-                    
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            <div class="header">Poodle</div>
-                            50 %
-                        </div>
-                    </div>
-                    
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/elyse.png') }}">
-                        <div class="content">
-                            <div class="header">Poodle</div>
-                            50 %
-                        </div>
-                    </div>
-                    
-
-                </div>    
-            </div> -->
-            <!-- <div class="col-md-12 pt-4">
-                <div class="ui middle aligned list">
-                    <div class="item">
-                        <div class="right floated content">
-                            <div class="ui button">Add</div>
-                        </div>
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            Mark
-                        </div>
-                    </div>
-
-                    <div class="item">
-                        <div class="right floated content">
-                            <div class="ui button">Add</div>
-                        </div>
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/elyse.png') }}">
-                        <div class="content">
-                            Molly
-                        </div>
-                    </div>
-                  </div>
-                <div class="ui relaxed horizontal list pt-4">
-
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/elyse.png') }}">
-                        <div class="content">
-                            <div class="header">
-                                Steve Jobes
-                            </div>
-                            50%
-                        </div>
-                    </div>
-        
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            <div class="header">
-                                Stevie Feliciano
-                            </div>
-                            44%
-                        </div>
-                    </div>
-        
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            <div class="header">
-                                Stevie Feliciano
-                            </div>
-                            44%
-                        </div>
-                    </div>
-                    
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            <div class="header">
-                                Stevie Feliciano
-                            </div>
-                            44%
-                        </div>
-                    </div>
-        
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            <div class="header">
-                                Stevie Feliciano
-                            </div>
-                            44%
-                        </div>
-                    </div>
-        
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            <div class="header">
-                                Stevie Feliciano
-                            </div>
-                            44%
-                        </div>
-                    </div>
-        
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            <div class="header">
-                                Stevie Feliciano
-                            </div>
-                            44%
-                        </div>
-                    </div>
-        
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            <div class="header">
-                                Stevie Feliciano
-                            </div>
-                            44%
-                        </div>
-                    </div>
-        
-                    <div class="item">
-                        <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                        <div class="content">
-                            <div class="header">
-                                Stevie Feliciano
-                            </div>
-                            44%
-                        </div>
-                    </div>
-        
-                </div>
-            </div> -->
         </div>
         <!--End-->
 
@@ -362,8 +187,7 @@
                         <table class="table-hover table">
                             <thead>
                                 <tr class="table-primary">
-                                    <th scope="col" class="font-weight-bold">ROLL NUMBER(Uoc)</th>
-                                    <th scope="col" class="font-weight-bold">ROLL NUMBER</th>
+                                    <th scope="col" class="font-weight-bold">Unique Id</th>
                                     <th scope="col" class="font-weight-bold">FULL NAME</th>
                                     <th scope="col" class="font-weight-bold">TOTAL LEAVE</th>
                                     <th scope="col" class="font-weight-bold">PERCENTAGE</th>
@@ -374,7 +198,6 @@
                             <tbody>
                                 <tr class="negative">
                                     <td>JDATBCA01</td>
-                                    <td>01</td>
                                     <td class="font-weight-bold">LALKRISHNA ARJUN</td>
                                     <td>9</td>
                                     <td>75%</td>
@@ -383,7 +206,6 @@
 
                                 <tr class="negative">
                                     <td>JDATBCA02</td>
-                                    <td>02</td>
                                     <td class="font-weight-bold">SHAHIL</td>
                                     <td>6</td>
                                     <td>78%</td>
@@ -392,7 +214,6 @@
 
                                 <tr class="negative">
                                     <td>JDATBCA03</td>
-                                    <td>03</td>
                                     <td class="font-weight-bold">NADIR</td>
                                     <td>2</td>
                                     <td>86%</td>
@@ -401,7 +222,6 @@
 
                                 <tr class="negative table-danger">
                                     <td>JDATBCA04</td>
-                                    <td>04</td>
                                     <td class="font-weight-bold">UNKNOWN</td>
                                     <td>35</td>
                                     <td>40%</td>
@@ -410,7 +230,6 @@
 
                                 <tr class="negative table-danger">
                                     <td>JDATBCA01</td>
-                                    <td>05</td>
                                     <td class="font-weight-bold">UNKNOWN</td>
                                     <td>20</td>
                                     <td>50%</td>
