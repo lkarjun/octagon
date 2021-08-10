@@ -36,6 +36,7 @@ class Teachers(Base):
     department = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     phone_number = Column(String, nullable=True)
+    tag = Column(String)
 
 class Timetable(Base):
     __tablename__ = 'Timetables'
@@ -49,3 +50,14 @@ class Timetable(Base):
     hour_3 = Column(String)
     hour_4 = Column(String)
     hour_5 = Column(String)
+
+class Students(Base):
+    __tablename__ = 'Students'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    email = Column(String)
+    parent_name = Column(String)
+    parent_number = Column(Integer)
+    parent_number_alt = Column(Integer)
+    course = Column(String)
+    year = Column(Integer)

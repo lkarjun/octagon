@@ -80,7 +80,7 @@
     <form class="ui form">
       <h2 class="ui dividing header" style="font-family: 'Exo', sans-serif;">Appoint New Teacher</h2>
 
-      <div class="fields four">
+      <div class="fields three">
           <div class="field">
             <label>Name</label>
             <input id='name' required type="text" placeholder="eg: Rishal">
@@ -96,11 +96,30 @@
             <input id='username' required type="text" placeholder="eg: rishal_cs">
           </div>
         
-          <div class="field">
-            <label>Phone Number</label>
-            <input id='number' required type="text" placeholder="9934223333">
-          </div>
-      
+      </div>
+
+      <div class="fields three">
+
+        <div class="field">
+          <label>Phone Number</label>
+          <input id='number' required type="text" placeholder="9934223333">
+        </div>
+        
+        <div class="field">
+          <label>Tag</label>
+          <select class="ui dropdown">
+            <option value="no_spl" selected>No Tag</option>
+            <option value="classTeacher">Class Teacher</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Department</label>
+          <select class="ui dropdown search">
+            <option value="none" selected>None</option>
+          </select>
+        </div>
+
       </div>
 
       <div class="fields three">
