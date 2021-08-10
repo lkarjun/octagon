@@ -79,7 +79,7 @@
     </section>
 
     <!--Department Details Section starts here-->
-    <section id='dD' class="p-4 m-4" style="display: none;">
+    <section id='dD' class="p-4 m-4" style="display: block;">
     
       <div class="jumbotron text-center">
         <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Department Details</p>
@@ -116,7 +116,7 @@
     </section>
 
     <!--Hod Section starts here-->
-    <section id='hod' class="p-4 m-4" style="display: block;">
+    <section id='hod' class="p-4 m-4" style="display: none;">
       
       <div class="jumbotron text-center">
         <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Head of Department</p>
@@ -272,7 +272,7 @@
             <p class="h3 text-center pb-3" style="font-family: 'Exo', sans-serif;">Add Course</p>
             
             <form class="ui form align-items-center" id='Course_form'>
-              <div class="fields">
+              <div class="fields two">
                 <div class="field">
                   <label>Course Name</label>
                   <input class="w-75" id="course_name" required type="text" placeholder="Course Name">
@@ -280,7 +280,7 @@
 
                 <div class="field">
                   <label>Duration</label>
-                  <select class="ui search dropdown" id='course_duration'>
+                  <select class="ui w-75 search dropdown" id='course_duration'>
                     <option value="1">1 Year</option>
                     <option value="2">2 Year</option>
                     <option value="3">3 Year</option>
@@ -289,7 +289,7 @@
                   </select>
                 </div>
               </div>
-              <div class="fields">
+              <div class="fields two">
                 <div class="field">
                   <label>Short Form</label>
                   <input class="w-75" id="course_shortform" required type="text" placeholder="eg: bca(without any space)">
@@ -297,7 +297,7 @@
                 
                 <div class="field">
                   <label>Department</label>
-                  <select class="ui search dropdown" id='department_options3'>
+                  <select class="ui w-75 search dropdown" id='department_options3'>
                   </select>
                 </div>
 
