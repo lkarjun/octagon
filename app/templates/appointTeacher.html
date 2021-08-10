@@ -6,27 +6,38 @@
   $("#navTchm").addClass("navisel")
 </script>
 
-<div class="container">
-  <section id="head">
-    <div class="row">
+<div class="ui container">
 
-        <div class="col-md-12">
-            <div class="text-center pt-5 pb-5 pr-5 pl-3">
-                <div class="ui buttons">
-                    <button class="ui button teal" onclick="show('#displayTeacher')">Display</button>
-                    <button class="ui button blue"  onclick="show('#Addteacher')">Appoint New Teacher</button>
-                </div>
+  <section id="head" class="pt-5 pb-5 text-center">
+        
+    <div class="ui buttons">
+  
+        <button class="ui button animated teal" onclick="show('#displayTeacher')">
+            <div class="visible content">Display</div>
+            <div class="hidden content">
+                <i class="newspaper outline icon"></i>
             </div>
-        </div>
-        <script>
-            function show(id){
-                $("#Addteacher").hide();
-                $("#displayTeacher").hide();
-                $(id).show();
 
-            }
-        </script>
+        </button>
+
+        <button class="ui button animated blue"  onclick="show('#Addteacher')">
+          <div class="visible content">Appoint New Teacher</div>
+          <div class="hidden content">
+              <i class="edit outline icon"></i>
+          </div>
+        </button>
+
     </div>
+            
+    <script>
+      function show(id){
+          $("#Addteacher").hide();
+          $("#displayTeacher").hide();
+          $(id).show();
+
+      }
+  </script>
+
   </section>
   
   <section id='displayTeacher'style="display: block;">
