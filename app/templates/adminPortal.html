@@ -1,48 +1,44 @@
 {% extends "layout.html" %}
 {% block content %}
 
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light pt-3 pb-3">
-      <!-- Toggle button -->
-      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarCenteredExample"
-        aria-controls="navbarCenteredExample" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="ellipsis horizontal icon"></i>
-      </button>
-  
-      <!-- Collapsible wrapper -->
-      <div class="collapse navbar-collapse justify-content-center" id="navbarCenteredExample">
-        <!-- Left links -->
-        <ul class="navbar-nav mb-2 mb-lg-0">
-
-          <li class="nav-item">
-            <a class="nav-link font-weight-bold text-decoration-underline active" id='depart' onclick="hider('dD', 'depart')" aria-current="page" href="#">Detail of Departments</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link font-weight-bold" onclick="hider('dH', 'hodss')" id='hodss' aria-current="page" href="#">Detail of Hods</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link font-weight-bold" onclick="hider('dep', 'departt')" id='departt' aria-current="page" href="#">Department</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link font-weight-bold" onclick="hider('hod', 'hodd')" id='hodd' aria-current="page" href="#">HOD</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link font-weight-bold" onclick="hider('cr', 'credd')" id='credd' aria-current="page" href="#"><i class="lock icon"></i>Credientials</a>
-          </li>
-        </ul>
-        <!-- Left links -->
+  <div class="ui container">
+  <div class="ui tablet computer only padded grid">
+      <div class="ui borderless fluid huge menu">
+          <a class="header item" style="font-family: 'Exo', sans-serif;">TeachersLogin</a>
+          <a class="item navi navisel depart" id='depart' onclick="hider('dD', 'depart')">Detail of Departments</a>
+          <a class="item navi hodss" onclick="hider('dH', 'hodss')" id='hodss'>Detail of Hods</a>
+          <a class="item navi departt" onclick="hider('dep', 'departt')" id='departt'>Departments</a>
+          <a class="item navi hodd" onclick="hider('hod', 'hodd')" id='hodd'>Hod</a>
+          <a class="item navi credd" onclick="hider('cr', 'credd')" id='credd' href="#"><i class="lock icon"></i>Credientials</a>
       </div>
-      <!-- Collapsible wrapper -->
-    </div>
-  </nav>
-  
+  </div>
+
+  <div class="ui mobile only padded grid">
+      <div class="ui borderless huge fluid menu">
+          <a class="header item" style="font-family: 'Exo', sans-serif;">TeachersLogin</a>
+          <div class="right menu">
+              <div class="item">
+                  <button class="ui icon toggle basic button">
+                      <i class="content icon"></i>
+                  </button>
+              </div>
+          </div>
+      
+          <div class="ui vertical borderless fluid menu">
+            <a class="item navi navisel depart" id='depart' onclick="hider('dD', 'depart')">Detail of Departments</a>
+            <a class="item navi hodss" onclick="hider('dH', 'hodss')" id='hodss'>Detail of Hods</a>
+            <a class="item navi departt" onclick="hider('dep', 'departt')" id='departt'>Departments</a>
+            <a class="item navi hodd" onclick="hider('hod', 'hodd')" id='hodd'>Hod</a>
+            <a class="item navi credd" onclick="hider('cr', 'credd')" id='credd' href="#"><i class="lock icon"></i>Credientials</a>
+              
+          </div>
+      </div>
+  </div>
+  </div>
+
   <!--Starting Here-->
 
-  <div class="container">
+  <div class="ui container">
 
     <!--Hod Details Section starts here-->
     <section id='dH' class="p-4 m-4" style="display: none;">
@@ -381,14 +377,14 @@
       $('#dD').css('display', 'none');
       $('#dH').css('display', 'none');
       $('#cr').css('display', 'none');
-      $('#hodd').removeClass("active text-decoration-underline")
-      $('#hodss').removeClass("active text-decoration-underline")
-      $('#depart').removeClass("active text-decoration-underline")
-      $('#departt').removeClass("active text-decoration-underline")
-      $('#credd').removeClass("active text-decoration-underline")
+      $('.hodd').removeClass("navisel")
+      $('.hodss').removeClass("navisel")
+      $('.depart').removeClass("navisel")
+      $('.departt').removeClass("navisel")
+      $('.credd').removeClass("navisel")
 
       $('#'+id).css('display', 'block');
-      $('#'+navid).addClass("active text-decoration-underline")
+      $('#'+navid).addClass("navisel")
     }
   </script>
 

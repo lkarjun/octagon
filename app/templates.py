@@ -13,7 +13,7 @@ class AdminTemplates():
 
     def admin_login_page(request, verify = 'none'):
         return templates.TemplateResponse('admin_login.html', 
-                context={'request': request, 'title': 'ADMIN LOGIN', 'verify': verify})
+                context={'request': request, 'title': 'Admin Login', 'verify': verify})
 
     def login_success(request):
         courses_with_department = defaultdict(lambda: [])
@@ -25,7 +25,7 @@ class AdminTemplates():
         for i in course: courses_with_department[i.Department].append(i.Course_name_alias)
         db.close()
         return templates.TemplateResponse('adminPortal.html', 
-                    context={'request': request, 'title': 'ADMIN PORTAL',
+                    context={'request': request, 'title': 'Admin Portal',
                             'hods': hods, 'dep': dep, 'course': course, 
                             'cw': courses_with_department})
 
@@ -52,17 +52,17 @@ class HodTemplates():
         depart = admin.get_all_departments(db)
         db.close()
         return templates.TemplateResponse('timeTable.html', 
-                context={'request': request, 'title': 'TIME TABLE', 
+                context={'request': request, 'title': 'Time Table', 
                         'courses': courses, 'teachers': teachers, 'department': depart})
 
     def appoint_teacher(request):
         return templates.TemplateResponse("appointTeacher.html",
-                context={'request': request, "title": "APPOINT TEACHERS"})
+                context={'request': request, "title": "Appoint Teachers"})
 
     def uoc_notification(request):
         notifications = hod.uoc.get_notifications()
         return templates.TemplateResponse("uocNotification.html",
-                context={"request": request, "title": "UOC NOTIFICATION", "notfy": notifications})
+                context={"request": request, "title": "UOC Notification", "notfy": notifications})
     
     def attendenceDataView(request):
         return templates.TemplateResponse("attendenceDataView.html",
