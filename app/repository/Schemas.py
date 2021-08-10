@@ -1,7 +1,7 @@
-from database.models import Courses
 from pydantic import BaseModel
-from typing import Optional, List
-from fastapi import UploadFile, File
+from typing import Optional, List, Union
+from pathlib import Path
+from pandas import DataFrame
 
 class CreateHod(BaseModel):
     name: str
@@ -91,3 +91,18 @@ class CurrentHour(BaseModel):
     course: str
     year: str
     hour: str
+
+
+class Files(BaseModel):
+    daily: Union[Path, DataFrame]
+    monthly: Union[Path, DataFrame]
+    daily_path: Path
+    monthly_path: Path
+    
+    class Config:
+        arbitrary_types_allowed = True
+
+class AddStudent(BaseModel):
+    course: str
+    year: int
+    name: str
