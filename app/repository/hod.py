@@ -4,18 +4,21 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status, Response
 
-def create(request: Schemas.AddTeacher, db: Session):
+def appoint_teacher(request: Schemas.AddTeacher, db: Session):
+
     new_teacher = models.Teachers(
                     name = request.name, email = request.email,\
-                    phone_number = request.phone_number, department = request.department
+                    phone_number = request.phone_number,\
+                    department = request.department, tag = request.tag,\
+                    username = request.username
                 )
     
     db.add(new_teacher)
     db.commit()
     db.refresh(new_teacher)
-    return new_teacher
+    return Response(status_code=204)
 
-def delete(request: Schemas.DeleteTeacher, db: Session):
+def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
     teacher = db.query(models.Teachers).filter(and_(models.Teachers.name == request.name,
                                 models.Teachers.email == request.username))
     if not teacher.first():

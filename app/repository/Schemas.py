@@ -53,9 +53,11 @@ class TokenData(BaseModel):
 
 class AddTeacher(BaseModel):
     name: str
+    username: str
     department: str
     email: str
-    phone_number: Optional[int]
+    phone_number: int
+    tag: str
 
 class ShowTeacher(AddTeacher):
     class Config():
