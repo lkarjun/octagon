@@ -1,5 +1,6 @@
-from fastapi import APIRouter, Request, Depends, status
+from fastapi import APIRouter, Request, Depends, status, Form, UploadFile, File
 from sqlalchemy.orm.session import Session
+from starlette.responses import Response
 from repository import hod, Schemas
 from database import database
 from templates import HodTemplates
@@ -11,21 +12,14 @@ get_db = database.get_db
 
 
 # Teacher Related
-@router.get('/timetable')
-async def timetable(request: Request):
-    return HodTemplates.timetable(request)
 
-@router.get("/edit-teacher")
-async def appoint_teacher(request: Request):
-    return HodTemplates.appoint_teacher(request)
-
-@router.post('/Addteacher', status_code=status.HTTP_201_CREATED, response_model=Schemas.ShowTeacher)
+@router.post('/Addteacher', status_code=status.HTTP_204_NO_CONTENT)
 async def add_teacher(request: Schemas.AddTeacher, db: Session = Depends(get_db)):
-    return hod.create(request, db)
+    return hod.appoint_teacher(request, db)
 
 @router.delete('/Deleteteacher', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_teacher(request: Schemas.DeleteTeacher, db: Session = Depends(get_db)):
-    return hod.delete(request, db)
+    return hod.remove_teacher(request, db)
 
 @router.put('/Updateteacher', status_code=status.HTTP_202_ACCEPTED)
 async def update_teacher(email: str, request: Schemas.AddTeacher, db: Session = Depends(get_db)):
@@ -35,6 +29,13 @@ async def update_teacher(email: str, request: Schemas.AddTeacher, db: Session = 
 async def teachers_detail(db: Session = Depends(get_db)):
     return hod.get_techer_details(db)
 
+@router.post('/verification_image', status_code=status.HTTP_204_NO_CONTENT)
+async def verification_image(username: str = Form(...),
+                            image1: UploadFile = File(...),
+                            image2: UploadFile = File(...),
+                            image3: UploadFile = File(...)):
+    print(image1.filename, username)
+    return Response(status_code=204)
 
 # Students Related
 
@@ -74,6 +75,8 @@ async def remove_timetable(request: Schemas.TimeTableEdit, db: Session = Depends
 async def get_current_hour_detail(department: str, day: str, hour: str, db: Session = Depends(get_db)):
     return hod.current_hour_detail(department, day, hour, db)
 
+
+# Pages
 @router.get('/uoc-notification')
 async def uoc_notificaions(request: Request):
     return HodTemplates.uoc_notification(request)
@@ -85,3 +88,11 @@ async def attendenceDataView(request: Request):
 @router.get("/take-attendence")
 async def take_attendence(request: Request):
     return HodTemplates.takeAttendence(request)
+
+@router.get('/timetable')
+async def timetable(request: Request):
+    return HodTemplates.timetable(request)
+
+@router.get("/edit-teacher")
+async def appoint_teacher(request: Request):
+    return HodTemplates.appoint_teacher(request)
