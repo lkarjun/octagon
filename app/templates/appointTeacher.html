@@ -40,7 +40,7 @@
 
   </section>
   
-  <section id='displayTeacher'style="display: block;">
+  <section id='displayTeacher'style="display: none;">
     
     <div class="jumbotron text-left">
       <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Teacher's Details</p>
@@ -75,9 +75,9 @@
     
   </section>
   
-  <section id="Addteacher" style="display: none;" class="pb-5">
+  <section id="Addteacher" style="display: block;" class="pb-5">
 
-    <form class="ui form">
+    <form class="ui form" id='Appointment_form'>
       <h2 class="ui dividing header" style="font-family: 'Exo', sans-serif;">Appoint New Teacher</h2>
 
       <div class="fields three">
@@ -88,7 +88,7 @@
           
           <div class="field">
             <label>Email</label>
-            <input id='email' required type="text" placeholder="eg: Rishal@gmail.com">
+            <input id='email' required type="email" placeholder="eg: Rishal@gmail.com">
           </div>
           
           <div class="field">
@@ -107,16 +107,17 @@
         
         <div class="field">
           <label>Tag</label>
-          <select class="ui dropdown">
+          <select class="ui dropdown" id='tag'>
             <option value="no_spl" selected>No Tag</option>
-            <option value="classTeacher">Class Teacher</option>
+            <option value="CT">Class Teacher</option>
           </select>
         </div>
 
         <div class="field">
           <label>Department</label>
-          <select class="ui dropdown search">
-            <option value="none" selected>None</option>
+          <select class="ui dropdown search" id='depart'>
+            <option value="none">None</option>
+            <option value='cs' selected>Computer Science</option>
           </select>
         </div>
 
@@ -144,7 +145,7 @@
       </div>
 
       <div class="ui buttons">
-        <button class="ui button green" type="submit">Appoint</button>
+        <button class="ui button green" type="submit" id='appoint_btn'>Appoint</button>
         <div class="or"></div>
         <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
       </div>
@@ -205,4 +206,6 @@
   </section>
 
 </div>
+
+<script src="{{ url_for('static', path='teachers_edit.js') }}"></script>
 {% endblock %}
