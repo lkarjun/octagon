@@ -51,6 +51,19 @@ class Timetable(Base):
     hour_4 = Column(String)
     hour_5 = Column(String)
 
+class TimetableS(Base):
+    __tablename__ = "TimeTableSubjects"
+    id = Column(Integer, primary_key=True, index=True)
+    department = Column(String)
+    course = Column(String)
+    year = Column(Integer)
+    days = Column(String)
+    hour_1 = Column(String)
+    hour_2 = Column(String)
+    hour_3 = Column(String)
+    hour_4 = Column(String)
+    hour_5 = Column(String)
+
 class Students(Base):
     __tablename__ = 'Students'
     id = Column(Integer, primary_key=True)
