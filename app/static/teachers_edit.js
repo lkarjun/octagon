@@ -79,3 +79,35 @@ $("#Appointment_form").submit((e)=>{
     
     verification_image_upload(data, username, name)
   })
+
+
+  // Teacher Search
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#Teachers tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+
+  // Remove Teacher
+  function remove_teacher(username, name){
+    var base = window.location.origin + '/hod/Deleteteacher';
+    var data = JSON.stringify({"name": name, "user_name": username});
+    $.ajax({
+      url: base,
+      type: 'DELETE',
+      async: true,
+      data: data,
+      dataType: 'json',
+      contentType: "application/json",
+
+      success: function(result) {
+        $('#'+username).remove();
+        success_alert('Successfully Removed Teacher: '+name);
+        },
+      error: function(result){
+        error_alert('Something Went Wrong Error: '+result);
+        }
+      });
+    }

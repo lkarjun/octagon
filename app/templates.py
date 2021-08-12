@@ -56,8 +56,12 @@ class HodTemplates():
                         'courses': courses, 'teachers': teachers, 'department': depart})
 
     def appoint_teacher(request):
-        return templates.TemplateResponse("appointTeacher.html",
-                context={'request': request, "title": "Appoint Teachers"})
+        db = database.SessionLocal()
+        teachers = hod.get_techer_details(db)
+        db.close()
+        tmp = templates.TemplateResponse("appointTeacher.html",
+                context={'request': request, "title": "Appoint Teachers", "teachers": teachers})
+        return tmp
 
     def uoc_notification(request):
         notifications = hod.uoc.get_notifications()

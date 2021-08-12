@@ -20,7 +20,7 @@ def appoint_teacher(request: Schemas.AddTeacher, db: Session):
 
 def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
     teacher = db.query(models.Teachers).filter(and_(models.Teachers.name == request.name,
-                                models.Teachers.email == request.username))
+                                models.Teachers.username == request.user_name))
     if not teacher.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User in database") 
 
