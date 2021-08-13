@@ -105,6 +105,24 @@ class Files(BaseModel):
         arbitrary_types_allowed = True
 
 class AddStudent(BaseModel):
+    unique_id: str
+    name: str
+    email: str
+    parent_name: str
+    parent_number: int
+    number: int
     course: str
     year: int
+
+class EditStudent(AddStudent):
+    old_unique_id: str
+    old_name: str
+    old_course: str
+    old_year: int
+
+class DeleteStudent(BaseModel):
+    unique_id: str
     name: str
+    course: str
+    year: int
+

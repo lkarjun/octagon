@@ -66,7 +66,7 @@ class TimetableS(Base):
 
 class Students(Base):
     __tablename__ = 'Students'
-    id = Column(Integer, primary_key=True)
+    id = Column(String, primary_key=True)
     name = Column(String)
     email = Column(String)
     parent_name = Column(String)

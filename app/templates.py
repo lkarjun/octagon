@@ -89,6 +89,11 @@ class TeacherTemplates():
         return tmp
 
     def addStudents(request):
+        db = database.SessionLocal()
+        courses = admin.get_all_course(db)
+        db.close()
+
         tmp = templates.TemplateResponse("addStudent.html",
-                context={"request": request, "title": "Add Students"})
+                context={"request": request, "title": "Add Students",
+                         "course": courses})
         return tmp
