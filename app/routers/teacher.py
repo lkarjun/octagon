@@ -44,3 +44,4 @@ async def edit_verify_student(request: Schemas.DeleteStudent, db: Session = Depe
 async def edit_student(request: Schemas.EditStudent, db: Session = Depends(get_db)):
     return teacher.edit_student(request, db)
 
+    return res
