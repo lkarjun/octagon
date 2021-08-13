@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from database import models, database
 from security import oauth2
-from routers import admin, authentication, pages, hod, teacher
+from routers import admin, authentication, pages, hod, teacher, attendence
 
 tags_metadata = [
     {
@@ -48,6 +48,7 @@ app = FastAPI(
 
 app.include_router(hod.router)
 app.include_router(teacher.router)
+app.include_router(attendence.router)
 app.include_router(authentication.router)
 app.include_router(admin.router)
 app.include_router(pages.router)

@@ -95,15 +95,6 @@ class CurrentHour(BaseModel):
     hour: str
 
 
-class Files(BaseModel):
-    daily: Union[Path, DataFrame]
-    monthly: Union[Path, DataFrame]
-    daily_path: Path
-    monthly_path: Path
-    
-    class Config:
-        arbitrary_types_allowed = True
-
 class AddStudent(BaseModel):
     unique_id: str
     name: str
@@ -126,3 +117,28 @@ class DeleteStudent(BaseModel):
     course: str
     year: int
 
+
+
+# Attendence
+class students_attendence(BaseModel): 
+    names: List[str]
+
+class set_class(BaseModel):
+    course: str
+    year: int
+
+class Files(BaseModel):
+    daily: Union[None, DataFrame]
+    monthly: Union[None, DataFrame]
+    daily_path: Path
+    monthly_path: Path
+    
+    class Config:
+        arbitrary_types_allowed = True
+
+class TakeAttendence(BaseModel):
+    course: str
+    year: int
+    take_full_day: bool
+    date: str
+    present: List[str]

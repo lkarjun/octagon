@@ -1,5 +1,5 @@
 from database import models
-from repository import Schemas
+from repository import Schemas, attendence
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status, Response
@@ -8,6 +8,8 @@ from fastapi import HTTPException, status, Response
 # Students
 
 def add_student(request: Schemas.AddStudent, db: Session):
+
+    res = attendence.admit_students(request=request, save_monthly=True)
 
     new_student = models.Students(
                     id = request.unique_id, name = request.name,\
@@ -21,7 +23,7 @@ def add_student(request: Schemas.AddStudent, db: Session):
     db.commit()
     db.refresh(new_student)
 
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return res
 
 
 def delete_student(request: Schemas.DeleteStudent, db: Session):
