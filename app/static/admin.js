@@ -244,3 +244,21 @@ $("#admin_reset").submit((e)=>{
 
   })
 });
+
+// department Search
+$("#myInput").on("keyup", function() {
+  var value = $(this).val().toLowerCase();
+  $("#SearchDepartment tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+
+// hod search
+
+// Teacher Search
+$("#HodInput").on("keyup", function() {
+  var value = $(this).val().toLowerCase();
+  $("#SearchHod tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+});

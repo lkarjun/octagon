@@ -18,9 +18,9 @@ class AdminTemplates():
     def login_success(request):
         courses_with_department = defaultdict(lambda: [])
         db = database.SessionLocal()
-        hods = admin.get_all(db)
-        dep = admin.get_all_departments(db)
-        course = admin.get_all_course(db)
+        hods = admin.get_all(db, template=True)
+        dep = admin.get_all_departments(db, template=True)
+        course = admin.get_all_course(db, template=True)
 
         for i in course: courses_with_department[i.Department].append(i.Course_name_alias)
         db.close()
@@ -57,10 +57,12 @@ class HodTemplates():
 
     def appoint_teacher(request):
         db = database.SessionLocal()
-        teachers = hod.get_techer_details(db)
+        teachers = hod.get_techer_details(db, template=True)
+        depart = admin.get_all_departments(db, template=True)
         db.close()
         tmp = templates.TemplateResponse("appointTeacher.html",
-                context={'request': request, "title": "Appoint Teachers", "teachers": teachers})
+                context={'request': request, "title": "Appoint Teachers", 
+                         "teachers": teachers, "depart": depart})
         return tmp
 
     def uoc_notification(request):
@@ -73,18 +75,24 @@ class HodTemplates():
                 context={"request": request, "title": "Attendence Data"})
 
     def takeAttendence(request):
+        db = database.SessionLocal()
+        courses = admin.get_all_course(db)
+        db.close()
         tmp = templates.TemplateResponse("takeAttendence.html",
                 context={"request": request, "title": "Students Attendence",
-                         "who":"hod"})
+                         "who":"hod", "course": courses})
 
         return tmp
 
 class TeacherTemplates():
     
     def takeAttendence(request):
+        db = database.SessionLocal()
+        courses = admin.get_all_course(db)
+        db.close()
         tmp = templates.TemplateResponse("takeAttendence.html",
                 context={"request": request, "title": "Students Attendence",
-                    "who":"teacher"})
+                         "who":"teacher", "course": courses})
 
         return tmp
 

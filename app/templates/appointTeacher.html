@@ -70,6 +70,7 @@
             <th scope="col" class="font-weight-bold">Email</th>
             <th scope='col' class="font-weight-bold">Phone No:</th>
             <th scope="col" class="font-weight-bold">User Name</th>
+            <th scope="col" class="font-weight-bold">Tag</th>
             <td scope="col" class="font-weight-bold">Remove Teacher</td>
           </tr>
         </thead>
@@ -85,6 +86,7 @@
             <td>{{ teacher.email }}</td>
             <td>{{ teacher.phone_number }}</td>
             <td>{{ teacher.username }}</td>
+            <td>{{ teacher.tag }}</td>
             <td>
               <button type="button" class="btn btn-danger btn-sm px-3" onclick="remove_teacher('{{ teacher.username }}', '{{ teacher.name }}')">
                 <i class="x icon"></i>
@@ -148,7 +150,7 @@
         <div class="field">
           <label>Tag</label>
           <select class="ui dropdown" id='tag'>
-            <option value="no_spl" selected>No Tag</option>
+            <option value="-" selected>None</option>
             <option value="CT">Class Teacher</option>
           </select>
         </div>
@@ -156,8 +158,13 @@
         <div class="field">
           <label>Department</label>
           <select class="ui dropdown search" id='depart'>
-            <option value="none">None</option>
-            <option value='cs' selected>Computer Science</option>
+            {% if depart %}
+            {% for i in depart %}
+            <option value="{{ i['Alias'] }}">{{i['Department']}}</option>
+            {% endfor %}
+            {% else %}
+            <option value="">None</option>
+            {% endif %}
           </select>
         </div>
 

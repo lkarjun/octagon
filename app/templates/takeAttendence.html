@@ -27,8 +27,11 @@
 
                 <div class="field">
                     <label >Choose Course</label>
-                    <select class="ui dropdown">
-                        <option value="none" selected>None</option>
+                    <select class="ui dropdown search">
+                        <option value="" selected>None</option>
+                        {% for i in course %}
+                        <option value="{{i.Course_name_alias}}">{{ i.Course_name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
     

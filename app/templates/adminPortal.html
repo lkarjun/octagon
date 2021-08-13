@@ -44,9 +44,23 @@
     <section id='dH' class="p-4 m-4" style="display: none;">
     
       <div class="jumbotron text-center">
-        <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Hod Details</p>
+        <p class="h1 pb-5" style="font-family: 'Exo', sans-serif;">Hod Details</p>
       </div>
       
+      <!--hod Search-->
+      <div class="form ui">
+        <div class="field">
+          <div class="ui search">
+            <div class="ui icon input">
+              <input class="prompt" type="text" id='HodInput' placeholder="Search Teacher">
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
+        </div>
+      </div>
+  <!--Search Ends-->
+
       <div class="table-responsive">
         <table class="table align-middle">
           <thead>
@@ -58,7 +72,7 @@
               <th scope="col" class="font-weight-bold">Department</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id='SearchHod'>
             {% for i in hods %}
             <tr>
               <th scope="row" class="font-weight-bold">{{i['name']}}</th>
@@ -78,8 +92,22 @@
     <section id='dD' class="p-4 m-4" style="display: block;">
     
       <div class="jumbotron text-center">
-        <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Department Details</p>
+        <p class="h1 pb-5" style="font-family: 'Exo', sans-serif;">Department Details</p>
       </div>
+
+    <!--Department Search-->
+      <div class="form ui">
+        <div class="field">
+          <div class="ui search">
+            <div class="ui icon input">
+              <input class="prompt" type="text" id='myInput' placeholder="Search Teacher">
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
+        </div>
+      </div>
+  <!--Search Ends-->
 
       <div class="table-responsive">
         <table class="table align-middle">
@@ -91,7 +119,7 @@
               <th scope='col' class="font-weight-bold">Remove Department</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="SearchDepartment">
             {% for i in dep %}
             <tr id = '{{ i["Alias"] }}'>
               <th scope="row" class="text-uppercase font-weight-bold">{{i['Department']}}</th>
