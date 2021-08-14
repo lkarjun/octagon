@@ -16,5 +16,4 @@ async def get_student_names(request: Schemas.set_class):
 
 @router.post("/take-attendence", status_code=status.HTTP_204_NO_CONTENT)
 async def take_attendence(requst: Schemas.TakeAttendence):
-    print(requst)
-    return Response(status_code=204)
+    return attendence.take_attendence(request=requst, open_daily=True)

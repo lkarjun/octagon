@@ -1,9 +1,10 @@
 from fastapi import HTTPException, status, Response
 import pandas as pd
+import numpy as np
 from pathlib import Path
 from repository import Schemas
 import datetime
-from typing import Callable
+from typing import Callable, Union, List
 import functools
 
 # Decorators
@@ -83,6 +84,13 @@ def admit_students(request: Schemas.AddStudent, files: Schemas.Files, **kwargs):
 @get_attendence_files
 def get_student_names(request: Schemas.set_class, files: Schemas.Files, **kwargs):
     names = files.daily['StudentsName'].to_list()
+
+    if request.date in files.daily.columns:
+        a = files.daily[request.date]
+        if np.any(a>=1):
+            raise HTTPException(status.HTTP_406_NOT_ACCEPTABLE, 
+                        detail=f"{request.date} attendence already taken")
+    
     if not len(names):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     return Schemas.students_attendence(names=names)
@@ -98,8 +106,11 @@ def take_attendence(request: Schemas.TakeAttendence, files: Schemas.Files, **kwa
     present_indices = df['StudentsName'][df['StudentsName'].isin(request.present)].index
     
     if request.take_full_day == True:
-        assert not attendence.any(),\
-            f"{request.date} attendence already taken"
+        if attendence.any():
+            raise HTTPException(status.HTTP_406_NOT_ACCEPTABLE, 
+                        detail=f"{request.date} attendence already taken")
+        # assert not attendence.any(),\
+        #     f"{request.date} attendence already taken"
         attendence[present_indices] = 1.
         
     else: attendence[present_indices] += .20
@@ -107,3 +118,62 @@ def take_attendence(request: Schemas.TakeAttendence, files: Schemas.Files, **kwa
     files.daily[request.date] = attendence
 
     return files
+
+@get_attendence_files
+def attendence_analysing(request: Schemas.Analysing, files: Schemas.Files):
+
+    df = files.daily
+    if request.last_month: 
+        
+        which_month = request.which_month[5:7]
+        date_columns = [date for date in df.columns[1:] if date[5:7] == which_month]
+
+        if not len(date_columns): raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                                                detail=f"No attendence taken in {which_month} month")
+        return get_analysis(df, date_columns)
+    
+
+    date_columns = df.columns.to_list()
+
+    if not len(date_columns): raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                                                  detail="No attendence taken in this month")
+    
+    return get_analysis(df, date_columns)
+
+
+# helper functions
+
+def calculate_score(x: float):
+    '''given x: float return internal mark based on condition'''
+    if x >= 90: return 5
+    elif x >= 85 and x <= 89: return 4
+    elif x >= 80 and x <=84: return 3
+    elif x >=76 and x <= 79: return 2
+    elif x == 75 and x< 76: return 1
+    else: return 0
+
+def get_analysis(df: pd.DataFrame, date_columns: Union[pd.Index, List]):
+    
+    number_of_working_days = df.shape[1] - 1
+    number_of_holidays = 90 - number_of_working_days
+    df_working = df[date_columns]
+    
+    present_count = df_working.sum(axis=1)
+    percentage = (present_count / number_of_working_days) * 100
+    
+    convert_to_90 = percentage / 90 * 100
+    convert_to_90 = convert_to_90.round().to_list()
+    
+    students_names = df['StudentsName'].iloc[present_count.index].to_list()
+    
+    total_leav = np.count_nonzero(df_working==0.0, axis=1).tolist()
+    
+    data = {"FULL_NAME": students_names, "TOTAL_LEAVE": total_leav,
+            "PERCENTAGE": convert_to_90}
+    
+    final_report = pd.DataFrame(data = data,
+                        columns=["FULL_NAME", "TOTAL_LEAVE", "PERCENTAGE"])
+    
+    final_report["INTERNAL_MARK"] = final_report["PERCENTAGE"].apply(calculate_score)
+    
+    return final_report
