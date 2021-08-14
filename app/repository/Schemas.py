@@ -126,6 +126,7 @@ class students_attendence(BaseModel):
 class set_class(BaseModel):
     course: str
     year: int
+    date: str
 
 class Files(BaseModel):
     daily: Union[None, DataFrame]
@@ -142,3 +143,9 @@ class TakeAttendence(BaseModel):
     take_full_day: bool
     date: str
     present: List[str]
+
+class Analysing(BaseModel):
+    course: str
+    year: int
+    last_month: bool
+    which_month: Optional[str] = None
