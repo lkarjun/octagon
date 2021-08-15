@@ -1,0 +1,21 @@
+{% if there_is %}
+{% for name, percentage in mostabsentee %}
+<div class="item">
+    <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
+    <div class="content">
+        <div class="header">
+            {{ name }}
+        </div>
+        {{ percentage }} Points
+    </div>
+</div>
+{% endfor %}
+<script>plot_pie({{ working_days[0] }}, {{ working_days[1] }})</script>
+{% else %}
+<div class="item">
+    <div class="jumbotron text-left">
+        <p class="h5 ps-4 pb-5 font-weight-bold text-primary" style="font-family: 'Exo', sans-serif;">There is no students who take more leave</p>
+    </div>
+</div>
+<script>plot_pie({{working_days}})</script>
+{% endif %}
