@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from repository import Schemas
-import datetime
+from calendar import monthrange
 from typing import Callable, Union, List
 import functools
 
@@ -24,8 +24,12 @@ def get_attendence_files(func: Callable):
         monthly_path = BASE_PATH/f"{course}{year}_monthly.csv"
         
         if open_files:
-            daily = pd.read_csv(daily_path)
-            monthly = pd.read_csv(monthly_path) if open_daily else None
+            try:
+                daily = pd.read_csv(daily_path)
+                monthly = pd.read_csv(monthly_path) if open_daily else None
+            except FileNotFoundError:
+                raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                        detail="Files Not Found.")
 
             files = Schemas.Files(daily=daily, monthly_path=monthly_path,
                           daily_path=daily_path, monthly=monthly)
@@ -120,7 +124,7 @@ def take_attendence(request: Schemas.TakeAttendence, files: Schemas.Files, **kwa
     return files
 
 @get_attendence_files
-def attendence_analysing(request: Schemas.Analysing, files: Schemas.Files):
+def attendence_analysing(request: Schemas.Analysing, files: Schemas.Files, **kwargs):
 
     df = files.daily
     if request.last_month: 
@@ -135,11 +139,35 @@ def attendence_analysing(request: Schemas.Analysing, files: Schemas.Files):
 
     date_columns = df.columns.to_list()
 
-    if not len(date_columns): raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+    if not len(date_columns) - 1 : raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
                                                   detail="No attendence taken in this month")
     
     return get_analysis(df, date_columns)
 
+@get_attendence_files
+def show_attendence_data(request: Schemas.ShowAttendence, files: Schemas.Files, **kwargs):
+    column = files.daily.columns
+    data = files.daily.round(2).values
+    return column, data
+
+@get_attendence_files
+def most_absentee(request: Schemas.MostAbsentee, files: Schemas.Files, **kwargs):
+    df = files.daily
+    
+    date_columns = df.columns.to_list()
+
+    if not len(date_columns) - 1 : raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                                                  detail="No attendence taken in this month")
+    
+    number_of_working_days = df.shape[1] - 1
+    number_of_working_days_left = 90 - number_of_working_days
+
+    analysis = get_analysis(df, date_columns)
+    most_absentee = analysis[analysis["PERCENTAGE"] < 75]
+    there_is = len(most_absentee)
+    most_absentee = zip(most_absentee["FULL_NAME"], most_absentee["PERCENTAGE"])
+    
+    return most_absentee, there_is, (number_of_working_days, number_of_working_days_left)
 
 # helper functions
 
