@@ -1,7 +1,7 @@
 from fastapi.templating import Jinja2Templates
 from fastapi import status
 from fastapi.responses import RedirectResponse
-from repository import admin, hod
+from repository import admin, hod, attendence
 from database import database
 from collections import defaultdict
 
@@ -71,8 +71,13 @@ class HodTemplates():
                 context={"request": request, "title": "UOC Notification", "notfy": notifications})
     
     def attendenceDataView(request):
-        return templates.TemplateResponse("attendenceDataView.html",
-                context={"request": request, "title": "Attendence Data"})
+        db = database.SessionLocal()
+        courses = admin.get_all_course(db)
+        db.close()
+        tmp = templates.TemplateResponse("attendenceDataView.html",
+                context={"request": request, "title": "Attendence Data",
+                        "course": courses})
+        return tmp
 
     def takeAttendence(request):
         db = database.SessionLocal()
@@ -83,6 +88,40 @@ class HodTemplates():
                          "who":"hod", "course": courses})
 
         return tmp
+
+    def show_attendence_data(request, data):
+        column, values = attendence.show_attendence_data(request=data)
+        tmp = templates.TemplateResponse("showAttendenceData.html",
+                    context={"request": request, "title": "Attendence Sheet",
+                                "column": column, "values": values, "data": data})
+
+        return tmp
+
+    def show_student_details(request, course, year):
+        db = database.SessionLocal()
+        details = hod.get_student_details(db, course, year)
+        db.close()
+        tmp = templates.TemplateResponse("studentDetails.html",
+                    context={"request": request, "title": "Attendence Sheet",
+                                "details": details, "course": course, "year": year})
+
+        return tmp
+
+    def show_most_absentees(request, data):
+        most_absentee, there_is, working_days = attendence.most_absentee(request=data, open_daily=True)
+        tmp = templates.get_template("__mostabsentee.html")
+        tmp = tmp.render(request = request, mostabsentee = most_absentee, 
+                         there_is=there_is, working_days = working_days)
+        return tmp
+
+
+    def show_report(request, data):
+        final_report = attendence.attendence_analysing(request=data, open_daily=True).values
+        tmp = templates.get_template("__attendencereport.html")
+        tmp = tmp.render(request = request, final_report = final_report)
+        return tmp
+
+
 
 class TeacherTemplates():
     
