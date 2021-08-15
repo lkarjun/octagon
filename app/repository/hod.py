@@ -44,6 +44,14 @@ def get_techer_details(db: Session, template=False):
             detail = 'No content in the database')
     return teachers
 
+def get_student_details(db: Session, course: str, year: int):
+    student = db.query(models.Students).filter(models.Students.course == course,\
+                            models.Students.year == year).all()
+    if not student:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
+            detail = 'No content in the database')
+    return student
+
 def mail_(who: str, message: str, db: Session):
     message = message.replace('\\n', '\n').replace('\\t', '\t')
     if who == 'hod':
