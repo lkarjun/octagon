@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, Depends, status, Form, UploadFile, File
 from sqlalchemy.orm.session import Session
-from starlette.responses import Response
+from starlette.responses import HTMLResponse, Response
 from repository import hod, Schemas
 from database import database
 from templates import HodTemplates
@@ -96,3 +96,20 @@ async def timetable(request: Request):
 @router.get("/edit-teacher")
 async def appoint_teacher(request: Request):
     return HodTemplates.appoint_teacher(request)
+
+@router.get("/students-attendence/{course}/{year}", status_code=status.HTTP_200_OK)
+async def show_attendence(request: Request, course: str, year: int):
+    data = Schemas.ShowAttendence(course=course, year = year)
+    return HodTemplates.show_attendence_data(request, data)
+
+@router.get("/students-attendence/details/{course}/{year}", status_code=status.HTTP_200_OK)
+async def student_details(request: Request, course: str, year: int):
+    return HodTemplates.show_student_details(request, course, year)
+
+@router.post("/most_absentee", status_code=status.HTTP_200_OK)
+async def most_absentee(request: Request, data: Schemas.MostAbsentee):
+    return HodTemplates.show_most_absentees(request, data)
+
+@router.post("/get_report")
+async def get_report(request: Request, data: Schemas.Analysing):
+    return HodTemplates.show_report(request, data)

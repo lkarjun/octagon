@@ -149,3 +149,11 @@ class Analysing(BaseModel):
     year: int
     last_month: bool
     which_month: Optional[str] = None
+
+class ShowAttendence(BaseModel):
+    course: str
+    year: int
+
+class MostAbsentee(BaseModel):
+    course: str
+    year: int
