@@ -1,0 +1,81 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+<script>
+    $("#navMore").addClass("navisel")
+    $("#navTkAttnm").addClass("navisel")
+</script>
+
+<div class="ui container">
+
+    <section>
+
+        <div class="jumbotron text-center">
+            <p class="h3 pt-5 pb-4 mt-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">{{ data.course.upper() }} Year {{ data.year }} Attendence</p>
+        </div>
+        
+        <!--hod Search-->
+        <div class="form ui pb-4 pt-4">
+            <div class="field">
+              <div class="ui search">
+                <div class="ui icon input">
+                  <input class="prompt" type="text" id='StudentSearch' placeholder="Search Student">
+                  <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+              </div>
+            </div>
+        </div>
+        <!--Search Ends-->
+
+        <div class="table-responsive">
+            <table class="table align-middle table-hover table-borderless">
+                <thead class="table-dark">
+                    <tr>
+                      {% for col in column %}
+                        <th scope="col" class="font-weight-bold">{{ col }}</th>
+                      {% endfor %}
+                    </tr>
+                </thead>
+
+                <tbody id='Search'>
+
+                    {% for value in values %}
+
+                    <tr>
+                        {% for i in value %}
+                            {% if i|int(-1) == -1 %}
+
+                            <td class="font-weight-bold">{{ i }}</td>
+                            
+                            {% else %}
+
+                                {% if i|float <= 0.4 %}
+                                <td class="bg-danger text-light">{{ i }}</td>
+                                {% else %}
+                                <td class="bg-success text-light">{{ i }}</td>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </section>
+</div>
+
+
+<!-- // Student Search -->
+<script>
+    $("#StudentSearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#Search tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+</script>
+
+{% endblock %}
