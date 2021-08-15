@@ -75,8 +75,12 @@
 
                 $("#setclass_btn").addClass("loading disabled")
 
+                // var date = $("#datePicker").val().toString(),
+
                 var data = JSON.stringify({"course": $("#course").val(),
-                                           "year": parseInt($("#year").val())});
+                                           "year": parseInt($("#year").val()),
+                                           "date": $("#datePicker").val().toString()
+                                        });
                 
                 var base = window.location.origin + '/attendence/set_class';
 
@@ -114,6 +118,15 @@
                                 button: "Okay!",
                             })
                         }
+                        else if(result.status == 406){
+                            var msg = JSON.parse(result.responseText)
+                            swal({
+                                title: "Already taken!",
+                                text: msg.detail,
+                                icon: "error",
+                                button: "Okay!",
+                            })
+                        }
                         else{
                             error_alert("Something went wrong please try to call the techinal team...")
                         }
@@ -142,7 +155,7 @@
                 <div class="ten wide field">
                     <label>Full Day / Hour Wise</label>
                     <select class="ui fluid search dropdown" id="fdorhw">
-                        <option values="hour_wise" selected>Hour Wise</option>
+                        <option value="hour_wise" selected>Hour Wise</option>
                         <option value="full_day">Full Day</option>
                     </select>
                 </div>
@@ -209,7 +222,21 @@
 
                     },
                     error: function(result){
-                        error_alert("Something went wrong please try to call the techinal team...")
+                        if(result.status == 406){
+                            var msg = JSON.parse(result.responseText)
+                            swal({
+                                title: "Already taken!",
+                                text: msg.detail,
+                                icon: "error",
+                                button: "Okay!",
+                            }).then((value) => {
+                                location.reload();
+                            });
+
+                        }
+                        else{
+                            error_alert("Something went wrong please try to call the techinal team...")
+                        }
                     }
 
                 })
