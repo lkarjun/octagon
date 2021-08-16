@@ -8,14 +8,15 @@
 </script>
 
 <div class="ui container"> 
+
     <div class="jumbotron text-left pt-md-3">
-        <p class="h1 p-4 font-weight-bold" style="font-family: 'Exo', sans-serif;">Attendence Analysis</p>
+        <p class="h1 pt-4 pb-4 font-weight-bold" style="font-family: 'Exo', sans-serif;">Attendence Analysis</p>
     </div>
+    <div class="ui divider"></div>
 
+    <section class="pt-md-2 mt-md-2" id="choose_detail" style="display: block;">
 
-    <section class="pt-md-2 mt-md-2">
-
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-6 col-sm-12">
                 <div>
                     <canvas id="myChart"></canvas>
@@ -35,138 +36,126 @@
                                         <div class="field">
                                             <label>Course</label>
                                             <select required class="ui search dropdown" id='course'>
-                                              <option value="none">None</option>
+                                                {% for i in course %}
+                                                <option value="{{i.Course_name_alias}}">{{ i.Course_name }}</option>
+                                                {% endfor %}
                                             </select>
                                         </div>
                             
                                         <div class="field">
                                             <label>Year</label>
                                             <select required class="ui search dropdown" id='year'>
-                                              <option value="none">None</option>
+                                                <option value="1">Year 1</option>
+                                                <option value="2">Year 2</option>
+                                                <option value="3">Year 3</option>
+                                                <option value="4">Year 4</option>
+                                                <option value="5">Year 5</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="ui button blue" onclick="$('#report_main').css('display', 'none')">Get Report</div>
+                                    <div class="ui button teal" onclick="show_attendence()">Show</div>
                                 </form>
+
+                                <script>
+                                    function show_attendence(){
+                                        var course = $("#course").val()
+                                        var year = parseInt($("#year").val())
+                                        var href = "/hod/students-attendence/"+course+"/"+year
+                                        window.location.href = href
+                                    }
+                                </script>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div>
+        </div> -->
+
+        <form class="ui form align-items-center p-4" id="dataAnalysis">
+            <div class="fields two wide">
+                <div class="field">
+                    <label>Course</label>
+                    <select required class="ui search dropdown" id='course'>
+                        {% for i in course %}
+                        <option value="{{i.Course_name_alias}}">{{ i.Course_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+    
+                <div class="field">
+                    <label>Year</label>
+                    <select required class="ui search dropdown" id='year'>
+                        <option value="1">Year 1</option>
+                        <option value="2">Year 2</option>
+                        <option value="3">Year 3</option>
+                        <option value="4">Year 4</option>
+                        <option value="5">Year 5</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="ui buttons blue small three">
+                <button class="ui button" type="submit" id="get_report_btn">Get Report</button>
+                <div class="ui button" onclick="show_attendence()">View data</div>
+                <div class="ui button" onclick="show_details()">Get Details</div>
+            </div>
+
+        </form>
 
     </section>
-    <section id="attendOverview" style="height: 100vh; display: none;" id="report_main">
 
-        <div class="jumbotron text-center">
-            <p class="h3 pt-5 mt-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">Bca Year 1 Attendence Overview</p>
-            <div class="pt-md-4 pt-4">
-                <div class="ui vertical animated button blue" tabindex="0" onclick="window.location.href='take-attendence'">
-                    <div class="visible content">Take Attendence</div>
-                    <div class="hidden content">
-                        <i class="external alternate icon"></i>
-                    </div>
+    <section id="attendOverview" style="height: 150vh; display: none;">
+
+        <div class="jumbotron pb-md-4 pb-2 mb-md-4 pt-4">
+            <p class="h3 font-weight-bold pb-3" style="font-family: 'Exo', sans-serif;" id="which_class_head">Bca Year 1 Attendence Overview</p>
+            <div class="ui vertical small animated button blue" tabindex="0" onclick="window.location.href='take-attendence'">
+                <div class="visible content">Take Attendence</div>
+                <div class="hidden content">
+                    <i class="external alternate icon"></i>
                 </div>
             </div>
         </div>
 
-        <!--Report Header-->
-        <div class="row">
-            <div class="col-md-12 col-sm-12">
-                <div class="text-center pt-5 pb-5">
-                    <div class="ui buttons">
-                        <button class="ui button teal">6 Month</button>
-                        <button class="ui button blue">Last Month</button>
-                    </div>
+        <div class="row pt-md-5 pb-md-5 pt-2 mt-2">
+            <div class="col-md-7">
+                <div>
+                    <canvas id="myChart"></canvas>
                 </div>
             </div>
+
+            <div class="col-md-5 pt-md-5 pt-4 mt-md-5 mt-4 ps-3 pl-3">
+
+                <div class="ui form">
+
+                    <div class="field">
+                        <label>Choose Date (For Monthly Analysis)</label>
+                        <input type="date" id="datePicker">
+                    </div>
+
+                    <div class="ui buttons two">
+                        <button class="ui button" onclick="get_report(true)" id="monthly_btn_report">Monthly Report</button>
+                        <div class="or"></div>
+                        <button class="ui positive button" onclick="get_report(false)" id="6_btn_report">6 Month Report</button>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
-        <!--End-->
 
         <!--Top 10 students(most absentees)-->
-
         <div class="jumbotron text-left">
-            <p class="h3 ps-4 pb-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">Most Absentees</p>
+            <p class="h3 pb-3 pb-md-3 pt-5 mt-2 pt-md-5 pb-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">Most Absentees</p>
         </div>
         
-
         <div class="row">
             <div class="col-md-12">
                 <div class="d-flex justify-content-center">
-                    <div class="ui ordered horizontal list">
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
+                    <div class="ui horizontal list" id='most_absentee_display'>
                     </div>
                 </div>        
             </div>
@@ -174,10 +163,24 @@
         <!--End-->
 
         <!--Report Section-->
-        <section class="pb-md-5 pb-5">
-            <div class="jumbotron text-left pt-md-5 pt-5">
-                <p class="h3 pb-md-5 pb-5 pt-md-2 ps-md-4 ps-4 font-weight-bold" style="font-family: 'Exo', sans-serif;">6 Month Report</p>
+        <section class="pb-md-3 pb-5 pt-md-0 pt-5" id="final_report_section" style="display: none;">
+            <div class="jumbotron text-left pt-md-5">
+                <p class="h3 pb-md-5 pb-5 pt-md-2  font-weight-bold" id="final_report_head" style="font-family: 'Exo', sans-serif;">6 Month Report</p>
             </div>
+
+            <!--Student Search-->
+            <div class="form ui pb-4">
+            <div class="field">
+                <div class="ui search">
+                <div class="ui icon input">
+                    <input class="prompt" type="text" id='st_search' placeholder="Search Teacher">
+                    <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+                </div>
+            </div>
+            </div>
+            <!--Search Ends-->
 
             <!--Table of content-->
             <div class="row">
@@ -187,58 +190,18 @@
                         <table class="table-hover table">
                             <thead>
                                 <tr class="table-primary">
-                                    <th scope="col" class="font-weight-bold">Unique Id</th>
                                     <th scope="col" class="font-weight-bold">FULL NAME</th>
-                                    <th scope="col" class="font-weight-bold">TOTAL LEAVE</th>
+                                    <th scope="col" class="font-weight-bold">TOTAL LEAVE(FULL DAY)</th>
                                     <th scope="col" class="font-weight-bold">PERCENTAGE</th>
                                     <th scope="col" class="font-weight-bold">MARK(Internal)</th>
                                 </tr>
                             </thead>
                             
-                            <tbody>
-                                <tr class="negative">
-                                    <td>JDATBCA01</td>
-                                    <td class="font-weight-bold">LALKRISHNA ARJUN</td>
-                                    <td>9</td>
-                                    <td>75%</td>
-                                    <td>4</td>
-                                </tr>
-
-                                <tr class="negative">
-                                    <td>JDATBCA02</td>
-                                    <td class="font-weight-bold">SHAHIL</td>
-                                    <td>6</td>
-                                    <td>78%</td>
-                                    <td>4</td>
-                                </tr>
-
-                                <tr class="negative">
-                                    <td>JDATBCA03</td>
-                                    <td class="font-weight-bold">NADIR</td>
-                                    <td>2</td>
-                                    <td>86%</td>
-                                    <td>5</td>
-                                </tr>
-
-                                <tr class="negative table-danger">
-                                    <td>JDATBCA04</td>
-                                    <td class="font-weight-bold">UNKNOWN</td>
-                                    <td>35</td>
-                                    <td>40%</td>
-                                    <td>0</td>
-                                </tr>
-
-                                <tr class="negative table-danger">
-                                    <td>JDATBCA01</td>
-                                    <td class="font-weight-bold">UNKNOWN</td>
-                                    <td>20</td>
-                                    <td>50%</td>
-                                    <td>0</td>
-                                </tr>
+                            <tbody id="report_table">
+                                
                             </tbody>
                         </table>
                     </div>
- 
                 </div>
             </div>
             <!--Ends-->
@@ -246,44 +209,75 @@
         </section>
         <!--Ends-->
 
+        <!--Edit Attendence-->
+
+        <section class="pb-md-5 pb-5 pt-md-0 pt-3">
+
+            <div class="jumbotron text-left pt-md-5">
+                <p class="h3 pb-md-5 pb-5 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Attendence Corrections</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form ui">
+                        <div class="field">
+                            <label>Reason For Attendence</label>
+                            <textarea rows="8" id="reason_attendence"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="ui form">
+                        <div class="fields two wide">
+                            <div class="field">
+                                <label>Choose Student Name</label>
+                                <select required class="ui search dropdown" id="students_names" multiple="">
+                                    <option value="" disabled selected>Nothing selected</option>
+                                </select>
+                            </div>
+        
+                            <div class="field">
+                                <label>Choose Percentage</label>
+                                <select required class="ui search dropdown" id="percent">
+                                    <option value="1.0" selected>Give Full Day Attendence</option>
+                                    <option value="0.6">Give Three Hour Attendence</option>
+                                    <option value="0.4">Give Two Hour Attendence</option>
+                                    <option value="0.2">Give One Hour Attendence</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field wide">
+                            <label for="date_giving">Choose Date</label>
+                            <input type="date" id="date_giving">
+                        </div>
+                        <div class="ui buttons two">
+                            <div class="button ui blue" onclick="get_studence_name()" id="get_st_name_btn">Get Student Names</div>
+                            <div onclick="submit_correction()" id="sub_corr_btn" class="button ui teal">Grand Attendence</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!--End-->
+
     </section>
 
 </div>
 
-
+<script>
+    var now = new Date();
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+    $('#datePicker').val(today);var now = new Date();
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+    $('#datePicker').val(today);
+</script>
 <script src="{{ url_for('static', path='attendence.js') }}"></script>
-<script>
-
-var xValues = ["Working Data", "Holidays"]
-var yValues = [50, 30]
-var title = ""
-plot_pie(xValues, yValues, title)
-
-</script>
 {% endblock %}
-
-<script>
-    function plot_pie(xValues, yValues, title){
-    
-    var barColors = ["#b91d47", "#00aba9"];
-    var type = "pie"
-    var data = {}
-    new Chart("myChart", {
-        type: "pie",
-        data: {
-            labels: xValues,
-            datasets: [{
-            backgroundColor: barColors,
-            data: yValues
-            }]
-        },
-    options: {
-        title: {
-                display: true,
-                text: title
-            }
-        }
-    })
-
-}
-</script>

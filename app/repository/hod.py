@@ -4,20 +4,23 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status, Response
 
-def create(request: Schemas.AddTeacher, db: Session):
+def appoint_teacher(request: Schemas.AddTeacher, db: Session):
+
     new_teacher = models.Teachers(
                     name = request.name, email = request.email,\
-                    phone_number = request.phone_number, department = request.department
+                    phone_number = request.phone_number,\
+                    department = request.department, tag = request.tag,\
+                    username = request.username
                 )
     
     db.add(new_teacher)
     db.commit()
     db.refresh(new_teacher)
-    return new_teacher
+    return Response(status_code=204)
 
-def delete(request: Schemas.DeleteTeacher, db: Session):
+def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
     teacher = db.query(models.Teachers).filter(and_(models.Teachers.name == request.name,
-                                models.Teachers.email == request.username))
+                                models.Teachers.username == request.user_name))
     if not teacher.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User in database") 
 
@@ -33,12 +36,21 @@ def update(email: str, request: Schemas.AddTeacher, db: Session):
     db.commit()
     return 'done'
 
-def get_techer_details(db: Session):
+def get_techer_details(db: Session, template=False):
     teachers = db.query(models.Teachers).all()
     if not teachers:
+        if template: return []
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
             detail = 'No content in the database')
     return teachers
+
+def get_student_details(db: Session, course: str, year: int):
+    student = db.query(models.Students).filter(models.Students.course == course,\
+                            models.Students.year == year).all()
+    if not student:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
+            detail = 'No content in the database')
+    return student
 
 def mail_(who: str, message: str, db: Session):
     message = message.replace('\\n', '\n').replace('\\t', '\t')

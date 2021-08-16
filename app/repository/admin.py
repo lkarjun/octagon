@@ -22,9 +22,10 @@ def change_admin_pass(request: Schemas.AdminPass, db: Session):
     db.commit()
     return 'changed'
 
-def get_all(db: Session):
+def get_all(db: Session, template=False):
     hods = db.query(models.Hod).all()
     if not hods:
+        if template: return []
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
             detail = 'No content in the database')
     return hods
@@ -80,9 +81,10 @@ def new_department(request: Schemas.AddDepartment, db: Session):
     db.refresh(department)
     return "Department Added"
 
-def get_all_departments(db: Session):
+def get_all_departments(db: Session, template=False):
     departments = db.query(models.Departments).all()
     if not departments:
+        if template: return []
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
             detail = 'No content in the database')
     return departments
@@ -116,9 +118,10 @@ def delete_course(request: Schemas.DeleteCourse, db: Session):
     db.commit()
     return Response(status_code=204)
 
-def get_all_course(db: Session):
+def get_all_course(db: Session, template=False):
     courses = db.query(models.Courses).all()
     if not courses:
+        if template: return []
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
             detail = 'No content in the database')
     return courses

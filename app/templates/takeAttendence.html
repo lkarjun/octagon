@@ -21,20 +21,23 @@
 <div class="ui container">
 
     <section class="p-md-5 m-md-5 pb-5 pt-5">
-        <form class="ui form pb-md-5 pb-5" id="whichClass">
+
+        <form class="ui form pb-md-5 pb-5" id="set_class">
             <h3 class="ui dividing header">Set Class</h3>
             <div class="three fields">
 
                 <div class="field">
                     <label >Choose Course</label>
-                    <select class="ui dropdown">
-                        <option value="none" selected>None</option>
+                    <select class="ui dropdown search" id="course">
+                        {% for i in course %}
+                        <option value="{{i.Course_name_alias}}">{{ i.Course_name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
     
                 <div class="field">
                     <label>Choose Year</label>
-                    <select class="ui dropdown">
+                    <select class="ui dropdown" id="year">
                         <option value="1" selected>Year 1</option>
                         <option value="2">Year 2</option>
                         <option value="3">Year 3</option>
@@ -50,42 +53,197 @@
 
             </div>
 
-            <button type="submit" class="ui button animated teal" >
+            <button type="submit" id="setclass_btn" class="ui button animated teal" >
                 <div class="visible content">Set Class</div>
                 <div class="hidden content">
                     <i class="check circle outline icon"></i>
                 </div>
             </button>
+
         </form>
 
-        <form class="ui form pb-md-5 pb-5 pt-md-2 pt-0" id="take">
+
+        <script>
+
+            function append_student_name(name){
+                $('#present_students').append(new Option(name, name))
+            }
+
+            
+            $("#set_class").submit((e)=>{
+                e.preventDefault();
+
+                $("#setclass_btn").addClass("loading disabled")
+
+                // var date = $("#datePicker").val().toString(),
+
+                var data = JSON.stringify({"course": $("#course").val(),
+                                           "year": parseInt($("#year").val()),
+                                           "date": $("#datePicker").val().toString()
+                                        });
+                
+                var base = window.location.origin + '/attendence/set_class';
+
+                $.ajax({
+                    url: base,
+                    type: 'POST',
+                    async: true,
+                    data: data,
+                    dataType: 'json',
+                    contentType: "application/json",
+
+                    success: function(result){
+
+                        $("#setclass_btn").removeClass("loading");
+                        $("#take_btn").removeClass("disabled")
+                        $("#present_students").empty()
+                        result.names.forEach(append_student_name)
+
+                        swal({
+                            title: "Student Names Updated!",
+                            text: "Please choose presented students name.",
+                            icon: "success",
+                            button: "Okay!",
+                        })
+
+                    },
+                    error: function(result){
+                        $("#setclass_btn").removeClass("loading disabled");
+
+                        if(result.status == 404){
+                            swal({
+                                title: "No Students!",
+                                text: "There is no student admitted in this course.",
+                                icon: "error",
+                                button: "Okay!",
+                            })
+                        }
+                        else if(result.status == 406){
+                            var msg = JSON.parse(result.responseText)
+                            swal({
+                                title: "Already taken!",
+                                text: msg.detail,
+                                icon: "error",
+                                button: "Okay!",
+                            })
+                        }
+                        else{
+                            error_alert("Something went wrong please try to call the techinal team...")
+                        }
+                    }
+
+                });
+
+            
+            })
+
+
+        </script>
+
+
+        <form class="ui form pb-md-5 pb-5 pt-md-2 pt-0" id="take-attendence-form">
             <h3 class="ui dividing header">Take Attendence</h3>
             <div class="fields pb-md-0 pb-3">
 
                 <div class="sixteen wide field">
                     <label>Choose Students Names</label>
-                    <select class="ui fluid search dropdown" multiple="">
+                    <select class="ui fluid search dropdown" multiple="" id="present_students">
                         <option value="" disabled selected>Students Name</option>
-                        <option value="AL">Lalkrishna</option>
-                        <option value="AK">Shahil</option>
-                        <option value="A4">Nadir</option>
-                        <option value="A1">Rashitha</option>
-                        <option value="A3">Nafla</option>
-                        <option value="A5">Rishal</option>
-                        <option value="A6">Arjun</option>
+                    </select>
+                </div>
+
+                <div class="ten wide field">
+                    <label>Full Day / Hour Wise</label>
+                    <select class="ui fluid search dropdown" id="fdorhw">
+                        <option value="hour_wise" selected>Hour Wise</option>
+                        <option value="full_day">Full Day</option>
                     </select>
                 </div>
 
             </div>
+            
+            <div class="ui buttons">
 
-            <button type="submit" class="ui button vertical animated green disabled" >
-                <div class="visible content">Submit</div>
-                <div class="hidden content">
-                    <i class="check circle outline icon"></i>
-                </div>
-            </button>
+                <button type="submit" id="take_btn" class="ui button vertical animated positive disabled" >
+                    <div class="visible content">Submit</div>
+                    <div class="hidden content">
+                        <i class="check circle outline icon"></i>
+                    </div>
+                </button>
+                
+                <div class="or"></div>
+                <button class="ui button red" onclick="location.reload();">Reset</button>
+            </div>
 
         </form>
+
+        <script>
+            $("#take-attendence-form").submit((e)=>{
+                e.preventDefault();
+
+                $("#take_btn").addClass("loading disabled")
+
+                if($("#fdorhw").val()=="hour_wise"){
+                    var take_full_day = false;
+                }
+                else{
+                    var take_full_day = true;
+                }
+
+                var course = $("#course").val()
+                var year = parseInt($("#year").val())
+
+                var data = JSON.stringify({"course": course,
+                                           "year": year,
+                                           "take_full_day": take_full_day,
+                                           "date": $("#datePicker").val().toString(),
+                                           "present": $("#present_students").val()
+                                        });
+
+
+                var base = window.location.origin + '/attendence/take-attendence';
+
+                $.ajax({
+                    url: base,
+                    type: 'POST',
+                    async: true,
+                    data: data,
+                    dataType: 'json',
+                    contentType: "application/json",
+                    success: function(result){
+                        swal({
+                            title: "Taken Attendence!",
+                            text: "Sucessfully Taken Attendence "+course+" "+year,
+                            icon: "success",
+                            button: "Okay!",
+                        }).then((value) => {
+                          location.reload();
+                        });
+
+                    },
+                    error: function(result){
+                        if(result.status == 406){
+                            var msg = JSON.parse(result.responseText)
+                            swal({
+                                title: "Already taken!",
+                                text: msg.detail,
+                                icon: "error",
+                                button: "Okay!",
+                            }).then((value) => {
+                                location.reload();
+                            });
+
+                        }
+                        else{
+                            error_alert("Something went wrong please try to call the techinal team...")
+                        }
+                    }
+
+                })
+            
+            })
+        </script>
+
 
     </section>
 

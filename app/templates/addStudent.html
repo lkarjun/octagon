@@ -40,15 +40,15 @@ $("#navStudm").addClass("navisel")
             <div class="three fields">
             
                 <div class="field">
-                    <input type="text" name="id" placeholder="Unique Id">
+                    <input required type="text" id="unique_id" placeholder="Unique Id">
                 </div>
     
                 <div class="field">
-                    <input type="text" name="name" placeholder="Full Name">
+                    <input required type="text" id="name" placeholder="Full Name">
                 </div>
     
                 <div class="field">
-                    <input type="email" name="email" placeholder="Email">
+                    <input required type="email" id="email" placeholder="Email">
                 </div>
     
             </div>
@@ -56,15 +56,15 @@ $("#navStudm").addClass("navisel")
             <div class="three fields">
     
                 <div class="field">
-                    <input type="text" name="pname" placeholder="Parent Name">
+                    <input required type="text" id="parent_name" placeholder="Parent Name">
                 </div>
     
                 <div class="field">
-                    <input type='text' name='pnumber' placeholder="Parent Phone Number">
+                    <input required type='number' id='parent_number' placeholder="Parent Phone Number">
                 </div>
                 
                 <div class="field">
-                    <input type='text' name='snumber' placeholder="Phone Number 2">
+                    <input required type='number' id='number' placeholder="Phone Number 2">
                 </div>
             
             </div>
@@ -73,14 +73,21 @@ $("#navStudm").addClass("navisel")
                 
                 <div class="field">
                     <label >Choose Course</label>
-                    <select class="ui dropdown">
-                        <option value="none" selected>None</option>
+                    <select required class="ui dropdown search" id='course'>
+                        <option value="" disabled selected>Choose valid option</option>
+                        {% if course %}
+                        {% for i in course %}
+                        <option value='{{ i["Course_name_alias"] }}'>{{i['Course_name']}}</option>
+                        {% endfor %}
+                        {% else %}
+                        <option value="none">None</option>
+                        {% endif %}
                     </select>
                 </div>
     
                 <div class="field">
                     <label>Choose Year</label>
-                    <select class="ui dropdown">
+                    <select class="ui dropdown" id="year">
                         <option value="1" selected>Year 1</option>
                         <option value="2">Year 2</option>
                         <option value="3">Year 3</option>
@@ -92,13 +99,11 @@ $("#navStudm").addClass("navisel")
             </div>
 
             <div class="ui buttons">
-                <button class="ui button green" type="submit">Submit</button>
+                <button class="ui button green" type="submit" id="appoint_btn">Submit</button>
                 <div class="or"></div>
                 <div class="ui button red" onclick='$("#NewStudent")[0].reset();'>clear</div>
             </div>
 
-           
-    
         </form>
 
     </section>
@@ -111,24 +116,22 @@ $("#navStudm").addClass("navisel")
 
                 <div class="field">
                     <label >Unique Id</label>
-                    <input type="text" name="id" placeholder="Unique Id">
+                    <input type="text" id="id2" required placeholder="Unique Id">
                 </div>
 
                 <div class="field">
                     <label >Name</label>
-                    <input type="text" name="id" placeholder="Name">
+                    <input type="text" id="edName" required placeholder="Name">
                 </div>
 
                 <div class="field">
                     <label >Choose Course</label>
-                    <select class="ui dropdown">
-                        <option value="none" selected>None</option>
-                    </select>
+                    <select class="ui dropdown" id='edCourse1'></select>
                 </div>
     
                 <div class="field">
                     <label>Choose Year</label>
-                    <select class="ui dropdown">
+                    <select class="ui dropdown" id='edYear1'>
                         <option value="1" selected>Year 1</option>
                         <option value="2">Year 2</option>
                         <option value="3">Year 3</option>
@@ -138,27 +141,27 @@ $("#navStudm").addClass("navisel")
                 </div>
             </div>
             <div class="ui buttons">
-                <button class="ui button green" type="submit">Verify</button>
+                <button class="ui button green" id = 'appoint_btn2' type="submit">Verify</button>
                 <div class="or"></div>
-                <div class="ui button red" onclick='$("#editVerify")[0].reset();'>clear</div>
+                <div class="ui button red" onclick='reset_edit()'>clear</div>
             </div>
         </form>
-        
+
         <form class="ui form" id="editstudent">
             <h3 class="ui dividing header">Edit Student Details</h3>
     
             <div class="three fields">
             
                 <div class="field">
-                    <input type="text" name="id" placeholder="Unique Id">
+                    <input type="text" name="id" id='id4' placeholder="Unique Id">
                 </div>
     
                 <div class="field">
-                    <input type="text" name="name" placeholder="Full Name">
+                    <input type="text" name="name" id='name4' placeholder="Full Name">
                 </div>
     
                 <div class="field">
-                    <input type="email" name="email" placeholder="Email">
+                    <input type="email" name="email" id='email4' placeholder="Email">
                 </div>
     
             </div>
@@ -166,15 +169,15 @@ $("#navStudm").addClass("navisel")
             <div class="three fields">
     
                 <div class="field">
-                    <input type="text" name="pname" placeholder="Parent Name">
+                    <input type="text" name="pname" id='pname4' placeholder="Parent Name">
                 </div>
     
                 <div class="field">
-                    <input type='text' name='pnumber' placeholder="Parent Phone Number">
+                    <input type='text' name='pnumber' id='pnumber4' placeholder="Parent Phone Number">
                 </div>
                 
                 <div class="field">
-                    <input type='text' name='snumber' placeholder="Phone Number 2">
+                    <input type='text' name='snumber' id='snumber4' placeholder="Phone Number 2">
                 </div>
             
             </div>
@@ -183,14 +186,12 @@ $("#navStudm").addClass("navisel")
                 
                 <div class="field">
                     <label >Choose Course</label>
-                    <select class="ui dropdown">
-                        <option value="none" selected>None</option>
-                    </select>
+                    <select class="ui dropdown" id='course4'></select>
                 </div>
     
                 <div class="field">
                     <label>Choose Year</label>
-                    <select class="ui dropdown">
+                    <select class="ui dropdown" id='year4'>
                         <option value="1" selected>Year 1</option>
                         <option value="2">Year 2</option>
                         <option value="3">Year 3</option>
@@ -202,13 +203,11 @@ $("#navStudm").addClass("navisel")
             </div>
 
             <div class="ui buttons">
-                <button class="ui button green disabled" type="submit">Submit</button>
+                <button class="ui button green disabled edbtndis" id="appoint_btn_ed" type="submit">Submit</button>
                 <div class="or"></div>
-                <div class="ui button red disabled" onclick='$("#editstudent")[0].reset();'>clear</div>
+                <div class="ui button red disabled edbtndis" onclick='$("#editstudent")[0].reset();'>clear</div>
             </div>
 
-           
-    
         </form>
 
     </section>
@@ -221,24 +220,22 @@ $("#navStudm").addClass("navisel")
 
                 <div class="field">
                     <label >Unique Id</label>
-                    <input type="text" name="id" placeholder="Unique Id">
+                    <input type="text" id="id1" required placeholder="Unique Id">
                 </div>
 
                 <div class="field">
                     <label>Full Name</label>
-                    <input type="text" name="id" placeholder="Name">
+                    <input type="text" id="rmName" required placeholder="Name">
                 </div>
 
                 <div class="field">
                     <label >Choose Course</label>
-                    <select class="ui dropdown">
-                        <option value="none" selected>None</option>
-                    </select>
+                    <select class="ui dropdown" id='course1'></select>
                 </div>
     
                 <div class="field">
                     <label>Choose Year</label>
-                    <select class="ui dropdown">
+                    <select class="ui dropdown" id='year1'>
                         <option value="1" selected>Year 1</option>
                         <option value="2">Year 2</option>
                         <option value="3">Year 3</option>
@@ -248,57 +245,21 @@ $("#navStudm").addClass("navisel")
                 </div>
             </div>
             <div class="ui buttons">
-                <button class="ui button orange" type="submit">Remove</button>
+                <button class="ui button orange" type="submit" id="appoint_btn1">Remove</button>
                 <div class="or"></div>
                 <div class="ui button red" onclick='$("#removeStudent")[0].reset();'>clear</div>
             </div>
         </form>
 
-        <!-- <section id="remove-students" class="pb-md-5 pb-5">
-
-            <form class="ui form pb-md-5 pb-5">
-                <h3 class="ui dividing header">Remove Entire Batch</h3>
-                <div class="four fields">
-    
-                    <div class="field">
-                        <label >Unique Id</label>
-                        <input type="text" name="id" placeholder="Unique Id">
-                    </div>
-    
-                    <div class="field">
-                        <label>Full Name</label>
-                        <input type="text" name="id" placeholder="Name">
-                    </div>
-    
-                    <div class="field">
-                        <label >Choose Course</label>
-                        <select class="ui dropdown">
-                            <option value="none" selected>None</option>
-                        </select>
-                    </div>
-        
-                    <div class="field">
-                        <label>Choose Year</label>
-                        <select class="ui dropdown">
-                            <option value="1" selected>Year 1</option>
-                            <option value="2">Year 2</option>
-                            <option value="3">Year 3</option>
-                            <option value="4">Year 4</option>
-                            <option value="5">Year 5</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="ui buttons">
-                    <button class="ui button orange" type="submit">Remove</button>
-                    <div class="or"></div>
-                    <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
-                </div>
-            </form>
-
-        </section> -->
-
     </section>
 
 </div>
 
+<script>
+    $('#course option').clone().appendTo('#edCourse1');
+    $('#course option').clone().appendTo('#course1');
+    $('#course option').clone().appendTo('#course4');
+</script>
+
+<script src="{{ url_for('static', path='students.js') }}"></script>
 {% endblock %}

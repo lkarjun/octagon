@@ -254,7 +254,20 @@ $("#viewTT").submit((e)=>{
             setTimeTable(data, result)
         },
     error: function(result){
-        error_alert("Something went wrong please try to call the techinal team...")
+        
+        if(result.status == 404){
+            var msg = JSON.parse(result.responseText)
+            swal({
+                    title: "Not Found!",
+                    text: msg.detail,
+                    icon: "error",
+                    button: "Okay!",
+                })
+        }
+        else{
+            error_alert("Something went wrong please try to call the techinal team...")
+        }
+        
         }
     });
 })

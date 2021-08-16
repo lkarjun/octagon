@@ -21,6 +21,7 @@ pandas = "*"
 bs4 = "*"
 pydantic = "*"
 urllib3 = "*"
+ipykernel = "*"
 
 [dev-packages]
 

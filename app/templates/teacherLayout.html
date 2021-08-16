@@ -27,8 +27,8 @@
                 <a class="item navi" id='navAttenw' href="take-attendence">Attendence</a>
           
                 <div class="right menu">
-                    <a class="item navi">Messages</a> 
-                    <a class="item navi">About</a>
+                    <a class="item navi"><i class="envelope icon"></i></a>
+                    <a onclick="about()" class="item navi"><i class="info icon"></i></a>
                 </div>
             </div>
         </div>
@@ -48,8 +48,8 @@
                     <a class="item navi" id='navWorkm' href="#">Workspace</a>
                     <a class="item navi" id='navStudm' href="add-students">Student</a>
                     <a class="item navi" id='navAttenm' href="take-attendence">Attendence</a>
-                    <a class="item navi">Messages</a> 
-                    <a class="item navi">About</a>
+                    <a class="item navi"><i class="envelope icon"></i>Messages</a>  
+                    <a class="item navi" onclick="about()"><i class="info icon"></i>About</a>
                 </div>
             </div>
         </div>
@@ -77,6 +77,19 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
 <script src="{{ url_for('static', path='sementicAlert.js') }}"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+    function about(){
+        swal({
+            title: "Project 2k21!",
+            text: "Final Year Project(BCA) \
+                   by Lalkrishna, Rishal, Rashitha, Nafla",
+
+            icon: "info",
+            button: "Cool!",
+        })
+    }
+</script>
 
 </body>
 </html>

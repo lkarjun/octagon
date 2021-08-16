@@ -46,6 +46,22 @@
       <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Teacher's Details</p>
     </div>
     
+    <!--Teacher Search-->
+      <div class="form ui">
+
+          <div class="field">
+            <div class="ui search">
+              <div class="ui icon input">
+                <input class="prompt" type="text" id='myInput' placeholder="Search Teacher">
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+            </div>
+        </div>
+
+      </div>
+    <!--Search Ends-->
+
     <div class="table-responsive">
       <table class="table align-middle">
         <thead>
@@ -54,10 +70,34 @@
             <th scope="col" class="font-weight-bold">Email</th>
             <th scope='col' class="font-weight-bold">Phone No:</th>
             <th scope="col" class="font-weight-bold">User Name</th>
+            <th scope="col" class="font-weight-bold">Tag</th>
             <td scope="col" class="font-weight-bold">Remove Teacher</td>
           </tr>
         </thead>
-        <tbody>
+        
+        <tbody id='Teachers'>
+
+          {% if teachers %}
+
+          {% for teacher in teachers%}
+
+          <tr id="{{ teacher.username }}">
+            <td scope="row" class="font-weight-bold">{{ teacher.name }}</td>
+            <td>{{ teacher.email }}</td>
+            <td>{{ teacher.phone_number }}</td>
+            <td>{{ teacher.username }}</td>
+            <td>{{ teacher.tag }}</td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm px-3" onclick="remove_teacher('{{ teacher.username }}', '{{ teacher.name }}')">
+                <i class="x icon"></i>
+              </button>
+            </td>
+          </tr>
+
+          {% endfor %}
+
+          {% else %}
+
           <tr>
             <th scope="row" class="font-weight-bold">None</th>
             <td>None</td>
@@ -69,6 +109,8 @@
               </button>
             </td>
           </tr>
+
+          {% endif %}
         </tbody>
       </table>
     </div>
@@ -77,10 +119,10 @@
   
   <section id="Addteacher" style="display: none;" class="pb-5">
 
-    <form class="ui form">
+    <form class="ui form" id='Appointment_form'>
       <h2 class="ui dividing header" style="font-family: 'Exo', sans-serif;">Appoint New Teacher</h2>
 
-      <div class="fields four">
+      <div class="fields three">
           <div class="field">
             <label>Name</label>
             <input id='name' required type="text" placeholder="eg: Rishal">
@@ -88,7 +130,7 @@
           
           <div class="field">
             <label>Email</label>
-            <input id='email' required type="text" placeholder="eg: Rishal@gmail.com">
+            <input id='email' required type="email" placeholder="eg: Rishal@gmail.com">
           </div>
           
           <div class="field">
@@ -96,11 +138,36 @@
             <input id='username' required type="text" placeholder="eg: rishal_cs">
           </div>
         
-          <div class="field">
-            <label>Phone Number</label>
-            <input id='number' required type="text" placeholder="9934223333">
-          </div>
-      
+      </div>
+
+      <div class="fields three">
+
+        <div class="field">
+          <label>Phone Number</label>
+          <input id='number' required type="text" placeholder="9934223333">
+        </div>
+        
+        <div class="field">
+          <label>Tag</label>
+          <select class="ui dropdown" id='tag'>
+            <option value="-" selected>None</option>
+            <option value="CT">Class Teacher</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Department</label>
+          <select class="ui dropdown search" id='depart'>
+            {% if depart %}
+            {% for i in depart %}
+            <option value="{{ i['Alias'] }}">{{i['Department']}}</option>
+            {% endfor %}
+            {% else %}
+            <option value="">None</option>
+            {% endif %}
+          </select>
+        </div>
+
       </div>
 
       <div class="fields three">
@@ -125,7 +192,7 @@
       </div>
 
       <div class="ui buttons">
-        <button class="ui button green" type="submit">Appoint</button>
+        <button class="ui button green" type="submit" id='appoint_btn'>Appoint</button>
         <div class="or"></div>
         <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
       </div>
@@ -186,4 +253,6 @@
   </section>
 
 </div>
+
+<script src="{{ url_for('static', path='teachers_edit.js') }}"></script>
 {% endblock %}

@@ -1,7 +1,7 @@
-from database.models import Courses
 from pydantic import BaseModel
-from typing import Optional, List
-from fastapi import UploadFile, File
+from typing import Optional, List, Union
+from pathlib import Path
+from pandas import DataFrame
 
 class CreateHod(BaseModel):
     name: str
@@ -53,9 +53,11 @@ class TokenData(BaseModel):
 
 class AddTeacher(BaseModel):
     name: str
+    username: str
     department: str
     email: str
-    phone_number: Optional[int]
+    phone_number: int
+    tag: str
 
 class ShowTeacher(AddTeacher):
     class Config():
@@ -91,3 +93,75 @@ class CurrentHour(BaseModel):
     course: str
     year: str
     hour: str
+
+
+class AddStudent(BaseModel):
+    unique_id: str
+    name: str
+    email: str
+    parent_name: str
+    parent_number: int
+    number: int
+    course: str
+    year: int
+
+class EditStudent(AddStudent):
+    old_unique_id: str
+    old_name: str
+    old_course: str
+    old_year: int
+
+class DeleteStudent(BaseModel):
+    unique_id: str
+    name: str
+    course: str
+    year: int
+
+
+
+# Attendence
+class students_attendence(BaseModel): 
+    names: List[str]
+
+class set_class(BaseModel):
+    course: str
+    year: int
+    date: str
+
+class Files(BaseModel):
+    daily: Union[None, DataFrame]
+    monthly: Union[None, DataFrame]
+    daily_path: Path
+    monthly_path: Path
+    
+    class Config:
+        arbitrary_types_allowed = True
+
+class TakeAttendence(BaseModel):
+    course: str
+    year: int
+    take_full_day: bool
+    date: str
+    present: List[str]
+
+class Analysing(BaseModel):
+    course: str
+    year: int
+    last_month: bool
+    which_month: Optional[str] = None
+
+class ShowAttendence(BaseModel):
+    course: str
+    year: int
+
+class MostAbsentee(BaseModel):
+    course: str
+    year: int
+
+class AttendenceCorrection(BaseModel):
+    names: List[str]
+    date: str
+    percentage: float
+    reason: str
+    course: str
+    year: int
