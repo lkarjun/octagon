@@ -1,5 +1,5 @@
 from database.database import Base
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
 class Hod(Base):
@@ -74,3 +74,13 @@ class Students(Base):
     parent_number_alt = Column(Integer)
     course = Column(String)
     year = Column(Integer)
+
+class Corrections(Base):
+    __tablename__ = "Attendence Correction"
+    id = Column(Integer, primary_key=True, index=True)
+    course = Column(String)
+    year = Column(String)
+    date = Column(String)
+    student_name = Column(String)
+    reason = Column(String)
+    percentage = Column(Float)
