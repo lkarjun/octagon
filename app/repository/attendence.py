@@ -2,6 +2,8 @@ from fastapi import HTTPException, status, Response
 import pandas as pd
 import numpy as np
 from pathlib import Path
+from sqlalchemy.orm.session import Session
+from database import models
 from repository import Schemas
 from calendar import monthrange
 from typing import Callable, Union, List
@@ -168,6 +170,39 @@ def most_absentee(request: Schemas.MostAbsentee, files: Schemas.Files, **kwargs)
     most_absentee = zip(most_absentee["FULL_NAME"], most_absentee["PERCENTAGE"])
     
     return most_absentee, there_is, (number_of_working_days, number_of_working_days_left)
+
+@save_files
+@get_attendence_files
+def attendence_correction(request: Schemas.AttendenceCorrection, files: Schemas.Files,\
+                            db: Session, **kwargs):
+    df = files.daily
+    column = request.date
+    percentage = request.percentage
+    
+    if column not in df.columns:
+        raise HTTPException(status.HTTP_404_NOT_FOUND,
+                            detail="In this date there is no attendence taken")
+    
+    for name in request.names:
+        index_row = df[df['StudentsName'] == name].index[0]
+        current_percent = df.at[index_row, column]
+        
+        if current_percent <= 1.0 and (value:=current_percent+percentage) <= 1.0:
+            df.at[index_row, column] = value
+        else:
+            df.at[index_row, column] = 1.0
+
+        corrections = models.Corrections(
+                    course = request.course, year = request.year,
+                    date = request.date, student_name = name,
+                    reason = request.reason, percentage = request.percentage
+                )
+    
+        db.add(corrections)
+        db.commit()
+        db.refresh(corrections)
+            
+    return files
 
 # helper functions
 

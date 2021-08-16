@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Depends, status, Form, UploadFile, File
 from sqlalchemy.orm.session import Session
 from starlette.responses import HTMLResponse, Response
-from repository import hod, Schemas
+from repository import hod, Schemas, attendence
 from database import database
 from templates import HodTemplates
 from typing import List
@@ -38,6 +38,10 @@ async def verification_image(username: str = Form(...),
     return Response(status_code=204)
 
 # Students Related
+
+@router.post("/students-attendence/corrections", status_code=status.HTTP_204_NO_CONTENT)
+async def attendence_correction(request: Schemas.AttendenceCorrection, db: Session = Depends(get_db)):
+    return attendence.attendence_correction(request=request, db=db)
 
 # @router.post('/StudentsAttendence')
 # async def take_studentattendence(request: Request):...

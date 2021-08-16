@@ -107,7 +107,7 @@
 
     </section>
 
-    <section id="attendOverview" style="height: 120vh; display: none;">
+    <section id="attendOverview" style="height: 150vh; display: none;">
 
         <div class="jumbotron pb-md-4 pb-2 mb-md-4 pt-4">
             <p class="h3 font-weight-bold pb-3" style="font-family: 'Exo', sans-serif;" id="which_class_head">Bca Year 1 Attendence Overview</p>
@@ -156,70 +156,6 @@
             <div class="col-md-12">
                 <div class="d-flex justify-content-center">
                     <div class="ui horizontal list" id='most_absentee_display'>
-                        <!-- <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <img class="ui avatar image" src="{{ url_for('static', path = 'Favicon/kristy.png') }}">
-                            <div class="content">
-                                <div class="header">Steve Jobes</div>
-                                50 Points
-                            </div>
-                        </div> -->
                     </div>
                 </div>        
             </div>
@@ -227,7 +163,7 @@
         <!--End-->
 
         <!--Report Section-->
-        <section class="pb-md-5 pb-5 pt-md-0 pt-3" id="final_report_section" style="display: none;">
+        <section class="pb-md-3 pb-5 pt-md-0 pt-5" id="final_report_section" style="display: none;">
             <div class="jumbotron text-left pt-md-5">
                 <p class="h3 pb-md-5 pb-5 pt-md-2  font-weight-bold" id="final_report_head" style="font-family: 'Exo', sans-serif;">6 Month Report</p>
             </div>
@@ -273,6 +209,61 @@
         </section>
         <!--Ends-->
 
+        <!--Edit Attendence-->
+
+        <section class="pb-md-5 pb-5 pt-md-0 pt-3">
+
+            <div class="jumbotron text-left pt-md-5">
+                <p class="h3 pb-md-5 pb-5 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Attendence Corrections</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form ui">
+                        <div class="field">
+                            <label>Reason For Attendence</label>
+                            <textarea rows="8" id="reason_attendence"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="ui form">
+                        <div class="fields two wide">
+                            <div class="field">
+                                <label>Choose Student Name</label>
+                                <select required class="ui search dropdown" id="students_names" multiple="">
+                                    <option value="" disabled selected>Nothing selected</option>
+                                </select>
+                            </div>
+        
+                            <div class="field">
+                                <label>Choose Percentage</label>
+                                <select required class="ui search dropdown" id="percent">
+                                    <option value="1.0" selected>Give Full Day Attendence</option>
+                                    <option value="0.6">Give Three Hour Attendence</option>
+                                    <option value="0.4">Give Two Hour Attendence</option>
+                                    <option value="0.2">Give One Hour Attendence</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="field wide">
+                            <label for="date_giving">Choose Date</label>
+                            <input type="date" id="date_giving">
+                        </div>
+                        <div class="ui buttons two">
+                            <div class="button ui blue" onclick="get_studence_name()" id="get_st_name_btn">Get Student Names</div>
+                            <div onclick="submit_correction()" id="sub_corr_btn" class="button ui teal">Grand Attendence</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!--End-->
+
     </section>
 
 </div>
@@ -288,6 +279,5 @@
     var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
     $('#datePicker').val(today);
 </script>
-
 <script src="{{ url_for('static', path='attendence.js') }}"></script>
 {% endblock %}

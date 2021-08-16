@@ -1,5 +1,14 @@
 $("#dataAnalysis").submit((e)=>{
     e.preventDefault()
+    dataAnalysis()
+})
+
+function append_student_name(name){
+    $('#students_names').append(new Option(name, name))
+}
+
+
+function dataAnalysis(){
     $("#get_report_btn").addClass("loading disabled");
     var base = window.location.origin + '/hod/most_absentee';
     var course = $("#course").val()
@@ -48,7 +57,8 @@ $("#dataAnalysis").submit((e)=>{
 
         }
     })
-})
+}
+
 
 
 
@@ -170,3 +180,113 @@ $("#st_search").on("keyup", function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
       });
   });
+
+
+  function submit_correction(){
+    var base = window.location.origin + '/hod/students-attendence/corrections';   
+    var reason = $("#reason_attendence").val()
+    var date = $("#date_giving").val()
+    var students = $("#students_names").val()
+    $("#sub_corr_btn").addClass("loading disabled")
+
+    if (date && students != "" && reason != "") {
+        var data = JSON.stringify({
+                               "course": $("#course").val(),
+                               "year": parseInt($("#year").val()),
+                               "date": date.toString(),
+                               "percentage": $("#percent").val(),
+                               "names": students,
+                               "reason":reason
+                            });                    
+        $.ajax({
+            url: base,
+            type: 'POST',
+            async: true,
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                $("#sub_corr_btn").removeClass("loading disabled")
+                swal({
+                    title: "Attendence Updated!",
+                    text: "Granded Attendence for Students",
+                    icon: "success",
+                    button: "Okay!",
+                })
+            },
+            error: function(result){
+                $("#sub_corr_btn").removeClass("loading disabled")
+                if(result.status == 404){
+                    swal({
+                        title: "Attendence Not Taken!",
+                        text: "In this date there is no attendence taken",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+                else{
+                    error_alert("Something went wrong, please contact technical team")
+                
+                }
+            }
+        })
+    }
+    else{
+        $("#sub_corr_btn").removeClass("loading disabled")
+        warning_alert("Choose the date when you want to give attendance.")
+    }
+}
+
+function get_studence_name(){
+    $("#get_st_name_btn").addClass("loading disabled")
+    var data = JSON.stringify({"course": $("#course").val(),
+                               "year": parseInt($("#year").val()),
+                               "date": '0000-00-00'
+                            });
+    
+    var base = window.location.origin + '/attendence/set_class';   
+    
+    $.ajax({
+        url: base,
+        type: 'POST',
+        async: true,
+        data: data,
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(result){
+            $("#get_st_name_btn").removeClass("loading disabled")
+            $("#students_name").empty()
+            result.names.forEach(append_student_name)
+            swal({
+                title: "Student Names Updated!",
+                text: "Please choose students name.",
+                icon: "success",
+                button: "Okay!",
+            })
+        },
+        error: function(result){
+            $("#get_st_name_btn").removeClass("loading disabled")
+            if(result.status == 404){
+                swal({
+                    title: "No Students!",
+                    text: "There is no student admitted in this course.",
+                    icon: "error",
+                    button: "Okay!",
+                })
+            }
+            else if(result.status == 406){
+                var msg = JSON.parse(result.responseText)
+                swal({
+                    title: "Already taken!",
+                    text: msg.detail,
+                    icon: "error",
+                    button: "Okay!",
+                })
+            }
+            else{
+                error_alert("Something went wrong please try to call the techinal team...")
+            }
+        }
+
+    })
+}

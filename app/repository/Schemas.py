@@ -157,3 +157,11 @@ class ShowAttendence(BaseModel):
 class MostAbsentee(BaseModel):
     course: str
     year: int
+
+class AttendenceCorrection(BaseModel):
+    names: List[str]
+    date: str
+    percentage: float
+    reason: str
+    course: str
+    year: int
