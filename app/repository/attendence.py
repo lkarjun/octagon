@@ -136,7 +136,7 @@ def attendence_analysing(request: Schemas.Analysing, files: Schemas.Files, **kwa
 
         if not len(date_columns): raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
                                                 detail=f"No attendence taken in {which_month} month")
-        return get_analysis(df, date_columns)
+        return get_analysis(df, date_columns, six_mnth=False)
     
 
     date_columns = df.columns.to_list()
@@ -215,24 +215,26 @@ def calculate_score(x: float):
     elif x == 75 and x< 76: return 1
     else: return 0
 
-def get_analysis(df: pd.DataFrame, date_columns: Union[pd.Index, List]):
+def get_analysis(df: pd.DataFrame, date_columns: Union[pd.Index, List], six_mnth = True):
     
-    number_of_working_days = df.shape[1] - 1
-    number_of_holidays = 90 - number_of_working_days
+    number_of_working_days = len(date_columns)
     df_working = df[date_columns]
-    
+
     present_count = df_working.sum(axis=1)
     percentage = (present_count / number_of_working_days) * 100
     
-    convert_to_90 = percentage / 90 * 100
-    convert_to_90 = convert_to_90.round().to_list()
-    
+    if six_mnth:
+        convert_to_90 = percentage / 90 * 100
+        percentage = convert_to_90.round().to_list()
+
+    else: percentage = percentage.round().to_list()
+
     students_names = df['StudentsName'].iloc[present_count.index].to_list()
     
     total_leav = np.count_nonzero(df_working==0.0, axis=1).tolist()
     
     data = {"FULL_NAME": students_names, "TOTAL_LEAVE": total_leav,
-            "PERCENTAGE": convert_to_90}
+            "PERCENTAGE": percentage}
     
     final_report = pd.DataFrame(data = data,
                         columns=["FULL_NAME", "TOTAL_LEAVE", "PERCENTAGE"])
