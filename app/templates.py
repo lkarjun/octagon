@@ -73,7 +73,7 @@ class HodTemplates():
     def exam_notification(request):
         notifications = hod.uoc.get_exam_notifications()
         res = templates.TemplateResponse("uocExamTimetable.html",
-                context={"request": request, "title": "EXAM Notification", "notfy": notifications})
+                context={"request": request, "title": "Exam Notification", "notfy": notifications})
         return res
     
     def attendenceDataView(request):
