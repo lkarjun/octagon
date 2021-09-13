@@ -85,6 +85,10 @@ async def get_current_hour_detail(department: str, day: str, hour: str, db: Sess
 async def uoc_notificaions(request: Request):
     return HodTemplates.uoc_notification(request)
 
+@router.get('/exam-notification')
+async def uoc_notificaions(request: Request):
+    return HodTemplates.exam_notification(request)
+
 @router.get('/students-attendence')
 async def attendenceDataView(request: Request):
     return HodTemplates.attendenceDataView(request)
