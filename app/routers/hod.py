@@ -81,6 +81,10 @@ async def get_current_hour_detail(department: str, day: str, hour: str, db: Sess
 
 
 # Pages
+@router.get("/workspace")
+async def workspace(request: Request):
+    return HodTemplates.workspace(request)
+
 @router.get('/uoc-notification')
 async def uoc_notificaions(request: Request):
     return HodTemplates.uoc_notification(request)

@@ -45,6 +45,11 @@ class OthersTemplates():
 
 class HodTemplates():
 
+    def workspace(request):
+        tmp = templates.TemplateResponse("hodWorkspace.html",
+                        context={"request": request, "title": "Workspace"})
+        return tmp
+
     def timetable(request):
         db = database.SessionLocal()
         courses = admin.get_all_course(db)
