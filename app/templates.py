@@ -125,6 +125,11 @@ class HodTemplates():
 
 class TeacherTemplates():
     
+    def workspace(request):
+        tmp = templates.TemplateResponse("teacherWorkspace.html",
+                        context={"request": request, "title": "Workspace"})
+        return tmp
+
     def takeAttendence(request):
         db = database.SessionLocal()
         courses = admin.get_all_course(db)
