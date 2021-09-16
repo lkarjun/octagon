@@ -16,64 +16,6 @@
 
     <section class="pt-md-2 mt-md-2" id="choose_detail" style="display: block;">
 
-        <!-- <div class="row">
-            <div class="col-md-6 col-sm-12">
-                <div>
-                    <canvas id="myChart"></canvas>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-12">
-                <div class="d-flex justify-content-center">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="p-0 p-md-5">
-                                <div class="jumbotron text-left">
-                                    <p class="h3 pb-3 pt-3" style="font-family: 'Exo', sans-serif;">Select Class</p>
-                                </div>
-
-                                <form class="ui form align-items-center">
-                                    <div class="fields two">
-                                        <div class="field">
-                                            <label>Course</label>
-                                            <select required class="ui search dropdown" id='course'>
-                                                {% for i in course %}
-                                                <option value="{{i.Course_name_alias}}">{{ i.Course_name }}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                            
-                                        <div class="field">
-                                            <label>Year</label>
-                                            <select required class="ui search dropdown" id='year'>
-                                                <option value="1">Year 1</option>
-                                                <option value="2">Year 2</option>
-                                                <option value="3">Year 3</option>
-                                                <option value="4">Year 4</option>
-                                                <option value="5">Year 5</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="ui button blue" onclick="$('#report_main').css('display', 'none')">Get Report</div>
-                                    <div class="ui button teal" onclick="show_attendence()">Show</div>
-                                </form>
-
-                                <script>
-                                    function show_attendence(){
-                                        var course = $("#course").val()
-                                        var year = parseInt($("#year").val())
-                                        var href = "/hod/students-attendence/"+course+"/"+year
-                                        window.location.href = href
-                                    }
-                                </script>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div> -->
-
         <form class="ui form align-items-center p-4" id="dataAnalysis">
             <div class="fields two wide">
                 <div class="field">
@@ -126,7 +68,7 @@
                 </div>
             </div>
 
-            <div class="col-md-5 pt-md-5 pt-4 mt-md-5 mt-4 ps-3 pl-3">
+            <div class="col-md-5 pt-md-5 pt-4 mt-md-5 mt-4 ps-3 pl-3 pb-md-0 pb-2">
 
                 <div class="ui form">
 
@@ -152,7 +94,7 @@
             <p class="h3 pb-3 pb-md-3 pt-5 mt-2 pt-md-5 pb-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">Most Absentees</p>
         </div>
         
-        <div class="row">
+        <div class="row pb-3">
             <div class="col-md-12">
                 <div class="d-flex justify-content-center">
                     <div class="ui horizontal list" id='most_absentee_display'>
@@ -211,7 +153,7 @@
 
         <!--Edit Attendence-->
 
-        <section class="pb-md-5 pb-5 pt-md-0 pt-3">
+        <section class="pb-md-5 pb-5 pt-md-0 pt-5">
 
             <div class="jumbotron text-left pt-md-5">
                 <p class="h3 pb-md-5 pb-5 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Attendence Corrections</p>
