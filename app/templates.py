@@ -131,7 +131,15 @@ class HodTemplates():
         tmp = templates.get_template("__attendencereport.html")
         tmp = tmp.render(request = request, final_report = final_report)
         return tmp
-
+    
+    def latest_notfications(request, which_notification):
+        if which_notification == 'exam':
+            data = hod.uoc.get_latest_exam_notifications()
+        else:
+            data = hod.uoc.get_latest_notifications()
+        tmp = templates.get_template("__latestNotifications.html")
+        tmp = tmp.render(request = request, notify = data)
+        return tmp
 
 
 class TeacherTemplates():

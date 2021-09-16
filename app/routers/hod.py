@@ -125,3 +125,7 @@ async def most_absentee(request: Request, data: Schemas.MostAbsentee):
 @router.post("/get_report")
 async def get_report(request: Request, data: Schemas.Analysing):
     return HodTemplates.show_report(request, data)
+
+@router.get("/latest_notification")
+async def get_notification(request: Request, which_notification: str):
+    return HodTemplates.latest_notfications(request, which_notification)

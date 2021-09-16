@@ -1,0 +1,12 @@
+<div class="ui selection list">
+    {% for data in notify%}
+    <div class="item">
+      <i class="bell icon"></i>
+      <div class="content">
+        <div class="header">
+            <a href="{{ data.direct_link }}" target="_blank"> {{ data.text }}</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</div>

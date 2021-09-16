@@ -10,28 +10,54 @@
 <div class="container">
 
     <div class="jumbotron text-center">
-        <p class="h3 text-light pt-md-2 pt-4 pb-4 mt-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">Welcome Arjun!</p>
+        <p class="h3 pt-md-5 pt-5 pb-5 mt-5 mb-5 mt-md-5 mb-md-4 font-weight-bold" style="font-family: 'Exo', sans-serif;">Welcome Arjun!</p>
     </div>
 
-    <div class="row">
-        <div class="col-md-7">
-            <p class="h4 font-weight-bold text-light pt-md-0 pt-4">Today's Take ups</p>
-            
-            <div class="pt-3 pt-md-5 pb-5 pb-md-4">
-                <p class="text-light">Current Hour: BCA YEAR 1</p>
-                <p class="text-light"></p>
-                <p class="text-light">Current Hour: </p>
+    <section id='quicklink' class='pb-1'>
+
+        <p class="h4 font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Quick Links</p>
+  
+        <div class="h4 pt-2">
+            <a href="http://docs.uoc.ac.in/website/Syll/"><span class="badge bg-primary">Syllabus <i class="external alternate icon"></i></span></a> 
+            <a href="http://www.cupbonline.uoc.ac.in/CuPbOnline/online_portal/registration.php"><span class="badge bg-danger">Registration <i class="external alternate icon"></i></span></a> 
+            <a href="http://results.uoc.ac.in/"><span class="badge bg-success">Result <i class="external alternate icon"></i></span></a>
+        </div>
+
+    </section>
+
+    <section id="notification" class="pt-5 pb-3">
+
+        <p class="h4 font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Latest Notifications <a href="/hod/uoc-notification"><i class="external alternate icon"></i></a></p>
+        
+        <div class="ui segment shadow" style="min-height: 100px;" id='notification-display'>
+            <div class="ui active dimmer" id='notification-dimmer'>
+              <div class="ui text loader" id='fetch-noti'>Fetching</div>
             </div>
-
         </div>
 
-        <div class="col-md-5">
-            <p class="h4 font-weight-bold text-light">ToDo</p>
+    </section>
+
+    <section id="exam-notification" class="pt-5 pb-5 mb-5">
+        <p class="h4 font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Latest Exam Notifications <a href="/hod/exam-notification"><i class="external alternate icon"></i></a></p>
+
+        <div class="ui segment shadow" style="min-height: 100px;" id='enotification-display'>
+            <div class="ui active dimmer" id='enotification-dimmer'>
+              <div class="ui text loader" id='fetch-exam'>Fetching</div>
+            </div>
+            <p></p>
         </div>
 
-    </div>
+    </section>
 
 </div>
 
+
+
+<script src="{{ url_for('static', path='latest_notification.js') }}"></script>
+
+<script>
+    get_notification("notification")
+    get_notification("exam")     
+</script>
 
 {% endblock %}

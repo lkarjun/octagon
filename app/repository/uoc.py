@@ -35,3 +35,16 @@ def get_exam_notifications():
         'OTHER': make_data(soup.find("div", id="OTHER").find_all("a"))
     }
     return notifications
+
+
+def get_latest_exam_notifications():
+    req = urllib3.PoolManager()
+    text = req.request('GET', BASE_URL_EXAM_NOTIFICATION).data.decode()
+    soup = BeautifulSoup(text, features="html.parser")
+    return make_data(soup.find("div", id="ALL").find_all("a"))[:5]
+
+def get_latest_notifications():
+    req = urllib3.PoolManager()
+    text = req.request('GET', BASE_URL_NOTIFICATION).data.decode()
+    soup = BeautifulSoup(text, features="html.parser")
+    return make_data(soup.find("div", id="ALL").find_all("a"))[:5]
