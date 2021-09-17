@@ -129,7 +129,7 @@
                 <div class="col-md-12">
 
                     <div class="table-responsive">
-                        <table class="table-hover table">
+                        <table class="table-hover table" id='datatable'>
                             <thead>
                                 <tr class="table-primary">
                                     <th scope="col" class="font-weight-bold">FULL NAME</th>
@@ -143,6 +143,11 @@
                                 
                             </tbody>
                         </table>
+                    </div>
+                    <div class="ui buttons">
+                        <button class="ui button" onclick="export_table('csv')">Csv</button>
+                        <div class="or"></div>
+                        <button class="ui positive button" onclick="export_table('pdf')">Pdf</button>
                     </div>
                 </div>
             </div>
@@ -222,4 +227,22 @@
     $('#datePicker').val(today);
 </script>
 <script src="{{ url_for('static', path='attendence.js') }}"></script>
+<script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.0.10/jspdf.plugin.autotable.min.js"></script>
+<!-- Html table to pdf -->
+<script>
+
+    function export_table(format){
+        var format_type = format;
+        var filename = "Report."+format
+
+        $("#datatable").tableHTMLExport({
+            type:format_type,
+            filename:filename
+        });
+    }
+
+</script>
 {% endblock %}
