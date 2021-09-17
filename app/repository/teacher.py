@@ -1,9 +1,19 @@
 from database import models
 from repository import Schemas, attendence
 from sqlalchemy.orm import Session
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 from fastapi import HTTPException, status, Response
 
+
+# Teacher
+
+def get_messages(db: Session):
+    fake_dep = "bca"
+    messages = db.query(models.Message).filter(
+                or_(models.Message.hod_department == fake_dep,
+                    models.Message.hod_department == "all")
+            ).all()
+    return messages
 
 # Students
 

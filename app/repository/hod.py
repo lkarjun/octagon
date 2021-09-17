@@ -70,6 +70,15 @@ def send_message(request: Schemas.Message, db: Session):
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
+def get_full_message(db: Session):
+    fake_name = "anju"
+    fake_dep = "bca"
+    messages = db.query(models.Message).filter(
+                and_(models.Message.hod_name == fake_name,
+                    models.Message.hod_department == fake_dep)
+            ).all()
+    return messages[::-1]
+
 def mail_(who: str, message: str, db: Session):
     message = message.replace('\\n', '\n').replace('\\t', '\t')
     if who == 'hod':

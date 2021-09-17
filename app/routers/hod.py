@@ -47,7 +47,7 @@ async def attendence_correction(request: Schemas.AttendenceCorrection, db: Sessi
 # Hod Functions
 
 @router.post('/message', status_code=status.HTTP_204_NO_CONTENT)
-async def mail(request: Schemas.Message, db: Session = Depends(get_db)):
+async def message(request: Schemas.Message, db: Session = Depends(get_db)):
     return hod.send_message(request, db)
 
 @router.post('/CreateTimeTable', status_code=status.HTTP_201_CREATED)
@@ -70,6 +70,9 @@ async def remove_timetable(request: Schemas.TimeTableEdit, db: Session = Depends
 async def get_current_hour_detail(department: str, day: str, hour: str, db: Session = Depends(get_db)):
     return hod.current_hour_detail(department, day, hour, db)
 
+@router.get("/full_message")
+async def get_full_message(request: Request, db: Session = Depends(get_db)):
+    return HodTemplates.get_full_messages(request, db)
 
 # Pages
 @router.get("/workspace")

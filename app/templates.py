@@ -146,6 +146,12 @@ class HodTemplates():
                         context={"request": request, "title": "Workspace"})
         return tmp
 
+    def get_full_messages(request, db):
+        data = hod.get_full_message(db = db)
+        tmp = templates.get_template("__message.html")
+        tmp = tmp.render(request = request, data = data)
+        return tmp
+
 
 class TeacherTemplates():
     
