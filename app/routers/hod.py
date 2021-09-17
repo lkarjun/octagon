@@ -43,21 +43,12 @@ async def verification_image(username: str = Form(...),
 async def attendence_correction(request: Schemas.AttendenceCorrection, db: Session = Depends(get_db)):
     return attendence.attendence_correction(request=request, db=db)
 
-# @router.post('/StudentsAttendence')
-# async def take_studentattendence(request: Request):...
-
-# @router.get('/AttendenceReport')
-# async def get_attendence_report(request: Request):...
-
-# # Annousement for teachers
-# @router.post('/MessageTeacher')
-# async def send_message_teacher(request: Request):...
 
 # Hod Functions
 
-@router.post('/Message/{who}', status_code=status.HTTP_200_OK)
-async def mail(who: str, message: str, db: Session = Depends(get_db)):
-    return hod.mail_(who, message, db)
+@router.post('/message', status_code=status.HTTP_204_NO_CONTENT)
+async def mail(request: Schemas.Message, db: Session = Depends(get_db)):
+    return hod.send_message(request, db)
 
 @router.post('/CreateTimeTable', status_code=status.HTTP_201_CREATED)
 async def create_time_table(request: Schemas.TimeTable, db: Session = Depends(get_db)):

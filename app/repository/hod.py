@@ -52,6 +52,24 @@ def get_student_details(db: Session, course: str, year: int):
             detail = 'No content in the database')
     return student
 
+def send_message(request: Schemas.Message, db: Session):
+    #===================================
+    # this should change with current login person name and department
+    fake_hod_name = "anju"
+    fake_dep = "bca"
+    #===================================
+
+    message = models.Message(
+        hod_name = fake_hod_name, hod_department = fake_dep,
+        date = request.date, to = request.to, title = request.title,
+        message = request.message, important = request.important
+    )
+    db.add(message)
+    db.commit()
+    db.refresh(message)
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
 def mail_(who: str, message: str, db: Session):
     message = message.replace('\\n', '\n').replace('\\t', '\t')
     if who == 'hod':

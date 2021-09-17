@@ -165,3 +165,10 @@ class AttendenceCorrection(BaseModel):
     reason: str
     course: str
     year: int
+
+class Message(BaseModel):
+    title: str
+    message: str
+    to: str
+    important: bool
+    date: str

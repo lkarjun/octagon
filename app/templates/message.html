@@ -7,4 +7,92 @@
 </script>
 
 
+<div class="ui container pt-5">
+    <div class="jumbotron text-left">
+        <p class="pb-4 ui dividing header" style="font-family: 'Exo', sans-serif;">Draft New Message</p>
+    </div>
+
+    <div class='pt-5'>
+        <form class="ui form" id="message-form">
+
+            <div class="field">
+                <label>Title</label>
+                <input type="text" id = 'tle' required>
+            </div>
+            
+            <div class="field">
+                <label>Message</label>
+                <textarea rows="3" id='msg' required></textarea>
+            </div>
+
+            <div class="inline field">
+                <label>To</label>
+                <select class="ui dropdown" id='to'>
+                    <option value="dep" selected>Department Teachers</option>
+                    <option value="all">All Teachers</option>
+                </select>
+            </div>
+
+            <div class="inline field">
+                <label style="font-weight: bold;">Important</label>
+                <input id='imp' type="checkbox" tabindex="0" class="hidden">
+            </div>
+
+            <button class="ui button green">Send</button>
+        </form>
+    </div>
+
+    <script>
+
+        function get_date(){
+            var d = new Date();
+            var month = d.getMonth()+1;
+            var day = d.getDate();
+            var date = (day<10 ? '0' : '') + day + '-' +
+                       (month<10 ? '0' : '') + month + '-' +
+                       d.getFullYear()
+            return String(date)
+        }
+
+        $("#message-form").submit((e)=>{
+            e.preventDefault()
+            var base = window.location.origin + '/hod/message';
+
+            var data = JSON.stringify({"title": $("#tle").val(),
+                                       "message": $("#msg").val(),
+                                       "to": $("#to").val(),
+                                       "important": $('#imp').is(':checked'),
+                                       "date":get_date()})
+            
+            $.ajax({
+                url: base,
+                type: 'POST',
+                async: true,
+                data: data,
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(result){
+                    $("#message-form").trigger("reset");
+                    swal({
+                        title: "Message Sended!",
+                        text: "Successfully sended message to teachers",
+                        icon: "success",
+                        button: "Okay!",
+                    })
+                },
+                error: function(result){
+                    swal({
+                        title: "Failed!",
+                        text: "Please contact the techincal team.",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+            })
+        })
+    </script>
+
+</div>
+
+
 {% endblock %}
