@@ -140,6 +140,11 @@ class HodTemplates():
         tmp = templates.get_template("__latestNotifications.html")
         tmp = tmp.render(request = request, notify = data)
         return tmp
+    
+    def message(request):
+        tmp = templates.TemplateResponse("message.html",
+                        context={"request": request, "title": "Workspace"})
+        return tmp
 
 
 class TeacherTemplates():
