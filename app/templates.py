@@ -148,8 +148,9 @@ class HodTemplates():
 
     def get_full_messages(request, db):
         data = hod.get_full_message(db = db)
+        is_data_there = len(data) >= 1
         tmp = templates.get_template("__message.html")
-        tmp = tmp.render(request = request, data = data)
+        tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)
         return tmp
 
 

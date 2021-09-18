@@ -1,20 +1,24 @@
+{% if is_data_there %}
 <div class="ui styled fluid accordion">
-    {% for msg in data %}
-    <div class="title text-dark">
-      <i class="dropdown icon"></i>
-      {{ msg.title}}
-      <span class="badge bg-primary">{{ msg.date }}</span>
-      {% if msg.important %}
-      <span class="badge bg-danger">Important</span>
-      {% endif %}
-      {% if msg.to == "all" %}
-      <span class="badge bg-success">ALL</span>
-      {% endif %}
-    </div>
-    <div class="content">
-      <p>{{ msg.message }}</p>
-    </div>
-    {% endfor %}
+  {% for msg in data %}
+  <div class="title text-dark">
+    <i class="dropdown icon"></i>
+    {{ msg.title}}
+    <span class="badge bg-primary">{{ msg.date }}</span>
+    {% if msg.important %}
+    <span class="badge bg-danger">Important</span>
+    {% endif %}
+    {% if msg.to == "all" %}
+    <span class="badge bg-success">ALL</span>
+    {% endif %}
+  </div>
+  <div class="content">
+    <p>{{ msg.message }}</p>
+  </div>
+  {% endfor %}
 
 <script>$('.ui.accordion').accordion();</script>
 </div>
+{% else %}
+<div class="h5 text-center">Empty</div>
+{% endif %}
