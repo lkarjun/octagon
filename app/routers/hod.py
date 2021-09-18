@@ -74,6 +74,10 @@ async def get_current_hour_detail(department: str, day: str, hour: str, db: Sess
 async def get_full_message(request: Request, db: Session = Depends(get_db)):
     return HodTemplates.get_full_messages(request, db)
 
+@router.post("/clear_messages")
+async def clear_message(db: Session = Depends(get_db)):
+    return hod.clear_message(db)
+
 # Pages
 @router.get("/workspace")
 async def workspace(request: Request):
