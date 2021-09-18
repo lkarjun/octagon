@@ -172,3 +172,8 @@ class Message(BaseModel):
     to: str
     important: bool
     date: str
+
+class HourDetails(BaseModel):
+    course: str
+    hour: int
+    year: int

@@ -1,7 +1,7 @@
 from fastapi.templating import Jinja2Templates
 from fastapi import status
 from fastapi.responses import RedirectResponse
-from repository import admin, hod, attendence
+from repository import admin, hod, attendence, teacher
 from database import database
 from collections import defaultdict
 
@@ -156,9 +156,24 @@ class HodTemplates():
 
 class TeacherTemplates():
     
-    def workspace(request):
+    def workspace(request, db):
+        classes = teacher.get_hour_detail(db)
+        free_day = False if len(classes) >= 1 else True
         tmp = templates.TemplateResponse("teacherWorkspace.html",
-                        context={"request": request, "title": "Workspace"})
+                        context={"request": request, "title": "Workspace",
+                                 "free_day": free_day, "classes": classes})
+        return tmp 
+
+    def message(request, db):
+        tmp = templates.TemplateResponse("teacherMessageViews.html",
+                        context={"request": request, "title": "Messages"})
+        return tmp
+    
+    def get_messages(request, db, new_five):
+        data = teacher.get_messages(db, new_five)
+        is_data_there = len(data) >= 1
+        tmp = templates.get_template("__message.html")
+        tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)
         return tmp
 
     def takeAttendence(request):

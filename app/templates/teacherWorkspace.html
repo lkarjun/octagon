@@ -9,26 +9,65 @@
 <div class="ui container">
 
     <div class="jumbotron text-center">
-        <p class="h3 text-light pt-md-2 pt-4 pb-4 mt-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">Welcome Arjun!</p>
+        <p class="h3 pt-md-5 pt-5 pb-5 mt-5 mb-5 mt-md-5 mb-md-4 font-weight-bold" style="font-family: 'Exo', sans-serif;">Welcome Arjun!</p>
     </div>
 
-    <div class="row">
-        <div class="col-md-7">
-            <p class="h4 font-weight-bold text-light pt-md-0 pt-4">Today's Take ups</p>
-            
-            <div class="pt-3 pt-md-5 pb-5 pb-md-4">
-                <p class="text-light">Current Hour: BCA YEAR 1</p>
-                <p class="text-light"></p>
-                <p class="text-light">Current Hour: </p>
+    <section id='take'>
+
+        <p class="h4 font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Today's Timetable</p>
+  
+        <div class="pt-3 h5 font-weight-bold horizontal">
+            {% if free_day %}
+            <div class="ui purple horizontal label large shadow">Today is free for you! Enjoy it😂.</div>
+            {% else %}
+            {% for class in classes %}
+                <span class="badge bg-dark shadow">Hour {{ class.hour }}:  {{class.course}} Year {{ class.year }}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+    </section>
+
+    <section id='quicklink' class='pb-1 pt-5'>
+
+        <p class="h4 font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Quick Links</p>
+  
+        <div class="h4 pt-2">
+            <a href="http://docs.uoc.ac.in/website/Syll/"><span class="badge bg-primary">Syllabus <i class="external alternate icon"></i></span></a> 
+            <a href="http://results.uoc.ac.in/"><span class="badge bg-success">Result <i class="external alternate icon"></i></span></a>
+        </div>
+
+    </section>
+
+    <section id="message" class="pt-5 pb-3">
+
+        <p class="h4 font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Latest Messages <a href="/teacher/message"><i class="external alternate icon"></i></a></p>
+        
+
+        <div class="ui segment shadow" style="min-height: 70px;" id='message-display'>
+            <div class="ui active dimmer" id='message-dimmer'>
+              <div class="ui text loader" id='fetch-noti'>Loading</div>
             </div>
-
         </div>
 
-        <div class="col-md-5">
-            <p class="h4 font-weight-bold text-light">ToDo</p>
-        </div>
+    </section>
 
-    </div>
+    <script>
+        function get_full_message(){
+            var base = window.location.origin + '/teacher/messages/True';
+            $.ajax({
+                url: base,
+                type: 'GET',
+                async: true,
+                success: function(result){
+                    $("#message-dimmer").removeClass("dimmer")
+                    $("#message-display").html(result)
+                }
+            })
+        }
+        get_full_message()
+    </script>
+
 
 </div>
 

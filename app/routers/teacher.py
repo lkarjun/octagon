@@ -8,6 +8,12 @@ router = APIRouter(tags = ['Teachers'], prefix='/teacher')
 
 get_db = database.get_db
 
+# teacher
+
+@router.get("/messages/{new_five}")
+async def get_messages(request: Request, db: Session = Depends(get_db),
+                         new_five: bool = True):
+    return TeacherTemplates.get_messages(request, db, new_five)
 
 # templates
 
@@ -20,8 +26,12 @@ async def take_attendence(request: Request):
     return TeacherTemplates.takeAttendence(request)
 
 @router.get("/workspace")
-async def workspace(request: Request):
-    return TeacherTemplates.workspace(request)
+async def workspace(request: Request, db: Session = Depends(get_db)):
+    return TeacherTemplates.workspace(request, db)
+
+@router.get("/message", status_code=status.HTTP_200_OK)
+async def message(request: Request, db: Session = Depends(get_db)):
+    return TeacherTemplates.message(request, db)
 
 # Students
 

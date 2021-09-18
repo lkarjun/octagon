@@ -1,19 +1,56 @@
+import enum
+import numpy as np
 from database import models
 from repository import Schemas, attendence
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
 from fastapi import HTTPException, status, Response
-
+from datetime import datetime
 
 # Teacher
 
-def get_messages(db: Session):
+def get_messages(db: Session, new_five: bool):
     fake_dep = "bca"
     messages = db.query(models.Message).filter(
                 or_(models.Message.hod_department == fake_dep,
                     models.Message.hod_department == "all")
             ).all()
-    return messages
+    if new_five: return messages[::-1][:5]
+    return messages[::-1]
+
+def get_hour_detail(db: Session):
+    fake_teacher = 'arjun_bca'
+    fake_day = datetime.today().strftime("%A")
+    fake_day = "Monday"
+
+    classes = db.query(models.Timetable).filter(
+            and_(models.Timetable.days == fake_day,
+                or_(
+                    models.Timetable.hour_1 == fake_teacher,
+                    models.Timetable.hour_2 == fake_teacher,
+                    models.Timetable.hour_3 == fake_teacher,
+                    models.Timetable.hour_4 == fake_teacher,
+                    models.Timetable.hour_5 == fake_teacher
+                )
+            )
+        ).all()
+
+    return get_hour(classes, fake_teacher)
+
+def get_hour(classes, teacher_name):
+    full_data = []
+
+    for data in classes:
+        course = data.course.upper()
+        year = data.year
+        hours = [data.hour_1, data.hour_2, data.hour_3, data.hour_4, data.hour_5]
+        for i, name in enumerate(hours):
+            if teacher_name == name:
+                s = Schemas.HourDetails(course = course, hour = i, year = year)
+                full_data.append(s)
+
+    return full_data
+
 
 # Students
 

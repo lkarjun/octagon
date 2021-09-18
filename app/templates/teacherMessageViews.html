@@ -1,0 +1,44 @@
+{% extends "teacherLayout.html" %}
+{% block content %}
+<script>
+    $("#navMsgw").addClass("navisel")
+    $("#navMsgm").addClass("navisel")
+</script>
+
+<div class="ui container">
+
+    <section class="pt-5">
+        <div class="jumbotron text-left">
+            <p class="pb-4 ui dividing header" style="font-family: 'Exo', sans-serif;">
+                Messages
+            </p>
+        </div>
+
+        <div class="ui segment shadow" style="min-height: 70px;" id='message-display'>
+            <div class="ui active dimmer" id='message-dimmer'>
+              <div class="ui text loader" id='fetch-noti'>Loading</div>
+            </div>
+        </div>
+
+        <script>
+            function get_full_message(){
+                var base = window.location.origin + '/teacher/messages/False';
+                $.ajax({
+                    url: base,
+                    type: 'GET',
+                    async: true,
+                    success: function(result){
+                        $("#message-dimmer").removeClass("dimmer")
+                        $("#message-display").html(result)
+                    }
+                })
+            }
+            get_full_message()
+        </script>
+
+    </section>
+
+</div>
+
+
+{% endblock %}
