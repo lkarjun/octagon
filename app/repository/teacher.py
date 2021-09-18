@@ -44,7 +44,7 @@ def get_hour(classes, teacher_name):
         course = data.course.upper()
         year = data.year
         hours = [data.hour_1, data.hour_2, data.hour_3, data.hour_4, data.hour_5]
-        for i, name in enumerate(hours):
+        for i, name in enumerate(hours, start=1):
             if teacher_name == name:
                 s = Schemas.HourDetails(course = course, hour = i, year = year)
                 full_data.append(s)
