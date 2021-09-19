@@ -115,9 +115,16 @@ $("#CourseAndYear").submit((e)=>{
     var day_3 = [$("#wt1").val(), $("#wt2").val(), $("#wt3").val(), $("#wt4").val(), $("#wt5").val()]
     var day_4 = [$("#tut1").val(), $("#tut2").val(), $("#tut3").val(), $("#tut4").val(), $("#tut5").val()]
     var day_5 = [$("#ft1").val(), $("#ft2").val(), $("#ft3").val(), $("#ft4").val(), $("#ft5").val()]
+    var sub_day_1 = [$("#ms1").val(), $("#ms2").val(), $("#ms3").val(), $("#ms4").val(), $("#ms5").val()]
+    var sub_day_2 = [$("#ts1").val(), $("#ts2").val(), $("#ts3").val(), $("#ts4").val(), $("#ts5").val()]
+    var sub_day_3 = [$("#ws1").val(), $("#ws2").val(), $("#ws3").val(), $("#ws4").val(), $("#ws5").val()]
+    var sub_day_4 = [$("#tus1").val(), $("#tus2").val(), $("#tus3").val(), $("#tus4").val(), $("#tus5").val()]
+    var sub_day_5 = [$("#fs1").val(), $("#fs2").val(), $("#fs3").val(), $("#fs4").val(), $("#fs5").val()]
+
     var data = JSON.stringify({"department": depart, "course": course, "year": year,
                                 "day_1": day_1, "day_2": day_2, "day_3": day_3, "day_4": day_4,
-                                "day_5": day_5})
+                                "day_5": day_5, "sub_day_1": sub_day_1, "sub_day_2": sub_day_2,
+                                "sub_day_3": sub_day_3, "sub_day_4": sub_day_4, "sub_day_5": sub_day_5})
 
     var base = window.location.origin + '/hod/CreateTimeTable';
     $.ajax({
@@ -226,7 +233,7 @@ function setTimeTable(data, result){
     $("#vth3").html(Thursday[2])
     $("#vth4").html(Thursday[3])
     $("#vth5").html(Thursday[4])
-    // tuesday
+    // friday
     $("#vf1").html(Friday[0])
     $("#vf2").html(Friday[1])
     $("#vf3").html(Friday[2])

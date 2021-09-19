@@ -77,6 +77,11 @@ class TimeTable(BaseModel):
     day_3: List[str]
     day_4: List[str]
     day_5: List[str]
+    sub_day_1: List
+    sub_day_2: List
+    sub_day_3: List
+    sub_day_4: List
+    sub_day_5: List
 
 class TimeTableChecker(BaseModel):
     day: str 

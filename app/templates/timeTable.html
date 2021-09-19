@@ -494,15 +494,15 @@
             
         </form>
 
-
-        <div class="row pb-4 " id = "viewTTData" style="display: none;">
+        <hr>
+        <div class="row pb-4 pt-4" id = "viewTTData" style="display: none;">
             <div class="col-md-12">
                 <div class="jumbotron text-center">
                     <p class="h3 pb-4" style="font-family: 'Exo', sans-serif;" id = 'headTimeTableCourse'></p>
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table align-middle">
+                    <table class="table align-middle" id='datatable'>
                       <thead>
                         <tr>
                           <th scope="col" class="font-weight-bold">Days</th>
@@ -515,7 +515,7 @@
                       </thead>
                       <tbody>
                         <tr>
-                            <th class="font-weight-bold">Monday</th>
+                            <td class="font-weight-bold">Monday</th>
                             <td id='vm1'>None</td>
                             <td id='vm2'>None</td>
                             <td id='vm3'>None</td>
@@ -524,7 +524,7 @@
                         </tr>
 
                         <tr>
-                            <th class="font-weight-bold">Tuesday</th>
+                            <td class="font-weight-bold">Tuesday</th>
                             <td id='vt1'>None</td>
                             <td id='vt2'>None</td>
                             <td id='vt3'>None</td>
@@ -533,7 +533,7 @@
                         </tr>
 
                         <tr>
-                            <th class="font-weight-bold">Wednesday</th>
+                            <td class="font-weight-bold">Wednesday</th>
                             <td id='vw1'>None</td>
                             <td id='vw2'>None</td>
                             <td id='vw3'>None</td>
@@ -542,7 +542,7 @@
                         </tr>
 
                         <tr>
-                            <th class="font-weight-bold">Thursday</th>
+                            <td class="font-weight-bold">Thursday</th>
                             <td id='vth1'>None</td>
                             <td id='vth2'>None</td>
                             <td id='vth3'>None</td>
@@ -551,7 +551,7 @@
                         </tr>
 
                         <tr>
-                            <th class="font-weight-bold">Friday</th>
+                            <td class="font-weight-bold">Friday</th>
                             <td id='vf1'>None</td>
                             <td id='vf2'>None</td>
                             <td id='vf3'>None</td>
@@ -561,11 +561,21 @@
                       </tbody>
                     </table>
                 </div>
+                <div class="ui buttons pt-md-0 pt-4 pb-4">
+                    <button class="ui button" onclick="export_table('csv')">Csv</button>
+                    <div class="or"></div>
+                    <button class="ui positive button" onclick="export_table('pdf')">Pdf</button>
+                </div>
             </div>
         </div>
     </section>
 
 <script src="{{ url_for('static', path='timetable.js') }}"></script>
+<script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.0.10/jspdf.plugin.autotable.min.js"></script>
+<!-- Html table to pdf -->
 <script>clone_it()</script>
 <script>
     $('#course option').clone().appendTo('#courseR');
@@ -574,6 +584,16 @@
     $('#course option').clone().appendTo('#courseV');
     $('#year option').clone().appendTo('#yearV');
     $('#department option').clone().appendTo('#departV');
+
+    function export_table(format){
+        var format_type = format;
+        var filename = "Report."+format
+
+        $("#datatable").tableHTMLExport({
+            type:format_type,
+            filename:filename
+        });
+    }
 </script>
 </div>
 {% endblock %}

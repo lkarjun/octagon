@@ -110,7 +110,24 @@ def mail_(who: str, message: str, db: Session):
 
 def set_timetable(request: Schemas.TimeTable, db: Session):
     data = [request.day_1, request.day_2, request.day_3, request.day_4, request.day_5]
-    
+    data_subject = [request.sub_day_1, request.sub_day_2, request.sub_day_3, request.sub_day_4,
+                    request.sub_day_5]
+
+    for i, d1 in enumerate(data_subject):
+        hours = models.TimetableS(
+                    department = request.department, 
+                    course = request.course,
+                    year = request.year,
+                    days = request.days[i],
+                    hour_1 = d1[0],
+                    hour_2 = d1[1],
+                    hour_3 = d1[2],
+                    hour_4 = d1[3],
+                    hour_5 = d1[4]
+            )  
+        db.add(hours)
+        db.commit()
+        db.refresh(hours)
     
     for i, d1 in enumerate(data):
         hours = models.Timetable(
@@ -140,8 +157,8 @@ def check_timetable(request: Schemas.TimeTableChecker, db: Session):
     
 
 def display_timetable(request: Schemas.TimeTableEdit, db: Session):
-    timetable = db.query(models.Timetable).filter(and_(models.Timetable.year == request.year,
-                                models.Timetable.course == request.course))
+    timetable = db.query(models.TimetableS).filter(and_(models.TimetableS.year == request.year,
+                                models.TimetableS.course == request.course))
     if not timetable.first(): raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No Timetable sets course: {request.course} and year: {request.year}")
 
@@ -159,10 +176,14 @@ def remove_timetable(request: Schemas.TimeTableEdit, db: Session):
     timetable = db.query(models.Timetable).filter(and_(models.Timetable.course == request.course,
                                 models.Timetable.year == request.year,
                                 models.Timetable.department == request.department))
+    timetableS = db.query(models.TimetableS).filter(and_(models.TimetableS.course == request.course,
+                                models.TimetableS.year == request.year,
+                                models.TimetableS.department == request.department))
     if not timetable.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No Timetable sets course: {request.course} and year: {request.year}") 
     timetable.delete(synchronize_session=False)
+    timetableS.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
 
