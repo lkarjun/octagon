@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, Depends, Request, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from security.faceid import decoded_image, Dict
-from security import oauth2
+from security import oauth2, hashing
 import templates as temp
 
 
@@ -15,11 +15,13 @@ async def login(file: Dict):
 @router.post('/admin/login', status_code=status.HTTP_202_ACCEPTED, response_class=temp.RedirectResponse)
 async def admin_login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     username = data.username
-    user = await oauth2.get_user(username)
+    user = await oauth2.get_user(username, return_data = True)
     if not user: return temp.AdminTemplates.admin_login_page(request, 'block')
+    if not hashing.Hash.verify(user.password, data.password):
+        return temp.AdminTemplates.admin_login_page(request, 'block')
 
     access_token = oauth2.manager_admin.create_access_token(
-                        data = dict(sub = user)
+                        data = dict(sub = user.name)
                     )
     res = temp.AdminTemplates.login_success_redirect()
     tkn = {'access_token': access_token, 'token_type': 'bearer'}

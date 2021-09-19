@@ -1,7 +1,7 @@
 from fastapi_login import LoginManager
 from fastapi_login.exceptions import InvalidCredentialsException
 from fastapi.responses import RedirectResponse
-from database import database
+from database import database, models
 
 class NotAuthenticatedException(Exception):
     pass
@@ -20,8 +20,10 @@ manager_admin.cookie_name = 'adminToken'
 manager_admin.not_authenticated_exception = NotAuthenticatedException
 
 @manager_admin.user_loader
-async def get_user(username: str):
+async def get_user(username: str, return_data = False):
     db = database.SessionLocal()
-    a = None if username == 'ada' else username
+    data = db.query(models.Admin).first()
     db.close()
-    return a
+    if return_data:
+        return data if username == data.name else None
+    return True if username == data.name else None
