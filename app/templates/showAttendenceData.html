@@ -28,7 +28,7 @@
         <!--Search Ends-->
 
         <div class="table-responsive pb-5 mb-5">
-            <table class="table align-middle table-hover table-borderless">
+            <table class="table align-middle table-hover table-borderless" id='datatable'>
                 <thead class="table-dark">
                     <tr>
                       {% for col in column %}
@@ -62,6 +62,11 @@
                 </tbody>
 
             </table>
+            <div class="ui buttons">
+                <button class="ui button red" onclick="export_table('csv')">Export to Csv</button>
+                <div class="or"></div>
+                <button class="ui yellow button" onclick="export_table('pdf')">Export to Pdf</button>
+            </div>
         </div>
 
     </section>
@@ -77,5 +82,22 @@
         });
     });
 </script>
+<script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.0.10/jspdf.plugin.autotable.min.js"></script>
+<!-- Html table to pdf -->
+<script>
 
+    function export_table(format){
+        var format_type = format;
+        var filename = "AttendenceFile."+format
+
+        $("#datatable").tableHTMLExport({
+            type:format_type,
+            filename:filename,
+            orientation:'l'
+        });
+    }
+
+</script>
 {% endblock %}

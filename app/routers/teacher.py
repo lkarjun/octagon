@@ -8,6 +8,12 @@ router = APIRouter(tags = ['Teachers'], prefix='/teacher')
 
 get_db = database.get_db
 
+# teacher
+
+@router.get("/messages/{new_five}")
+async def get_messages(request: Request, db: Session = Depends(get_db),
+                         new_five: bool = True):
+    return TeacherTemplates.get_messages(request, db, new_five)
 
 # templates
 
@@ -19,12 +25,21 @@ async def add_students(request: Request):
 async def take_attendence(request: Request):
     return TeacherTemplates.takeAttendence(request)
 
+@router.get("/workspace")
+async def workspace(request: Request, db: Session = Depends(get_db)):
+    return TeacherTemplates.workspace(request, db)
 
+@router.get("/message", status_code=status.HTTP_200_OK)
+async def message(request: Request, db: Session = Depends(get_db)):
+    return TeacherTemplates.message(request, db)
+
+@router.get("/timetable")
+async def timetable(request: Request, db: Session = Depends(get_db)):
+    return TeacherTemplates.timetable(request, db)
 # Students
 
 @router.post("/add-students", status_code=status.HTTP_204_NO_CONTENT)
 async def add_student(request: Schemas.AddStudent, db: Session = Depends(get_db)):
-
     return teacher.add_student(request, db)
 
 @router.delete("/delete-student", status_code=status.HTTP_204_NO_CONTENT)
@@ -33,15 +48,8 @@ async def delete_student(request: Schemas.DeleteStudent, db: Session = Depends(g
 
 @router.post("/edit-student", response_model=Schemas.AddStudent)
 async def edit_verify_student(request: Schemas.DeleteStudent, db: Session = Depends(get_db)):
-
-    # res = Schemas.AddStudent(unique_id = "idtest", name = "arjun" ,email = "adfkl@gmail.com",
-    #                             parent_name = "Lal", parent_number = 23232, number = 23232, 
-    #                             course = "None", year = 2)
-
     return teacher.edit_verify_student(request, db)
 
 @router.put("/edit-student", status_code=status.HTTP_204_NO_CONTENT)
 async def edit_student(request: Schemas.EditStudent, db: Session = Depends(get_db)):
     return teacher.edit_student(request, db)
-
-    return res

@@ -52,6 +52,49 @@ def get_student_details(db: Session, course: str, year: int):
             detail = 'No content in the database')
     return student
 
+def send_message(request: Schemas.Message, db: Session):
+    #===================================
+    # this should change with current login person name and department
+    fake_hod_name = "anju"
+    fake_dep = "bca"
+    #===================================
+
+    message = models.Message(
+        hod_name = fake_hod_name, hod_department = fake_dep,
+        date = request.date, to = request.to, title = request.title,
+        message = request.message, important = request.important
+    )
+    db.add(message)
+    db.commit()
+    db.refresh(message)
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+def get_full_message(db: Session):
+    fake_name = "anju"
+    fake_dep = "bca"
+    messages = db.query(models.Message).filter(
+                and_(models.Message.hod_name == fake_name,
+                    models.Message.hod_department == fake_dep)
+            ).all()
+    return messages[::-1]
+
+def clear_message(db: Session):
+    fake_name = "anju"
+    fake_dep = "bca"
+    messages = db.query(models.Message).filter(
+        and_(models.Message.hod_name == fake_name,
+             models.Message.hod_department == fake_dep)
+        )
+    import time;time.sleep(2)
+    if not messages.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No Messages in database")
+    
+    messages.delete(synchronize_session=False)
+    db.commit()
+    return Response(status_code=204)
+    
+
 def mail_(who: str, message: str, db: Session):
     message = message.replace('\\n', '\n').replace('\\t', '\t')
     if who == 'hod':
@@ -67,7 +110,24 @@ def mail_(who: str, message: str, db: Session):
 
 def set_timetable(request: Schemas.TimeTable, db: Session):
     data = [request.day_1, request.day_2, request.day_3, request.day_4, request.day_5]
-    
+    data_subject = [request.sub_day_1, request.sub_day_2, request.sub_day_3, request.sub_day_4,
+                    request.sub_day_5]
+
+    for i, d1 in enumerate(data_subject):
+        hours = models.TimetableS(
+                    department = request.department, 
+                    course = request.course,
+                    year = request.year,
+                    days = request.days[i],
+                    hour_1 = d1[0],
+                    hour_2 = d1[1],
+                    hour_3 = d1[2],
+                    hour_4 = d1[3],
+                    hour_5 = d1[4]
+            )  
+        db.add(hours)
+        db.commit()
+        db.refresh(hours)
     
     for i, d1 in enumerate(data):
         hours = models.Timetable(
@@ -97,8 +157,8 @@ def check_timetable(request: Schemas.TimeTableChecker, db: Session):
     
 
 def display_timetable(request: Schemas.TimeTableEdit, db: Session):
-    timetable = db.query(models.Timetable).filter(and_(models.Timetable.year == request.year,
-                                models.Timetable.course == request.course))
+    timetable = db.query(models.TimetableS).filter(and_(models.TimetableS.year == request.year,
+                                models.TimetableS.course == request.course))
     if not timetable.first(): raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No Timetable sets course: {request.course} and year: {request.year}")
 
@@ -116,10 +176,14 @@ def remove_timetable(request: Schemas.TimeTableEdit, db: Session):
     timetable = db.query(models.Timetable).filter(and_(models.Timetable.course == request.course,
                                 models.Timetable.year == request.year,
                                 models.Timetable.department == request.department))
+    timetableS = db.query(models.TimetableS).filter(and_(models.TimetableS.course == request.course,
+                                models.TimetableS.year == request.year,
+                                models.TimetableS.department == request.department))
     if not timetable.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No Timetable sets course: {request.course} and year: {request.year}") 
     timetable.delete(synchronize_session=False)
+    timetableS.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
 

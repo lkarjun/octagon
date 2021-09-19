@@ -14,6 +14,14 @@ def recogize(encoding1: TypeVar('numpy.ndarray'), encoding2: TypeVar('numpy.ndar
     result = fr.compare_faces([encoding1], encoding2, tolerance=tolerance)
     return result
 
+def read_images(image1, image2, image3):
+    image1 = np.array(Image.open(BytesIO(image1)))
+    image2 = np.array(Image.open(BytesIO(image2)))
+    image3 = np.array(Image.open(BytesIO(image3)))
+    encodings = [get_encoding(image1), get_encoding(image2),
+                    get_encoding(image3)]
+    return encodings
+
 def get_encoding(image: TypeVar('numpy.ndarray')) -> TypeVar('numpy.ndarray'):
     '''return len of 128 encoded vector'''
     encodings = fr.face_encodings(image)
@@ -24,7 +32,7 @@ def decoded_image(base64_image: str) -> None:
     img = Image.open(BytesIO(img))
     img = np.asarray(img)
     assert img.shape == (1000, 1000, 3), 'Error image shape should be (1000, 1000, 3) an rgb image'
-
+    return img
 
 def get_faces(name: Union[str, bool] = False, delete: bool = False) -> Union[Dict, List, str]:
     '''opens pickle'''

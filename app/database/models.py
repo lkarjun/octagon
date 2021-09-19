@@ -1,5 +1,5 @@
 from database.database import Base
-from sqlalchemy import Column, Integer, String, ForeignKey, Float
+from sqlalchemy import Column, Integer, String, ForeignKey, Float, Boolean
 from sqlalchemy.orm import relationship
 
 class Hod(Base):
@@ -84,3 +84,14 @@ class Corrections(Base):
     student_name = Column(String)
     reason = Column(String)
     percentage = Column(Float)
+
+class Message(Base):
+    __tablename__ = "Messages"
+    id = Column(Integer, primary_key=True, index=True)
+    hod_name = Column(String)
+    hod_department = Column(String)
+    date = Column(String)
+    to = Column(String)
+    title = Column(String)
+    message = Column(String)
+    important = Column(Boolean)

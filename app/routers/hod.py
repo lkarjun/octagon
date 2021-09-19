@@ -43,21 +43,12 @@ async def verification_image(username: str = Form(...),
 async def attendence_correction(request: Schemas.AttendenceCorrection, db: Session = Depends(get_db)):
     return attendence.attendence_correction(request=request, db=db)
 
-# @router.post('/StudentsAttendence')
-# async def take_studentattendence(request: Request):...
-
-# @router.get('/AttendenceReport')
-# async def get_attendence_report(request: Request):...
-
-# # Annousement for teachers
-# @router.post('/MessageTeacher')
-# async def send_message_teacher(request: Request):...
 
 # Hod Functions
 
-@router.post('/Message/{who}', status_code=status.HTTP_200_OK)
-async def mail(who: str, message: str, db: Session = Depends(get_db)):
-    return hod.mail_(who, message, db)
+@router.post('/message', status_code=status.HTTP_204_NO_CONTENT)
+async def message(request: Schemas.Message, db: Session = Depends(get_db)):
+    return hod.send_message(request, db)
 
 @router.post('/CreateTimeTable', status_code=status.HTTP_201_CREATED)
 async def create_time_table(request: Schemas.TimeTable, db: Session = Depends(get_db)):
@@ -79,11 +70,30 @@ async def remove_timetable(request: Schemas.TimeTableEdit, db: Session = Depends
 async def get_current_hour_detail(department: str, day: str, hour: str, db: Session = Depends(get_db)):
     return hod.current_hour_detail(department, day, hour, db)
 
+@router.get("/full_message")
+async def get_full_message(request: Request, db: Session = Depends(get_db)):
+    return HodTemplates.get_full_messages(request, db)
+
+@router.post("/clear_messages")
+async def clear_message(db: Session = Depends(get_db)):
+    return hod.clear_message(db)
 
 # Pages
+@router.get("/workspace")
+async def workspace(request: Request):
+    return HodTemplates.workspace(request)
+
+@router.get("/message")
+async def message(request: Request):
+    return HodTemplates.message(request)
+
 @router.get('/uoc-notification')
 async def uoc_notificaions(request: Request):
     return HodTemplates.uoc_notification(request)
+
+@router.get('/exam-notification')
+async def uoc_exam_notificaions(request: Request):
+    return HodTemplates.exam_notification(request)
 
 @router.get('/students-attendence')
 async def attendenceDataView(request: Request):
@@ -117,3 +127,7 @@ async def most_absentee(request: Request, data: Schemas.MostAbsentee):
 @router.post("/get_report")
 async def get_report(request: Request, data: Schemas.Analysing):
     return HodTemplates.show_report(request, data)
+
+@router.get("/latest_notification")
+async def get_notification(request: Request, which_notification: str):
+    return HodTemplates.latest_notfications(request, which_notification)

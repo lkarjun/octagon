@@ -19,11 +19,11 @@
 </head>
 <body style="background-color: rgb(255, 255, 255);">
     
-    <div class="ui container">
+    <div class="container">
         <div class="ui tablet computer only padded grid shadow">
             <div class="ui borderless fluid huge menu">
-                <a class="header item" style="font-family: 'Exo', sans-serif;">TeachersLogin</a>
-                <a class="item navi" id='navWorkw' href="#">Workspace</a>
+                <a class="header item" style="font-family: 'Exo', sans-serif;" href="/hod/workspace">Octagon</a>
+                <a class="item navi" id='navWorkw' href="/hod/workspace">Workspace</a>
                 <a class="item navi" id='navTchw' href="/hod/edit-teacher">Teachers</a>
                 <a class="item navi" id='navTTdw' href="/hod/timetable">TimeTable</a>
 
@@ -33,11 +33,12 @@
                         <div class="item" onclick="window.location.href='/hod/take-attendence'">Take Attendence</div>
                         <div class="item" onclick="window.location.href='/hod/students-attendence'">Attendence Analysis</div>
                         <div class="item" onclick="window.location.href='/hod/uoc-notification'">Uoc Notifications<i class="bell icon"></i></div>
+                        <div class="item" onclick="window.location.href='/hod/exam-notification'">Uoc Exam TimeTable<i class="bell icon"></i></div>
                     </div>
                 </a>
 
                 <div class="right menu">
-                    <a class="item navi"><i class="envelope icon"></i></a>
+                    <a class="item navi" href="/hod/message" id='navMessage'><i class="envelope icon"></i></a>
                     <a onclick="about()" class="item navi"><i class="info icon"></i></a>
                 </div>
             </div>
@@ -45,7 +46,7 @@
     
         <div class="ui mobile only padded grid shadow">
             <div class="ui borderless huge fluid menu">
-                <a class="header item" style="font-family: 'Exo', sans-serif;">TeachersLogin</a>
+                <a class="header item" style="font-family: 'Exo', sans-serif;" href="/hod/workspace">Octagon</a>
                 <div class="right menu">
                     <div class="item">
                         <button class="ui icon toggle basic button">
@@ -55,13 +56,14 @@
                 </div>
             
                 <div class="ui vertical borderless fluid menu">
-                    <a class="item navi" id='navWorkm' href="#">Workspace</a>
+                    <a class="item navi" id='navWorkm' href="/hod/workspace">Workspace</a>
                     <a class="item navi" id='navTchm' href="/hod/edit-teacher">Teachers</a>
                     <a class="item navi" id='navTTdm' href="/hod/timetable">TimeTable</a>
                     <a class="item navi" id='navTkAttnm' href="/hod/take-attendence">Take Attendence</a>
                     <a class="item navi" id='navAttenm' href="/hod/students-attendence">Attendence Analysis</a>
                     <a class="item navi" id='navNotenm' href="/hod/uoc-notification"><i class="bell icon"></i>Uoc Notifications</a>
-                    <a class="item navi"><i class="envelope icon"></i>Messages</a> 
+                    <a class="item navi" id='navExamnot' href="/hod/exam-notification"><i class="bell icon"></i>Uoc Exam TimeTable</a>
+                    <a class="item navi" id='navMessagem' href="/hod/message"><i class="envelope icon"></i>Messages</a> 
                     <a class="item navi" onclick="about()"><i class="info icon"></i>About</a>
                 </div>
             </div>

@@ -1,0 +1,128 @@
+{% extends "teacherLayout.html" %}
+{% block content %}
+<script>
+    $("#navTblm").addClass("navisel")
+    $("#navTblw").addClass("navisel")
+</script>
+
+<div class="ui container pb-5">
+
+    <section class="pt-5">
+        <div class="jumbotron text-left">
+            <p class="pb-4 ui dividing header" style="font-family: 'Exo', sans-serif;">
+                My Classes
+            </p>
+        </div>
+    </section>
+
+    <section class="pt-5 pb-3">
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+              <tbody>
+                <tr>
+                    <th class="font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Monday</th>
+                    {% if data['Monday'] %}
+                    {% for i in data['Monday'] %}
+                    {% if i.year %}
+                    <td><div class="ui horizontal label large shadow"><p class="text-danger rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
+                    {% else %}
+                    <td><div class="ui purple horizontal label large shadow">Free</div></td>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    {% endif %}
+                </tr>
+
+                <tr>
+                    <th class="font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Tuesday</th>
+                    {% if data['Tuesday'] %}
+                    {% for i in data['Tuesday'] %}
+                    {% if i.year %}
+                    <td><div class="ui horizontal label large shadow"><p class="text-danger rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
+                    {% else %}
+                    <td><div class="ui purple horizontal label large shadow">Free</div></td>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    {% endif %}
+                </tr>
+
+                <tr>
+                    <th class="font-weight-bold"  style="font-family: Comic sans MS; font-size: larger;">Wednesday</th>
+                    {% if data['Wednesday'] %}
+                    {% for i in data['Wednesday'] %}
+                    {% if i.year %}
+                    <td><div class="ui horizontal label large shadow"><p class="text-danger rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
+                    {% else %}
+                    <td><div class="ui purple horizontal label large shadow">Free</div></td>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    {% endif %}
+                </tr>
+
+                <tr>
+                    <th class="font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Thursday</th>
+                    {% if data['Thursday'] %}
+                    {% for i in data['Thursday'] %}
+                    {% if i.year %}
+                    <td><div class="ui horizontal label large shadow"><p class="text-danger rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
+                    {% else %}
+                    <td><div class="ui purple horizontal label large shadow">Free</div></td>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    {% endif %}
+                </tr>
+
+                <tr>
+                    <th class="font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Friday</th>
+                    {% if data['Friday'] %}
+                    {% for i in data['Friday'] %}
+                    {% if i.year %}
+                    <td><div class="ui horizontal label large shadow"><p class="text-danger rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
+                    {% else %}
+                    <td><div class="ui purple horizontal label large shadow">Free</div></td>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    <td><div class="ui green horizontal label large shadow">Free</div></td>
+                    {% endif %}
+                </tr>
+
+              </tbody>
+            </table>
+        </div>
+
+    </section>
+
+
+</div>
+
+
+{% endblock %}

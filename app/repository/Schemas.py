@@ -77,6 +77,11 @@ class TimeTable(BaseModel):
     day_3: List[str]
     day_4: List[str]
     day_5: List[str]
+    sub_day_1: List
+    sub_day_2: List
+    sub_day_3: List
+    sub_day_4: List
+    sub_day_5: List
 
 class TimeTableChecker(BaseModel):
     day: str 
@@ -164,4 +169,16 @@ class AttendenceCorrection(BaseModel):
     percentage: float
     reason: str
     course: str
+    year: int
+
+class Message(BaseModel):
+    title: str
+    message: str
+    to: str
+    important: bool
+    date: str
+
+class HourDetails(BaseModel):
+    course: str
+    hour: int
     year: int

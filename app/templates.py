@@ -1,7 +1,7 @@
 from fastapi.templating import Jinja2Templates
 from fastapi import status
 from fastapi.responses import RedirectResponse
-from repository import admin, hod, attendence
+from repository import admin, hod, attendence, teacher
 from database import database
 from collections import defaultdict
 
@@ -45,6 +45,11 @@ class OthersTemplates():
 
 class HodTemplates():
 
+    def workspace(request):
+        tmp = templates.TemplateResponse("hodWorkspace.html",
+                        context={"request": request, "title": "Workspace"})
+        return tmp
+
     def timetable(request):
         db = database.SessionLocal()
         courses = admin.get_all_course(db)
@@ -69,6 +74,12 @@ class HodTemplates():
         notifications = hod.uoc.get_notifications()
         return templates.TemplateResponse("uocNotification.html",
                 context={"request": request, "title": "UOC Notification", "notfy": notifications})
+    
+    def exam_notification(request):
+        notifications = hod.uoc.get_exam_notifications()
+        res = templates.TemplateResponse("uocExamTimetable.html",
+                context={"request": request, "title": "Exam Notification", "notfy": notifications})
+        return res
     
     def attendenceDataView(request):
         db = database.SessionLocal()
@@ -120,11 +131,58 @@ class HodTemplates():
         tmp = templates.get_template("__attendencereport.html")
         tmp = tmp.render(request = request, final_report = final_report)
         return tmp
+    
+    def latest_notfications(request, which_notification):
+        if which_notification == 'exam':
+            data = hod.uoc.get_latest_exam_notifications()
+        else:
+            data = hod.uoc.get_latest_notifications()
+        tmp = templates.get_template("__latestNotifications.html")
+        tmp = tmp.render(request = request, notify = data)
+        return tmp
+    
+    def message(request):
+        tmp = templates.TemplateResponse("message.html",
+                        context={"request": request, "title": "Workspace"})
+        return tmp
 
+    def get_full_messages(request, db):
+        data = hod.get_full_message(db = db)
+        is_data_there = len(data) >= 1
+        tmp = templates.get_template("__message.html")
+        tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)
+        return tmp
 
 
 class TeacherTemplates():
     
+    def workspace(request, db):
+        classes = sorted(teacher.get_hour_detail(db), key = lambda x: x.hour)
+        free_day = False if len(classes) >= 1 else True
+        tmp = templates.TemplateResponse("teacherWorkspace.html",
+                        context={"request": request, "title": "Workspace",
+                                 "free_day": free_day, "classes": classes})
+        return tmp 
+
+    def message(request, db):
+        tmp = templates.TemplateResponse("teacherMessageViews.html",
+                        context={"request": request, "title": "Messages"})
+        return tmp
+    
+    def get_messages(request, db, new_five):
+        data = teacher.get_messages(db, new_five)
+        is_data_there = len(data) >= 1
+        tmp = templates.get_template("__message.html")
+        tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)
+        return tmp
+
+    def timetable(request, db):
+        data = teacher.my_timetable(db)
+        tmp = templates.TemplateResponse("teacherTimetable.html",
+                            context={"request": request, "title": "My Classes",
+                                "data": data})
+        return tmp
+
     def takeAttendence(request):
         db = database.SessionLocal()
         courses = admin.get_all_course(db)
