@@ -193,7 +193,12 @@ function verification_image_upload(data, name, user_name){
       appoint_hod(data, name, user_name)
     },
     error: function(result){
-      error_alert("Something Went Wrong. Please try to contact the techincal team...");
+      if(result.status == 415){
+        warning_alert("Please retake images.")
+      }
+      else{
+        error_alert("Something Went Wrong. Please try to contact the techincal team...");
+      }
     }
   })
 }

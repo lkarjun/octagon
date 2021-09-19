@@ -5,6 +5,7 @@ from io import BytesIO
 from PIL import Image
 import numpy as np
 import pickle
+from fastapi import HTTPException, status
 
 face_op = lambda: pickle.load(open('security/faces.pkl', 'rb'))
 face_dp = lambda faces: pickle.dump(faces, open('security/faces.pkl', 'wb'))
@@ -25,6 +26,8 @@ def read_images(image1, image2, image3):
 def get_encoding(image: TypeVar('numpy.ndarray')) -> TypeVar('numpy.ndarray'):
     '''return len of 128 encoded vector'''
     encodings = fr.face_encodings(image)
+    if not len(encodings) == 128:
+        raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Please Retake image")
     return encodings
 
 def decoded_image(base64_image: str) -> None:
