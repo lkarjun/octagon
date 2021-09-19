@@ -1,10 +1,11 @@
 from sqlalchemy.orm.session import Session
 from database import models
-from security import hashing
+from security import hashing, faceid
 from fastapi import status, HTTPException, Response
 from sqlalchemy import and_, or_
 from repository.attendence import CreateAttendence
 from repository import Schemas
+import time
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)
@@ -73,6 +74,16 @@ def create(request: Schemas.CreateHod, db: Session):
     db.commit()
     db.refresh(new_hod)
     return True
+
+def verification_image(username, image1, image2, image3):
+    print("Getting encodings for images at", time.strftime("%H:%M:%S", time.localtime()))
+    encodings = faceid.read_images(image1, image2, image3)
+    if not len(encodings[0]) and len(encodings[1]) and len(encodings[2]): 
+        raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Please Retake image")
+    print("Saving encoded vectors at", time.strftime("%H:%M:%S", time.localtime()))
+    faceid.put_faces(username, encodings)
+    print("Saved encoded vectors at", time.strftime("%H:%M:%S", time.localtime()))
+    return Response(status_code=204)
 
 def new_department(request: Schemas.AddDepartment, db: Session):
     department = models.Departments(Department = request.Department, Alias = request.Alias)

@@ -19,8 +19,9 @@ async def verification_image(username: str = Form(...),
                             image2: UploadFile = File(...),
                             image3: UploadFile = File(...),   
                             user = Depends(oauth2.manager_admin)):
-    print(image1.filename, username)
-    return Response(status_code=204)
+    image1, image2, image3 = await image1.read(), await image2.read(),\
+                                await image3.read()
+    return admin.verification_image(username, image1, image2, image3)
 
 @router.delete('/delete_hod', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_hod(request: Schemas.DeleteHod, db: Session = Depends(get_db),\
