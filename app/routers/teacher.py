@@ -33,6 +33,9 @@ async def workspace(request: Request, db: Session = Depends(get_db)):
 async def message(request: Request, db: Session = Depends(get_db)):
     return TeacherTemplates.message(request, db)
 
+@router.get("/timetable")
+async def timetable(request: Request, db: Session = Depends(get_db)):
+    return TeacherTemplates.timetable(request, db)
 # Students
 
 @router.post("/add-students", status_code=status.HTTP_204_NO_CONTENT)

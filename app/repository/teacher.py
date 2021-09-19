@@ -1,5 +1,3 @@
-import enum
-import numpy as np
 from database import models
 from repository import Schemas, attendence
 from sqlalchemy.orm import Session
@@ -18,13 +16,12 @@ def get_messages(db: Session, new_five: bool):
     if new_five: return messages[::-1][:5]
     return messages[::-1]
 
-def get_hour_detail(db: Session):
+def get_hour_detail(db: Session, day="Monday"):
     fake_teacher = 'arjun_bca'
-    fake_day = datetime.today().strftime("%A")
-    fake_day = "Monday"
+    if not day: day = datetime.today().strftime("%A")
 
     classes = db.query(models.Timetable).filter(
-            and_(models.Timetable.days == fake_day,
+            and_(models.Timetable.days == day,
                 or_(
                     models.Timetable.hour_1 == fake_teacher,
                     models.Timetable.hour_2 == fake_teacher,
@@ -50,6 +47,17 @@ def get_hour(classes, teacher_name):
                 full_data.append(s)
 
     return full_data
+
+def my_timetable(db: Session):
+    fake_teacher = 'arjun_bca'
+    timetable = {
+                    'Monday': sorted(get_hour_detail(db, day='Monday'), key=lambda x: x.hour),
+                    'Tuesday': sorted(get_hour_detail(db, day='Tuesday'), key=lambda x: x.hour),
+                    'Wednesday': sorted(get_hour_detail(db, day='Wednesday'), key=lambda x: x.hour),
+                    'Thursday': sorted(get_hour_detail(db, day='Thursday'), key=lambda x: x.hour),
+                    'Friday': sorted(get_hour_detail(db, day='Friday'), key=lambda x: x.hour)
+                }
+    return timetable
 
 
 # Students
