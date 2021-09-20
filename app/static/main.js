@@ -58,21 +58,23 @@ function upload(image_data){
         dataType: 'json',
         contentType: "application/json",
         success: function(data){
-            if (data == true){
-                window.location.href = '/workspace'
-            }
-            console.log(data);
-            alert(data);
+            window.location.href = window.location.origin + data;
         },
         error: function(data){
-        alert(data);
+            swal("Not authorized. So, reloading page").then((value) => {location.reload();});
         },
     })
 }
 
 
 function capit(){
+    $("#btn_login").addClass("loading")
     data = captureSnapshot();
     stopStreaming();
-    upload(data);
+    if ($('#username').val() == null){
+        swal(`Kindly please choose you're name from the select box. 
+              If you're name is not there then please contact 
+              admin or techincal staff.`).then((value) => {location.reload();});
+    }
+    $("#password").val(data.split(',')[1])
 }

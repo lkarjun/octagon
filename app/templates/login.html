@@ -12,25 +12,129 @@
     <link href="https://fonts.googleapis.com/css2?family=Exo&family=Pattaya&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet" />
     <script src="{{ url_for('static', path='/main.js') }}"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+
+        #loader {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #2ecc71;
+        }
+
+        .preloader {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            left: calc(50% - 20px);
+            top: calc(50% - 20px);
+            background: #e74c3c;
+            transform: rotate(45deg);
+            animation: preloader 2s linear infinite;
+        }
+
+        .loadBar {
+            position: absolute;
+            width: 200px;
+            height: 2px;
+            left: calc(50% - 100px);
+            top: calc(50% + 60px);
+            background: #27ae60;
+        }
+
+        .progress {
+            position: relative;
+            width: 0%;
+            height: inherit;
+            background: #e74c3c;
+        }
+
+        @keyframes loading {
+
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+
+        }
+
+        @keyframes preloader {
+
+            0%, 100% {
+                transform: rotate(45deg);
+            }
+
+            60% {
+                transform: rotate(405deg);
+            }
+
+        }
+    </style>
+    <script>
+        $(window).on('load', function () {
+           var rnd = Math.random() * (8000 - 2000) + 2000;
+           $('.progress').css("animation", "loading " + rnd + "ms linear");
+           console.log(rnd);
+           setTimeout(function() {
+               $('#loader').hide();
+               $('#page').removeClass('hidden');
+           }, rnd);
+       });
+    </script>
 </head>
 <body>
 
+<div id="loader">
+    <div class="preloader"></div>
+    <div class="loadBar">
+        <div class="progress"></div>    
+    </div>
+</div>
+
+
+<div id="page" class="hidden">
 <!-- ------------Landing page ------------ -->
 <section class="banner">
     
     <div class="jumbotron text-center content">
         <div class="content">
             <div class="ui container">
-                <h1 class="display-3" style="font-family: 'Exo', sans-serif;"> Teacher's Login</h1>
-                <select class="ui search dropdown" id='username'>
-                    <option value="none" selected>None</option>
-                    <option value="HOD">HOD</option>
-                    <option value="VEENA">VEENA</option>
-                    <option value="SABEERATH">SABEERATH</option>
-                    <option value="ANJU">ANJU</option>
-                </select><br><br>
-                
-                <button class="positive ui button" onclick="capit()" id="btn_login">Login</button>
+                <h1 class="text-light" style="font-family: 'Exo', sans-serif; font-size: xx-large;">Octagon</h1>
+
+                <form action="/octagon/login" method="POST" class="ui form">
+                    <div class="field">
+                        <select class="ui w-25 search dropdown" id='username' name="username" required>
+                            <option value="" selected disabled hidden>Choose You're Name</option>
+                            {% for data in teachers %}
+                            <option value="teacher;{{ data.username }}" class="text-capitalize">{{data.name}}</option>
+                            {% endfor %}
+                            {% for data in hods %}
+                            <option value="hod;{{ data.user_name }}" class="text-capitalize">{{data.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <input type="text" class="w-25" name='password' id='password' style="display: none;">
+                    </div>
+
+                    <p class="font-weight-bold">
+                        <div class="ui red horizontal label" style="display: {{ verify }};">Incorrect credential</div>
+                    </p>
+                    <button class="positive ui button" onclick="capit()" id="btn_login">Login</button>
+                </form>
+
                 <video id="stream" width="160" height="160" style="display: none;"></video>
                 <canvas id="capture" width="1000" height="1000" style="display: none;"></canvas>
                 
@@ -49,7 +153,7 @@
     </div>
 </section>
 <!-- ------------Landing page ending ------------ -->
-    
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 <script>
@@ -61,5 +165,6 @@ type="text/javascript"
 src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"
 ></script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 </html>
