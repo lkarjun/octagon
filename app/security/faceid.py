@@ -6,6 +6,7 @@ from PIL import Image
 import numpy as np
 import pickle
 from fastapi import HTTPException, status
+import time
 
 face_op = lambda: pickle.load(open('security/faces.pkl', 'rb'))
 face_dp = lambda faces: pickle.dump(faces, open('security/faces.pkl', 'wb'))
@@ -13,7 +14,18 @@ face_dp = lambda faces: pickle.dump(faces, open('security/faces.pkl', 'wb'))
 def recogize(encoding1: TypeVar('numpy.ndarray'), encoding2: TypeVar('numpy.ndarray'), tolerance = 0.5) -> bool:
     ''' return True if the two images are same else False'''
     result = fr.compare_faces([encoding1], encoding2, tolerance=tolerance)
-    return result
+    return result[0]
+
+def recogize_user(data):
+    encoding = get_encoding(decoded_image(data.password))
+    known_encodings = get_faces(data.username.split(";")[1])
+    print(f"Recognizing {data.username} at: {time.strftime('%H:%M:%S', time.localtime())}")
+    result1 = recogize(known_encodings[0][0], encoding[0])
+    result2 = recogize(known_encodings[1][0], encoding[0])
+    result3 = recogize(known_encodings[2][0], encoding[0])
+    final_result = (result1 or result2 or result3)
+    print("Finished at:", time.strftime("%H:%M:%S", time.localtime()))
+    return final_result
 
 def read_images(image1, image2, image3):
     image1 = np.array(Image.open(BytesIO(image1)))
@@ -53,8 +65,3 @@ def put_faces(name: str, encoded_faces: List) -> None:
     faces[name] = encoded_faces
     face_dp(faces)
 
-
-if __name__ == '__main__':
-    print(get_faces())
-    put_faces('lalkrishna', [[2,3,], [12121]])
-    print();print(get_faces())

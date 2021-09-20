@@ -1,16 +1,36 @@
 from fastapi import APIRouter, status, Depends, Request, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
-from security.faceid import decoded_image, Dict
+from security.faceid import Dict, recogize_user
 from security import oauth2, hashing
 import templates as temp
-
+import time
 
 router = APIRouter(tags = ['Authentication'])
 
-@router.post('/login', status_code=status.HTTP_202_ACCEPTED)
-async def login(file: Dict):
-    decoded_image(file['file'])
-    return False
+@router.post('octagon/login', status_code=status.HTTP_202_ACCEPTED)
+async def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
+    recogize_result = recogize_user(data)
+
+    if not recogize_result:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+    who, username = data.username.split(";")
+    
+    if who == 'teacher':
+        access_token = oauth2.manager_teacher.create_access_token(
+                    data = dict(sub = data.username)
+            )
+        res = temp.OthersTemplates.login_redirect_page(request, who)
+        oauth2.manager_teacher.set_cookie(res, access_token)
+        return res
+        
+    access_token = oauth2.manager_hod.create_access_token(
+                    data = dict(sub = data.username)
+            )
+    res = temp.OthersTemplates.login_redirect_page(request, who)
+    oauth2.manager_hod.set_cookie(res, access_token)
+    return res
+
 
 @router.post('/admin/login', status_code=status.HTTP_202_ACCEPTED, response_class=temp.RedirectResponse)
 async def admin_login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
