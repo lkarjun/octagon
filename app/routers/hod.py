@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, Depends, status, Form, UploadFile, File
 from sqlalchemy.orm.session import Session
 from starlette.responses import HTMLResponse, Response
-from repository import hod, Schemas, attendence
+from repository import hod, Schemas, attendence, admin
 from database import database
 from templates import HodTemplates
 from typing import List
@@ -34,8 +34,9 @@ async def verification_image(username: str = Form(...),
                             image1: UploadFile = File(...),
                             image2: UploadFile = File(...),
                             image3: UploadFile = File(...)):
-    print(image1.filename, username)
-    return Response(status_code=204)
+    image1, image2, image3 = await image1.read(), await image2.read(),\
+                                await image3.read()
+    return admin.verification_image(username, image1, image2, image3)
 
 # Students Related
 

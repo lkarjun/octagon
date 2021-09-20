@@ -26,7 +26,7 @@ def read_images(image1, image2, image3):
 def get_encoding(image: TypeVar('numpy.ndarray')) -> TypeVar('numpy.ndarray'):
     '''return len of 128 encoded vector'''
     encodings = fr.face_encodings(image)
-    if not len(encodings) == 128:
+    if not (len(encodings) == 1 and len(encodings[0]) == 128):
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Please Retake image")
     return encodings
 
