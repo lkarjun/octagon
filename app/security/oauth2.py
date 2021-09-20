@@ -9,6 +9,13 @@ class NotAuthenticatedException(Exception):
 def exc_handler(request, exc):
     return RedirectResponse(url='/error')
 
+class NotAuthenticatedStaff(Exception):
+    pass
+
+def exc_handler_teacher(request, exc):
+    return RedirectResponse(url='/')
+
+
 # Admin login manager
 manager_admin = LoginManager(
                 '1fb047dad3e488183c22e1ec5f982cba2daed79f15f0b357',
@@ -29,16 +36,18 @@ async def get_user(username: str, return_data = False):
         return data if username == data.name else None
     return True if username == data.name else None
 
+
 # Teacher Login Manager
 
 manager_teacher = LoginManager(
                 '9e3a3f0afd04dbdb78b5ef16f90c0d6bb8eb0a2c9915df0f',
-                token_url='/login',
+                token_url='/octagon/login',
                 use_cookie=True,
                 use_header=True,
             )
 
 manager_teacher.cookie_name = 'teacherToken'
+manager_teacher.not_authenticated_exception = NotAuthenticatedStaff
 
 @manager_teacher.user_loader
 async def get_teacher(username: str):
@@ -55,12 +64,13 @@ async def get_teacher(username: str):
 
 manager_hod = LoginManager(
                 '5511d4a2ef7f9cb9b30de5663affae95f9445d7b2d3125a9',
-                token_url='/login',
+                token_url='/octagon/login',
                 use_cookie=True,
                 use_header=True,
             )
 
 manager_hod.cookie_name = 'hodToken'
+manager_hod.not_authenticated_exception = NotAuthenticatedStaff
 
 @manager_hod.user_loader
 async def get_hod(username: str):

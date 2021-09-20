@@ -57,4 +57,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.add_exception_handler(oauth2.NotAuthenticatedException, oauth2.exc_handler)
 
+app.add_exception_handler(oauth2.NotAuthenticatedStaff, oauth2.exc_handler_teacher)
+
 models.Base.metadata.create_all(database.engine)
