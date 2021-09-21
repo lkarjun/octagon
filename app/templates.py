@@ -61,9 +61,10 @@ class OthersTemplates():
 
 class HodTemplates():
 
-    def workspace(request):
+    def workspace(request, user):
         tmp = templates.TemplateResponse("hodWorkspace.html",
-                        context={"request": request, "title": "Workspace"})
+                        context={"request": request, "title": "Workspace",
+                            "user": user.name})
         return tmp
 
     def timetable(request):

@@ -83,7 +83,7 @@ async def clear_message(db: Session = Depends(get_db)):
 # Pages
 @router.get("/workspace")
 async def workspace(request: Request, user=Depends(oauth2.manager_hod)):
-    return HodTemplates.workspace(request)
+    return HodTemplates.workspace(request, user)
 
 @router.get("/message")
 async def message(request: Request):
