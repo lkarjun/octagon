@@ -13,7 +13,7 @@ class NotAuthenticatedStaff(Exception):
     pass
 
 def exc_handler_teacher(request, exc):
-    return RedirectResponse(url='/')
+    return RedirectResponse(url='/octagon/login')
 
 
 # Admin login manager

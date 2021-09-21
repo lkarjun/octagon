@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login page</title>
+    <title>Octagon Authentication</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
     <link rel="stylesheet" href="{{ url_for('static', path='/main.css') }}">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Exo&family=Pattaya&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='Favicon/favicon-32x32.png') }}">
     <script src="{{ url_for('static', path='/main.js') }}"></script>
 
     <style>
@@ -108,7 +109,7 @@
 <!-- ------------Landing page ------------ -->
 <section class="banner">
     
-    <div class="jumbotron text-center content">
+    <div class="jumbotron content">
         <div class="content">
             <div class="ui container">
                 <h1 class="text-light" style="font-family: 'Exo', sans-serif; font-size: xx-large;">Octagon</h1>
@@ -129,9 +130,6 @@
                         <input type="text" class="w-25" name='password' id='password' style="display: none;">
                     </div>
 
-                    <p class="font-weight-bold">
-                        <div class="ui red horizontal label" style="display: {{ verify }};">Incorrect credential</div>
-                    </p>
                     <button class="positive ui button" onclick="capit()" id="btn_login">Login</button>
                 </form>
 
@@ -166,5 +164,13 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"
 ></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+{% if verify%}
+<script>
+    $(window).on('load', function () {
+        swal("{{ message }}")
+    });
+</script>
+{% endif %}
+
 </body>
 </html>

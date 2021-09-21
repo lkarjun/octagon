@@ -1,36 +1,49 @@
 from fastapi import APIRouter, status, Depends, Request, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
+from starlette.responses import RedirectResponse
 from security.faceid import Dict, recogize_user
 from security import oauth2, hashing
 import templates as temp
+from datetime import timedelta
 import time
 
 router = APIRouter(tags = ['Authentication'])
 
-@router.post('octagon/login', status_code=status.HTTP_202_ACCEPTED)
+@router.post('/octagon/login', status_code=status.HTTP_202_ACCEPTED, response_class=temp.RedirectResponse)
 async def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
-    recogize_result = recogize_user(data)
+    try:
+        recogize_result = recogize_user(data)
+    except:
+        return temp.OthersTemplates.login_page(request, 'block', 'Cant visible your face!😔 Please try again.')
 
     if not recogize_result:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+        return temp.OthersTemplates.login_page(request, 'block', 'Invalid credential!🤔 Please Try again.')
 
     who, username = data.username.split(";")
     
     if who == 'teacher':
         access_token = oauth2.manager_teacher.create_access_token(
-                    data = dict(sub = data.username)
+                    data = dict(sub = data.username),
+                    expires=timedelta(hours=6)
             )
         res = temp.OthersTemplates.login_redirect_page(request, who)
         oauth2.manager_teacher.set_cookie(res, access_token)
         return res
         
     access_token = oauth2.manager_hod.create_access_token(
-                    data = dict(sub = data.username)
+                    data = dict(sub = data.username),
+                    expires=timedelta(hours=6)
             )
     res = temp.OthersTemplates.login_redirect_page(request, who)
     oauth2.manager_hod.set_cookie(res, access_token)
     return res
 
+@router.get("/octagon/logout/{who}", status_code=status.HTTP_202_ACCEPTED, response_class=temp.RedirectResponse)
+async def logout(request: Request, who):
+    tokens = {'teacher': 'teacherToken', 'hod': 'hodToken'}
+    res = RedirectResponse("/")
+    res.delete_cookie(tokens[who])
+    return res
 
 @router.post('/admin/login', status_code=status.HTTP_202_ACCEPTED, response_class=temp.RedirectResponse)
 async def admin_login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
@@ -41,7 +54,8 @@ async def admin_login(request: Request, data: OAuth2PasswordRequestForm = Depend
         return temp.AdminTemplates.admin_login_page(request, 'block')
 
     access_token = oauth2.manager_admin.create_access_token(
-                        data = dict(sub = user.name)
+                        data = dict(sub = user.name),
+                        expires=timedelta(seconds=5)
                     )
     res = temp.AdminTemplates.login_success_redirect()
     tkn = {'access_token': access_token, 'token_type': 'bearer'}
