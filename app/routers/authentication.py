@@ -55,7 +55,7 @@ async def admin_login(request: Request, data: OAuth2PasswordRequestForm = Depend
 
     access_token = oauth2.manager_admin.create_access_token(
                         data = dict(sub = user.name),
-                        expires=timedelta(seconds=5)
+                        expires=timedelta(minutes=20)
                     )
     res = temp.AdminTemplates.login_success_redirect()
     tkn = {'access_token': access_token, 'token_type': 'bearer'}
