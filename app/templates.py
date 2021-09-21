@@ -39,14 +39,15 @@ class AdminTemplates():
 
 class OthersTemplates():
     
-    def login_page(request, verify='none'):
+    def login_page(request, verify=False, message = 'Login Page'):
         db = database.SessionLocal()
         teachers = db.query(models.Teachers).all()
         hods = db.query(models.Hod).all()
         db.close()
         tmp = templates.TemplateResponse('login.html',
                 context={'request': request, 'teachers': teachers,
-                         'hods': hods, 'verify': verify})
+                         'hods': hods, 'verify': verify,
+                         'message': message})
         return tmp
 
     def login_redirect_page(request, who):
@@ -55,7 +56,8 @@ class OthersTemplates():
         else:
             return RedirectResponse(url = '/teacher/workspace', status_code=status.HTTP_302_FOUND)
 
-
+    def login_error_redirect():
+        return RedirectResponse(url='/', status_code=status.HTTP_302_FOUND)
 
 class HodTemplates():
 

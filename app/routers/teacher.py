@@ -3,6 +3,7 @@ from sqlalchemy.orm.session import Session
 from repository import Schemas, teacher
 from database import database
 from templates import TeacherTemplates
+from security import oauth2
 
 router = APIRouter(tags = ['Teachers'], prefix='/teacher')
 
@@ -26,8 +27,9 @@ async def take_attendence(request: Request):
     return TeacherTemplates.takeAttendence(request)
 
 @router.get("/workspace")
-async def workspace(request: Request, db: Session = Depends(get_db)):
-    return TeacherTemplates.workspace(request, db)
+async def workspace(request: Request, db: Session = Depends(get_db), 
+                        user=Depends(oauth2.manager_teacher)):
+    return TeacherTemplates.workspace(request, db, user)
 
 @router.get("/message", status_code=status.HTTP_200_OK)
 async def message(request: Request, db: Session = Depends(get_db)):

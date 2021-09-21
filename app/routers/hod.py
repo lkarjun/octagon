@@ -5,6 +5,7 @@ from repository import hod, Schemas, attendence, admin
 from database import database
 from templates import HodTemplates
 from typing import List
+from security import oauth2
 
 router = APIRouter(tags = ['Head Of Department'], prefix='/hod')
 
@@ -81,15 +82,15 @@ async def clear_message(db: Session = Depends(get_db)):
 
 # Pages
 @router.get("/workspace")
-async def workspace(request: Request):
+async def workspace(request: Request, user=Depends(oauth2.manager_hod)):
     return HodTemplates.workspace(request)
 
 @router.get("/message")
 async def message(request: Request):
     return HodTemplates.message(request)
 
-@router.get('/uoc-notification')
-async def uoc_notificaions(request: Request):
+@router.get('/uoc-notification',)
+async def uoc_notificaions(request: Request, user=Depends(oauth2.manager_hod)):
     return HodTemplates.uoc_notification(request)
 
 @router.get('/exam-notification')
