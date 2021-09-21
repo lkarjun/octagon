@@ -73,8 +73,22 @@
                 <div class="ui form">
 
                     <div class="field">
-                        <label>Choose Date (For Monthly Analysis)</label>
-                        <input type="date" id="datePicker">
+                        <label>Choose Month (For Monthly Analysis)</label>
+                        <select name="analysis_month" id="datePicker">
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April </option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                        <!-- <input type="date" id="datePicker"> -->
                     </div>
 
                     <div class="ui buttons two">
@@ -211,21 +225,23 @@
 
         <!--End-->
 
+        <!--Terminal Zone-->
+        <hr class='rounded' style="height: 5px; background-color: orange;">
+        <section class="pb-md-5 pb-5 pt-md-0 pt-5">
+            <div class="jumbotron text-left pt-md-5">
+                <p class="h3 pb-md-5 pb-5 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Terminal Zone</p>
+            </div>
+            <div class="ui buttons small three">
+                <button class="ui button yellow">Start New Semester</button>
+                <div class="ui button green">Promote Student</div>
+                <div class="ui button red">Remove Student</div>
+            </div>
+        </section>
+
     </section>
 
 </div>
 
-<script>
-    var now = new Date();
-    var day = ("0" + now.getDate()).slice(-2);
-    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
-    $('#datePicker').val(today);var now = new Date();
-    var day = ("0" + now.getDate()).slice(-2);
-    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
-    $('#datePicker').val(today);
-</script>
 <script src="{{ url_for('static', path='attendence.js') }}"></script>
 <script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
 

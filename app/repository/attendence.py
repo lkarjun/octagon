@@ -131,9 +131,8 @@ def attendence_analysing(request: Schemas.Analysing, files: Schemas.Files, **kwa
     df = files.daily
     if request.last_month: 
         
-        which_month = request.which_month[5:7]
+        which_month = request.which_month
         date_columns = [date for date in df.columns[1:] if date[5:7] == which_month]
-
         if not len(date_columns): raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
                                                 detail=f"No attendence taken in {which_month} month")
         return get_analysis(df, date_columns, six_mnth=False)
