@@ -78,5 +78,4 @@ async def get_hod(username: str):
     username = db.query(models.Hod).filter(
             models.Hod.user_name == username).first()
     db.close()
-    print(username.name)
     return username
