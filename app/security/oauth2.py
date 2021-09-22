@@ -56,7 +56,6 @@ async def get_teacher(username: str):
     username = db.query(models.Teachers).filter(
             models.Teachers.username == username).first()
     db.close()
-    print(username.name)
     return username
 
 
