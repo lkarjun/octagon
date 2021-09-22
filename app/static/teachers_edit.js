@@ -9,7 +9,19 @@ function verification_image_upload(data, user_name, name){
     form_data.append('image3', $('#vimage3')[0].files[0])
     console.log(form_data)
   
+    $("#pro").show()
     $.ajax({
+      xhr: function() {
+        var xhr = new window.XMLHttpRequest();
+        xhr.upload.addEventListener("progress", function(evt) {
+            if (evt.lengthComputable) {
+                var percentComplete = Math.round((evt.loaded / evt.total) * 100);
+                $(".progress-bar").width(percentComplete + '%');
+                $(".progress-bar").html(percentComplete+'%');
+            }
+        }, false);
+        return xhr;
+      },
       url: base,
       type: 'POST',
       async: true,
@@ -18,12 +30,26 @@ function verification_image_upload(data, user_name, name){
       
       contentType: false,
       processData: false,
+      beforeSend: function(){
+        $(".progress-bar").width('0%');
+        $('#uploadStatus').html('<img src="images/loading.gif"/>');
+      },
       success: function(result){
         console.log("Verification Images uploaded");
         appoint_teacher(data, name)
+        $("#pro").hide()
       },
       error: function(result){
-        error_alert("Something Went Wrong. Please try to contact the techincal team...");
+        if(result.status == 415){
+          $("#appoint_btn").removeClass("loading disabled")
+          warning_alert("Please retake image...")
+          $("#pro").hide()
+        }
+        else{
+         error_alert("Something Went Wrong. Please try to contact the techincal team...");
+         $("#pro").hide()
+        }
+        
       }
     })
 }
@@ -41,8 +67,8 @@ function appoint_teacher(data, name){
       dataType: 'json',
       contentType: "application/json",
       success: function(result){
-        $("#appoint_btn").removeClass("loading")
-      
+        $("#appoint_btn").removeClass("loading disabled")
+        $("#pro").hide()
         swal({
               title: "Appointed Teacher!",
               text: "Sucessfully Appointed Teacher " + name,
@@ -55,7 +81,8 @@ function appoint_teacher(data, name){
 
       },
       error: function(result){
-        $("#appoint_btn").removeClass("loading")
+        $("#pro").hide()
+        $("#appoint_btn").removeClass("loading disabled")
         error_alert("Something Went Wrong. Please try to contact the techincal team...");
       }
      
@@ -64,7 +91,7 @@ function appoint_teacher(data, name){
 
 $("#Appointment_form").submit((e)=>{
     e.preventDefault()
-    $("#appoint_btn").addClass("loading")
+    $("#appoint_btn").addClass("loading disabled")
 
     var base = window.location.origin + '/hod/Addteacher';
 

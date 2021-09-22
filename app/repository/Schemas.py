@@ -35,7 +35,7 @@ class DeleteCourse(BaseModel):
     course_name: str
 
 class AdminPass(BaseModel):
-    username: str = 'admin'
+    username: str = 'Admin'
     current_pass: str
     new_pass: str
 

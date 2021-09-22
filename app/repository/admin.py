@@ -78,8 +78,6 @@ def create(request: Schemas.CreateHod, db: Session):
 def verification_image(username, image1, image2, image3):
     print("Getting encodings for images at", time.strftime("%H:%M:%S", time.localtime()))
     encodings = faceid.read_images(image1, image2, image3)
-    if not len(encodings[0]) and len(encodings[1]) and len(encodings[2]): 
-        raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Please Retake image")
     print("Saving encoded vectors at", time.strftime("%H:%M:%S", time.localtime()))
     faceid.put_faces(username, encodings)
     print("Saved encoded vectors at", time.strftime("%H:%M:%S", time.localtime()))

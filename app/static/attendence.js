@@ -60,7 +60,9 @@ function dataAnalysis(){
 }
 
 
-
+const month_names = {'01': 'January', '02': 'February', '03': 'March', '04': 'April',
+'05': 'May', '06': 'June', '07': 'July', '08': 'August', 
+'09': 'September', '10': 'October', '11': 'November', '12': 'December'}
 
 function get_report(monthly = true){
     var base = window.location.origin + '/hod/get_report';
@@ -73,7 +75,7 @@ function get_report(monthly = true){
         var data = JSON.stringify({"course": course, "year": year,
                                     "last_month": monthly,
                                     "which_month": which_month})
-        var report_head = which_month + " Month Report"
+        var report_head = month_names[which_month] + " Month Report"
     }
     else{
         $("#6_btn_report").addClass("loading disabled")

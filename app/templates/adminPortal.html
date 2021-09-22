@@ -197,6 +197,11 @@
             </label>
           </div>
         </div>
+        <div class="pt-2 pb-4" id = 'pro' style="display: none;">
+          <div class="progress" style="height: 15px;">
+            <div class="progress-bar bg-success rounded" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
         <p class="text-danger">**Usually take 3-4 minutes</p>
         <button class="ui button green" id='upload_button' type="submit">Submit</button>
         <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
@@ -324,7 +329,7 @@
                         <form id='admin_reset'>
                                             
                             <div class="form-group pt-3">
-                                <label for="inputPassword">Current Password </label>
+                                <label for="inputPassword">Current Password</label>
                                 <input type="password" required class="form-control md-w-50" name="password" id="inputPassword" placeholder="Admin Password">
                             </div>
 

@@ -178,8 +178,19 @@ function verification_image_upload(data, name, user_name){
   form_data.append('image2', $('#vimage2')[0].files[0])
   form_data.append('image3', $('#vimage3')[0].files[0])
   console.log(form_data)
-
+  $("#pro").show()
   $.ajax({
+    xhr: function() {
+      var xhr = new window.XMLHttpRequest();
+      xhr.upload.addEventListener("progress", function(evt) {
+          if (evt.lengthComputable) {
+              var percentComplete = Math.round((evt.loaded / evt.total) * 100);
+              $(".progress-bar").width(percentComplete + '%');
+              $(".progress-bar").html(percentComplete+'%');
+          }
+      }, false);
+      return xhr;
+    },
     url: base,
     type: 'POST',
     async: true,
@@ -188,12 +199,27 @@ function verification_image_upload(data, name, user_name){
     
     contentType: false,
     processData: false,
+    beforeSend: function(){
+      $(".progress-bar").width('0%');
+      $('#uploadStatus').html('<img src="images/loading.gif"/>');
+    },
     success: function(result){
       console.log("Verification Images uploaded");
+      $("#upload_button").removeClass("loading disabled");
+      $("#pro").hide()
       appoint_hod(data, name, user_name)
     },
     error: function(result){
-      error_alert("Something Went Wrong. Please try to contact the techincal team...");
+      if(result.status == 415){
+        warning_alert("Please retake images.")
+        $("#pro").hide()
+        $("#upload_button").removeClass("loading disabled");
+      }
+      else{
+        error_alert("Something Went Wrong. Please try to contact the techincal team...");
+        $("#pro").hide()
+        $("#upload_button").removeClass("loading disabled");
+      }
     }
   })
 }

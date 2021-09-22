@@ -2,7 +2,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi import status
 from fastapi.responses import RedirectResponse
 from repository import admin, hod, attendence, teacher
-from database import database
+from database import database, models
 from collections import defaultdict
 
 templates = Jinja2Templates('templates')
@@ -39,15 +39,32 @@ class AdminTemplates():
 
 class OthersTemplates():
     
-    def login_page(request):
-        return templates.TemplateResponse('login.html', context={'request': request})
+    def login_page(request, verify=False, message = 'Login Page'):
+        db = database.SessionLocal()
+        teachers = db.query(models.Teachers).all()
+        hods = db.query(models.Hod).all()
+        db.close()
+        tmp = templates.TemplateResponse('login.html',
+                context={'request': request, 'teachers': teachers,
+                         'hods': hods, 'verify': verify,
+                         'message': message})
+        return tmp
 
+    def login_redirect_page(request, who):
+        if who == 'hod':
+            return RedirectResponse(url = '/hod/workspace', status_code=status.HTTP_302_FOUND)
+        else:
+            return RedirectResponse(url = '/teacher/workspace', status_code=status.HTTP_302_FOUND)
+
+    def login_error_redirect():
+        return RedirectResponse(url='/', status_code=status.HTTP_302_FOUND)
 
 class HodTemplates():
 
-    def workspace(request):
+    def workspace(request, user):
         tmp = templates.TemplateResponse("hodWorkspace.html",
-                        context={"request": request, "title": "Workspace"})
+                        context={"request": request, "title": "Workspace",
+                            "user": user.name})
         return tmp
 
     def timetable(request):
@@ -156,12 +173,13 @@ class HodTemplates():
 
 class TeacherTemplates():
     
-    def workspace(request, db):
+    def workspace(request, db, user):
         classes = sorted(teacher.get_hour_detail(db), key = lambda x: x.hour)
         free_day = False if len(classes) >= 1 else True
         tmp = templates.TemplateResponse("teacherWorkspace.html",
                         context={"request": request, "title": "Workspace",
-                                 "free_day": free_day, "classes": classes})
+                                 "free_day": free_day, "classes": classes,
+                                 "user": user.name})
         return tmp 
 
     def message(request, db):
