@@ -73,7 +73,7 @@ async def get_current_hour_detail(department: str, day: str, hour: str, db: Sess
     return hod.current_hour_detail(department, day, hour, db)
 
 @router.get("/full_message")
-async def get_full_message(request: Request, db: Session = Depends(get_db)):
+async def get_full_message(request: Request, db: Session = Depends(get_db), user=Depends(oauth2.manager_hod)):
     return HodTemplates.get_full_messages(request, db)
 
 @router.post("/clear_messages")
@@ -86,7 +86,7 @@ async def workspace(request: Request, user=Depends(oauth2.manager_hod)):
     return HodTemplates.workspace(request, user)
 
 @router.get("/message")
-async def message(request: Request):
+async def message(request: Request, user=Depends(oauth2.manager_hod)):
     return HodTemplates.message(request)
 
 @router.get('/uoc-notification',)
