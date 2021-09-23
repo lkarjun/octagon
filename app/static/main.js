@@ -11,7 +11,7 @@ function startStreaming() {
         })
             .catch( function( err ) {
             $("#btn_login").hide()
-            alert("Unable to access camera: " + err );
+            swal("Unable to access camera: " + err );
             console.log( "Unable to access camera: " + err );
         });
         }

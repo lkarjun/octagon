@@ -16,19 +16,19 @@ get_db = database.get_db
 
 @router.post('/octagon/login', status_code=status.HTTP_202_ACCEPTED, response_class=temp.RedirectResponse)
 async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-
-    try:
-        hod = db.query(models.Hod).filter(
+    print(data.username)
+    hod = db.query(models.Hod).filter(
                         models.Hod.user_name == data.username
                     ).first()
 
-        teacher = db.query(models.Teachers).filter(
+    teacher = db.query(models.Teachers).filter(
                         models.Teachers.username == data.username
                     ).first()
+                    
+    if not hod or teacher:
+        return temp.OthersTemplates.login_page(request, 'block', 'Invalid credential!🤔 Please Try again.')
 
-        if not (hod or teacher):
-            raise Exception("User not found")
-        
+    try:
         recogize_result = recogize_user(data)
     except:
         return temp.OthersTemplates.login_page(request, 'block', 'Cant visible your face!😔 Please try again.')
@@ -40,7 +40,7 @@ async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), d
     
     if who == 'teacher':
         access_token = oauth2.manager_teacher.create_access_token(
-                    data = dict(sub = data.username),
+                    data = dict(sub = f"teacher;{data.username}"),
                     expires=timedelta(hours=6)
             )
         res = temp.OthersTemplates.login_redirect_page(request, who)
@@ -48,7 +48,7 @@ async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), d
         return res
         
     access_token = oauth2.manager_hod.create_access_token(
-                    data = dict(sub = data.username),
+                    data = dict(sub = f"hod;{data.username}"),
                     expires=timedelta(hours=6)
             )
     res = temp.OthersTemplates.login_redirect_page(request, who)

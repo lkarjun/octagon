@@ -13,7 +13,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet" />
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='Favicon/favicon-32x32.png') }}">
     <script src="{{ url_for('static', path='/main.js') }}"></script>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Are+You+Serious&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <style>
 
         * {
@@ -29,7 +32,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: #2ecc71;
+            background: #ffffff;
         }
 
         .preloader {
@@ -38,7 +41,7 @@
             height: 40px;
             left: calc(50% - 20px);
             top: calc(50% - 20px);
-            background: #e74c3c;
+            background: #27ae60;
             transform: rotate(45deg);
             animation: preloader 2s linear infinite;
         }
@@ -108,8 +111,57 @@
 <div id="page" class="hidden">
 <!-- ------------Landing page ------------ -->
 <section class="banner">
-    
-    <div class="jumbotron content">
+
+    <div class="d-flex align-items-center justify-content-center" style="height: 95vh;">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="shadow-lg rounded">
+                    <div class="p-5">
+                        <h1 class="text-light" style="font-family: 'Are You Serious', cursive; font-size: 500%;">Octagon</h1>
+                        <form action="/octagon/login" method="POST" class="ui form">
+                            <div class="field">
+                                <div class="ui input">
+                                    <input type="text" id="username" placeholder="Username" name="username">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <input type="text" class="w-25" name='password' id='password' style="display: none;">
+                            </div>
+        
+                            <button class="ui button teal" onclick="capit()" id="btn_login">Recognize Me</button>
+                        </form>
+
+                        <div style="font-family: Comic sans MS; display: none;" id='recognizing-spinner' class="text-light">Recognitizing
+                            <div class="spinner-grow text-danger" style="width: 1rem; height: 1rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                              </div>
+                              <div class="spinner-grow text-white" style="width: 1rem; height: 1rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                              </div>
+                              <div class="spinner-grow text-success" style="width: 1rem; height: 1rem;" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                              </div>
+                        </div>
+        
+                        <video id="stream" width="160" height="160" style="display: none;"></video>
+                        <canvas id="capture" width="1000" height="1000" style="display: none;"></canvas>
+                        
+                        <script>
+        
+                            var cameraStream = null;
+                            var stream = document.getElementById( "stream" );
+                            var capture = document.getElementById( "capture" );
+                        
+                            startStreaming()
+                            
+                        </script>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="jumbotron content">
         <div class="content">
             <div class="ui container">
                 <h1 class="text-light" style="font-family: 'Exo', sans-serif; ">Octagon</h1>
@@ -154,7 +206,7 @@
                 
             </div>
         </div>
-    </div>
+    </div> -->
 </section>
 <!-- ------------Landing page ending ------------ -->
 </div>
@@ -169,7 +221,6 @@ type="text/javascript"
 src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"
 ></script>
 
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 {% if verify%}
 <script>
     $(window).on('load', function () {
