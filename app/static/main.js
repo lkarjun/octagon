@@ -77,6 +77,8 @@ function capit(){
               If you're name is not there then please contact 
               admin or techincal staff.`).then((value) => {location.reload();});
     }
-    $("#recognizing-spinner").show()
-    $("#password").val(data.split(',')[1])
+    else{
+        $("#recognizing-spinner").show()
+        $("#password").val(data.split(',')[1])
+    }
 }

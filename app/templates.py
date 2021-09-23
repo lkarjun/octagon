@@ -160,7 +160,7 @@ class HodTemplates():
     
     def message(request):
         tmp = templates.TemplateResponse("message.html",
-                        context={"request": request, "title": "Workspace"})
+                        context={"request": request, "title": "Message"})
         return tmp
 
     def get_full_messages(request, db):
