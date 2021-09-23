@@ -40,13 +40,9 @@ class AdminTemplates():
 class OthersTemplates():
     
     def login_page(request, verify=False, message = 'Login Page'):
-        db = database.SessionLocal()
-        teachers = db.query(models.Teachers).all()
-        hods = db.query(models.Hod).all()
-        db.close()
         tmp = templates.TemplateResponse('login.html',
-                context={'request': request, 'teachers': teachers,
-                         'hods': hods, 'verify': verify,
+                context={'request': request,
+                         'verify': verify,
                          'message': message})
         return tmp
 

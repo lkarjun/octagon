@@ -72,7 +72,7 @@ function capit(){
     $("#btn_login").hide()
     data = captureSnapshot();
     stopStreaming();
-    if ($('#username').val() == null){
+    if ($('#username').val().length == 0){
         swal(`Kindly please choose you're name from the select box. 
               If you're name is not there then please contact 
               admin or techincal staff.`).then((value) => {location.reload();});

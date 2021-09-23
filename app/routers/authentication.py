@@ -4,14 +4,31 @@ from starlette.responses import RedirectResponse
 from security.faceid import Dict, recogize_user
 from security import oauth2, hashing
 import templates as temp
+from sqlalchemy.orm.session import Session
+from database import database
+from database import models
+from sqlalchemy import or_
 from datetime import timedelta
 import time
 
 router = APIRouter(tags = ['Authentication'])
+get_db = database.get_db
 
 @router.post('/octagon/login', status_code=status.HTTP_202_ACCEPTED, response_class=temp.RedirectResponse)
-async def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
+async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+
     try:
+        hod = db.query(models.Hod).filter(
+                        models.Hod.user_name == data.username
+                    ).first()
+
+        teacher = db.query(models.Teachers).filter(
+                        models.Teachers.username == data.username
+                    ).first()
+
+        if not (hod or teacher):
+            raise Exception("User not found")
+        
         recogize_result = recogize_user(data)
     except:
         return temp.OthersTemplates.login_page(request, 'block', 'Cant visible your face!😔 Please try again.')
@@ -19,7 +36,7 @@ async def login(request: Request, data: OAuth2PasswordRequestForm = Depends()):
     if not recogize_result:
         return temp.OthersTemplates.login_page(request, 'block', 'Invalid credential!🤔 Please Try again.')
 
-    who, username = data.username.split(";")
+    who = 'hod' if hod else 'teacher'
     
     if who == 'teacher':
         access_token = oauth2.manager_teacher.create_access_token(

@@ -97,8 +97,9 @@ $("#Appointment_form").submit((e)=>{
 
     var name = $("#name").val()
     var email = $("#email").val()
-    var username = $("#username").val()
     var phone_number = parseInt($("#number").val())
+    var username = $("#username").val()
+    var username = name.toLowerCase().slice(0,3) + String(phone).slice(7) + username
     var tag = $("#tag").val()
     var depart = $("#depart").val()
     var data = JSON.stringify({"name": name, "username": username, "department": depart,

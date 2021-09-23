@@ -230,6 +230,7 @@ $("#Appointment_form").submit((e)=>{
   var email = $('#email').val()
   var phone = parseInt($('#number').val())
   var username = $('#username').val()
+  var username = name.toLowerCase().slice(0,3) + String(phone).slice(7) + username
   var department = $('#department_options').val()
   var data = JSON.stringify({"name": name, "email": email, "phone_num": phone, "user_name": username, "department": department})
   $("#upload_button").addClass("loading disabled");

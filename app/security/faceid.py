@@ -18,7 +18,7 @@ def recogize(encoding1: TypeVar('numpy.ndarray'), encoding2: TypeVar('numpy.ndar
 
 def recogize_user(data):
     encoding = get_encoding(decoded_image(data.password))
-    known_encodings = get_faces(data.username.split(";")[1])
+    known_encodings = get_faces(data.username)
     print(f"Recognizing {data.username} at: {time.strftime('%H:%M:%S', time.localtime())}")
     result1 = recogize(known_encodings[0][0], encoding[0])
     result2 = recogize(known_encodings[1][0], encoding[0])
