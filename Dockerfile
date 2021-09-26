@@ -1,22 +1,35 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.9
 
-RUN apt-get -y update
-
-RUN apt-get install -y --fix-missing \
+RUN apt-get -y update && apt-get install -y --fix-missing \
     build-essential \
     cmake \
-    git 
+    gfortran \
+    git \
+    wget \
+    curl \
+    graphicsmagick \
+    libgraphicsmagick1-dev \
+    libatlas-base-dev \
+    libavcodec-dev \
+    libavformat-dev \
+    libgtk2.0-dev \
+    libjpeg-dev \
+    liblapack-dev \
+    libswscale-dev \
+    pkg-config \
+    python3-dev \
+    python3-numpy \
+    software-properties-common \
+    zip \
+    && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
-RUN cd ~ && \
-    git clone https://github.com/davisking/dlib.git dlib/ && \
-    cd dlib; mkdir build; cd build; cmake ..; cmake --build .
+RUN pip3 install --upgrade pip && \
+    git clone -b 'v19.21' --single-branch https://github.com/davisking/dlib.git && \
+    cd dlib/ && \
+    python3 setup.py install --set BUILD_SHARED_LIBS=OFF
 
 COPY requirements.txt /app/requirements.txt
 
 RUN pip install -r /app/requirements.txt
 
-COPY ./app /app/app
-WORKDIR /app/
-
-ENV PYTHONPATH=/app
-EXPOSE 8000
+COPY ./app /app
