@@ -1,6 +1,5 @@
 .vscode
 __pycache__
-Images
 *.ipynb
 *.csv
 mail_it.py
