@@ -1,8 +1,6 @@
 .vscode
 __pycache__
-Images
 *.ipynb
 *.csv
 mail_it.py
 text.af
-database.db
