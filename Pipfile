@@ -4,8 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-cmake = "==3.18.2.post1"
-dlib = "==19.18.0"
 face-recognition = "==1.3.0"
 jupyter = "*"
 notebook = "*"
@@ -22,8 +20,9 @@ bs4 = "*"
 pydantic = "*"
 urllib3 = "*"
 ipykernel = "*"
+gunicorn = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "3.8"
