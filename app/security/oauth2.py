@@ -27,7 +27,7 @@ manager_admin.cookie_name = 'adminToken'
 
 manager_admin.not_authenticated_exception = NotAuthenticatedException
 
-@manager_admin.user_loader()
+@manager_admin.user_loader
 async def get_user(username: str, return_data = False):
     db = database.SessionLocal()
     data = db.query(models.Admin).first()
@@ -49,7 +49,7 @@ manager_teacher = LoginManager(
 manager_teacher.cookie_name = 'teacherToken'
 manager_teacher.not_authenticated_exception = NotAuthenticatedStaff
 
-@manager_teacher.user_loader()
+@manager_teacher.user_loader
 async def get_teacher(username: str):
     who, username = username.split(";")
     db = database.SessionLocal()
@@ -71,7 +71,7 @@ manager_hod = LoginManager(
 manager_hod.cookie_name = 'hodToken'
 manager_hod.not_authenticated_exception = NotAuthenticatedStaff
 
-@manager_hod.user_loader()
+@manager_hod.user_loader
 async def get_hod(username: str):
     who, username = username.split(";")
     db = database.SessionLocal()
