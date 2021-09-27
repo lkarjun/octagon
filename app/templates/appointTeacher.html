@@ -43,11 +43,11 @@
   <section id='displayTeacher'style="display: block;">
     
     <div class="jumbotron text-left">
-      <p class="h1 pb-4" style="font-family: 'Exo', sans-serif;">Teacher's Details</p>
+      <h3 class="pb-4" style="font-family: sans-serif;">Teacher's Details</h3>
     </div>
     
     <!--Teacher Search-->
-      <div class="form ui">
+      <div class="form ui pb-3">
 
           <div class="field">
             <div class="ui search">
@@ -65,7 +65,7 @@
     <div class="table-responsive">
       <table class="table align-middle">
         <thead>
-          <tr>
+          <tr class="bg-primary text-light">
             <th scope="col" class="font-weight-bold">Name</th>
             <th scope="col" class="font-weight-bold">Email</th>
             <th scope='col' class="font-weight-bold">Phone No:</th>
@@ -76,8 +76,6 @@
         </thead>
         
         <tbody id='Teachers'>
-
-          {% if teachers %}
 
           {% for teacher in teachers%}
 
@@ -96,22 +94,6 @@
 
           {% endfor %}
 
-          {% else %}
-
-          <tr>
-            <th scope="row" class="font-weight-bold">None</th>
-            <td>None</td>
-            <td>None</td>
-            <td>None</td>
-            <td>None</td>
-            <td>
-              <button type="button" class="btn btn-danger btn-sm px-3">
-                <i class="x icon"></i>
-              </button>
-            </td>
-          </tr>
-
-          {% endif %}
         </tbody>
       </table>
     </div>
@@ -121,7 +103,7 @@
   <section id="Addteacher" style="display: none;" class="pb-5">
 
     <form class="ui form" id='Appointment_form'>
-      <h2 class="ui dividing header" style="font-family: 'Exo', sans-serif;">Appoint New Teacher</h2>
+      <p class="ui dividing header" style="font-family: sans-serif;">Appoint New Teacher</p>
 
       <div class="fields three">
           <div class="field">
@@ -135,8 +117,8 @@
           </div>
           
           <div class="field">
-            <label>User Name</label>
-            <input id='username' required type="text" placeholder="eg: rishal_cs">
+            <label>Secret Code</label>
+            <input id='username' required type="text" placeholder="4 Digit Secret Code">
           </div>
         
       </div>

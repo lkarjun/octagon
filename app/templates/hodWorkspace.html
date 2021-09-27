@@ -10,12 +10,12 @@
 <div class="container">
 
     <div class="jumbotron text-center">
-        <p class="h3 pt-md-5 pt-5 pb-5 mt-5 mb-5 mt-md-5 mb-md-4 font-weight-bold" style="font-family: 'Exo', sans-serif;">Welcome {{user}}!🎉</p>
+        <h3 class="pt-md-5 pt-5 pb-5 mt-5 mb-5 mt-md-5 mb-md-4 font-weight-bold" style="font-family: sans-serif;">Welcome {{user}}!🎉</h3>
     </div>
 
     <section id='quicklink' class='pb-1'>
 
-        <p class="h4 font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Quick Links</p>
+        <p class="h4 font-weight-bold" style="font-family: sans-serif; font-size: larger;">Quick Links</p>
   
         <div class="h4 pt-2">
             <a href="http://docs.uoc.ac.in/website/Syll/"><span class="badge bg-primary">Syllabus <i class="external alternate icon"></i></span></a> 
@@ -27,7 +27,7 @@
 
     <section id="notification" class="pt-5 pb-3">
 
-        <p class="h4 font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Latest Notifications <a href="/hod/uoc-notification"><i class="external alternate icon"></i></a></p>
+        <h4 class="font-weight-bold" style="font-family: sans-serif; font-size: larger;">Latest Notifications <a href="/hod/uoc-notification"><i class="external alternate icon"></i></a></h4>
         
         <div class="ui segment shadow" style="min-height: 100px;" id='notification-display'>
             <div class="ui active dimmer" id='notification-dimmer'>
@@ -38,7 +38,7 @@
     </section>
 
     <section id="exam-notification" class="pt-5 pb-5 mb-5">
-        <p class="h4 font-weight-bold" style="font-family: Comic sans MS; font-size: larger;">Latest Exam Notifications <a href="/hod/exam-notification"><i class="external alternate icon"></i></a></p>
+        <p class="h4 font-weight-bold" style="font-family: sans-serif; font-size: larger;">Latest Exam Notifications <a href="/hod/exam-notification"><i class="external alternate icon"></i></a></p>
 
         <div class="ui segment shadow" style="min-height: 100px;" id='enotification-display'>
             <div class="ui active dimmer" id='enotification-dimmer'>
@@ -56,8 +56,10 @@
 <script src="{{ url_for('static', path='latest_notification.js') }}"></script>
 
 <script>
-    get_notification("notification")
-    get_notification("exam")     
+    $(window).on('load', function () {
+        get_notification("notification")
+        get_notification("exam") 
+    })    
 </script>
 
 {% endblock %}

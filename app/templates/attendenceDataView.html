@@ -9,15 +9,15 @@
 
 <div class="ui container"> 
 
-    <div class="jumbotron text-left pt-md-3">
-        <p class="h1 pt-4 pb-4 font-weight-bold" style="font-family: 'Exo', sans-serif;">Attendence Analysis</p>
+    <div class="jumbotron text-center pt-md-3">
+        <h3 class="pt-4 pb-4 font-weight-bold" style="font-family: sans-serif;">Attendence Analysis</h3>
     </div>
-    <div class="ui divider"></div>
+    <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
 
     <section class="pt-md-2 mt-md-2" id="choose_detail" style="display: block;">
 
         <form class="ui form align-items-center p-4" id="dataAnalysis">
-            <div class="fields two wide">
+            <div class="fields two">
                 <div class="field">
                     <label>Course</label>
                     <select required class="ui search dropdown" id='course'>
@@ -39,11 +39,13 @@
                 </div>
             </div>
 
-            <div class="ui buttons blue small three">
-                <button class="ui button" type="submit" id="get_report_btn">Get Report</button>
-                <div class="ui button" onclick="show_attendence()">View data</div>
-                <div class="ui button" onclick="show_details()">Get Details</div>
-            </div>
+            <button class="ui button blue" type="submit" id="get_report_btn">Report</button>
+
+            <!-- <div class="ui buttons blue small">
+                <button class="ui button" type="submit" id="get_report_btn">Report</button>
+                <div class="ui button" onclick="show_attendence()">View</div>
+                <div class="ui button" onclick="show_details()">Details</div>
+            </div> -->
 
         </form>
 
@@ -52,7 +54,7 @@
     <section id="attendOverview" style="height: 150vh; display: none;">
 
         <div class="jumbotron pb-md-4 pb-2 mb-md-4 pt-4">
-            <p class="h3 font-weight-bold pb-3" style="font-family: 'Exo', sans-serif;" id="which_class_head">Bca Year 1 Attendence Overview</p>
+            <p class="h3 font-weight-bold pb-3" style="font-family: sans-serif;" id="which_class_head">Bca Year 1 Attendence Overview</p>
             <div class="ui vertical small animated button blue" tabindex="0" onclick="window.location.href='take-attendence'">
                 <div class="visible content">Take Attendence</div>
                 <div class="hidden content">
