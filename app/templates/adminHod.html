@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <script>
+      $(".hodd").addClass("navisel")
+    </script>
+
+    <section id='hod' class="p-4 m-4">
+      
+    <div class="jumbotron text-center">
+      <h2 class="pb-4" style="font-family: 'Exo', sans-serif;">Head of Department</h2>
+    </div>
+
+    <form class="ui form pb-5 pt-4" id='Appointment_form'>
+      <h3 class="ui dividing header">Appoint New Hod</h3>
+      <div class="fields three">
+        <div class="field">
+          <label>Name</label>
+          <input id='name' required type="text" placeholder="Name">
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input id='email' required type="text" placeholder="Email">
+        </div>
+        <div class="field">
+          <label>Secret Code</label>
+          <input id='username' required type="text" placeholder="4 Digit Secret Code">
+        </div>
+      </div>
+
+      <div class="fields two">
+        <div class="field">
+          <label>Phone Number</label>
+          <input id='number' required type="text" placeholder="Phone Number">
+        </div>
+
+        <div class="field">
+          <label>Department</label>
+          <select class="ui search dropdown" id='department_options'>
+            {% for i in dep %}
+            <option value="{{ i['Alias'] }}">{{ i['Department'] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+
+      <div class="fields three">
+        <div class="field">
+          <label>Verification Image 1
+          <input id='vimage1' required type="file" accept="image/*"capture="camera"></label>
+        </div>
+        
+        <div class="field">
+          <label>Verification Image 2
+            <input id='vimage2' required type="file" accept="image/*"capture="camera">
+          </label>
+        </div>
+
+        <div class="field pb-2 pb-md-0">
+          <label>Verification Image 3
+            <input id='vimage3' required type="file" accept="image/*"capture="camera">
+          </label>
+        </div>
+      </div>
+      <div class="pt-2 pb-4" id = 'pro' style="display: none;">
+        <div class="progress" style="height: 15px;">
+          <div class="progress-bar bg-success rounded" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+      <p class="text-danger">**Usually take 3-4 minutes</p>
+      <button class="ui button green" id='upload_button' type="submit">Submit</button>
+      <div class="ui button red" onclick='$("#Appointment_form")[0].reset();'>clear</div>
+
+    </form>
+
+    <hr>
+
+    <!-- <form class="ui form pt-5 pb-5" id="Hod_remove">
+      <h3 class="ui dividing header">Remove Hod</h3>
+      <div class="fields two">
+        <div class="field">
+          <label>Name</label>
+          <select class="ui search dropdown" id="hod_name">
+            <option value="none" selected>None</option>
+            {% for i in hods %}
+              <option value="{{ i['user_name'] }}">{{ i['name'] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="field">
+          <label>Department</label>
+          <select class="ui search dropdown" id='department_options2'>
+          </select>
+        </div>
+        <script>$('#department_options option').clone().appendTo('#department_options2');</script>
+      </div>
+
+      <div class="pt-3 pt-md-0">
+        <button class="ui button red font-weight-bold">Remove</button>
+      </div>
+    </form> -->
+    
+    </section>
+
+{% endblock %}

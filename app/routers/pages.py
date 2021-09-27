@@ -14,10 +14,6 @@ async def home(request: Request):
 def admin_login_page(request: Request):
     return AdminTemplates.admin_login_page(request)
 
-@router.get("/admin")
-def admin_portal(request: Request, user=Depends(oauth2.manager_admin)):
-    return AdminTemplates.login_success(request)
-
 @router.get("/")
 async def common_home(request: Request):
     cookies = request.cookies

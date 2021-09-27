@@ -1,0 +1,140 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<script>
+  $(".depart").addClass("navisel")
+</script>
+
+
+  <section id="head" class="pt-5 text-center">
+        
+    <div class="ui buttons small">
+
+        <button class="ui button animated blue"  onclick="show('#dD')">
+            <div class="visible content">Department</div>
+            <div class="hidden content">
+                <i class="newspaper outline icon"></i>
+            </div>
+        </button>
+  
+        <button class="ui button animated teal" onclick="show('#dH')">
+            <div class="visible content">HOD</div>
+            <div class="hidden content">
+                <i class="newspaper outline icon"></i>
+            </div>
+
+        </button>
+
+    </div>
+            
+    <script>
+      function show(id){
+          $("#dH").hide();
+          $("#dD").hide();
+          $(id).show();
+
+      }
+  </script>
+
+  </section>
+
+  <!--Hod Details Section starts here-->
+  <section id='dH' class="p-4 m-4" style="display: none;">
+    
+    <div class="jumbotron text-left">
+      <h3 class="pb-5" style="font-family: 'Exo', sans-serif;">Hod Details</h3>
+    </div>
+    
+    <!--hod Search-->
+    <div class="form ui">
+      <div class="field">
+        <div class="ui search">
+          <div class="ui icon input">
+            <input class="prompt" type="text" id='HodInput' placeholder="Search Hod">
+            <i class="search icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
+    </div>
+<!--Search Ends-->
+
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th scope="col" class="font-weight-bold">Name</th>
+            <th scope="col" class="font-weight-bold">Email</th>
+            <th scope='col' class="font-weight-bold">Phone No:</th>
+            <th scope="col" class="font-weight-bold">User Name</th>
+            <th scope="col" class="font-weight-bold">Department</th>
+          </tr>
+        </thead>
+        <tbody id='SearchHod'>
+          {% for i in hods %}
+          <tr>
+            <th scope="row" class="font-weight-bold">{{i['name']}}</th>
+            <td>{{ i['email'] }}</td>
+            <td>{{ i['phone_num'] }}</td>
+            <td>{{ i['user_name'] }}</td>
+            <td>{{ i['department'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    
+  </section>
+
+  <!--Department Details Section starts here-->
+  <section id='dD' class="p-4 m-4" style="display: block;">
+  
+    <div class="jumbotron text-left">
+      <h3 class="pb-5" style="font-family: 'Exo', sans-serif;">Department Details</h3>
+    </div>
+
+  <!--Department Search-->
+    <div class="form ui">
+      <div class="field">
+        <div class="ui search">
+          <div class="ui icon input">
+            <input class="prompt" type="text" id='myInput' placeholder="Search Department">
+            <i class="search icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
+    </div>
+<!--Search Ends-->
+
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr>
+            <th scope="col" class="font-weight-bold">Department</th>
+            <th scope="col" class="font-weight-bold">Alias</th>
+            <th scope='col' class="font-weight-bold">Course-UD</th>
+            <th scope='col' class="font-weight-bold">Remove Department</th>
+          </tr>
+        </thead>
+        <tbody id="SearchDepartment">
+          {% for i in dep %}
+          <tr id = '{{ i["Alias"] }}'>
+            <th scope="row" class="text-uppercase font-weight-bold">{{i['Department']}}</th>
+            <td class="text-uppercase">{{ i['Alias'] }}</td>
+            <td class="font-weight-bold text-uppercase">{{ cw[i['Alias']]|join(", ") }}</td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm px-3" onclick="remove_departement('{{ i['Alias'] }}')">
+                <i class="x icon"></i>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+  </section>
+
+{% endblock %}

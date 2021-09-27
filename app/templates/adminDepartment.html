@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+{% block content %}
+
+  <script>
+    $(".departt").addClass("navisel")
+  </script>
+
+
+  <section id='dep' class="p-4 m-4">
+    
+    <div class="jumbotron text-center">
+      <h2 style="font-family: 'Exo', sans-serif;">Department</h2>
+    </div>
+
+    <form class="ui form pb-md-5 pb-5 pt-5" id='Department_form'>
+      <h3 class="ui dividing header">Add New Department</h3>
+      <div class="two fields">
+        <div class="field">
+          <label>Department Name</label>
+          <input required id='dep_name' name='Department' type="text" placeholder="Department Name">
+        </div>
+        
+        <div class="field">
+          <label>Short Form</label>
+          <input id='dep_alias' name = 'Alias' required type="text" placeholder="Short Form (Without any space)">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success">Add</button>
+    </form>
+    <hr>
+    <form class="ui form pb-md-5 pb-5 pt-5" id='Course_form'>
+      <h3 class="ui dividing header">Add New Course</h3>
+      <div class="fields two">
+        <div class="field">
+          <label>Course Name</label>
+          <input id="course_name" required type="text" placeholder="Course Name">
+        </div>
+
+        <div class="field">
+          <label>Duration</label>
+          <select class="ui search dropdown" id='course_duration'>
+            <option value="1">1 Year</option>
+            <option value="2">2 Year</option>
+            <option value="3">3 Year</option>
+            <option value="4">4 Year</option>
+            <option value="5">5 Year</option>
+          </select>
+        </div>
+      </div>
+      <div class="fields two">
+        <div class="field">
+          <label>Short Form</label>
+          <input id="course_shortform" required type="text" placeholder="eg: bca(without any space)">
+        </div>
+        
+        <div class="field">
+          <label>Department</label>
+          <select class="ui search dropdown" id='department_options3'>
+            {% for i in dep %}
+            <option value="{{ i['Alias'] }}">{{ i['Department'] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+      </div>
+      
+      <button type="submit" class="btn btn-success">Add</button>
+
+    </form>
+    <hr>
+    <form class="ui form pb-md-5 pb-5 pt-5" id='Course_Remove_form'>
+      <h3 class="ui dividing header">Remove Course</h3>
+      <div class="field">
+        <label>Choose Course</label>
+        <select required class="ui search dropdown" id='course_options'>
+          <option value="none" selected>None</option>
+          {% for i in course %}
+          <option value="{{ i['Course_name_alias'] }}"> {{ i['Course_name'] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-danger">Remove</button>
+    </form>
+  </section>
+
+{% endblock %}

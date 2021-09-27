@@ -18,10 +18,46 @@
 </head>
 <body style="background-color: rgb(255, 255, 255);">
     
-    <div class="container-fluid">
+    <div class="container">
+        <div class="ui tablet computer only padded grid shadow">
+            <div class="ui borderless fluid huge menu">
+                <a class="header item" style="font-family: 'Exo', sans-serif;" href="/admin/details">Octagon</a>
+                <a class="item navi depart" href="/admin/details">Details</a>
+                <a class="item navi departt" href="/admin/department">Departments</a>
+                <a class="item navi hodd" href="/admin/hod">Hod</a>
+                <div class="right menu">
+                    <a class="item navi credd" href="/admin/credential"><i class="lock icon"></i></a>
+                    <a class="item navi"><i class="sign out alternate icon"></i></a>
+                </div>
+                
+            </div>
+        </div>
+      
+        <div class="ui mobile only padded grid shadow">
+            <div class="ui borderless huge fluid menu">
+                <a class="header item" href="/admin/details" style="font-family: 'Exo', sans-serif;">Octagon</a>
+                <div class="right menu">
+                    <div class="item">
+                        <button class="ui icon toggle basic button">
+                            <i class="content icon"></i>
+                        </button>
+                    </div>
+                </div>
+            
+                <div class="ui vertical borderless fluid menu">
+                  <a class="item navi depart" href="/admin/details">Details</a>
+                  <a class="item navi departt" href="/admin/department">Departments</a>
+                  <a class="item navi hodd" href="/admin/hod">Hod</a>
+                  <a class="item navi credd" href="/admin/credential"><i class="lock icon"></i>Credientials</a>
+                  <a class="item navi"><i class="sign out alternate icon"></i>Logout</a>
+                </div>
+            </div>
+        </div>
+        
         {% block content %}
 
         {% endblock %}
+
     </div>
 
 
@@ -41,6 +77,6 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
 <script src="{{ url_for('static', path='sementicAlert.js') }}"></script>
 <script src="{{ url_for('static', path='admin.js') }}"></script>
-
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </body>
 </html>

@@ -1,43 +1,81 @@
-{% extends "layout.html" %}
-{% block content %}
-
-<section>
-    <div class="d-flex align-items-center justify-content-center" style="height: 95vh;">
-        <div class="row">
-            <div class="col-md-12 col-sm-12">
-                <div class="card shadow-lg rounded">
-                    <div class="card-body p-5">
-                        <p class="card-title font-weight-bold h5 text-center"><i class="lock icon"></i>Admin Portal</p>
-                        <form action="/admin/login" method="POST">
-                            <div class="form-group pt-2" style="display: block;">
-                                <label for="staticEmail" >Username</label>
-                                <input type="text" readonly class='form-control md-w-50' id="staticEmail" name="username" value="Admin">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Exo&family=Pattaya&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='sementicAlert.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='nav.css') }}">
+    <title>{{ title }}</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='Favicon/favicon-32x32.png') }}">
+</head>
+<body style="background-color: rgb(255, 255, 255);">
+    
+    <div class="container-fluid">
+        <section>
+            <div class="d-flex align-items-center justify-content-center" style="height: 95vh;">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="card shadow-lg rounded">
+                            <div class="card-body p-5">
+                                <p class="card-title font-weight-bold h5 text-center"><i class="lock icon"></i>Admin Portal</p>
+                                <form action="/admin/login" method="POST">
+                                    <div class="form-group pt-2" style="display: block;">
+                                        <label for="staticEmail" >Username</label>
+                                        <input type="text" readonly class='form-control md-w-50' id="staticEmail" name="username" value="Admin">
+                                    </div>
+                        
+                                    <div class="form-group pt-3">
+                                        <label for="inputPassword">Password </label>
+                                        <input type="password" required class="form-control md-w-50" name="password" id="inputPassword" placeholder="Admin Password">
+                                        <p class="font-weight-bold"><div class="ui red horizontal label" style="display: {{ verify }};">Incorrect credential</div></p>
+                                    </div>
+                    
+                                    <div class="form-group pt-3">
+                                        <button type="submit" onclick="check()" class="ui teal  button">Login</button>
+                                    </div>
+                                </form>
                             </div>
-                
-                            <div class="form-group pt-3">
-                                <label for="inputPassword">Password </label>
-                                <input type="password" required class="form-control md-w-50" name="password" id="inputPassword" placeholder="Admin Password">
-                                <p class="font-weight-bold"><div class="ui red horizontal label" style="display: {{ verify }};">Incorrect credential</div></p>
-                            </div>
-            
-                            <div class="form-group pt-3">
-                                <button type="submit" onclick="check()" class="ui teal  button">Login</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        
+            <script>
+                function check(){
+                    value = $('#inputPassword').val();
+                    if(value.length!=0){
+                        $('button').addClass('loading disabled');
+                    }
+                }
+            </script>
+        </section>        
     </div>
 
-    <script>
-        function check(){
-            value = $('#inputPassword').val();
-            if(value.length!=0){
-                $('button').addClass('loading disabled');
-            }
-        }
-    </script>
-</section>
 
-{% endblock %}
+<script>$('.tabular.menu .item').tab();
+        $('.ui.checkbox').checkbox();
+        $('.ui.dropdown').dropdown();
+        $('.tabular.menu .item').tab();
+        $(document).ready(function() {
+            $(".ui.toggle.button").click(function() {
+            $(".mobile.only.grid .ui.vertical.menu").toggle(100);
+        });
+
+        $(".ui.dropdown").dropdown();
+        });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>
+<script src="{{ url_for('static', path='sementicAlert.js') }}"></script>
+<script src="{{ url_for('static', path='admin.js') }}"></script>
+
+</body>
+</html>
