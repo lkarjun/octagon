@@ -20,12 +20,12 @@
     
     <div class="container-fluid">
         <section>
-            <div class="d-flex align-items-center justify-content-center" style="height: 95vh;">
+            <div class="d-flex align-items-center justify-content-center" style="height: 95vh; font-family: 'Are You Serious', cursive;">
                 <div class="row">
                     <div class="col-md-12 col-sm-12">
                         <div class="card shadow-lg rounded">
                             <div class="card-body p-5">
-                                <p class="card-title font-weight-bold h5 text-center"><i class="lock icon"></i>Admin Portal</p>
+                                <p class="card-title font-weight-bold h5 text-center">Admin<i class="lock icon red"></i></p>
                                 <form action="/admin/login" method="POST">
                                     <div class="form-group pt-2" style="display: block;">
                                         <label for="staticEmail" >Username</label>
@@ -34,12 +34,12 @@
                         
                                     <div class="form-group pt-3">
                                         <label for="inputPassword">Password </label>
-                                        <input type="password" required class="form-control md-w-50" name="password" id="inputPassword" placeholder="Admin Password">
+                                        <input type="password" required class="form-control md-w-50" name="password" id="inputPassword">
                                         <p class="font-weight-bold"><div class="ui red horizontal label" style="display: {{ verify }};">Incorrect credential</div></p>
                                     </div>
                     
                                     <div class="form-group pt-3">
-                                        <button type="submit" onclick="check()" class="ui teal  button">Login</button>
+                                        <button type="submit" onclick="check()" class="ui blue fluid button">Login</button>
                                     </div>
                                 </form>
                             </div>

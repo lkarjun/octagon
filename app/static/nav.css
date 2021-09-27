@@ -5,7 +5,7 @@ body {
   }
 
   .ui.borderless.menu {
-    background-color: #08d1d1;
+    background-color: #ffffff;
     box-shadow: none;
     flex-wrap: wrap;
     border: none;
@@ -15,25 +15,26 @@ body {
 
   .ui.borderless.menu .header.item {
     color: rgb(0, 0, 0);
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
   }
 
   .ui.borderless.menu .item {
-    color: rgb(0, 0, 0);
+    color: rgb(83, 83, 83);
     font-size: 15px;
     font-weight: 500;
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'Are You Serious', cursive;
+    
   }
 
   .ui.borderless.menu a.navi:hover {
-    background-color: rgb(126, 126, 126);
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    font-weight: bolder;
   }
 
   .ui.borderless.menu a.navisel{
-    background-color: rgb(180, 123, 1);
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    font-weight: bolder;
   }
 
 
