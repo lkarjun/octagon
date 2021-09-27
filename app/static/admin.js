@@ -231,7 +231,6 @@ function appoint_hod(data, name, username){
         contentType: "application/json",
 
         success: function(result) {
-            success_alert('Successfully Appointed '+name+' as new hod');
             $("#upload_button").removeClass("loading disabled");
             swal({
               text: `Successfully Appointed Hod: ${name}`,

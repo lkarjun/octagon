@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "4222e043d03d59571257bdadda61bc9387f724c0048f947be9e902b4b3943205"
+            "sha256": "86481e55a6a8c4b5cd8a7efb9a98bf270b8bd4720dd21e1cbc707dbafef08dcc"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -98,6 +98,13 @@
             ],
             "index": "pypi",
             "version": "==0.0.1"
+        },
+        "certifi": {
+            "hashes": [
+                "sha256:2bbf76fd432960138b3ef6dda3dde0544f27cbf8546c458e60baf371917ba9ee",
+                "sha256:50b1e4f8446b06f41be7dd6338db18e0990601dce795c2b1686458aa7e8fa7d8"
+            ],
+            "version": "==2021.5.30"
         },
         "cffi": {
             "hashes": [
@@ -344,6 +351,13 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==0.12.0"
+        },
+        "idna": {
+            "hashes": [
+                "sha256:14475042e284991034cb48e06f6851428fb14c4dc953acd9be9a5e95c7b6dd7a",
+                "sha256:467fbad99067910785144ce333826c71fb0e63a425657295239737f7ecd125f3"
+            ],
+            "version": "==3.2"
         },
         "ipykernel": {
             "hashes": [
@@ -827,6 +841,13 @@
             "markers": "python_version >= '3.6'",
             "version": "==2.1.0"
         },
+        "pyopenssl": {
+            "hashes": [
+                "sha256:4c231c759543ba02560fcd2480c48dcec4dae34c9da7d3747c508227e0624b51",
+                "sha256:818ae18e06922c066f777a33f1fca45786d85edfe71cd043de6379337a7f274b"
+            ],
+            "version": "==20.0.1"
+        },
         "pyparsing": {
             "hashes": [
                 "sha256:c203ec8783bf771a155b207279b9bccb8dea02d8f0c9e5f8ead507bc3246ecc1",
@@ -959,7 +980,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version >= '3.5' and python_version < '4.0'",
+            "markers": "python_version >= '3.5' and python_version < '4'",
             "version": "==4.7.2"
         },
         "send2trash": {
@@ -1109,6 +1130,9 @@
             "version": "==3.10.0.2"
         },
         "urllib3": {
+            "extras": [
+                "secure"
+            ],
             "hashes": [
                 "sha256:4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece",
                 "sha256:c4fdf4019605b6e5423637e01bc9fe4daef873709a7973e195ceba0a62bbc844"

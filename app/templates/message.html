@@ -2,15 +2,15 @@
 {% block content %}
 
 <script>
-    $("#navMessage").addClass("navisel")
-    $("#navMessagem").addClass("navisel")
+    $(".navMessage").addClass("navisel")
 </script>
 
+<div class="ui container">
+    <!--Draft new messages-->
+    <section class="pt-5 pb-5">
 
-<div class="container ui">
-    <section class="pt-5">
         <div class="jumbotron text-left">
-            <p class="pb-4 ui dividing header" style="font-family: 'Exo', sans-serif;">Draft New Message</p>
+            <p class="pb-4 ui dividing header" style="font-family: sans-serif;">Draft New Message</p>
         </div>
     
         <div class='pt-5'>
@@ -27,6 +27,11 @@
                 </div>
     
                 <div class="inline field">
+                    <label style="font-weight: bold;">Important</label>
+                    <input id='imp' type="checkbox" tabindex="0" class="hidden">
+                </div>
+
+                <div class="inline field">
                     <label>To</label>
                     <select class="ui dropdown" id='to'>
                         <option value="dep" selected>Department Teachers</option>
@@ -34,12 +39,7 @@
                     </select>
                 </div>
     
-                <div class="inline field">
-                    <label style="font-weight: bold;">Important</label>
-                    <input id='imp' type="checkbox" tabindex="0" class="hidden">
-                </div>
-    
-                <button class="ui button green" id='send-btn'>Send</button>
+                <button class="ui button teal small" id='send-btn'>Send Message</button>
             </form>
         </div>
     
@@ -96,14 +96,15 @@
                 })
             })
         </script>
-    <hr>
     </section>
-    
-    
+
+    <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
+
+    <!--Recent message display-->
     <section class="pt-5 pb-5">
     
         <div class="jumbotron text-left">
-            <p class="pb-4 ui dividing header" style="font-family: 'Exo', sans-serif;">
+            <p class="pb-4 ui dividing header" style="font-family: sans-serif;">
                 Recent Messages
             </p>
         </div>

@@ -18,8 +18,8 @@ tags_metadata = [
         "description": "Authentication is required for everyone.",
     },
     {
-        "name": "Pages",
-        "description": "All webpages...",
+        "name": "Public Pages",
+        "description": "Public access pages.",
     },
 ]
 
