@@ -3,12 +3,11 @@ from templates import OthersTemplates, AdminTemplates, RedirectResponse
 from security import oauth2
 from fastapi.responses import RedirectResponse
 
-router = APIRouter(tags = ['Pages'])
+router = APIRouter(tags = ['Public Pages'])
 
 @router.get('/octagon/login', status_code=status.HTTP_200_OK)
 async def home(request: Request):
     return OthersTemplates.login_page(request)
-
 
 @router.get('/admin/login', status_code=status.HTTP_200_OK)
 def admin_login_page(request: Request):

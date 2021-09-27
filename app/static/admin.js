@@ -1,28 +1,42 @@
 // Department remove
 function remove_departement(id){
-    var base = window.location.origin + '/admin/portal/deletedepartment';
-    var data = JSON.stringify({"department": id});
-    $.ajax({
-          url: base,
-          type: 'DELETE',
-          async: true,
-          data: data,
-          dataType: 'json',
-          contentType: "application/json",
+  $("#"+id).addClass("bg-danger")
+  var base = window.location.origin + '/admin/portal/deletedepartment';
+  var data = JSON.stringify({"department": id});
+  $.ajax({
+        url: base,
+        type: 'DELETE',
+        async: true,
+        data: data,
+        dataType: 'json',
+        contentType: "application/json",
 
-          success: function(result) {
-            $('#'+id).remove();
-            success_alert('Successfully Removed Department: '+id);
-            },
-          error: function(result){
-            error_alert('Something Went Wrong Error: '+result);
-          }
-      });
+        success: function(result) {
+          $("#"+id).addClass("bg-success")
+          $('#'+id).remove();
+          swal({
+            text: `Successfully Removed Department ${id}`,
+            icon: "success",
+            button: "Okay!",
+          })
+          },
+        error: function(result){
+          $("#"+id).removeClass("bg-danger")
+          $("#"+id).addClass("bg-warning")
+          swal({
+            text: `Something Went Wrong Error Message: ${result}`,
+            icon: "warning",
+            button: "Okay!",
+          })
+        }
+    });
 }
 
 // Add Department
 $("#Department_form").submit((e)=>{
   e.preventDefault()
+
+  $("#addDeptbtn").addClass("loading disabled")
   var base = window.location.origin + '/admin/portal/Adddepartment';
   var department = $("#dep_name").val()
   var alias = $('#dep_alias').val()
@@ -36,14 +50,25 @@ $("#Department_form").submit((e)=>{
     contentType: "application/json",
 
     success: function(result) {
-      success_alert('Successfully Added Department: '+department);
+      $("#addDeptbtn").removeClass("loading disabled")
       $("#Department_form")[0].reset()
+      var data = `<option value="${alias}">${department}</option>`
+      $("#department_options3").append(data)
+       swal({
+            text: `Successfully Added Department ${department}`,
+            icon: "success",
+            button: "Okay!",
+          })
       },
     error: function(result){
-      error_alert("Error, we won't allow duplicate entries...");
-    }
+      $("#addDeptbtn").removeClass("loading disabled")
+      swal({
+            text: `Error, we won't allow duplicate entries...`,
+            icon: "error",
+            button: "Okay!",
+          })
+      }
   });
-
 });
 
 // Remove Course
@@ -66,11 +91,19 @@ $("#Course_Remove_form").submit((e)=>{
 
       success: function(result) {
           var opt = "#course_options option[value='"+name+"']"
-          success_alert('Successfully Removed Course: '+name);
           $(opt).remove();
+          swal({
+            text: `Successfully Added Course ${name}`,
+            icon: "success",
+            button: "Okay!",
+          })
         },
       error: function(result){
-          error_alert("Something Went Wrong. Please try to contact the techincal team...");
+        swal({
+          text: `Something Went Wrong. Please try to contact the techincal team...`,
+          icon: "error",
+          button: "Okay!",
+        })
         }
       });
     }
@@ -80,12 +113,14 @@ $("#Course_Remove_form").submit((e)=>{
 
 $("#Course_form").submit((e)=>{
   e.preventDefault()
+  $("#addCoursebtn").addClass("loading disabled")
   var base = window.location.origin + '/admin/portal/AddCourse';
   var names = $("#course_name").val()
   var alias = $('#course_shortform').val()
   var duration = $('#course_duration').val()
   var department = $('#department_options3').val()
-  var data = JSON.stringify({"course_name": names, "course_alias": alias, "duration": duration, "department": department})   
+  var data = JSON.stringify({"course_name": names, "course_alias": alias,
+                           "duration": duration, "department": department})   
   
   $.ajax({
     url: base,
@@ -96,12 +131,23 @@ $("#Course_form").submit((e)=>{
     contentType: "application/json",
 
     success: function(result) {
-        success_alert('Successfully Added Course: '+names);
+        $("#addCoursebtn").removeClass("loading disabled")
         $("#Course_form")[0].reset()
         $('#course_options').append("<option value="+alias+">"+names+"</option>")
+
+        swal({
+            text: `Successfully Added Course ${names}`,
+            icon: "success",
+            button: "Okay!",
+          })
       },
     error: function(result){
-        error_alert("Error, we won't allow duplicate entries...");
+        $("#addCoursebtn").removeClass("loading disabled")
+        swal({
+            text: `Error, we won't allow duplicate entries...`,
+            icon: "error",
+            button: "Okay!",
+          })
       }
     });
 })
@@ -110,6 +156,7 @@ $("#Course_form").submit((e)=>{
 // Remove Hod
 
 function remove_hod(username){
+  $("#"+username).addClass("bg-danger")
   var base = window.location.origin + '/admin/portal/delete_hod';
   var data = JSON.stringify({"username": username})
   $.ajax({
@@ -123,17 +170,22 @@ function remove_hod(username){
     success: function(result) {
           $("#"+username).remove();
           swal({
-            title: "Successfully Removed Hod!",
+            text: "Successfully Removed Hod!",
             icon: "success",
             button: "Okay!",
           })
         },
     error: function(result){
-          error_alert("Something Went Wrong. Please try to contact the techincal team...");
+          $("#"+username).removeClass("bg-danger")
+          $("#"+username).addClass("bg-warning")
+          swal({
+            text: `Something Went Wrong Error Message: ${result}`,
+            icon: "warning",
+            button: "Okay!",
+          })
         }
     });
 }
-
 
 // $("#Hod_remove").submit((e)=>{
 //   e.preventDefault()
@@ -181,15 +233,30 @@ function appoint_hod(data, name, username){
         success: function(result) {
             success_alert('Successfully Appointed '+name+' as new hod');
             $("#upload_button").removeClass("loading disabled");
+            swal({
+              text: `Successfully Appointed Hod: ${name}`,
+              icon: "success",
+              button: "Okay!",
+            })
         },
         error: function(result){
             if(result.status == 406){
               var message = JSON.parse(result.responseText)
-              warning_alert(message.detail)
               $("#upload_button").removeClass("loading disabled");
+              swal({
+                text: message.detail,
+                icon: "warning",
+                button: "Okay!",
+              })
             }
             else{
-              error_alert("Something Went Wrong. Please try to contact the techincal team...");
+              swal({
+                text: "Something Went Wrong. Please try to contact the techincal team...",
+                icon: "success",
+                button: "Okay!",
+              }).then((value) => {
+                location.reload();
+              });
             }
           }
         });
@@ -237,14 +304,31 @@ function verification_image_upload(data, name, user_name){
     },
     error: function(result){
       if(result.status == 415){
-        warning_alert("Please retake images.")
         $("#pro").hide()
         $("#upload_button").removeClass("loading disabled");
+        swal({
+          text: "Please retake images...",
+          icon: "warning",
+          button: "Okay!",
+        })
+      }
+      else if(result.status == 406){
+        $("#pro").hide()
+        $("#upload_button").removeClass("loading disabled");
+        swal({
+          text: "Please change username...",
+          icon: "warning",
+          button: "Okay!",
+        })
       }
       else{
-        error_alert("Something Went Wrong. Please try to contact the techincal team...");
         $("#pro").hide()
         $("#upload_button").removeClass("loading disabled");
+        swal({
+          text: "Something Went Wrong. Please try to contact the techincal team...",
+          icon: "error",
+          button: "Okay!",
+        })
       }
     }
   })
@@ -279,19 +363,32 @@ $("#admin_reset").submit((e)=>{
     contentType: "application/json",
     success: function(result){
       $("#pass_change_button").removeClass("loading disabled");
-      success_alert(result)
       $("#admin_reset")[0].reset()
+      swal({
+        text: `Successfully Reset Password!`,
+        icon: "success",
+        button: "Okay!",
+      })
     },
     error: function(result){
       $("#pass_change_button").removeClass("loading disabled");
       if(result.status == 406){
         var message = JSON.parse(result.responseText)
-        warning_alert(message.detail);
         $("#admin_reset")[0].reset()
+        swal({
+          text: message.detail,
+          icon: "warning",
+          button: "Okay!",
+        })
       }
       else{
-        error_alert("Something Went Wrong. Please try to contact the techincal team...");
-        location.reload();
+        swal({
+          text: "Something Went Wrong. Please try to contact the techincal team...",
+          icon: "error",
+          button: "Okay!",
+        }).then((value) => {
+          location.reload();
+        });
       }
     }
 
@@ -308,7 +405,6 @@ $("#myInput").on("keyup", function() {
 
 // hod search
 
-// Teacher Search
 $("#HodInput").on("keyup", function() {
   var value = $(this).val().toLowerCase();
   $("#SearchHod tr").filter(function() {

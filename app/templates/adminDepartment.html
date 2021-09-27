@@ -7,13 +7,9 @@
 
 
   <section id='dep' class="p-4 m-4">
-    
-    <div class="jumbotron text-center">
-      <h2 style="font-family: 'Exo', sans-serif;">Department</h2>
-    </div>
 
     <form class="ui form pb-md-5 pb-5 pt-5" id='Department_form'>
-      <h3 class="ui dividing header">Add New Department</h3>
+      <h3 class="ui dividing header" style="font-family: sans-serif;">Add New Department</h3>
       <div class="two fields">
         <div class="field">
           <label>Department Name</label>
@@ -25,13 +21,13 @@
           <input id='dep_alias' name = 'Alias' required type="text" placeholder="Short Form (Without any space)">
         </div>
       </div>
-      <button type="submit" class="ui button">Add Department</button>
+      <button type="submit" class="ui button blue" id='addDeptbtn'>Add Department</button>
     </form>
 
     <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
 
     <form class="ui form pb-md-5 pb-5 pt-5" id='Course_form'>
-      <h3 class="ui dividing header">Add New Course</h3>
+      <h3 class="ui dividing header" style="font-family: sans-serif;">Add New Course</h3>
       <div class="fields two">
         <div class="field">
           <label>Course Name</label>
@@ -66,24 +62,24 @@
 
       </div>
       
-      <button type="submit" class="ui button">Add Course</button>
+      <button type="submit" class="ui button blue" id="addCoursebtn" style="font-family: sans-serif;">Add Course</button>
 
     </form>
 
     <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
 
     <form class="ui form pb-md-5 pb-5 pt-5" id='Course_Remove_form'>
-      <h3 class="ui dividing header">Remove Course</h3>
+      <h3 class="ui dividing header" style="font-family: sans-serif;">Remove Course</h3>
       <div class="field">
         <label>Choose Course</label>
         <select required class="ui search dropdown" id='course_options'>
-          <option value="none" selected>None</option>
+          <option value="" disabled selected>Choose Course</option>
           {% for i in course %}
           <option value="{{ i['Course_name_alias'] }}"> {{ i['Course_name'] }}</option>
           {% endfor %}
         </select>
       </div>
-      <button type="submit" class="ui button red">Remove Course</button>
+      <button type="submit" class="ui button red" style="font-family: sans-serif;">Remove Course</button>
     </form>
     
   </section>

@@ -11,14 +11,14 @@
     <div class="ui buttons small">
 
         <button class="ui button animated blue"  onclick="show('#dD')">
-            <div class="visible content">Department</div>
+            <div class="visible content" style="font-family: 'sans-serif';">Department</div>
             <div class="hidden content">
                 <i class="newspaper outline icon"></i>
             </div>
         </button>
   
         <button class="ui button animated teal" onclick="show('#dH')">
-            <div class="visible content">HOD</div>
+            <div class="visible content" style="font-family: sans-serif;">Hod</div>
             <div class="hidden content">
                 <i class="newspaper outline icon"></i>
             </div>
@@ -42,11 +42,11 @@
   <section id='dH' class="p-4 m-4" style="display: none;">
     
     <div class="jumbotron text-left">
-      <h3 class="pb-5" style="font-family: 'Exo', sans-serif;">Hod Details</h3>
+      <h3 class="pb-5 setfont">Hod Details</h3>
     </div>
     
     <!--hod Search-->
-    <div class="form ui">
+    <div class="form ui pb-3">
       <div class="field">
         <div class="ui search">
           <div class="ui icon input">
@@ -62,7 +62,7 @@
     <div class="table-responsive">
       <table class="table align-middle">
         <thead>
-          <tr>
+          <tr class="bg-primary text-light">
             <th scope="col" class="font-weight-bold">Name</th>
             <th scope="col" class="font-weight-bold">Email</th>
             <th scope='col' class="font-weight-bold">Phone No:</th>
@@ -90,17 +90,19 @@
       </table>
     </div>
     
+    <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
+
   </section>
 
   <!--Department Details Section starts here-->
   <section id='dD' class="p-4 m-4" style="display: block;">
   
     <div class="jumbotron text-left">
-      <h3 class="pb-5" style="font-family: 'Exo', sans-serif;">Department Details</h3>
+      <h3 class="pb-5 setfont">Department Details</h3>
     </div>
 
   <!--Department Search-->
-    <div class="form ui">
+    <div class="form ui pb-3">
       <div class="field">
         <div class="ui search">
           <div class="ui icon input">
@@ -116,10 +118,10 @@
     <div class="table-responsive">
       <table class="table align-middle">
         <thead>
-          <tr>
+          <tr class="bg-primary text-light">
             <th scope="col" class="font-weight-bold">Department</th>
             <th scope="col" class="font-weight-bold">Alias</th>
-            <th scope='col' class="font-weight-bold">Course Under Department</th>
+            <th scope='col' class="font-weight-bold">Courses</th>
             <th scope='col' class="font-weight-bold">Remove Department</th>
           </tr>
         </thead>
@@ -140,7 +142,6 @@
       </table>
     </div>
 
-
+    <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
   </section>
-
 {% endblock %}
