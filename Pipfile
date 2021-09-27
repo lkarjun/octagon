@@ -18,7 +18,7 @@ fastapi-login = "*"
 pandas = "*"
 bs4 = "*"
 pydantic = "*"
-urllib3 = "*"
+urllib3 = {extras = ["secure"], version = "*"}
 ipykernel = "*"
 gunicorn = "*"
 
