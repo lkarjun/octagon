@@ -48,8 +48,8 @@ def update(user_name: str, request: Schemas.CreateHod, db: Session):
     return 'done'
 
 def delete(request: Schemas.DeleteHod, db: Session):
-    hod = db.query(models.Hod).filter(and_(models.Hod.user_name == request.name,
-                                models.Hod.department == request.department))
+    hod = db.query(models.Hod).filter(models.Hod.user_name == request.username)
+    
     if not hod.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {request.name} and department: {request.department}") 
 

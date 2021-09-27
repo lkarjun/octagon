@@ -15,8 +15,7 @@ class ShowHods(CreateHod):
         orm_mode = True
 
 class DeleteHod(BaseModel):
-    name: str
-    department: str
+    username: str
 
 class AddDepartment(BaseModel):
     Department: str

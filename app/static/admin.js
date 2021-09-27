@@ -109,34 +109,60 @@ $("#Course_form").submit((e)=>{
 
 // Remove Hod
 
-$("#Hod_remove").submit((e)=>{
-  e.preventDefault()
+function remove_hod(username){
   var base = window.location.origin + '/admin/portal/delete_hod';
-  var names = $("#hod_name").val()
-  var dep = $('#department_options2').val()
-  if (names == "none"){warning_alert("Please choose valid hod name")}
-  else{
-    var data = JSON.stringify({"name": names, "department": dep})
+  var data = JSON.stringify({"username": username})
+  $.ajax({
+    url: base,
+    type: 'DELETE',
+    async: true,
+    data: data,
+    dataType: 'json',
+    contentType: "application/json",
 
-    $.ajax({
-      url: base,
-      type: 'DELETE',
-      async: true,
-      data: data,
-      dataType: 'json',
-      contentType: "application/json",
+    success: function(result) {
+          $("#"+username).remove();
+          swal({
+            title: "Successfully Removed Hod!",
+            icon: "success",
+            button: "Okay!",
+          })
+        },
+    error: function(result){
+          error_alert("Something Went Wrong. Please try to contact the techincal team...");
+        }
+    });
+}
 
-      success: function(result) {
-            var opt = "#hod_name option[value='"+names+"']";
-            success_alert('Successfully Removed Hod: '+names);
-            $(opt).remove();
-          },
-      error: function(result){
-            error_alert("Something Went Wrong. Please try to contact the techincal team...");
-          }
-      });
-  }
-})
+
+// $("#Hod_remove").submit((e)=>{
+//   e.preventDefault()
+//   var base = window.location.origin + '/admin/portal/delete_hod';
+//   var names = $("#hod_name").val()
+//   var dep = $('#department_options2').val()
+//   if (names == "none"){warning_alert("Please choose valid hod name")}
+//   else{
+//     var data = JSON.stringify({"name": names, "department": dep})
+
+//     $.ajax({
+//       url: base,
+//       type: 'DELETE',
+//       async: true,
+//       data: data,
+//       dataType: 'json',
+//       contentType: "application/json",
+
+//       success: function(result) {
+//             var opt = "#hod_name option[value='"+names+"']";
+//             success_alert('Successfully Removed Hod: '+names);
+//             $(opt).remove();
+//           },
+//       error: function(result){
+//             error_alert("Something Went Wrong. Please try to contact the techincal team...");
+//           }
+//       });
+//   }
+// })
 
 
 // Appointment of hod and Verification image sends

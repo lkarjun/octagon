@@ -68,16 +68,22 @@
             <th scope='col' class="font-weight-bold">Phone No:</th>
             <th scope="col" class="font-weight-bold">User Name</th>
             <th scope="col" class="font-weight-bold">Department</th>
+            <th scope="col" class="font-weight-bold">Remove Hod</th>
           </tr>
         </thead>
         <tbody id='SearchHod'>
           {% for i in hods %}
-          <tr>
+          <tr id="{{ i['user_name'] }}">
             <th scope="row" class="font-weight-bold">{{i['name']}}</th>
             <td>{{ i['email'] }}</td>
             <td>{{ i['phone_num'] }}</td>
             <td>{{ i['user_name'] }}</td>
             <td>{{ i['department'] }}</td>
+            <td>
+              <button type="button" class="ui button small red" onclick="remove_hod('{{i['user_name']}}')">
+                Remove
+              </button>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -113,7 +119,7 @@
           <tr>
             <th scope="col" class="font-weight-bold">Department</th>
             <th scope="col" class="font-weight-bold">Alias</th>
-            <th scope='col' class="font-weight-bold">Course-UD</th>
+            <th scope='col' class="font-weight-bold">Course Under Department</th>
             <th scope='col' class="font-weight-bold">Remove Department</th>
           </tr>
         </thead>
@@ -124,8 +130,8 @@
             <td class="text-uppercase">{{ i['Alias'] }}</td>
             <td class="font-weight-bold text-uppercase">{{ cw[i['Alias']]|join(", ") }}</td>
             <td>
-              <button type="button" class="btn btn-danger btn-sm px-3" onclick="remove_departement('{{ i['Alias'] }}')">
-                <i class="x icon"></i>
+              <button type="button" class="ui button small red" onclick="remove_departement('{{ i['Alias'] }}')">
+                Remove
               </button>
             </td>
           </tr>

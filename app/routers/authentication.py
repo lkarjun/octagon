@@ -72,11 +72,17 @@ async def admin_login(request: Request, data: OAuth2PasswordRequestForm = Depend
 
     access_token = oauth2.manager_admin.create_access_token(
                         data = dict(sub = user.name),
-                        expires=timedelta(minutes=20)
+                        expires=timedelta(hours=6)
                     )
     res = temp.AdminTemplates.login_success_redirect()
     tkn = {'access_token': access_token, 'token_type': 'bearer'}
     oauth2.manager_admin.set_cookie(res, access_token)
+    return res
+
+@router.get("/admin/logout", response_class=temp.RedirectResponse)
+async def admin_logout(request: Request):
+    res = RedirectResponse("/admin/login")
+    res.delete_cookie("adminToken")
     return res
 
 @router.post('/error', status_code=status.HTTP_401_UNAUTHORIZED)

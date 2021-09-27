@@ -17,19 +17,22 @@ async def home():
     return AdminTemplates.login_success_redirect()
 
 @router.get("/details")
-async def details(request: Request, db: Session = Depends(get_db)):
+async def details(request: Request, db: Session = Depends(get_db),
+                    user=Depends(oauth2.manager_admin)):
     return AdminTemplates.details(request, db)
 
 @router.get("/department")
-async def department(request: Request, db: Session = Depends(get_db)):
+async def department(request: Request, db: Session = Depends(get_db),
+                    user=Depends(oauth2.manager_admin)):
     return AdminTemplates.department(request, db)
 
 @router.get("/hod")
-async def hod(request: Request, db: Session = Depends(get_db)):
+async def hod(request: Request, db: Session = Depends(get_db),
+                    user=Depends(oauth2.manager_admin)):
     return AdminTemplates.hod(request, db)
 
 @router.get("/credential")
-async def credential(request: Request):
+async def credential(request: Request, user=Depends(oauth2.manager_admin)):
     return AdminTemplates.credential(request)
 
 @router.post('/portal/create_hod', status_code=status.HTTP_201_CREATED)
