@@ -30,12 +30,46 @@ class AdminTemplates():
                             'cw': courses_with_department})
 
     def login_success_redirect():
-        return RedirectResponse(url = '/admin', status_code=status.HTTP_302_FOUND)
+        return RedirectResponse(url = '/admin/details', status_code=status.HTTP_302_FOUND)
 
 
     def login_error_redirect():
         return RedirectResponse(url='/admin/login', status_code=status.HTTP_302_FOUND)
 
+    def details(request, db):
+        courses_with_department = defaultdict(lambda: [])
+        hods = admin.get_all(db, template=True)
+        dep = admin.get_all_departments(db, template=True)
+        course = admin.get_all_course(db, template=True)
+
+        for i in course: courses_with_department[i.Department].append(i.Course_name_alias)
+        tmp = templates.TemplateResponse("adminDetails.html",
+                    context={'request': request, 'title': "Details",
+                             'hods': hods, 'dep': dep,
+                             'cw': courses_with_department})
+        
+        return tmp
+
+    def hod(request, db):
+        dep = admin.get_all_departments(db, template=True)
+        tmp = templates.TemplateResponse("adminHod.html",
+                    context={"request": request, "title": "Hod",
+                             "dep": dep})
+        return tmp
+    
+    def department(request, db):
+        course = admin.get_all_course(db, template=True)
+        dep = admin.get_all_departments(db, template=True)
+        tmp = templates.TemplateResponse("adminDepartment.html",
+                    context={'request': request, 'title': 'Department',
+                             "dep": dep, "course": course})
+        return tmp
+
+    def credential(request):
+        tmp = templates.TemplateResponse("adminCredential.html",
+                    context={'request': request, 'title': 'Credential'})
+
+        return tmp
 
 class OthersTemplates():
     
