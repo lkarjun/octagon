@@ -200,6 +200,13 @@ class HodTemplates():
         tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)
         return tmp
 
+    def profile(request, user):
+        scode = user.user_name[-4:]
+        tmp = templates.TemplateResponse("hodProfile.html",
+                    context={'request': request, "title": 'Profile',
+                         'user': user, 'scode': scode})
+        return tmp
+
 
 class TeacherTemplates():
     

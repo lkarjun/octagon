@@ -3,6 +3,7 @@ from repository import Schemas,uoc
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status, Response
+from security import faceid
 
 def appoint_teacher(request: Schemas.AddTeacher, db: Session):
 
@@ -201,6 +202,15 @@ def current_hour_detail(department: str, day: str, hour: str, db: Session):
                                    hour=hour) 
                         for i in current_hour]
     return detail
+
+def update_profile(request: Schemas.CreateHod, db: Session, user: models.Hod):
+    userdetail = db.query(models.Hod).filter(
+                    and_(models.Hod.user_name == user.user_name,
+                         models.Hod.email == user.email))
+    userdetail.update(dict(request))
+    faceid.update_username(user.user_name, request.user_name)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 #helper function
 def helper_timetable_check(hour: str):

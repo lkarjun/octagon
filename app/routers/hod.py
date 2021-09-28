@@ -91,6 +91,13 @@ async def get_full_message(request: Request, db: Session = Depends(get_db), user
 async def clear_message(db: Session = Depends(get_db), user=Depends(oauth2.manager_hod)):
     return hod.clear_message(db)
 
+
+@router.post("/update_profile")
+async def update_profile(request: Schemas.CreateHod, db: Session = Depends(get_db), 
+                user=Depends(oauth2.manager_hod)):
+    return hod.update_profile(request, db, user)
+
+
 # Pages
 @router.get("/workspace")
 async def workspace(request: Request, user=Depends(oauth2.manager_hod)):
@@ -149,3 +156,7 @@ async def get_report(request: Request, data: Schemas.Analysing,
 async def get_notification(request: Request, which_notification: str,
                 user=Depends(oauth2.manager_hod)):
     return HodTemplates.latest_notfications(request, which_notification)
+
+@router.get("/profile")
+async def profile(request: Request, user = Depends(oauth2.manager_hod)):
+    return HodTemplates.profile(request, user)
