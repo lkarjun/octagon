@@ -4,7 +4,7 @@
 <div class="ui container pt-5 pb-5">
 
     <form class="ui form p-4" id='Appointment_form'>
-        <h3 class="ui dividing header" style="font-family: sans-serif;">Update details</h3>
+        <h3 class="ui dividing header" style="font-family: sans-serif;">Update Details</h3>
         <div class="fields three">
           <div class="field">
             <label>Name</label>
@@ -167,7 +167,13 @@ $("#imageupdate").submit((e) => {
             contentType: "application/json",
             
             success: function(result){
-                swal("Working fine")
+                swal({
+                    text: "Profile updated!",
+                    icon: "success",
+                    button: "Okay"
+                }).then((value) => {
+                    window.location.href = window.location.origin;
+                })
             },
             error: function(result){
                 $("#upload_button").removeClass("loading disabled")

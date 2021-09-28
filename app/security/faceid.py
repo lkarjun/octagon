@@ -72,3 +72,9 @@ def put_faces(name: str, encoded_faces: List) -> None:
     faces[name] = encoded_faces
     face_dp(faces)
 
+def update_username(old_username: str, new_username: str) -> None:
+    faces = get_faces()
+    user_face = faces[old_username]
+    faces.pop(old_username)
+    faces[new_username] = user_face
+    face_dp(faces)

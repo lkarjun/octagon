@@ -95,8 +95,7 @@ async def clear_message(db: Session = Depends(get_db), user=Depends(oauth2.manag
 @router.post("/update_profile")
 async def update_profile(request: Schemas.CreateHod, db: Session = Depends(get_db), 
                 user=Depends(oauth2.manager_hod)):
-    print(request)
-    return Response(status_code = status.HTTP_204_NO_CONTENT)
+    return hod.update_profile(request, db, user)
 
 
 # Pages
