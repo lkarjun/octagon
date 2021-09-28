@@ -16,7 +16,7 @@
     <title>{{ title }}</title>
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='Favicon/favicon-32x32.png') }}">
 </head>
-<body style="background-color: rgb(255, 255, 255);">
+<body style="background-color: #f5f5f5; font-family: sans-serif;">
     
     <div class="container">
         <div class="ui tablet computer only padded grid shadow">
@@ -28,9 +28,9 @@
                 <a class="item navi" id='navTblw' href="timetable">My Classes</a>
           
                 <div class="right menu">
-                    <a class="item navi" id='navMsgw' href="message"><i class="envelope icon"></i></a>
-                    <a onclick="about()" class="item navi"><i class="info icon"></i></a>
-                    <a class="item navi" onclick="logout_user()"><i class="sign out alternate icon"></i></a>
+                    <a class="item navi" id='navMsgw' href="message"><i class="envelope icon teal"></i></a>
+                    <a onclick="about()" class="item navi"><i class="info icon blue"></i></a>
+                    <a class="item navi" onclick="logout_user()"><i class="sign red out alternate icon"></i></a>
                 </div>
             </div>
         </div>
@@ -40,8 +40,8 @@
                 <a class="header item" style="font-family: 'Exo', sans-serif;" href="workspace">Octagon</a>
                 <div class="right menu">
                     <div class="item">
-                        <button class="ui icon toggle basic button">
-                            <i class="content icon"></i>
+                        <button class="ui icon toggle basic button red">
+                            <i class="ellipsis horizontal icon black"></i>
                         </button>
                     </div>
                 </div>
@@ -51,9 +51,9 @@
                     <a class="item navi" id='navStudm' href="add-students">Student</a>
                     <a class="item navi" id='navAttenm' href="take-attendence">Attendence</a>
                     <a class="item navi" id='navTblm' href="timetable">My Classes</a>
-                    <a class="item navi" id='navMsgm' href="message"><i class="envelope icon"></i>Messages</a>  
-                    <a class="item navi" onclick="about()"><i class="info icon"></i>About</a>
-                    <a class="item navi" onclick="logout_user()"><i class="sign out alternate icon"></i>Logout</a>
+                    <a class="item navi" id='navMsgm' href="message"><i class="envelope icon teal"></i>Messages</a>  
+                    <a class="item navi" onclick="about()"><i class="info icon blue"></i>About</a>
+                    <a class="item navi" onclick="logout_user()"><i class="sign out red alternate icon"></i>Logout</a>
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from pydantic import BaseModel
 import urllib3
+import requests
 
 BASE_URL_NOTIFICATION = "https://pareekshabhavan.uoc.ac.in/index.php/examination/notifications"
 BASE_URL_EXAM_NOTIFICATION = "https://pareekshabhavan.uoc.ac.in/index.php/examination/timetable"
@@ -14,8 +15,9 @@ def make_data(links):
     return links
         
 def get_notifications():
-    req = urllib3.PoolManager()
-    text = req.request('GET', BASE_URL_NOTIFICATION).data.decode()
+    # req = urllib3.PoolManager()
+    # text = req.request('GET', BASE_URL_NOTIFICATION).data.decode()
+    text = requests.get(BASE_URL_NOTIFICATION, verify=False).text
     soup = BeautifulSoup(text, features="html.parser")
     notifications = {
         'UG': make_data(soup.find("div", id="UG").find_all("a")),
@@ -26,8 +28,9 @@ def get_notifications():
 
 
 def get_exam_notifications():
-    req = urllib3.PoolManager()
-    text = req.request('GET', BASE_URL_EXAM_NOTIFICATION).data.decode()
+    # req = urllib3.PoolManager()
+    # text = req.request('GET', BASE_URL_EXAM_NOTIFICATION).data.decode()
+    text = requests.get(BASE_URL_EXAM_NOTIFICATION, verify=False).text
     soup = BeautifulSoup(text, features="html.parser")
     notifications = {
         'UG': make_data(soup.find("div", id="UG").find_all("a")),
@@ -38,13 +41,15 @@ def get_exam_notifications():
 
 
 def get_latest_exam_notifications():
-    req = urllib3.PoolManager()
-    text = req.request('GET', BASE_URL_EXAM_NOTIFICATION).data.decode()
+    # req = urllib3.PoolManager()
+    # text = req.request('GET', BASE_URL_EXAM_NOTIFICATION).data.decode()
+    text = requests.get(BASE_URL_EXAM_NOTIFICATION, verify=False).text
     soup = BeautifulSoup(text, features="html.parser")
     return make_data(soup.find("div", id="ALL").find_all("a"))[:5]
 
 def get_latest_notifications():
-    req = urllib3.PoolManager()
-    text = req.request('GET', BASE_URL_NOTIFICATION).data.decode()
+    # req = urllib3.PoolManager()
+    # text = req.request('GET', BASE_URL_NOTIFICATION).data.decode()
+    text = requests.get(BASE_URL_NOTIFICATION, verify=False).text
     soup = BeautifulSoup(text, features="html.parser")
     return make_data(soup.find("div", id="ALL").find_all("a"))[:5]

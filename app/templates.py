@@ -120,12 +120,12 @@ class HodTemplates():
     def uoc_notification(request):
         notifications = hod.uoc.get_notifications()
         return templates.TemplateResponse("uocNotification.html",
-                context={"request": request, "title": "UOC Notification", "notfy": notifications})
+                context={"request": request, "title": "Notifications", "notfy": notifications})
     
     def exam_notification(request):
         notifications = hod.uoc.get_exam_notifications()
         res = templates.TemplateResponse("uocExamTimetable.html",
-                context={"request": request, "title": "Exam Notification", "notfy": notifications})
+                context={"request": request, "title": "Exam Notifications", "notfy": notifications})
         return res
     
     def attendenceDataView(request):

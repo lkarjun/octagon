@@ -13,7 +13,7 @@
     
             <div class="col-md-12">
                 <div class="text-center pt-5 pb-5 pr-5 pl-3">
-                    <div class="ui buttons">
+                    <div class="ui buttons small">
                         <button class="ui button teal" onclick="show('#UG')">UG</button>
                         <button class="ui button teal"  onclick="show('#PG')">PG</button>
                         <button class="ui button blue"  onclick="show('#OTHERS')">Others</button>
@@ -35,14 +35,15 @@
     <section class="pb-5 mb-5" id="UG" style="display: block;">
         <div class="ui selection list">
             {% for data in notfy["UG"] %}
-            <div class="item">
-              <i class="bell icon"></i>
+            <div class="item shadow p-3">
+                <i class="bell icon red"></i>
               <div class="content">
                 <div class="header">
-                    <a href="{{ data.direct_link }}"> {{ data.text }}</a>
+                    <a href="{{ data.direct_link }}" class="text-dark"> {{ data.text }}</a>
                 </div>
               </div>
             </div>
+            <br>
             {% endfor %}
         </div>
     </section>
@@ -50,14 +51,15 @@
     <section class="pb-5 mb-5" id="PG" style="display: none;">
         <div class="ui selection list">
             {% for data in notfy["PG"] %}
-            <div class="item">
-              <i class="bell icon"></i>
+            <div class="item shadow p-3">
+                <i class="bell icon red"></i>
               <div class="content">
                 <div class="header">
-                    <a href="{{ data.direct_link }}"> {{ data.text }}</a>
+                    <a href="{{ data.direct_link }}" class="text-dark"> {{ data.text }}</a>
                 </div>
               </div>
             </div>
+            <br>
             {% endfor %}
         </div>
     </section>
@@ -65,14 +67,15 @@
     <section class="pb-5 mb-5" id="OTHERS" style="display: none;">
         <div class="ui selection list">
             {% for data in notfy["OTHER"] %}
-            <div class="item">
-              <i class="bell icon"></i>
+            <div class="item shadow p-3">
+                <i class="bell icon red"></i>
               <div class="content">
                 <div class="header">
-                    <a href="{{ data.direct_link }}"> {{ data.text }}</a>
+                    <a href="{{ data.direct_link }}" class="text-dark"> {{ data.text }}</a>
                 </div>
               </div>
             </div>
+            <br>
             {% endfor %}
         </div>
     </section>

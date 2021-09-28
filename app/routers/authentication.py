@@ -25,7 +25,7 @@ async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), d
                         models.Teachers.username == data.username
                     ).first()
                     
-    if not hod or teacher:
+    if not (hod or teacher):
         return temp.OthersTemplates.login_page(request, 'block', 'Invalid credential!🤔 Please Try again.')
 
     try:

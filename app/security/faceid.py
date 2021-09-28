@@ -7,9 +7,16 @@ import numpy as np
 import pickle
 from fastapi import HTTPException, status
 import time
+from pathlib import Path
 
-face_op = lambda: pickle.load(open('security/faces.pkl', 'rb'))
-face_dp = lambda faces: pickle.dump(faces, open('security/faces.pkl', 'wb'))
+FACE_PATH = Path("security/faces.pkl")
+
+def face_op() -> Dict:
+    faces = pickle.load(open(FACE_PATH, "rb"))
+    return faces
+
+def face_dp(faces: Dict) -> None:
+    pickle.dump(faces, open(FACE_PATH, "wb"))
 
 def recogize(encoding1: TypeVar('numpy.ndarray'), encoding2: TypeVar('numpy.ndarray'), tolerance = 0.5) -> bool:
     ''' return True if the two images are same else False'''

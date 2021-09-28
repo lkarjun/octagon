@@ -10,7 +10,7 @@
     <section>
 
         <div class="jumbotron text-center">
-            <p class="h3 pt-5 pb-4 mt-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">{{ data.course.upper() }} Year {{ data.year }} Attendence</p>
+            <h3 class="pt-5 pb-4 mt-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">{{ data.course.upper() }} Year {{ data.year }} Attendence</h3>
         </div>
         
         <!--hod Search-->
@@ -29,7 +29,7 @@
 
         <div class="table-responsive pb-5 mb-5">
             <table class="table align-middle table-hover table-borderless" id='datatable'>
-                <thead class="table-dark">
+                <thead class="bg-primary text-light">
                     <tr>
                       {% for col in column %}
                         <th scope="col" class="font-weight-bold">{{ col }}</th>
@@ -50,9 +50,9 @@
                             {% else %}
 
                                 {% if i|float <= 0.4 %}
-                                <td class="bg-danger text-light">{{ i }}</td>
+                                <td class="text-light" style="background-color: #FF8A80">{{ i }}</td>
                                 {% else %}
-                                <td class="bg-success text-light">{{ i }}</td>
+                                <td class="text-light" style="background-color: #66BB6A;">{{ i }}</td>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
@@ -62,10 +62,10 @@
                 </tbody>
 
             </table>
-            <div class="ui buttons">
-                <button class="ui button red" onclick="export_table('csv')">Export to Csv</button>
+            <div class="ui buttons small">
+                <button class="ui button red" onclick="export_table('csv')">Export as Csv</button>
                 <div class="or"></div>
-                <button class="ui yellow button" onclick="export_table('pdf')">Export to Pdf</button>
+                <button class="ui yellow button" onclick="export_table('pdf')">Export as Pdf</button>
             </div>
         </div>
 
