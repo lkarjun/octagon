@@ -3,6 +3,8 @@ from pydantic import BaseModel
 import urllib3
 import requests
 
+urllib3.disable_warnings()
+
 BASE_URL_NOTIFICATION = "https://pareekshabhavan.uoc.ac.in/index.php/examination/notifications"
 BASE_URL_EXAM_NOTIFICATION = "https://pareekshabhavan.uoc.ac.in/index.php/examination/timetable"
 
