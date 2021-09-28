@@ -64,7 +64,7 @@ def save_files(func: Callable):
 
     return wraps
         
-def CreateAttendence(total_year: int, course_alias: str):
+def createAttendence(total_year: int, course_alias: str):
     path = Path("repository/AttendenceFiles")
     path.mkdir(exist_ok=True)
     
@@ -73,6 +73,15 @@ def CreateAttendence(total_year: int, course_alias: str):
         monthly_report = pd.DataFrame(columns=['StudentsName'])
         attendence.to_csv(f"repository/AttendenceFiles/{course_alias}{i}.csv", index=False)
         monthly_report.to_csv(f"repository/AttendenceFiles/{course_alias}{i}_monthly.csv", index=False)
+
+def deleteAttendence(total_year: int, course_alias: str):
+    path = Path("repository/AttendenceFiles")
+    
+    for i in range(1, total_year + 1):
+        rem_file = path/f"{course_alias}{i}.csv"
+        rem_monthly = path/f"{course_alias}{i}_monthly.csv"
+        rem_file.unlink(missing_ok=True)
+        rem_monthly.unlink(missing_ok=True)
 
 # Functions
 

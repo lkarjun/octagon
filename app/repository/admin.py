@@ -3,8 +3,7 @@ from database import models
 from security import hashing, faceid
 from fastapi import status, HTTPException, Response
 from sqlalchemy import and_, or_
-from repository.attendence import CreateAttendence
-from repository import Schemas
+from repository import Schemas, attendence
 import time
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
@@ -111,7 +110,7 @@ def add_course(request: Schemas.AddCourse, db: Session):
     course = models.Courses(Course_name = request.course_name, Course_name_alias = request.course_alias,
                             Department = request.department,
                             Duration = request.duration)
-    CreateAttendence(request.duration, request.course_alias)
+    attendence.createAttendence(request.duration, request.course_alias)
     db.add(course)
     db.commit()
     db.refresh(course)
@@ -122,7 +121,8 @@ def delete_course(request: Schemas.DeleteCourse, db: Session):
     if not course.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
                     detail=f"No Course in name {request.course_name}")
-
+    course_ = course.first()
+    attendence.deleteAttendence(course_.Duration, course_.Course_name_alias)
     course.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
