@@ -1,6 +1,10 @@
 {% extends "commonLayout.html" %}
 {% block content %}
 
+<script>
+    $(".navUser").addClass("navisel")
+</script>
+
 <div class="ui container pt-5 pb-5">
 
     <form class="ui form p-4" id='Appointment_form'>
@@ -152,7 +156,7 @@ $("#imageupdate").submit((e) => {
         var email = $('#email').val()
         var phone = $('#number').val()
         var username = $('#username').val()
-        var username = name.toLowerCase().slice(0,3) + String(phone).slice(7) + username
+        var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone).slice(7) + username
         var department = $('#department_options').val()
         var data = JSON.stringify({"name": name, "email": email, "phone_num": phone, "user_name": username, "department": department})
 
