@@ -4,8 +4,18 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
 from fastapi import HTTPException, status, Response
 from datetime import datetime
+from security import faceid
 
 # Teacher
+
+def update_profile(request: Schemas.AddTeacher, db: Session, user: models.Teachers):
+    userdetail = db.query(models.Teachers).filter(
+                    and_(models.Teachers.username == user.username,
+                         models.Teachers.email == user.email))
+    userdetail.update(dict(request))
+    faceid.update_username(user.username, request.username)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 def get_messages(db: Session, new_five: bool):
     fake_dep = "bca"

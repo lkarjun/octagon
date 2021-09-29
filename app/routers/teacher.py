@@ -40,6 +40,16 @@ async def message(request: Request, db: Session = Depends(get_db),
 async def timetable(request: Request, db: Session = Depends(get_db),
                     user=Depends(oauth2.manager_teacher)):
     return TeacherTemplates.timetable(request, db)
+
+@router.get("/profile")
+async def profile(request: Request, user=Depends(oauth2.manager_teacher)):
+    return TeacherTemplates.profile(request, user)
+
+@router.post("/update_profile")
+async def update_profile(request: Schemas.AddTeacher, db: Session = Depends(get_db), 
+                user=Depends(oauth2.manager_teacher)):
+    return teacher.update_profile(request, db, user)
+
 # Students
 
 @router.post("/add-students", status_code=status.HTTP_204_NO_CONTENT)

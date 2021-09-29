@@ -257,3 +257,10 @@ class TeacherTemplates():
                 context={"request": request, "title": "Add Students",
                          "course": courses})
         return tmp
+
+    def profile(request, user):
+        scode = user.username[-4:]
+        tmp = templates.TemplateResponse("teacherProfile.html",
+                    context={'request': request, "title": 'Profile',
+                         'user': user, 'scode': scode})
+        return tmp

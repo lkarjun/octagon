@@ -1,0 +1,129 @@
+{% extends "teacherLayout.html" %}
+{% block content %}
+<script>
+    $(".navUser").addClass("navisel")
+</script>
+
+<div class="ui container pt-5 pb-5">
+
+    <form class="ui form p-4" id='Appointment_form'>
+        <p class="ui dividing header" style="font-family: sans-serif;">Update Details</p>
+  
+        <div class="fields three">
+            <div class="field">
+              <label>Name</label>
+              <input id='name' required type="text" placeholder="eg: Rishal" value="{{ user.name }}">
+            </div>
+            
+            <div class="field">
+              <label>Email</label>
+              <input id='email' required type="email" placeholder="eg: Rishal@gmail.com" value="{{ user.email }}">
+            </div>
+            
+            <div class="field">
+              <label>Secret Code</label>
+              <input id='username' required type="text" placeholder="4 Digit Secret Code" value="{{ scode }}">
+            </div>
+          
+        </div>
+  
+        <div class="fields three">
+  
+          <div class="field">
+            <label>Phone Number</label>
+            <input id='number' required type="text" placeholder="9934223333" value="{{ user.phone_number }}">
+          </div>
+          
+          <div class="field">
+            <label>Tag</label>
+            <input id='tag' required type="text" disabled value="{{ user.tag }}">
+          </div>
+  
+          <div class="field">
+            <label>Department</label>
+            <input id='depart' required type="text" disabled value="{{ user.department }}">
+          </div>
+  
+        </div>
+  
+        <button class="ui button teal" type="submit" id='upload_button'>Update details</button>
+
+    </form>
+
+      <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
+
+    <form class="ui form p-4" id='imageupdate'>
+        <h3 class="ui dividing header" style="font-family: sans-serif;">Update Verification Image</h3>
+
+        <div class="fields three">
+          
+            <div class="field">
+              <label>Verification Image 1
+              <input id='vimage1' required type="file" accept="image/*"capture="camera"></label>
+            </div>
+              
+            <div class="field">
+              <label>Verification Image 2
+                <input id='vimage2' required type="file" accept="image/*"capture="camera">
+              </label>
+            </div>
+    
+            <div class="field">
+              <label>Verification Image 3
+                <input id='vimage3' required type="file" accept="image/*"capture="camera">
+              </label>
+            </div>
+    
+        </div>
+    
+        <div class="pt-2 pb-4" id = 'pro' style="display: none;">
+            <div class="progress" style="height: 15px;">
+              <div class="progress-bar bg-success rounded" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+
+        <button class="ui button teal" id='upload_button' type="submit">Update Image</button>
+
+    </form>
+
+</div>
+
+<script>
+    $("#Appointment_form").submit((e)=>{
+        var name = $("#name").val()
+        var email = $("#email").val()
+        var phone_number = parseInt($("#number").val())
+        var username = $("#username").val()
+        var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone_number).slice(7) + username
+        var tag = $("#tag").val()
+        var depart = $("#depart").val()
+        var data = JSON.stringify({"name": name, "username": username, "department": depart,
+              "email": email, "phone_number": phone_number, "tag": tag})
+        var base = window.location.origin + '/teacher/update_profile';
+        $("#upload_button").addClass("loading disabled")
+        $.ajax({
+            url: base,
+            type: 'POST',
+            async: true,
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            
+            success: function(result){
+                swal({
+                    text: "Profile updated!",
+                    icon: "success",
+                    button: "Okay"
+                }).then((value) => {
+                    window.location.href = window.location.origin;
+                })
+            },
+            error: function(result){
+                $("#upload_button").removeClass("loading disabled")
+                swal("Something went wrong, please contact teachinal team!")
+            }
+        })
+    })
+</script>
+
+{% endblock %}
