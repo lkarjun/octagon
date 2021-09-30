@@ -72,7 +72,7 @@ def my_timetable(db: Session):
 
 # Students
 
-def add_student(request: Schemas.AddStudent, db: Session):
+def add_student(request: Schemas.AddStudent, db: Session, user: models.Teachers):
 
     res = attendence.admit_students(request=request, save_monthly=True)
 
@@ -81,7 +81,8 @@ def add_student(request: Schemas.AddStudent, db: Session):
                     email = request.email, parent_name = request.parent_name,\
                     parent_number = request.parent_number,\
                     parent_number_alt = request.number, course = request.course,\
-                    year = request.year
+                    year = request.year,\
+                    department = user.department
                 )
 
     db.add(new_student)

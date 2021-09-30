@@ -74,6 +74,7 @@ class Students(Base):
     parent_number_alt = Column(Integer)
     course = Column(String)
     year = Column(Integer)
+    department = Column(String)
 
 class Corrections(Base):
     __tablename__ = "Attendence Correction"

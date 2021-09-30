@@ -55,7 +55,7 @@ async def update_profile(request: Schemas.AddTeacher, db: Session = Depends(get_
 @router.post("/add-students", status_code=status.HTTP_204_NO_CONTENT)
 async def add_student(request: Schemas.AddStudent, db: Session = Depends(get_db),
                     user=Depends(oauth2.manager_teacher)):
-    return teacher.add_student(request, db)
+    return teacher.add_student(request, db, user)
 
 @router.delete("/delete-student", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_student(request: Schemas.DeleteStudent, db: Session = Depends(get_db),
