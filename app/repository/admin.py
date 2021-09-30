@@ -99,10 +99,27 @@ def get_all_departments(db: Session, template=False):
 
 def delete_department(request: Schemas.DeleteDepartment, db: Session):
     depart = db.query(models.Departments).filter(models.Departments.Alias == request.department)
+    hod = db.query(models.Hod).filter(models.Hod.department == request.department)
+    teacher = db.query(models.Teachers).filter(models.Teachers.department == request.department)
+    timetable = db.query(models.Timetable).filter(models.Timetable.department == request.department)
+    timetableS = db.query(models.TimetableS).filter(models.TimetableS.department == request.department)
+    students = db.query(models.Students).filter(models.Students.department == request.department)
+    course = db.query(models.Courses).filter(models.Courses.Department == request.department)
+    
     if not depart.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
-                    detail=f"No Department in name {request.Department} and alias {request.Alias}") 
+                    detail=f"No Department in name {request.Department} and alias {request.Alias}")
+    
     depart.delete(synchronize_session=False)
+    if teacher.first(): teacher.delete(synchronize_session=False)
+    if hod.first(): hod.delete(synchronize_session=False)
+    if timetableS.first(): timetableS.delete(synchronize_session=False)
+    if timetable.first(): timetable.delete(synchronize_session=False)
+    if students.first(): students.delete(synchronize_session=False)
+    if course.first():
+        for i in course:
+            attendence.deleteAttendence(i.Duration, i.Course_name_alias)
+        course.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
 
