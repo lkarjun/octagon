@@ -114,6 +114,9 @@
                                         <select class="ui search dropdown" id='mt1' onchange="checkConflict('#mt1')">
                                             <option value="" disabled selected>Teacher</option>
                                             <option value="none">None</option>
+                                            {% for i in hods %}
+                                            <option value="{{ i.user_name }}">{{ i.name }}(H)</option>
+                                            {% endfor %}
                                             {% for i in teachers %}
                                             <option value="{{ i.username }}">{{ i.name }}</option>
                                             {% endfor %}

@@ -100,12 +100,14 @@ class HodTemplates():
     def timetable(request):
         db = database.SessionLocal()
         courses = admin.get_all_course(db)
-        teachers = hod.get_techer_details(db)
+        teachers = hod.get_techer_details(db, template=True)
+        hods = admin.get_all(db, template=True)
         depart = admin.get_all_departments(db)
         db.close()
         return templates.TemplateResponse('timeTable.html', 
                 context={'request': request, 'title': 'Time Table', 
-                        'courses': courses, 'teachers': teachers, 'department': depart})
+                        'courses': courses, 'teachers': teachers, 
+                        'hods': hods, 'department': depart})
 
     def appoint_teacher(request):
         db = database.SessionLocal()
