@@ -2,19 +2,19 @@ import re
 import smtplib
 import email.message
 import mimetypes
+from typing import Dict
 
 send_address = "-"
 passs = "-"
 
-def send_email(to: str, subject) -> int:
+def send_email(data: Dict) -> int:
     """ for sending report """
     try:
         message = email.message.EmailMessage()
-        message["From"] = "noreply.octagon@gmail.com"
-        message["to"] = to
-        message["Subject"] = subject
-        body = "Kindly Please check Your system, and resolve it."
-        message.set_content(body)
+        message["From"] = send_address
+        message["to"] = data['to']
+        message["Subject"] = data['subject']
+        message.set_content(data['body'])
         mail_server = smtplib.SMTP_SSL('smtp.gmail.com')
 
         """ to loading some credential """

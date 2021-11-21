@@ -96,3 +96,11 @@ class Message(Base):
     title = Column(String)
     message = Column(String)
     important = Column(Boolean)
+
+
+class PendingVerificationImage(Base):
+    __tablename__ = "PendingVerificationMessage"
+    id = Column(String, primary_key=True)
+    user_username = Column(String)
+    user_email = Column(String)
+    hod_or_teacher = Column(String)
