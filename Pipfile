@@ -19,6 +19,7 @@ pydantic = "*"
 urllib3 = {extras = ["secure"], version = "*"}
 gunicorn = "*"
 requests = "*"
+jinja2 = "*"
 
 [dev-packages]
 ipykernel = "*"
