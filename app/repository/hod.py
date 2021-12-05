@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status, Response, BackgroundTasks
 from security import faceid, hashing
+import octagonmail
 
 def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):
     new_teacher = models.Teachers(
@@ -12,8 +13,9 @@ def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: Backgroun
                     department = request.department, tag = request.tag,\
                     username = request.username
                 )
+    id = hashing.get_unique_id(request.username)
     pending_verification = models.PendingVerificationImage(
-                            id=hashing.get_unique_id(request.username), 
+                            id=id, 
                             user_username=request.username, 
                             user_email = request.email, 
                             hod_or_teacher='T')
@@ -21,6 +23,7 @@ def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: Backgroun
     db.add(pending_verification)
     db.commit()
     db.refresh(new_teacher)
+    bg_task.add_task(octagonmail.verification_mail, request.name, request.email, id)
     return Response(status_code=204)
 
 def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
