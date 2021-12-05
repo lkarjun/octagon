@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Request, Form, File, UploadFile
+from fastapi import APIRouter, status, Request, Form, File, UploadFile, BackgroundTasks
 from templates import OthersTemplates
 from repository import verify
 
@@ -11,10 +11,11 @@ async def verify_page(request: Request, id: str):
 
 @router.post('/verification_image', status_code=status.HTTP_204_NO_CONTENT)
 async def verification_image(request: Request,
+                            bg_task: BackgroundTasks,
                             username: str = Form(...),
                             image1: UploadFile = File(...),
                             image2: UploadFile = File(...),
                             image3: UploadFile = File(...)):
     image1, image2, image3 = await image1.read(), await image2.read(),\
                                 await image3.read()
-    return verify.verify(request, username, image1, image2, image3)
+    return verify.verify(request,bg_task, username, image1, image2, image3)

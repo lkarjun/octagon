@@ -5,6 +5,7 @@ from fastapi import status, HTTPException, Response, BackgroundTasks
 from sqlalchemy import and_, or_
 from repository import Schemas, attendence
 import time
+from octagonmail import octagonmail
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)
@@ -69,9 +70,9 @@ def create(request: Schemas.CreateHod, db: Session, bg_task: BackgroundTasks):
     new_hod = models.Hod(name = request.name, email = request.email, \
                         phone_num = request.phone_num, user_name = request.user_name, \
                         department = request.department)
-    
+    id = hashing.get_unique_id(request.user_name)
     pending_verification = models.PendingVerificationImage(
-                            id=hashing.get_unique_id(request.user_name), 
+                            id=id, 
                             user_username=request.user_name, 
                             user_email = request.email, 
                             hod_or_teacher='H')
@@ -80,6 +81,7 @@ def create(request: Schemas.CreateHod, db: Session, bg_task: BackgroundTasks):
     db.add(pending_verification)
     db.commit()
     db.refresh(new_hod)
+    bg_task.add_task(octagonmail.verification_mail, request.name, request.email, id)
     return Response(status_code=204)
 
 def new_department(request: Schemas.AddDepartment, db: Session):
