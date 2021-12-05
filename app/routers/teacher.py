@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Depends, Request, Response, status
+from fastapi import APIRouter, Depends, Request, Response, status, UploadFile, File, Form
 from sqlalchemy.orm.session import Session
 from repository import Schemas, teacher
 from database import database
 from templates import TeacherTemplates
-from security import oauth2
+from security import oauth2, faceid
 
 router = APIRouter(tags = ['Teachers'], prefix='/teacher')
 
@@ -15,6 +15,16 @@ get_db = database.get_db
 async def get_messages(request: Request, db: Session = Depends(get_db),
                          new_five: bool = True, user=Depends(oauth2.manager_teacher)):
     return TeacherTemplates.get_messages(request, db, new_five)
+
+@router.post('/verification_image', status_code=status.HTTP_204_NO_CONTENT)
+async def verification_image(username: str = Form(...),
+                             image1: UploadFile = File(...),
+                             image2: UploadFile = File(...),
+                             image3: UploadFile = File(...),
+                             user=Depends(oauth2.manager_hod)):
+    image1, image2, image3 = await image1.read(), await image2.read(),\
+                                await image3.read()
+    return faceid.verification_image(username, image1, image2, image3)
 
 # templates
 
