@@ -219,7 +219,7 @@ function remove_hod(username){
 
 // Appointment of hod and Verification image sends
 
-function appoint_hod(data, name, username){
+function appoint_hod(data){
   console.log(data)
   var base = window.location.origin + '/admin/portal/create_hod';
   $.ajax({
@@ -233,7 +233,7 @@ function appoint_hod(data, name, username){
         success: function(result) {
             $("#upload_button").removeClass("loading disabled");
             swal({
-              text: `Successfully Appointed Hod: ${name}`,
+              text: `Successfully Appointed Hod: ${data['name']}`,
               icon: "success",
               button: "Okay!",
             })
@@ -251,7 +251,7 @@ function appoint_hod(data, name, username){
             else{
               swal({
                 text: "Something Went Wrong. Please try to contact the techincal team...",
-                icon: "success",
+                icon: "error",
                 button: "Okay!",
               }).then((value) => {
                 location.reload();
@@ -343,7 +343,7 @@ $("#Appointment_form").submit((e)=>{
   var department = $('#department_options').val()
   var data = JSON.stringify({"name": name, "email": email, "phone_num": phone, "user_name": username, "department": department})
   $("#upload_button").addClass("loading disabled");
-  verification_image_upload(data, name, username)
+  appoint_hod(data)
 })
 
 

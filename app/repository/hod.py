@@ -2,19 +2,23 @@ from database import models
 from repository import Schemas,uoc
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
-from fastapi import HTTPException, status, Response
-from security import faceid
+from fastapi import HTTPException, status, Response, BackgroundTasks
+from security import faceid, hashing
 
-def appoint_teacher(request: Schemas.AddTeacher, db: Session):
-
+def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):
     new_teacher = models.Teachers(
                     name = request.name, email = request.email,\
                     phone_number = request.phone_number,\
                     department = request.department, tag = request.tag,\
                     username = request.username
                 )
-    
+    pending_verification = models.PendingVerificationImage(
+                            id=hashing.get_unique_id(request.username), 
+                            user_username=request.username, 
+                            user_email = request.email, 
+                            hod_or_teacher='T')
     db.add(new_teacher)
+    db.add(pending_verification)
     db.commit()
     db.refresh(new_teacher)
     return Response(status_code=204)

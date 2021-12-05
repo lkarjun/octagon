@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, status, UploadFile, File, Form, Response, Request
+from starlette.background import BackgroundTasks
 from templates import AdminTemplates
 from sqlalchemy.orm.session import Session
 from typing import Dict, List
 from database import database
 from security import oauth2
-from repository import admin, Schemas
+from repository import admin, Schemas, verify
 
 
 router = APIRouter(tags=['Admin'], prefix='/admin')
@@ -35,19 +36,29 @@ async def hod(request: Request, db: Session = Depends(get_db),
 async def credential(request: Request, user=Depends(oauth2.manager_admin)):
     return AdminTemplates.credential(request)
 
-@router.post('/portal/create_hod', status_code=status.HTTP_201_CREATED)
-async def create_hod(request: Schemas.CreateHod, db: Session = Depends(get_db), user=Depends(oauth2.manager_admin)):
-    return admin.create(request, db)
+@router.get("/unverifiedusers")
+async def unverified(request: Request, user=Depends(oauth2.manager_admin)):
+    return AdminTemplates.unverified(request)
 
-@router.post('/portal/verification_image', status_code=status.HTTP_204_NO_CONTENT)
-async def verification_image(username: str = Form(...),
-                            image1: UploadFile = File(...),
-                            image2: UploadFile = File(...),
-                            image3: UploadFile = File(...),   
-                            user = Depends(oauth2.manager_admin)):
-    image1, image2, image3 = await image1.read(), await image2.read(),\
-                                await image3.read()
-    return admin.verification_image(username, image1, image2, image3)
+@router.delete('/portal/remove_pending', status_code=status.HTTP_204_NO_CONTENT)
+async def remove_pending(request: Schemas.PendingVerification,
+                         db: Session = Depends(get_db),
+                         user=Depends(oauth2.manager_admin)):
+    return verify.remove_pending(request, db)
+
+@router.post("/portal/alert_user", status_code=status.HTTP_204_NO_CONTENT)
+async def alert_user(request: Schemas.PendingVerification,
+                     bg_task: BackgroundTasks,
+                     db: Session = Depends(get_db),
+                     user=Depends(oauth2.manager_admin)):
+    return verify.alert_user(request, db, bg_task)
+
+@router.post('/portal/create_hod', status_code=status.HTTP_204_NO_CONTENT)
+async def create_hod(request: Schemas.CreateHod,
+                     bg_task: BackgroundTasks,
+                     db: Session = Depends(get_db),
+                     user=Depends(oauth2.manager_admin)):
+    return admin.create(request, db, bg_task)
 
 @router.delete('/portal/delete_hod', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_hod(request: Schemas.DeleteHod, db: Session = Depends(get_db),\

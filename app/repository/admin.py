@@ -1,10 +1,11 @@
 from sqlalchemy.orm.session import Session
 from database import models
-from security import hashing, faceid
-from fastapi import status, HTTPException, Response
+from security import hashing
+from fastapi import status, HTTPException, Response, BackgroundTasks
 from sqlalchemy import and_, or_
 from repository import Schemas, attendence
 import time
+from octagonmail import octagonmail
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)
@@ -56,7 +57,7 @@ def delete(request: Schemas.DeleteHod, db: Session):
     db.commit()
     return Response(status_code=204)
 
-def create(request: Schemas.CreateHod, db: Session):
+def create(request: Schemas.CreateHod, db: Session, bg_task: BackgroundTasks):
     user_name_check = db.query(models.Hod).filter(or_(
                         models.Hod.user_name == request.user_name,
                         models.Hod.email == request.email,
@@ -69,17 +70,18 @@ def create(request: Schemas.CreateHod, db: Session):
     new_hod = models.Hod(name = request.name, email = request.email, \
                         phone_num = request.phone_num, user_name = request.user_name, \
                         department = request.department)
+    id = hashing.get_unique_id(request.user_name)
+    pending_verification = models.PendingVerificationImage(
+                            id=id, 
+                            user_username=request.user_name, 
+                            user_email = request.email, 
+                            hod_or_teacher='H')
+                
     db.add(new_hod)
+    db.add(pending_verification)
     db.commit()
     db.refresh(new_hod)
-    return True
-
-def verification_image(username, image1, image2, image3):
-    print("Getting encodings for images at", time.strftime("%H:%M:%S", time.localtime()))
-    encodings = faceid.read_images(image1, image2, image3)
-    print("Saving encoded vectors at", time.strftime("%H:%M:%S", time.localtime()))
-    faceid.put_faces(username, encodings)
-    print("Saved encoded vectors at", time.strftime("%H:%M:%S", time.localtime()))
+    bg_task.add_task(octagonmail.verification_mail, request.name, request.email, id)
     return Response(status_code=204)
 
 def new_department(request: Schemas.AddDepartment, db: Session):

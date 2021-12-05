@@ -17,6 +17,9 @@ class ShowHods(CreateHod):
 class DeleteHod(BaseModel):
     username: str
 
+class PendingVerification(BaseModel):
+    username: str
+
 class AddDepartment(BaseModel):
     Department: str
     Alias: str

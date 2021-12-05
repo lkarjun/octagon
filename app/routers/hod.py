@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Request, Depends, status, Form, UploadFile, File
+from fastapi import APIRouter, Request, Depends, status, Form, UploadFile, File, BackgroundTasks
 from sqlalchemy.orm.session import Session
 from starlette.responses import HTMLResponse, Response
 from repository import hod, Schemas, attendence, admin
 from database import database
 from templates import HodTemplates
 from typing import List
-from security import oauth2
+from security import oauth2, faceid
 
 router = APIRouter(tags = ['Head Of Department'], prefix='/hod')
 
@@ -16,8 +16,10 @@ get_db = database.get_db
 
 @router.post('/Addteacher', status_code=status.HTTP_204_NO_CONTENT)
 async def add_teacher(request: Schemas.AddTeacher, 
-                db: Session = Depends(get_db), user=Depends(oauth2.manager_hod)):
-    return hod.appoint_teacher(request, db)
+                      bg_task: BackgroundTasks,
+                      db: Session = Depends(get_db),
+                      user=Depends(oauth2.manager_hod)):
+    return hod.appoint_teacher(request, db, bg_task)
 
 @router.delete('/Deleteteacher', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_teacher(request: Schemas.DeleteTeacher, 
@@ -41,7 +43,7 @@ async def verification_image(username: str = Form(...),
                             user=Depends(oauth2.manager_hod)):
     image1, image2, image3 = await image1.read(), await image2.read(),\
                                 await image3.read()
-    return admin.verification_image(username, image1, image2, image3)
+    return faceid.verification_image(username, image1, image2, image3)
 
 # Students Related
 

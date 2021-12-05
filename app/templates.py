@@ -71,8 +71,31 @@ class AdminTemplates():
 
         return tmp
 
+
+    def unverified(request):
+        db = database.SessionLocal()
+        hod = db.query(models.PendingVerificationImage).filter(models.PendingVerificationImage.hod_or_teacher == 'H')
+        teacher = db.query(models.PendingVerificationImage).filter(models.PendingVerificationImage.hod_or_teacher == 'T')
+        db.close()
+
+        tmp = templates.TemplateResponse("adminUnverified.html",
+                    context={'request': request, 'title': 'Unverified Users', 
+                        'hods': hod, 'teachers': teacher})
+        return tmp
+
+
+
 class OthersTemplates():
     
+    def verify(request, id):
+        db = database.SessionLocal()
+        user = db.query(models.PendingVerificationImage).filter(models.PendingVerificationImage.id == id).first()
+        db.close()
+        tmp = templates.TemplateResponse("verify_page.html", 
+            context={'request': request, 'valid': user, 'user': user})
+
+        return tmp
+
     def login_page(request, verify=False, message = 'Login Page'):
         tmp = templates.TemplateResponse('login.html',
                 context={'request': request,

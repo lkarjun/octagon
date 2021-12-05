@@ -99,7 +99,7 @@ class Message(Base):
 
 
 class PendingVerificationImage(Base):
-    __tablename__ = "PendingVerificationMessage"
+    __tablename__ = "PendingVerification"
     id = Column(String, primary_key=True)
     user_username = Column(String)
     user_email = Column(String)

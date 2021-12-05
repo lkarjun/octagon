@@ -5,7 +5,7 @@ from io import BytesIO
 from PIL import Image
 import numpy as np
 import pickle
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Response
 import time
 from pathlib import Path
 
@@ -78,3 +78,12 @@ def update_username(old_username: str, new_username: str) -> None:
     faces.pop(old_username)
     faces[new_username] = user_face
     face_dp(faces)
+
+
+def verification_image(username, image1, image2, image3):
+    print("Getting encodings for images at", time.strftime("%H:%M:%S", time.localtime()))
+    encodings = read_images(image1, image2, image3)
+    print("Saving encoded vectors at", time.strftime("%H:%M:%S", time.localtime()))
+    put_faces(username, encodings)
+    print("Saved encoded vectors at", time.strftime("%H:%M:%S", time.localtime()))
+    return Response(status_code=204)
