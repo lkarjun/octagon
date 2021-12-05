@@ -88,12 +88,13 @@
     </style>
     <script>
         $(window).on('load', function () {
-           var rnd = Math.random() * (8000 - 1000) + 1000;
+           var rnd = Math.random() * (8000 - 250) + 1000;
            $('.progress').css("animation", "loading " + rnd + "ms linear");
            console.log(rnd);
            setTimeout(function() {
                $('#loader').hide();
                $('#page').removeClass('hidden');
+               $('.userCred').show();
            }, rnd);
        });
     </script>
@@ -120,7 +121,7 @@
                         <h1 class="text-light" style="font-family: 'Are You Serious', cursive; font-size: 500%;">Octagon</h1>
                         <form action="/octagon/login" method="POST" class="ui form">
                             <div class="field">
-                                <div class="ui input">
+                                <div class="ui input userCred" style="display: none;">
                                     <input type="text" id="username" placeholder="Enter your username" name="username">
                                 </div>
                             </div>
@@ -128,7 +129,7 @@
                                 <input type="text" name='password' id='password' style="display: none;">
                             </div>
         
-                            <button class="ui button blue small fluid" onclick="capit()" id="btn_login">Recognize</button>
+                            <button class="ui button blue small fluid userCred" style="display: none;" onclick="capit()" id="btn_login">Recognize</button>
                         </form>
 
                         <div style="font-family: Comic sans MS; display: none;" id='recognizing-spinner' class="text-light">Recognitizing
