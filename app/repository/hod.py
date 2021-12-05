@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status, Response, BackgroundTasks
 from security import faceid, hashing
-import octagonmail
+from octagonmail import octagonmail
 
 def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):
     new_teacher = models.Teachers(
