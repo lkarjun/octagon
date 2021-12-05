@@ -140,14 +140,8 @@
 
         <div class="field">
           <label>Department</label>
-          <select class="ui dropdown search" id='depart'>
-            {% if depart %}
-            {% for i in depart %}
-            <option value="{{ i['Alias'] }}">{{i['Department']}}</option>
-            {% endfor %}
-            {% else %}
-            <option value="">None</option>
-            {% endif %}
+          <select class="ui dropdown search disabled" id='depart'>
+            <option value="{{depart}}" class="font-weight-bold">{{depart}}</option>
           </select>
         </div>
 

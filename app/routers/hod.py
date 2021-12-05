@@ -131,7 +131,7 @@ async def timetable(request: Request, user=Depends(oauth2.manager_hod)):
 
 @router.get("/edit-teacher")
 async def appoint_teacher(request: Request,user=Depends(oauth2.manager_hod)):
-    return HodTemplates.appoint_teacher(request)
+    return HodTemplates.appoint_teacher(request, user)
 
 @router.get("/students-attendence/{course}/{year}", status_code=status.HTTP_200_OK)
 async def show_attendence(request: Request, course: str, year: int,

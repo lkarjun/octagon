@@ -132,14 +132,14 @@ class HodTemplates():
                         'courses': courses, 'teachers': teachers, 
                         'hods': hods, 'department': depart})
 
-    def appoint_teacher(request):
+    def appoint_teacher(request, user):
         db = database.SessionLocal()
         teachers = hod.get_techer_details(db, template=True)
         depart = admin.get_all_departments(db, template=True)
         db.close()
         tmp = templates.TemplateResponse("appointTeacher.html",
                 context={'request': request, "title": "Appoint Teachers", 
-                         "teachers": teachers, "depart": depart})
+                         "teachers": teachers, "depart": user.department})
         return tmp
 
     def uoc_notification(request):
