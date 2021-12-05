@@ -1,0 +1,207 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<script>
+    $(".unverified").addClass("navisel")
+</script>
+
+<section id="head" class="pt-5 text-center">
+        
+    <div class="ui buttons small">
+
+        <button class="ui button animated blue"  onclick="show('#hod')">
+            <div class="visible content" style="font-family: 'sans-serif';">Hod's</div>
+            <div class="hidden content">
+                <i class="newspaper outline icon"></i>
+            </div>
+        </button>
+  
+        <button class="ui button animated teal" onclick="show('#teacher')">
+            <div class="visible content" style="font-family: sans-serif;">Teacher's</div>
+            <div class="hidden content">
+                <i class="newspaper outline icon"></i>
+            </div>
+
+        </button>
+
+    </div>
+            
+    <script>
+      function show(id){
+          $("#hod").hide();
+          $("#teacher").hide();
+          $(id).show();
+
+      }
+  </script>
+
+</section>
+
+
+<section id='hod' class="p-4 m-4">
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr class="bg-primary text-light">
+              <th scope="col" class="font-weight-bold">Id</th>
+              <th scope="col" class="font-weight-bold">Username</th>
+              <th scope='col' class="font-weight-bold">Email</th>
+              <th scope="col" class="font-weight-bold">Hod</th>
+              <th scope="col" class="font-weight-bold">Alert</th>
+              <th scope="col" class="font-weight-bold">Remove Hod</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if hods.first() %}
+            {% for i in hods %}
+            <tr id="{{ i['id'] }}">
+                <td class="font-weight-bold">{{ i['id'] }} <i class="external alternate icon blue" 
+                            onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'></i></td>
+                <td>{{i['user_username']}}</td>
+                <td>{{ i['user_email'] }}</td>
+                <td>{{ i['hod_or_teacher'] }}</td>
+                
+                <td>
+                    <button type="button" class="ui button small green" onclick="alert_user('{{i['id']}}')">
+                        Alert
+                    </button>
+                </td>
+
+                <td>
+                    <button type="button" class="ui button small red" onclick="remove_pending('{{i['id']}}')">
+                        Remove
+                    </button>
+                </td>
+
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td colspan="6" class="text-center font-weight-bold">******No Pending Verifications******</td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+
+</section>
+
+
+<section id="teacher" class="p-4 m-4" style="display: none;">
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr class="bg-primary text-light">
+              <th scope="col" class="font-weight-bold">Id </th>
+              <th scope="col" class="font-weight-bold">Username</th>
+              <th scope='col' class="font-weight-bold">Email</th>
+              <th scope="col" class="font-weight-bold">Hod</th>
+              <th scope="col" class="font-weight-bold">Alert</th>
+              <th scope="col" class="font-weight-bold">Remove Teacher</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if teachers.first() %}
+            {% for i in teachers %}
+            <tr id="{{ i['id'] }}">
+                <td class="font-weight-bold">{{ i['id'] }} <i class="external alternate icon blue" 
+                            onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'></i></td>
+                <td>{{i['user_username']}}</td>
+                <td>{{ i['user_email'] }}</td>
+                <td>{{ i['hod_or_teacher'] }}</td>
+                
+                <td>
+                    <button type="button" class="ui button small green" onclick="alert_user('{{i['id']}}')">
+                        Alert
+                    </button>
+                </td>
+
+                <td>
+                    <button type="button" class="ui button small red" onclick="remove_pending('{{i['id']}}')">
+                        Remove
+                    </button>
+                </td>
+
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td colspan="6" class="text-center font-weight-bold">******No Pending Verifications******</td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+    </div>
+
+</section>
+
+
+<script>
+function remove_pending(username){
+  $("#"+username).addClass("bg-danger")
+  var base = window.location.origin + '/admin/portal/remove_pending';
+  var data = JSON.stringify({"username": username})
+  $.ajax({
+    url: base,
+    type: 'DELETE',
+    async: true,
+    data: data,
+    dataType: 'json',
+    contentType: "application/json",
+
+    success: function(result) {
+          $("#"+username).remove();
+          swal({
+            text: "Successfully Removed User!",
+            icon: "success",
+            button: "Okay!",
+          })
+        },
+    error: function(result){
+          $("#"+username).removeClass("bg-danger")
+          $("#"+username).addClass("bg-warning")
+          swal({
+            text: `Something Went Wrong Error Message: ${result}`,
+            icon: "warning",
+            button: "Okay!",
+          })
+        }
+    });
+}
+
+function alert_user(username){
+  $("#"+username).addClass("bg-secondary")
+  var base = window.location.origin + '/admin/portal/alert_user';
+  var data = JSON.stringify({"username": username})
+  $.ajax({
+    url: base,
+    type: 'POST',
+    async: true,
+    data: data,
+    dataType: 'json',
+    contentType: "application/json",
+
+    success: function(result) {
+          $("#"+username).removeClass("bg-secondary")
+          swal({
+            text: "Successfully send alert!",
+            icon: "success",
+            button: "Okay!",
+          })
+        },
+    error: function(result){
+          $("#"+username).removeClass("bg-danger")
+          $("#"+username).addClass("bg-warning")
+          swal({
+            text: `Something Went Wrong Error Message: ${result}`,
+            icon: "warning",
+            button: "Okay!",
+          })
+        }
+    });
+}
+</script>
+
+{% endblock %}
