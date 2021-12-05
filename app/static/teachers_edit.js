@@ -117,7 +117,7 @@ $("#Appointment_form").submit((e)=>{
   var data = JSON.stringify({"name": name, "username": username, "department": depart,
               "email": email, "phone_number": phone_number, "tag": tag})
   
-  verification_image_upload(data, username, name)
+  appoint_teacher(data, name)
 })
 
   // Teacher Search
