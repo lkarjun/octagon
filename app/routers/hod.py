@@ -131,8 +131,9 @@ async def take_attendence(request: Request, user=Depends(oauth2.manager_hod)):
     return HodTemplates.takeAttendence(request)
 
 @router.get('/timetable')
-async def timetable(request: Request, user=Depends(oauth2.manager_hod)):
-    return HodTemplates.timetable(request)
+async def timetable(request: Request, user=Depends(oauth2.manager_hod),
+                    db: Session = Depends(get_db)):
+    return HodTemplates.timetable(request, user, db)
 
 @router.get("/edit-teacher")
 async def appoint_teacher(request: Request,user=Depends(oauth2.manager_hod)):

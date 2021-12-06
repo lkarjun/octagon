@@ -56,11 +56,12 @@
                 <form class="ui form align-items-center" id='CourseAndYear'>
                     <div class="fields three">
                         <div class="field">
-                            <select class="ui search dropdown" id='department' required>
-                                <option value="" disabled selected>Choose Department</option>
-                                {% for i in department %}
+                            <select class="ui search dropdown disabled" id='department' required>
+                                <!-- <option value="" disabled selected>Department</option> -->
+                                <option value='{{department}}' class="font-weight-bold text-uppercase">{{department}}</option>
+                                <!-- {% for i in department %}
                                 <option value="{{ i.Alias }}">{{ i.Alias }}</option>
-                                {% endfor %}
+                                {% endfor %} -->
                             </select>
                         </div>
 
@@ -115,10 +116,10 @@
                                             <option value="" disabled selected>Teacher</option>
                                             <option value="none">None</option>
                                             {% for i in hods %}
-                                            <option value="{{ i.user_name }}">{{ i.name }}(H)</option>
+                                            <option value="{{ i.user_name }}">{{ i.name }}(H)-({{i.department}})</option>
                                             {% endfor %}
                                             {% for i in teachers %}
-                                            <option value="{{ i.username }}">{{ i.name }}</option>
+                                            <option value="{{ i.username }}">{{ i.name }}-({{i.department}})</option>
                                             {% endfor %}
                                         </select>
                                     </div>

@@ -128,17 +128,18 @@ class HodTemplates():
                             "user": user.name})
         return tmp
 
-    def timetable(request):
-        db = database.SessionLocal()
+    def timetable(request, user, db):
+        # db = database.SessionLocal()
         courses = admin.get_all_course(db)
         teachers = hod.get_full_teacher_details(db)
         hods = admin.get_all(db, template=True)
-        depart = admin.get_all_departments(db)
-        db.close()
+        # depart = db.query(models.)
+        # depart = admin.get_all_departments(db)
+        # db.close()
         return templates.TemplateResponse('timeTable.html', 
                 context={'request': request, 'title': 'Time Table', 
                         'courses': courses, 'teachers': teachers, 
-                        'hods': hods, 'department': depart})
+                        'hods': hods, 'department': user.department})
 
     def appoint_teacher(request, user):
         db = database.SessionLocal()
