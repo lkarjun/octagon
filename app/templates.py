@@ -83,6 +83,14 @@ class AdminTemplates():
                         'hods': hod, 'teachers': teacher})
         return tmp
 
+    def teachers_list(request, db):
+        teachers = db.query(models.Teachers).all()
+        list_empty = False if teachers else True
+
+        tmp = templates.TemplateResponse("adminTeachersView.html",
+                            context={'request': request, 'title': 'Collage Teachers',
+                                        'teachers': teachers, 'list_empty': list_empty})
+        return tmp
 
 
 class OthersTemplates():

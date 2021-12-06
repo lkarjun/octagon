@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<script>
+    $(".teachh").addClass("navisel")
+</script>
+
+
+<section class="p-4 m-4">
+  
+    <div class="jumbotron text-left">
+      <h3 class="pb-5 pt-4 setfont">Teachers Details</h3>
+    </div>
+
+    <!--Teachers Search-->
+    <div class="form ui pb-3">
+    <div class="field">
+      <div class="ui search">
+        <div class="ui icon input">
+          <input class="prompt" type="text" id='myInput' placeholder="Search Department">
+          <i class="search icon"></i>
+        </div>
+        <div class="results"></div>
+      </div>
+    </div>
+    </div>
+    <!--Search Ends-->
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr class="bg-primary text-light">
+              <th scope="col" class="font-weight-bold">Name</th>
+              <th scope="col" class="font-weight-bold">Email</th>
+              <th scope='col' class="font-weight-bold">Phone No:</th>
+              <th scope='col' class="font-weight-bold">User Name</th>
+              <th scope="col" class="font-weight-bold">TAG</th>
+              <th scope='col' class="font-weight-bold">Department</th>
+            </tr>
+          </thead>
+          <tbody id="SearchDepartment">
+            {% if list_empty %}
+            <tr>
+                <td colspan="6" class="text-center font-weight-bold">******No Pending Verifications******</td>
+            </tr>
+            {% else %}
+            {% for i in teachers %}
+            <tr id = '{{ i["username"] }}'>
+            <td class="font-weight-bold">{{ i['name'] }}</td>
+            <td>{{ i['email'] }}</td>
+            <td>{{ i['phone_number'] }}</td>
+            <td>{{ i["username"] }}</td>
+            <td>{{ i['tag'] }}</td>
+            <td>{{ i['department'] }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+          </tbody>
+        </table>
+    </div>
+  
+    <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
+
+</section>
+
+
+
+
+{% endblock %}
