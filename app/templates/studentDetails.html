@@ -2,10 +2,10 @@
 {% block content %}
 <script>
     $("#navMore").addClass("navisel")
-    $("#navTkAttnm").addClass("navisel")
+    $("#navSt").addClass("navisel")
 </script>
 
-<div class="ui container">
+<div class="ui container pb-5 mb-5">
 
     <section>
 
@@ -42,6 +42,7 @@
                 </thead>
 
                 <tbody id='Search'>
+                    {% if details %}
                     {% for i in details %}
                     <tr>
                         <td>{{ i.id }}</td>
@@ -57,6 +58,11 @@
                         </td> -->
                     </tr>
                     {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="font-weight-bold text-center">****No Student Admitted****</td>
+                    </tr>
+                    {% endif %}
                 </tbody>
 
             </table>
@@ -66,6 +72,7 @@
 </div>
 
 
+<br><br>
 <!-- // Student Search -->
 <script>
     $("#StudentSearch").on("keyup", function() {

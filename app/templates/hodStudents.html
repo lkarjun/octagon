@@ -1,0 +1,55 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+
+<script>
+    $("#navMore").addClass("navisel")
+    $("#navSt").addClass("navisel")
+</script>
+
+
+<section class="pt-md-3 pt-5 mt-md-2 pb-md-5 pb-5 mb-5" id="choose_detail">
+
+    <div class="jumbotron text-center pt-md-3">
+        <h3 class="pt-4 pb-4 font-weight-bold" style="font-family: sans-serif;">Students Details</h3>
+    </div>
+    <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
+
+    <form class="ui form align-items-center p-4" id="dataAnalysis">
+        <div class="fields two">
+            <div class="field">
+                <label>Course</label>
+                <select required class="ui search dropdown" id='course'>
+                    {% for i in course %}
+                    <option value="{{i.Course_name_alias}}">{{ i.Course_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Year</label>
+                <select required class="ui search dropdown" id='year'>
+                    <option value="1">Year 1</option>
+                    <option value="2">Year 2</option>
+                    <option value="3">Year 3</option>
+                    <option value="4">Year 4</option>
+                    <option value="5">Year 5</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- <button class="ui button blue" type="submit" id="get_report_btn">Report</button> -->
+
+        <div class="ui buttons">
+            <div class="ui button teal" onclick="show_details()">View Details</div>
+            <div class="or" data-text="or"></div>
+            <div class="ui button green" onclick="show_attendence()">View Attendence</div>
+        </div>
+
+    </form>
+
+</section>
+
+<script src="{{ url_for('static', path='attendence.js') }}"></script>
+<script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
+
+{% endblock %}

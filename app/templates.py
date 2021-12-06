@@ -170,6 +170,13 @@ class HodTemplates():
                         "course": courses})
         return tmp
 
+    def students(request, user, db):
+        courses = admin.get_all_course(db)
+        tmp = templates.TemplateResponse("hodStudents.html",
+                context={"request": request, "title": "Student Info",
+                        "course": courses})
+        return tmp
+
     def takeAttendence(request):
         db = database.SessionLocal()
         courses = admin.get_all_course(db)
@@ -182,15 +189,17 @@ class HodTemplates():
 
     def show_attendence_data(request, data):
         column, values = attendence.show_attendence_data(request=data)
+        data_in = len(values) >= 1
         tmp = templates.TemplateResponse("showAttendenceData.html",
                     context={"request": request, "title": "Attendence Sheet",
-                                "column": column, "values": values, "data": data})
+                                "column": column, "values": values, 
+                                "data": data, "data_in": data_in})
 
         return tmp
 
     def show_student_details(request, course, year):
         db = database.SessionLocal()
-        details = hod.get_student_details(db, course, year)
+        details = hod.get_student_details(db, course, year, template=True)
         db.close()
         tmp = templates.TemplateResponse("studentDetails.html",
                     context={"request": request, "title": "Attendence Sheet",

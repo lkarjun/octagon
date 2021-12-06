@@ -57,10 +57,11 @@ def get_full_teacher_details(db: Session):
     if not teachers: return []
     return teachers
 
-def get_student_details(db: Session, course: str, year: int):
+def get_student_details(db: Session, course: str, year: int, template = False):
     student = db.query(models.Students).filter(models.Students.course == course,\
                             models.Students.year == year).all()
     if not student:
+        if template: return False
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
             detail = 'No content in the database')
     return student

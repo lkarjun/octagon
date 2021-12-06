@@ -167,3 +167,9 @@ async def get_notification(request: Request, which_notification: str,
 @router.get("/profile")
 async def profile(request: Request, user = Depends(oauth2.manager_hod)):
     return HodTemplates.profile(request, user)
+
+@router.get("/students")
+async def students(request: Request, 
+                   user=Depends(oauth2.manager_hod),
+                   db: Session = Depends(get_db)):
+    return HodTemplates.students(request, user, db)
