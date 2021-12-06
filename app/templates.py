@@ -131,7 +131,7 @@ class HodTemplates():
     def timetable(request):
         db = database.SessionLocal()
         courses = admin.get_all_course(db)
-        teachers = hod.get_techer_details(db, template=True)
+        teachers = hod.get_full_teacher_details(db)
         hods = admin.get_all(db, template=True)
         depart = admin.get_all_departments(db)
         db.close()

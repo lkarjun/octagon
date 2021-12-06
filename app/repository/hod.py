@@ -52,6 +52,11 @@ def get_techer_details(db: Session, user, template=False):
             detail = 'No content in the database')
     return teachers
 
+def get_full_teacher_details(db: Session):
+    teachers = db.query(models.Teachers).all()
+    if not teachers: return []
+    return teachers
+
 def get_student_details(db: Session, course: str, year: int):
     student = db.query(models.Students).filter(models.Students.course == course,\
                             models.Students.year == year).all()
