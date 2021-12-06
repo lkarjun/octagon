@@ -46,10 +46,57 @@
         </div>
 
     </form>
+    <br><br>
+    <!--Terminal Zone-->
+    <hr class='rounded' style="height: 5px; background-color: orange;">
+    <section class="pb-md-5 pb-5 pt-md-0 pt-5">
+        <div class="jumbotron text-left pt-md-5">
+            <h3 class="pb-md-5 pb-5 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Terminal Zone</h3>
+        </div>
+        <div class="ui buttons small three">
+            <div class="ui button yellow" onclick="comming_soon()">Start New Semester</div>
+            <div class="ui button green" onclick="comming_soon()">Promote Student</div>
+            <div class="ui button red" onclick="comming_soon()">Remove Student</div>
+        </div>
+        
+        <div class="pt-5 mt-2">
+            <div class="ui list">
+                <a class="item">
+                  <i class="help icon"></i>
+                  <div class="content">
+                    <div class="header">Start New Semester</div>
+                    <div class="description">This action will remove all attendence record.<br> When a new Semester is starts then this action should be performed.</div>
+                  </div>
+                </a>
+
+                <a class="item">
+                    <i class="help icon"></i>
+                    <div class="content">
+                      <div class="header">Promote Student</div>
+                      <div class="description">This action will promote students. for instance 1st year students to 2nd year.</div>
+                    </div>
+                </a>
+
+                <a class="item">
+                    <i class="help icon"></i>
+                    <div class="content">
+                      <div class="header">Remove Student</div>
+                      <div class="description">This action will remove students when the course is over.<br>It will remove all students.</div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+    </section>
 
 </section>
 
 <script src="{{ url_for('static', path='attendence.js') }}"></script>
 <script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
-
+<script>
+    function comming_soon(){
+        swal("Comming Soon😊");
+    }
+</script>
 {% endblock %}
