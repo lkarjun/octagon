@@ -72,7 +72,7 @@ def my_timetable(db: Session, username: str):
 
 def add_student(request: Schemas.AddStudent, db: Session, user: models.Teachers):
 
-    res = attendence.admit_students(request=request, save_monthly=True)
+    res = attendence.admit_students(request=request, save_monthly=True, open_monthly=True)
 
     new_student = models.Students(
                     id = request.unique_id, name = request.name,\
@@ -91,7 +91,7 @@ def add_student(request: Schemas.AddStudent, db: Session, user: models.Teachers)
 
 
 def delete_student(request: Schemas.DeleteStudent, db: Session):
-
+    res = attendence.remove_students(request=request, save_monthly=True, open_monthly=True)
     student = db.query(models.Students).filter(and_(models.Students.name == request.name,\
                                 models.Students.id == request.unique_id,\
                                 models.Students.year == request.year,

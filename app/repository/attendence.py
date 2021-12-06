@@ -19,7 +19,7 @@ def get_attendence_files(func: Callable):
     def wrap(*args, **kwargs):
         
         open_files = kwargs['open_file'] if 'open_file' in kwargs else True
-        open_daily = kwargs['open_daily'] if 'open_daily' in kwargs else False
+        open_monthly = kwargs['open_monthly'] if 'open_monthly' in kwargs else False
     
         course, year = kwargs['request'].course, kwargs['request'].year
         daily_path = BASE_PATH/f"{course}{year}.csv"
@@ -28,7 +28,7 @@ def get_attendence_files(func: Callable):
         if open_files:
             try:
                 daily = pd.read_csv(daily_path)
-                monthly = pd.read_csv(monthly_path) if open_daily else None
+                monthly = pd.read_csv(monthly_path) if open_monthly else None
             except FileNotFoundError:
                 raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                         detail="Files Not Found.")
@@ -92,8 +92,16 @@ def admit_students(request: Schemas.AddStudent, files: Schemas.Files, **kwargs):
     
     full_names = files.daily['StudentsName'].to_list()+[request.name]
     files.daily = pd.DataFrame(data = full_names, columns=files.daily.columns)
-    files.monthly = pd.DataFrame(data = full_names, columns=files.daily.columns)
+    files.monthly = pd.DataFrame(data = full_names, columns=files.monthly.columns)
     
+    return files
+
+@save_files
+@get_attendence_files
+def remove_students(request: Schemas.DeleteStudent, files: Schemas.Files, **kwargs):
+    '''kwargs: open_files(default) = True'''
+    files.daily = files.daily[files.daily['StudentsName'] != request.name].reset_index().drop('index', axis=1)
+    files.monthly = files.monthly[files.monthly['StudentsName'] != request.name].reset_index().drop('index', axis=1)
     return files
 
 @get_attendence_files
@@ -114,7 +122,7 @@ def get_student_names(request: Schemas.set_class, files: Schemas.Files, **kwargs
 @get_attendence_files
 def take_attendence(request: Schemas.TakeAttendence, files: Schemas.Files, **kwargs):
     '''
-    kwargs open_daily(default) = False, this will only open daily attendence file
+    kwargs open_monthly(default) = False, this will only open daily attendence file
     '''
     df = files.daily
     attendence = df[request.date].values if request.date in df else np.zeros(len(df))
