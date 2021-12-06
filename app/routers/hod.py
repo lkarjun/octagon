@@ -55,6 +55,11 @@ async def attendence_correction(request: Schemas.AttendenceCorrection,
 
 # Hod Functions
 
+@router.get("/myclasses")
+async def timetable(request: Request, db: Session = Depends(get_db),
+                    user=Depends(oauth2.manager_hod)):
+    return HodTemplates.myclasses(request, db, user)
+
 @router.post('/message', status_code=status.HTTP_204_NO_CONTENT)
 async def message(request: Schemas.Message, db: Session = Depends(get_db),
             user=Depends(oauth2.manager_hod)):

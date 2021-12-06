@@ -1,9 +1,22 @@
+{% if head %}
+{% extends "commonLayout.html" %}
+{% else %}
 {% extends "teacherLayout.html" %}
+
+{% endif %}
+
 {% block content %}
+
+{% if head %}
+<script>
+    $("#navMC").addClass("navisel")
+</script>
+{% else %}
 <script>
     $("#navTblm").addClass("navisel")
     $("#navTblw").addClass("navisel")
 </script>
+{% endif %}
 
 <div class="ui container pb-5">
 

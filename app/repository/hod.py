@@ -161,9 +161,13 @@ def set_timetable(request: Schemas.TimeTable, db: Session):
 
 def check_timetable(request: Schemas.TimeTableChecker, db: Session):
     name = db.query(models.Teachers).filter(models.Teachers.username == request.name).first()
+    if not name:
+        name = db.query(models.Hod).filter(models.Hod.user_name == request.name).first()
+        username = name.user_name
+    else: username = name.username
     checker = db.query(models.Timetable).filter(and_(
                         models.Timetable.days == request.day,
-                        helper_timetable_check(request.hour) == name.username,
+                        helper_timetable_check(request.hour) == username,
                 )).first()
     if checker: raise HTTPException(status.HTTP_406_NOT_ACCEPTABLE, detail=f"{request.day} {request.hour} {name.name} have class in {checker.course} year {checker.year}...")
     return "No Issue..."

@@ -49,7 +49,7 @@ async def message(request: Request, db: Session = Depends(get_db),
 @router.get("/timetable")
 async def timetable(request: Request, db: Session = Depends(get_db),
                     user=Depends(oauth2.manager_teacher)):
-    return TeacherTemplates.timetable(request, db)
+    return TeacherTemplates.timetable(request, db, user)
 
 @router.get("/profile")
 async def profile(request: Request, user=Depends(oauth2.manager_teacher)):

@@ -240,11 +240,17 @@ class HodTemplates():
                          'user': user, 'scode': scode})
         return tmp
 
+    def myclasses(request, db, user):
+        data = teacher.my_timetable(db, user.user_name)
+        tmp = templates.TemplateResponse("teacherTimetable.html",
+                            context={"request": request, "title": "My Classes",
+                                "data": data, "head": True})
+        return tmp
 
 class TeacherTemplates():
     
     def workspace(request, db, user):
-        classes = sorted(teacher.get_hour_detail(db), key = lambda x: x.hour)
+        classes = sorted(teacher.get_hour_detail(db, user.username), key = lambda x: x.hour)
         free_day = False if len(classes) >= 1 else True
         tmp = templates.TemplateResponse("teacherWorkspace.html",
                         context={"request": request, "title": "Workspace",
@@ -264,11 +270,11 @@ class TeacherTemplates():
         tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)
         return tmp
 
-    def timetable(request, db):
-        data = teacher.my_timetable(db)
+    def timetable(request, db, user):
+        data = teacher.my_timetable(db, user.username)
         tmp = templates.TemplateResponse("teacherTimetable.html",
                             context={"request": request, "title": "My Classes",
-                                "data": data})
+                                "data": data, "head": False})
         return tmp
 
     def takeAttendence(request):
