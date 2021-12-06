@@ -296,10 +296,8 @@ class TeacherTemplates():
 
         return tmp
 
-    def addStudents(request):
-        db = database.SessionLocal()
-        courses = admin.get_all_course(db)
-        db.close()
+    def addStudents(request, user, db):
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
 
         tmp = templates.TemplateResponse("addStudent.html",
                 context={"request": request, "title": "Add Students",
