@@ -134,8 +134,8 @@ class HodTemplates():
 
     def appoint_teacher(request, user):
         db = database.SessionLocal()
-        teachers = hod.get_techer_details(db, template=True)
-        depart = admin.get_all_departments(db, template=True)
+        teachers = hod.get_techer_details(db, user, template=True)
+        # depart = admin.get_all_departments(db, template=True)
         db.close()
         tmp = templates.TemplateResponse("appointTeacher.html",
                 context={'request': request, "title": "Appoint Teachers", 

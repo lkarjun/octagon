@@ -44,8 +44,8 @@ def update(email: str, request: Schemas.AddTeacher, db: Session):
     db.commit()
     return 'done'
 
-def get_techer_details(db: Session, template=False):
-    teachers = db.query(models.Teachers).all()
+def get_techer_details(db: Session, user, template=False):
+    teachers = db.query(models.Teachers).filter(models.Teachers.department == user.department)
     if not teachers:
         if template: return []
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
