@@ -53,6 +53,11 @@ class TokenData(BaseModel):
     admin: Optional[str] = None
 
 
+class TerminalZone(BaseModel):
+    action: str
+    course: str
+    year: int
+
 class AddTeacher(BaseModel):
     name: str
     username: str

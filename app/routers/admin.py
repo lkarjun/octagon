@@ -40,6 +40,15 @@ async def credential(request: Request, user=Depends(oauth2.manager_admin)):
 async def unverified(request: Request, user=Depends(oauth2.manager_admin)):
     return AdminTemplates.unverified(request)
 
+@router.get('/teachers')
+async def teachers_list(request: Request, 
+                        db: Session = Depends(get_db),
+                        user=Depends(oauth2.manager_admin)):
+    return AdminTemplates.teachers_list(request, db)
+
+
+@router.delete('/portal/remove_teacher')
+
 @router.delete('/portal/remove_pending', status_code=status.HTTP_204_NO_CONTENT)
 async def remove_pending(request: Schemas.PendingVerification,
                          db: Session = Depends(get_db),

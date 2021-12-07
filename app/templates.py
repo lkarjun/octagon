@@ -83,6 +83,14 @@ class AdminTemplates():
                         'hods': hod, 'teachers': teacher})
         return tmp
 
+    def teachers_list(request, db):
+        teachers = db.query(models.Teachers).all()
+        list_empty = False if teachers else True
+
+        tmp = templates.TemplateResponse("adminTeachersView.html",
+                            context={'request': request, 'title': 'Collage Teachers',
+                                        'teachers': teachers, 'list_empty': list_empty})
+        return tmp
 
 
 class OthersTemplates():
@@ -120,22 +128,24 @@ class HodTemplates():
                             "user": user.name})
         return tmp
 
-    def timetable(request):
-        db = database.SessionLocal()
-        courses = admin.get_all_course(db)
-        teachers = hod.get_techer_details(db, template=True)
+    def timetable(request, user, db):
+        # db = database.SessionLocal()
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
+        # courses = admin.get_all_course(db)
+        teachers = hod.get_full_teacher_details(db)
         hods = admin.get_all(db, template=True)
-        depart = admin.get_all_departments(db)
-        db.close()
+        # depart = db.query(models.)
+        # depart = admin.get_all_departments(db)
+        # db.close()
         return templates.TemplateResponse('timeTable.html', 
                 context={'request': request, 'title': 'Time Table', 
                         'courses': courses, 'teachers': teachers, 
-                        'hods': hods, 'department': depart})
+                        'hods': hods, 'department': user.department})
 
     def appoint_teacher(request, user):
         db = database.SessionLocal()
-        teachers = hod.get_techer_details(db, template=True)
-        depart = admin.get_all_departments(db, template=True)
+        teachers = hod.get_techer_details(db, user, template=True)
+        # depart = admin.get_all_departments(db, template=True)
         db.close()
         tmp = templates.TemplateResponse("appointTeacher.html",
                 context={'request': request, "title": "Appoint Teachers", 
@@ -153,12 +163,21 @@ class HodTemplates():
                 context={"request": request, "title": "Exam Notifications", "notfy": notifications})
         return res
     
-    def attendenceDataView(request):
+    def attendenceDataView(request, user):
         db = database.SessionLocal()
-        courses = admin.get_all_course(db)
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
+        # courses = admin.get_all_course(db)
         db.close()
         tmp = templates.TemplateResponse("attendenceDataView.html",
                 context={"request": request, "title": "Attendence Data",
+                        "course": courses})
+        return tmp
+
+    def students(request, user, db):
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
+        # courses = admin.get_all_course(db)
+        tmp = templates.TemplateResponse("hodStudents.html",
+                context={"request": request, "title": "Student Info",
                         "course": courses})
         return tmp
 
@@ -174,15 +193,17 @@ class HodTemplates():
 
     def show_attendence_data(request, data):
         column, values = attendence.show_attendence_data(request=data)
+        data_in = len(values) >= 1
         tmp = templates.TemplateResponse("showAttendenceData.html",
                     context={"request": request, "title": "Attendence Sheet",
-                                "column": column, "values": values, "data": data})
+                                "column": column, "values": values, 
+                                "data": data, "data_in": data_in})
 
         return tmp
 
     def show_student_details(request, course, year):
         db = database.SessionLocal()
-        details = hod.get_student_details(db, course, year)
+        details = hod.get_student_details(db, course, year, template=True)
         db.close()
         tmp = templates.TemplateResponse("studentDetails.html",
                     context={"request": request, "title": "Attendence Sheet",
@@ -232,11 +253,17 @@ class HodTemplates():
                          'user': user, 'scode': scode})
         return tmp
 
+    def myclasses(request, db, user):
+        data = teacher.my_timetable(db, user.user_name)
+        tmp = templates.TemplateResponse("teacherTimetable.html",
+                            context={"request": request, "title": "My Classes",
+                                "data": data, "head": True})
+        return tmp
 
 class TeacherTemplates():
     
     def workspace(request, db, user):
-        classes = sorted(teacher.get_hour_detail(db), key = lambda x: x.hour)
+        classes = sorted(teacher.get_hour_detail(db, user.username), key = lambda x: x.hour)
         free_day = False if len(classes) >= 1 else True
         tmp = templates.TemplateResponse("teacherWorkspace.html",
                         context={"request": request, "title": "Workspace",
@@ -256,11 +283,11 @@ class TeacherTemplates():
         tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)
         return tmp
 
-    def timetable(request, db):
-        data = teacher.my_timetable(db)
+    def timetable(request, db, user):
+        data = teacher.my_timetable(db, user.username)
         tmp = templates.TemplateResponse("teacherTimetable.html",
                             context={"request": request, "title": "My Classes",
-                                "data": data})
+                                "data": data, "head": False})
         return tmp
 
     def takeAttendence(request):
@@ -273,10 +300,8 @@ class TeacherTemplates():
 
         return tmp
 
-    def addStudents(request):
-        db = database.SessionLocal()
-        courses = admin.get_all_course(db)
-        db.close()
+    def addStudents(request, user, db):
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
 
         tmp = templates.TemplateResponse("addStudent.html",
                 context={"request": request, "title": "Add Students",

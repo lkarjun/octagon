@@ -55,6 +55,11 @@ async def attendence_correction(request: Schemas.AttendenceCorrection,
 
 # Hod Functions
 
+@router.get("/myclasses")
+async def timetable(request: Request, db: Session = Depends(get_db),
+                    user=Depends(oauth2.manager_hod)):
+    return HodTemplates.myclasses(request, db, user)
+
 @router.post('/message', status_code=status.HTTP_204_NO_CONTENT)
 async def message(request: Schemas.Message, db: Session = Depends(get_db),
             user=Depends(oauth2.manager_hod)):
@@ -100,6 +105,11 @@ async def update_profile(request: Schemas.CreateHod, db: Session = Depends(get_d
     return hod.update_profile(request, db, user)
 
 
+@router.post("/terminalzone")
+async def terminalzone(request: Schemas.TerminalZone, db: Session = Depends(get_db),
+                       user=Depends(oauth2.manager_hod)):
+    return hod.terminalzone(request, db, user)
+
 # Pages
 @router.get("/workspace")
 async def workspace(request: Request, user=Depends(oauth2.manager_hod)):
@@ -119,15 +129,16 @@ async def uoc_exam_notificaions(request: Request, user=Depends(oauth2.manager_ho
 
 @router.get('/students-attendence')
 async def attendenceDataView(request: Request, user=Depends(oauth2.manager_hod)):
-    return HodTemplates.attendenceDataView(request)
+    return HodTemplates.attendenceDataView(request, user)
 
 @router.get("/take-attendence")
 async def take_attendence(request: Request, user=Depends(oauth2.manager_hod)):
     return HodTemplates.takeAttendence(request)
 
 @router.get('/timetable')
-async def timetable(request: Request, user=Depends(oauth2.manager_hod)):
-    return HodTemplates.timetable(request)
+async def timetable(request: Request, user=Depends(oauth2.manager_hod),
+                    db: Session = Depends(get_db)):
+    return HodTemplates.timetable(request, user, db)
 
 @router.get("/edit-teacher")
 async def appoint_teacher(request: Request,user=Depends(oauth2.manager_hod)):
@@ -162,3 +173,9 @@ async def get_notification(request: Request, which_notification: str,
 @router.get("/profile")
 async def profile(request: Request, user = Depends(oauth2.manager_hod)):
     return HodTemplates.profile(request, user)
+
+@router.get("/students")
+async def students(request: Request, 
+                   user=Depends(oauth2.manager_hod),
+                   db: Session = Depends(get_db)):
+    return HodTemplates.students(request, user, db)

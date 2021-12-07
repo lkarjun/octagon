@@ -1,0 +1,159 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+
+<script>
+    $("#navMore").addClass("navisel")
+    $("#navSt").addClass("navisel")
+</script>
+
+
+<section class="pt-md-3 pt-5 mt-md-2 pb-md-5 pb-5 mb-5" id="choose_detail">
+
+    <div class="jumbotron text-center pt-md-3">
+        <h3 class="pt-4 pb-4 font-weight-bold" style="font-family: sans-serif;">Students Details</h3>
+    </div>
+    <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
+
+    <form class="ui form align-items-center p-4" id="dataAnalysis">
+        <div class="fields two">
+            <div class="field">
+                <label>Course</label>
+                <select required class="ui search dropdown" id='course'>
+                    {% for i in course %}
+                    <option value="{{i.Course_name_alias}}">{{ i.Course_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Year</label>
+                <select required class="ui search dropdown" id='year'>
+                    <option value="1">Year 1</option>
+                    <option value="2">Year 2</option>
+                    <option value="3">Year 3</option>
+                    <option value="4">Year 4</option>
+                    <option value="5">Year 5</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- <button class="ui button blue" type="submit" id="get_report_btn">Report</button> -->
+
+        <div class="ui buttons">
+            <div class="ui button teal" onclick="show_details()">View Details</div>
+            <div class="or" data-text="or"></div>
+            <div class="ui button green" onclick="show_attendence()">View Attendence</div>
+        </div>
+
+    </form>
+    <br><br>
+    <!--Terminal Zone-->
+    <hr class='rounded' style="height: 5px; background-color: orange;">
+    <section class="pb-md-5 pb-5 pt-md-0 pt-5">
+        <div class="jumbotron text-left pt-md-5">
+            <h3 class="pb-md-5 pb-5 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Terminal Zone</h3>
+        </div>
+        <div class="ui buttons small three">
+            <div class="ui button yellow" onclick="comming_soon('Start New Semester')">Start New Semester</div>
+            <div class="ui button green" onclick="comming_soon('Promote Students')">Promote Students</div>
+            <div class="ui button red" onclick="comming_soon('Remove Students')">Remove Students</div>
+        </div>
+        
+        <div class="pt-5 mt-2">
+            <div class="ui list">
+                <a class="item">
+                  <i class="help icon"></i>
+                  <div class="content">
+                    <div class="header">Start New Semester</div>
+                    <div class="description">This action will remove all attendence record.<br> When a new Semester is starts then this action should be performed.</div>
+                  </div>
+                </a>
+
+                <a class="item">
+                    <i class="help icon"></i>
+                    <div class="content">
+                      <div class="header">Promote Student</div>
+                      <div class="description">This action will promote students. for instance 1st year students to 2nd year.</div>
+                    </div>
+                </a>
+
+                <a class="item">
+                    <i class="help icon"></i>
+                    <div class="content">
+                      <div class="header">Remove Student</div>
+                      <div class="description">This action will remove students when the course is over.<br>It will remove all students.</div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+    </section>
+
+</section>
+
+<script src="{{ url_for('static', path='attendence.js') }}"></script>
+<script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
+<script>
+    function comming_soon(which_op){
+        var course = $("#course").val()
+        var year = $("#year").val()
+        swal(`Type 'yes' to ${which_op} Course: ${course} & Year: ${year}.`, {
+            content: "input",
+        }).then((value) => {
+            if(value.toLowerCase() == 'yes'){
+                terminal_zone(which_op, course, year)
+                swal("Comming Soon")
+            }
+        });
+    }
+</script>
+
+<script>
+function terminal_zone(which_op, course, year){
+    var base = window.location.origin + '/hod/terminalzone';
+    var data = JSON.stringify({'action': which_op, 'course': course, 'year': year})
+    $.ajax({
+        url: base,
+        type: 'POST',
+        async: true,
+        data: data,
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(result){
+            swal({
+                    title: `${which_op}!`,
+                    text: `Successfully ${which_op}--course: ${course} year: ${year}.`,
+                    icon: "success",
+                    button: "Okay!",
+                })
+                
+        },
+        error: function(result){
+            if(result.status == 404){
+                var msg = JSON.parse(result.responseText)
+                swal({
+                        title: "Not Performed The Action!",
+                        text: msg.detail,
+                        icon: "error",
+                        button: "Okay!",
+                    })
+            }
+            else if(result.status == 406){
+                var msg = JSON.parse(result.responseText)
+                swal({
+                    title: "Not Performed The Action!",
+                    text: msg.detail,
+                    icon: "error",
+                    button: "Okay!",
+                })
+            }
+            else{
+                swal("Something went wrong please try to call the techinal team...")
+            }
+        }
+    });
+}
+
+</script>
+{% endblock %}

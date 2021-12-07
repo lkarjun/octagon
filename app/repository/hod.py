@@ -1,5 +1,5 @@
 from database import models
-from repository import Schemas,uoc
+from repository import Schemas,uoc, attendence
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status, Response, BackgroundTasks
@@ -36,6 +36,39 @@ def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
     db.commit()
     return Response(status_code=204)
 
+def terminalzone(request: Schemas.TerminalZone, db: Session, user):
+    if request.action == 'Start New Semester':
+        
+        attendence.start_new_semester(
+                        request = request,
+                        open_monthly = True,
+                        save_monthly = True,
+        )
+
+
+    elif request.action == 'Promote Students':
+
+        course_duration = db.query(models.Courses).filter(models.Courses.Course_name_alias == request.course).first()
+        if request.year > course_duration.Duration:
+            raise HTTPException(
+                status.HTTP_406_NOT_ACCEPTABLE, 
+                detail="Course duration is not correct! Please check you've entered the correct duration or not."
+                )
+        if request.year == course_duration.Duration: 
+            raise HTTPException(
+                status.HTTP_406_NOT_ACCEPTABLE, 
+                detail="We can't promote students, these students are final years."
+                )
+        attendence.promote_students(request=request, 
+                                    open_monthly = True,
+                                    save_monthly = True,
+                                    db=db, user=user)
+    else:
+        
+        attendence.remove_students(request = request, db = db, user = user)
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
 def update(email: str, request: Schemas.AddTeacher, db: Session):
     teacher = db.query(models.Teachers).filter(models.Teachers.email == email)
     if not teacher.first():
@@ -44,18 +77,24 @@ def update(email: str, request: Schemas.AddTeacher, db: Session):
     db.commit()
     return 'done'
 
-def get_techer_details(db: Session, template=False):
-    teachers = db.query(models.Teachers).all()
+def get_techer_details(db: Session, user, template=False):
+    teachers = db.query(models.Teachers).filter(models.Teachers.department == user.department)
     if not teachers:
         if template: return []
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
             detail = 'No content in the database')
     return teachers
 
-def get_student_details(db: Session, course: str, year: int):
+def get_full_teacher_details(db: Session):
+    teachers = db.query(models.Teachers).all()
+    if not teachers: return []
+    return teachers
+
+def get_student_details(db: Session, course: str, year: int, template = False):
     student = db.query(models.Students).filter(models.Students.course == course,\
                             models.Students.year == year).all()
     if not student:
+        if template: return False
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
             detail = 'No content in the database')
     return student
@@ -156,9 +195,13 @@ def set_timetable(request: Schemas.TimeTable, db: Session):
 
 def check_timetable(request: Schemas.TimeTableChecker, db: Session):
     name = db.query(models.Teachers).filter(models.Teachers.username == request.name).first()
+    if not name:
+        name = db.query(models.Hod).filter(models.Hod.user_name == request.name).first()
+        username = name.user_name
+    else: username = name.username
     checker = db.query(models.Timetable).filter(and_(
                         models.Timetable.days == request.day,
-                        helper_timetable_check(request.hour) == name.username,
+                        helper_timetable_check(request.hour) == username,
                 )).first()
     if checker: raise HTTPException(status.HTTP_406_NOT_ACCEPTABLE, detail=f"{request.day} {request.hour} {name.name} have class in {checker.course} year {checker.year}...")
     return "No Issue..."

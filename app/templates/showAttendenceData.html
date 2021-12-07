@@ -2,10 +2,10 @@
 {% block content %}
 <script>
     $("#navMore").addClass("navisel")
-    $("#navTkAttnm").addClass("navisel")
+    $("#navSt").addClass("navisel")
 </script>
 
-<div class="ui container">
+<div class="ui container pb-5 mb-5">
 
     <section>
 
@@ -30,13 +30,17 @@
         <div class="table-responsive pb-5 mb-5">
             <table class="table align-middle table-hover table-borderless" id='datatable'>
                 <thead class="bg-primary text-light">
+                    {% if data_in %}
                     <tr>
                       {% for col in column %}
                         <th scope="col" class="font-weight-bold">{{ col }}</th>
                       {% endfor %}
                     </tr>
+                    {% else %}
+                    <th scope='col' class="font-weight-bold text-center">***No Data Avaliable***</th>
+                    {% endif %}
                 </thead>
-
+                {% if data_in %}
                 <tbody id='Search'>
 
                     {% for value in values %}
@@ -60,19 +64,22 @@
 
                     {% endfor %}
                 </tbody>
+                {% endif %}
 
             </table>
+            {% if data_in %}
             <div class="ui buttons small">
                 <button class="ui button red" onclick="export_table('csv')">Export as Csv</button>
                 <div class="or"></div>
                 <button class="ui yellow button" onclick="export_table('pdf')">Export as Pdf</button>
             </div>
+            {% endif %}
         </div>
 
     </section>
 </div>
 
-
+<br><br>
 <!-- // Student Search -->
 <script>
     $("#StudentSearch").on("keyup", function() {

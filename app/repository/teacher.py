@@ -26,23 +26,22 @@ def get_messages(db: Session, new_five: bool):
     if new_five: return messages[::-1][:5]
     return messages[::-1]
 
-def get_hour_detail(db: Session, day="Monday"):
-    fake_teacher = 'arjun_bca'
+def get_hour_detail(db: Session, user: str, day="Monday"):
     if not day: day = datetime.today().strftime("%A")
 
     classes = db.query(models.Timetable).filter(
             and_(models.Timetable.days == day,
                 or_(
-                    models.Timetable.hour_1 == fake_teacher,
-                    models.Timetable.hour_2 == fake_teacher,
-                    models.Timetable.hour_3 == fake_teacher,
-                    models.Timetable.hour_4 == fake_teacher,
-                    models.Timetable.hour_5 == fake_teacher
+                    models.Timetable.hour_1 == user,
+                    models.Timetable.hour_2 == user,
+                    models.Timetable.hour_3 == user,
+                    models.Timetable.hour_4 == user,
+                    models.Timetable.hour_5 == user
                 )
             )
         ).all()
 
-    return get_hour(classes, fake_teacher)
+    return get_hour(classes, user)
 
 def get_hour(classes, teacher_name):
     full_data = []
@@ -58,14 +57,13 @@ def get_hour(classes, teacher_name):
 
     return full_data
 
-def my_timetable(db: Session):
-    fake_teacher = 'arjun_bca'
+def my_timetable(db: Session, username: str):
     timetable = {
-                    'Monday': sorted(get_hour_detail(db, day='Monday'), key=lambda x: x.hour),
-                    'Tuesday': sorted(get_hour_detail(db, day='Tuesday'), key=lambda x: x.hour),
-                    'Wednesday': sorted(get_hour_detail(db, day='Wednesday'), key=lambda x: x.hour),
-                    'Thursday': sorted(get_hour_detail(db, day='Thursday'), key=lambda x: x.hour),
-                    'Friday': sorted(get_hour_detail(db, day='Friday'), key=lambda x: x.hour)
+                    'Monday': sorted(get_hour_detail(db, username, day='Monday'), key=lambda x: x.hour),
+                    'Tuesday': sorted(get_hour_detail(db, username, day='Tuesday'), key=lambda x: x.hour),
+                    'Wednesday': sorted(get_hour_detail(db, username, day='Wednesday'), key=lambda x: x.hour),
+                    'Thursday': sorted(get_hour_detail(db, username, day='Thursday'), key=lambda x: x.hour),
+                    'Friday': sorted(get_hour_detail(db, username, day='Friday'), key=lambda x: x.hour)
                 }
     return timetable
 
@@ -74,7 +72,7 @@ def my_timetable(db: Session):
 
 def add_student(request: Schemas.AddStudent, db: Session, user: models.Teachers):
 
-    res = attendence.admit_students(request=request, save_monthly=True)
+    res = attendence.admit_students(request=request, save_monthly=True, open_monthly=True)
 
     new_student = models.Students(
                     id = request.unique_id, name = request.name,\
@@ -93,7 +91,7 @@ def add_student(request: Schemas.AddStudent, db: Session, user: models.Teachers)
 
 
 def delete_student(request: Schemas.DeleteStudent, db: Session):
-
+    res = attendence.remove_students(request=request, save_monthly=True, open_monthly=True)
     student = db.query(models.Students).filter(and_(models.Students.name == request.name,\
                                 models.Students.id == request.unique_id,\
                                 models.Students.year == request.year,

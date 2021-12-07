@@ -29,8 +29,10 @@ async def verification_image(username: str = Form(...),
 # templates
 
 @router.get("/add-students")
-async def add_students(request: Request, user=Depends(oauth2.manager_teacher)):
-    return TeacherTemplates.addStudents(request)
+async def add_students(request: Request, 
+                       db: Session = Depends(get_db),
+                       user=Depends(oauth2.manager_teacher)):
+    return TeacherTemplates.addStudents(request, user, db)
 
 @router.get("/take-attendence")
 async def take_attendence(request: Request, user=Depends(oauth2.manager_teacher)):
@@ -49,7 +51,7 @@ async def message(request: Request, db: Session = Depends(get_db),
 @router.get("/timetable")
 async def timetable(request: Request, db: Session = Depends(get_db),
                     user=Depends(oauth2.manager_teacher)):
-    return TeacherTemplates.timetable(request, db)
+    return TeacherTemplates.timetable(request, db, user)
 
 @router.get("/profile")
 async def profile(request: Request, user=Depends(oauth2.manager_teacher)):

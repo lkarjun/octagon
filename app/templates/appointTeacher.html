@@ -33,7 +33,9 @@
       function show(id){
           $("#Addteacher").hide();
           $("#displayTeacher").hide();
-          $(id).show();
+          if(id == "#displayTeacher"){window.location.reload()}
+          else{$(id).show()}
+          // $(id).show();
 
       }
   </script>
