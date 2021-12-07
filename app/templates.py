@@ -130,7 +130,8 @@ class HodTemplates():
 
     def timetable(request, user, db):
         # db = database.SessionLocal()
-        courses = admin.get_all_course(db)
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
+        # courses = admin.get_all_course(db)
         teachers = hod.get_full_teacher_details(db)
         hods = admin.get_all(db, template=True)
         # depart = db.query(models.)
@@ -162,9 +163,10 @@ class HodTemplates():
                 context={"request": request, "title": "Exam Notifications", "notfy": notifications})
         return res
     
-    def attendenceDataView(request):
+    def attendenceDataView(request, user):
         db = database.SessionLocal()
-        courses = admin.get_all_course(db)
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
+        # courses = admin.get_all_course(db)
         db.close()
         tmp = templates.TemplateResponse("attendenceDataView.html",
                 context={"request": request, "title": "Attendence Data",
@@ -172,7 +174,8 @@ class HodTemplates():
         return tmp
 
     def students(request, user, db):
-        courses = admin.get_all_course(db)
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
+        # courses = admin.get_all_course(db)
         tmp = templates.TemplateResponse("hodStudents.html",
                 context={"request": request, "title": "Student Info",
                         "course": courses})

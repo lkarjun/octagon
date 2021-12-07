@@ -2,6 +2,7 @@ from fastapi import HTTPException, status, Response
 import pandas as pd
 import numpy as np
 from pathlib import Path
+from sqlalchemy import and_, or_
 from sqlalchemy.orm.session import Session
 from database import models
 from repository import Schemas
@@ -64,15 +65,17 @@ def save_files(func: Callable):
 
     return wraps
         
+def createFiles(year: int, course_alias: str):
+    attendence = pd.DataFrame(columns = ['StudentsName'])
+    monthly_report = pd.DataFrame(columns=['StudentsName'])
+    attendence.to_csv(f"repository/AttendenceFiles/{course_alias}{year}.csv", index=False)
+    monthly_report.to_csv(f"repository/AttendenceFiles/{course_alias}{year}_monthly.csv", index=False)
+
 def createAttendence(total_year: int, course_alias: str):
     path = Path("repository/AttendenceFiles")
     path.mkdir(exist_ok=True)
-    
-    for i in range(1, total_year + 1):
-        attendence = pd.DataFrame(columns = ['StudentsName'])
-        monthly_report = pd.DataFrame(columns=['StudentsName'])
-        attendence.to_csv(f"repository/AttendenceFiles/{course_alias}{i}.csv", index=False)
-        monthly_report.to_csv(f"repository/AttendenceFiles/{course_alias}{i}_monthly.csv", index=False)
+
+    for i in range(1, total_year + 1): createFiles(i, course_alias)
 
 def deleteAttendence(total_year: int, course_alias: str):
     path = Path("repository/AttendenceFiles")
@@ -220,7 +223,50 @@ def attendence_correction(request: Schemas.AttendenceCorrection, files: Schemas.
             
     return files
 
+
+def remove_students(request: Schemas.TerminalZone, **kwargs):
+    db, user = kwargs['db'], kwargs['user']
+    students_details = db.query(models.Students).filter(and_(
+            models.Students.department == user.department,
+            models.Students.course == request.course,
+            models.Students.year == request.year
+        ))
+    students_details.delete(synchronize_session=False)
+    db.commit()
+    createFiles(request.year, request.course)
+
+
+@save_files
+@get_attendence_files
+def promote_students(request: Schemas.TerminalZone, files: Schemas.Files, **kwargs):
+    db, user = kwargs['db'], kwargs['user']
+    createFiles(request.year, request.course)
+    files.daily_path = f"repository/AttendenceFiles/{request.course}{request.year+1}.csv"
+    files.monthly_path = f"repository/AttendenceFiles/{request.course}{request.year+1}_monthly.csv"
+    files = remove_columns(files)
+    students_details = db.query(models.Students).filter(and_(
+            models.Students.department == user.department,
+            models.Students.course == request.course,
+            models.Students.year == request.year
+        ))
+    students_details.update({'year': request.year+1})
+    db.commit()
+
+    return files
+
+
+@save_files
+@get_attendence_files
+def start_new_semester(request: Schemas.TerminalZone, files: Schemas.Files, **kwargs):
+    return remove_columns(files)
+
+
 # helper functions
+
+def remove_columns(files: Schemas.Files) -> Schemas.Files:
+    files.daily = files.daily['StudentsName']
+    files.monthly = files.monthly['StudentsName']
+    return files
 
 def calculate_score(x: float):
     '''given x: float return internal mark based on condition'''

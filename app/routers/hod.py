@@ -105,6 +105,11 @@ async def update_profile(request: Schemas.CreateHod, db: Session = Depends(get_d
     return hod.update_profile(request, db, user)
 
 
+@router.post("/terminalzone")
+async def terminalzone(request: Schemas.TerminalZone, db: Session = Depends(get_db),
+                       user=Depends(oauth2.manager_hod)):
+    return hod.terminalzone(request, db, user)
+
 # Pages
 @router.get("/workspace")
 async def workspace(request: Request, user=Depends(oauth2.manager_hod)):
@@ -124,7 +129,7 @@ async def uoc_exam_notificaions(request: Request, user=Depends(oauth2.manager_ho
 
 @router.get('/students-attendence')
 async def attendenceDataView(request: Request, user=Depends(oauth2.manager_hod)):
-    return HodTemplates.attendenceDataView(request)
+    return HodTemplates.attendenceDataView(request, user)
 
 @router.get("/take-attendence")
 async def take_attendence(request: Request, user=Depends(oauth2.manager_hod)):

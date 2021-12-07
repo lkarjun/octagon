@@ -54,9 +54,9 @@
             <h3 class="pb-md-5 pb-5 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Terminal Zone</h3>
         </div>
         <div class="ui buttons small three">
-            <div class="ui button yellow" onclick="comming_soon()">Start New Semester</div>
-            <div class="ui button green" onclick="comming_soon()">Promote Student</div>
-            <div class="ui button red" onclick="comming_soon()">Remove Student</div>
+            <div class="ui button yellow" onclick="comming_soon('Start New Semester')">Start New Semester</div>
+            <div class="ui button green" onclick="comming_soon('Promote Students')">Promote Students</div>
+            <div class="ui button red" onclick="comming_soon('Remove Students')">Remove Students</div>
         </div>
         
         <div class="pt-5 mt-2">
@@ -95,8 +95,65 @@
 <script src="{{ url_for('static', path='attendence.js') }}"></script>
 <script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
 <script>
-    function comming_soon(){
-        swal("Comming Soon😊");
+    function comming_soon(which_op){
+        var course = $("#course").val()
+        var year = $("#year").val()
+        swal(`Type 'yes' to ${which_op} Course: ${course} & Year: ${year}.`, {
+            content: "input",
+        }).then((value) => {
+            if(value.toLowerCase() == 'yes'){
+                terminal_zone(which_op, course, year)
+                swal("Comming Soon")
+            }
+        });
     }
+</script>
+
+<script>
+function terminal_zone(which_op, course, year){
+    var base = window.location.origin + '/hod/terminalzone';
+    var data = JSON.stringify({'action': which_op, 'course': course, 'year': year})
+    $.ajax({
+        url: base,
+        type: 'POST',
+        async: true,
+        data: data,
+        dataType: 'json',
+        contentType: "application/json",
+        success: function(result){
+            swal({
+                    title: `${which_op}!`,
+                    text: `Successfully ${which_op}--course: ${course} year: ${year}.`,
+                    icon: "success",
+                    button: "Okay!",
+                })
+                
+        },
+        error: function(result){
+            if(result.status == 404){
+                var msg = JSON.parse(result.responseText)
+                swal({
+                        title: "Not Performed The Action!",
+                        text: msg.detail,
+                        icon: "error",
+                        button: "Okay!",
+                    })
+            }
+            else if(result.status == 406){
+                var msg = JSON.parse(result.responseText)
+                swal({
+                    title: "Not Performed The Action!",
+                    text: msg.detail,
+                    icon: "error",
+                    button: "Okay!",
+                })
+            }
+            else{
+                swal("Something went wrong please try to call the techinal team...")
+            }
+        }
+    });
+}
+
 </script>
 {% endblock %}

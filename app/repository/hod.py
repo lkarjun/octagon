@@ -1,5 +1,5 @@
 from database import models
-from repository import Schemas,uoc
+from repository import Schemas,uoc, attendence
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from fastapi import HTTPException, status, Response, BackgroundTasks
@@ -35,6 +35,39 @@ def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
     teacher.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
+
+def terminalzone(request: Schemas.TerminalZone, db: Session, user):
+    if request.action == 'Start New Semester':
+        
+        attendence.start_new_semester(
+                        request = request,
+                        open_monthly = True,
+                        save_monthly = True,
+        )
+
+
+    elif request.action == 'Promote Students':
+
+        course_duration = db.query(models.Courses).filter(models.Courses.Course_name_alias == request.course).first()
+        if request.year > course_duration.Duration:
+            raise HTTPException(
+                status.HTTP_406_NOT_ACCEPTABLE, 
+                detail="Course duration is not correct! Please check you've entered the correct duration or not."
+                )
+        if request.year == course_duration.Duration: 
+            raise HTTPException(
+                status.HTTP_406_NOT_ACCEPTABLE, 
+                detail="We can't promote students, these students are final years."
+                )
+        attendence.promote_students(request=request, 
+                                    open_monthly = True,
+                                    save_monthly = True,
+                                    db=db, user=user)
+    else:
+        
+        attendence.remove_students(request = request, db = db, user = user)
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 def update(email: str, request: Schemas.AddTeacher, db: Session):
     teacher = db.query(models.Teachers).filter(models.Teachers.email == email)
