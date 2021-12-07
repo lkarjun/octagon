@@ -90,8 +90,334 @@
             </div>
 
             <div class="col-md-12 pt-5">
-
                 <div class="table-responsive">
+                <table class="ui celled table">
+                    <thead>
+                      <tr><th class="font-weight-bold">Working Days</th>
+                      <th class="font-weight-bold">Hour 1</th>
+                      <th class="font-weight-bold">Hour 2</th>
+                      <th class="font-weight-bold">Hour 3</th>
+                      <th class="font-weight-bold">Hour 4</th>
+                      <th class="font-weight-bold">Hour 5</th>
+                    </tr></thead>
+                    <tbody>
+                      <tr>
+                        <th class="font-weight-bold">Monday</th>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 1st hour" id='ms1'></div>
+                                </div>
+                                <div class="field" id="mt1f">
+                                    <select class="ui search dropdown" id='mt1' onchange="checkConflict('#mt1')">
+                                        <option value="" disabled selected>Teacher</option>
+                                        <option value="none">None</option>
+                                        {% for i in hods %}
+                                        <option value="{{ i.user_name }}">{{ i.name }}(H)-({{i.department}})</option>
+                                        {% endfor %}
+                                        {% for i in teachers %}
+                                        <option value="{{ i.username }}">{{ i.name }}-({{i.department}})</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 2nd hour" id='ms2'></div>
+                                </div>
+                                <div class="field" id="mt2f">
+                                    <select class="ui search dropdown" id='mt2' onchange="checkConflict('#mt2')">
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 3rd hour" id='ms3'></div>
+                                </div>
+                                <div class="field" id="mt3f">
+                                    <select class="ui search dropdown" id='mt3' onchange="checkConflict('#mt3')">
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 4th hour" id='ms4'></div>
+                                </div>
+                                <div class="field" id="mt4f">
+                                    <select class="ui search dropdown" id='mt4' onchange="checkConflict('#mt4')">
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 5th hour" id='ms5'></div>
+                                </div>
+                                <div class="field" id="mt5f">
+                                    <select class="ui search dropdown" id='mt5' onchange="checkConflict('#mt5')">
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th class="font-weight-bold">Tuesday</th>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 1st hour" id='ts1'></div>
+                                </div>
+                                <div class="field" id="tt1f">
+                                    <select class="ui search dropdown" id='tt1' onchange="checkConflict('#tt1')"></select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 2nd hour" id='ts2'></div>
+                                </div>
+                                <div class="field" id="tt2f">
+                                    <select class="ui search dropdown" id='tt2' onchange="checkConflict('#tt2')"></select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 3rd hour" id='ts3'></div>
+                                </div>
+                                <div class="field" id="tt3f">
+                                    <select class="ui search dropdown" id='tt3' onchange="checkConflict('#tt3')"></select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 4th hour" id='ts4'></div>
+                                </div>
+                                <div class="field" id="tt4f">
+                                    <select class="ui search dropdown" id='tt4' onchange="checkConflict('#tt4')"></select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 5th hour" id='ts5'></div>
+                                </div>
+                                <div class="field" id="tt5f">
+                                    <select class="ui search dropdown" id='tt5' onchange="checkConflict('#tt5')"></select>
+                                </div>
+                            </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th class="font-weight-bold">Wednesday</th>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 1st hour" id='ws1'></div>
+                                </div>
+                                <div class="field" id="wt1f">
+                                    <select class="ui search dropdown" id='wt1' onchange="checkConflict('#wt1')">
+                                        <option value="" disabled selected>Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 2nd hour" id='ws2'></div>
+                                </div>
+                                <div class="field" id="wt2f">
+                                    <select class="ui search dropdown" id='wt2' onchange="checkConflict('#wt2')">
+                                        <option value="" disabled selected>Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 3rd hour" id='ws3'></div>
+                                </div>
+                                <div class="field" id="wt3f">
+                                    <select class="ui search dropdown" id='wt3' onchange="checkConflict('#wt3')">
+                                        <option value="" disabled selected>Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 4th hour" id='ws4'></div>
+                                </div>
+                                <div class="field" id="wt4f">
+                                    <select class="ui search dropdown" id='wt4' onchange="checkConflict('#wt4')">
+                                        <option value="" disabled selected>Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 5th hour" id='ws5'></div>
+                                </div>
+                                <div class="field" id="wt5f">
+                                    <select class="ui search dropdown" id='wt5' onchange="checkConflict('#wt5')">
+                                        <option value="" disabled selected>Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th class="font-weight-bold">Thursday</th>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 1st hour" id="tus1"></div>
+                                </div>
+                                <div class="field" id="tut1f">
+                                    <select class="ui search dropdown" id='tut1' onchange="checkConflict('#tut1')">
+                                        <option value="" disabled selected>Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 2nd hour" id="tus2"></div>
+                                </div>
+                                <div class="field" id="tut2f">
+                                    <select class="ui search dropdown" id='tut2' onchange="checkConflict('#tut2')">
+                                        <option value="" disabled selected>Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 3rd hour" id="tus3"></div>
+                                </div>
+                                <div class="field" id="tut3f">
+                                    <select class="ui search dropdown" id='tut3' onchange="checkConflict('#tut3')">
+                                        <option value="" disabled selected>Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 4th hour" id="tus4"></div>
+                                </div>
+                                <div class="field" id="tut4f">
+                                    <select class="ui search dropdown" id='tut4' onchange="checkConflict('#tut4')">
+                                        <option value="" disabled selected>Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="ui form">
+                                <div class="field">
+                                    <div class="ui input w-100"><input type="text" placeholder="Subject for 5th hour" id="tus5"></div>
+                                </div>
+                                <div class="field" id="tut5f">
+                                    <select class="ui search dropdown" id='tut5' onchange="checkConflict('#tut5')">
+                                        <option value="" disabled selected>Teacher</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <th class="font-weight-bold">Friday</th>
+                        <td>
+                                <div class="ui form">
+                                    <div class="field">
+                                        <div class="ui input w-100"><input type="text" placeholder="Subject for 1st hour" id="fs1"></div>
+                                    </div>
+                                    <div class="field" id="ft1f">
+                                        <select class="ui search dropdown" id='ft1' onchange="checkConflict('#ft1')">
+                                            <option value="" disabled selected>Teacher</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui form">
+                                    <div class="field">
+                                        <div class="ui input w-100"><input type="text" placeholder="Subject for 2nd hour" id="fs2"></div>
+                                    </div>
+                                    <div class="field" id="ft2f">
+                                        <select class="ui search dropdown" id='ft2' onchange="checkConflict('#ft2')">
+                                            <option value="" disabled selected>Teacher</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui form">
+                                    <div class="field">
+                                        <div class="ui input w-100"><input type="text" placeholder="Subject for 3rd hour" id="fs3"></div>
+                                    </div>
+                                    <div class="field" id="ft3f">
+                                        <select class="ui search dropdown" id='ft3' onchange="checkConflict('#ft3')">
+                                            <option value="" disabled selected>Teacher</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui form">
+                                    <div class="field">
+                                        <div class="ui input w-100"><input type="text" placeholder="Subject for 4th hour" id="fs4"></div>
+                                    </div>
+                                    <div class="field" id="ft4f">
+                                        <select class="ui search dropdown" id='ft4' onchange="checkConflict('#ft4')">
+                                            <option value="" disabled selected>Teacher</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui form">
+                                    <div class="field">
+                                        <div class="ui input w-100"><input type="text" placeholder="Subject for 5th hour" id="fs5"></div>
+                                    </div>
+                                    <div class="field" id="ft5f">
+                                        <select class="ui search dropdown" id='ft5' onchange="checkConflict('#ft5')">
+                                            <option value="" disabled selected>Teacher</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <!-- <div class="table-responsive">
                     <table class="table align-middle">
                       <thead>
                         <tr>
@@ -421,7 +747,7 @@
                         </tr>
                       </tbody>
                     </table>
-                  </div>
+                </div> -->
 
             </div>
 
@@ -436,8 +762,8 @@
         <form class="ui form align-items-center" id="RemoveTT">
             <div class="fields two">
                 <div class="field">
-                    <select required class="ui search dropdown" id="departR">
-                        <option value="" disabled selected>Choose department</option>
+                    <select required class="ui search dropdown disabled" id="departR">
+                        <option value='{{department}}' class="font-weight-bold text-uppercase">{{department}}</option>
                     </select>
                 </div>
                 <div class="field">
@@ -473,8 +799,8 @@
         <form class="ui form align-items-center" id="viewTT">
             <div class="fields three">
                 <div class="field">
-                    <select class="ui search dropdown" id="departV">
-                        <option value="" disabled selected>Choose department</option>
+                    <select class="ui search dropdown disabled" id="departV">
+                        <option value='{{department}}' class="font-weight-bold text-uppercase">{{department}}</option>
                     </select>
                 </div>
                 <div class="field">
