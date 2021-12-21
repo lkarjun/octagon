@@ -17,13 +17,13 @@ def update_profile(request: Schemas.AddTeacher, db: Session, user: models.Teache
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-def get_messages(db: Session, new_five: bool):
-    fake_dep = "bca"
+def get_messages(user, db: Session, new_five: bool):
+
     messages = db.query(models.Message).filter(
-                or_(models.Message.hod_department == fake_dep,
-                    models.Message.hod_department == "all")
+                or_(models.Message.hod_department == user.department,
+                    models.Message.to == "all")
             ).all()
-    if new_five: return messages[::-1][:5]
+    if new_five: return messages[::-1][:2]
     return messages[::-1]
 
 def get_hour_detail(db: Session, user: str, day="Monday"):

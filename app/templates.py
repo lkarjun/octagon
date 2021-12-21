@@ -243,8 +243,8 @@ class HodTemplates():
                         context={"request": request, "title": "Message"})
         return tmp
 
-    def get_full_messages(request, db):
-        data = hod.get_full_message(db = db)
+    def get_full_messages(request, db, user):
+        data = hod.get_full_message(db = db, user = user)
         is_data_there = len(data) >= 1
         tmp = templates.get_template("__message.html")
         tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)
@@ -275,13 +275,13 @@ class TeacherTemplates():
                                  "user": user.name})
         return tmp 
 
-    def message(request, db):
+    def message(request, db, user):
         tmp = templates.TemplateResponse("teacherMessageViews.html",
                         context={"request": request, "title": "Messages"})
         return tmp
     
-    def get_messages(request, db, new_five):
-        data = teacher.get_messages(db, new_five)
+    def get_messages(request, db, new_five, user):
+        data = teacher.get_messages(user, db, new_five)
         is_data_there = len(data) >= 1
         tmp = templates.get_template("__message.html")
         tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)

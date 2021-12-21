@@ -99,15 +99,13 @@ def get_student_details(db: Session, course: str, year: int, template = False):
             detail = 'No content in the database')
     return student
 
-def send_message(request: Schemas.Message, db: Session):
-    #===================================
-    # this should change with current login person name and department
-    fake_hod_name = "anju"
-    fake_dep = "bca"
-    #===================================
+def send_message(user, request: Schemas.Message, db: Session):
+
+    hod_name = user.user_name
+    hod_dep = user.department
 
     message = models.Message(
-        hod_name = fake_hod_name, hod_department = fake_dep,
+        hod_name = hod_name, hod_department = hod_dep,
         date = request.date, to = request.to, title = request.title,
         message = request.message, important = request.important
     )
@@ -117,12 +115,12 @@ def send_message(request: Schemas.Message, db: Session):
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-def get_full_message(db: Session):
-    fake_name = "anju"
-    fake_dep = "bca"
+def get_full_message(db: Session, user):
+    hod_name = user.user_name
+    hod_dep = user.department
     messages = db.query(models.Message).filter(
-                and_(models.Message.hod_name == fake_name,
-                    models.Message.hod_department == fake_dep)
+                and_(models.Message.hod_name == hod_name,
+                    models.Message.hod_department == hod_dep)
             ).all()
     return messages[::-1]
 

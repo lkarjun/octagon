@@ -14,7 +14,7 @@ get_db = database.get_db
 @router.get("/messages/{new_five}")
 async def get_messages(request: Request, db: Session = Depends(get_db),
                          new_five: bool = True, user=Depends(oauth2.manager_teacher)):
-    return TeacherTemplates.get_messages(request, db, new_five)
+    return TeacherTemplates.get_messages(request, db, new_five, user)
 
 @router.post('/verification_image', status_code=status.HTTP_204_NO_CONTENT)
 async def verification_image(username: str = Form(...),
@@ -46,7 +46,7 @@ async def workspace(request: Request, db: Session = Depends(get_db),
 @router.get("/message", status_code=status.HTTP_200_OK)
 async def message(request: Request, db: Session = Depends(get_db),
                     user=Depends(oauth2.manager_teacher)):
-    return TeacherTemplates.message(request, db)
+    return TeacherTemplates.message(request, db, user)
 
 @router.get("/timetable")
 async def timetable(request: Request, db: Session = Depends(get_db),
