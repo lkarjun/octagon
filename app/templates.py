@@ -156,6 +156,15 @@ class HodTemplates():
                          "teachers": teachers, "depart": user.department})
         return tmp
 
+
+    def addStudents(request, user, db):
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
+
+        tmp = templates.TemplateResponse("addStudent.html",
+                context={"request": request, "title": "Add Students",
+                         "course": courses, "who": True})
+        return tmp
+
     def uoc_notification(request):
         notifications = hod.uoc.get_notifications()
         return templates.TemplateResponse("uocNotification.html",
@@ -309,7 +318,7 @@ class TeacherTemplates():
 
         tmp = templates.TemplateResponse("addStudent.html",
                 context={"request": request, "title": "Add Students",
-                         "course": courses})
+                         "course": courses, "who": False})
         return tmp
 
     def profile(request, user):

@@ -1,4 +1,9 @@
+{% if who %}
+{% extends "commonLayout.html" %}
+{% else %}
 {% extends "teacherLayout.html" %}
+{% endif %}
+
 {% block content %}
 
 <script>
@@ -14,9 +19,25 @@ $("#navStudm").addClass("navisel")
             <div class="col-md-12">
                 <div class="text-center pt-5 pr-5 pl-3">
                     <div class="ui buttons small">
-                        <button class="ui button teal" onclick="show('#New')">New</button>
-                        <button class="ui button blue"  onclick="show('#Edit')">Edit</button>
-                        <button class="ui button red"  onclick="show('#Remove')">Remove</button>
+                        <button class="ui button animated teal "onclick="show('#New')">
+                            <div class="visible content">New</div>
+                            <div class="hidden content">
+                                <i class="edit outline icon"></i>
+                            </div>
+                        </button>
+                        <button class="ui button animated blue "onclick="show('#Edit')">
+                            <div class="visible content">Edit</div>
+                            <div class="hidden content">
+                                <i class="edit outline icon"></i>
+                            </div>
+                        </button>
+                        <button class="ui button red animated" onclick="show('#Remove')">
+                            <div class="visible content">Remove</div>
+                            <div class="hidden content">
+                                <i class="trash icon"></i>
+                            </div>
+            
+                        </button>
                     </div>
                 </div>
             </div>
@@ -105,9 +126,9 @@ $("#navStudm").addClass("navisel")
             </div>
 
         </form>
-
+        <br><br>
     </section>
-
+    
     <section id="Edit" class="p-md-5 m-md-5 pb-5 pt-5" style="display: none;">
 
         <form class="ui form pb-md-5 pb-5" id="editVerify">
@@ -210,6 +231,7 @@ $("#navStudm").addClass("navisel")
 
         </form>
 
+        <br><br>
     </section>
 
     <section id="Remove" class="p-md-5 m-md-5 pb-5 pt-5" style="display: none;">
@@ -252,7 +274,7 @@ $("#navStudm").addClass("navisel")
         </form>
 
     </section>
-
+    <br><br>
 </div>
 
 <script>

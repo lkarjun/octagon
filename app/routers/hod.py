@@ -180,3 +180,11 @@ async def students(request: Request,
                    user=Depends(oauth2.manager_hod),
                    db: Session = Depends(get_db)):
     return HodTemplates.students(request, user, db)
+
+@router.get("/add-students")
+async def add_student(request: Request,
+                      user = Depends(oauth2.manager_hod),
+                      db: Session = Depends(get_db)
+                    ):
+
+    return HodTemplates.addStudents(request, user, db)
