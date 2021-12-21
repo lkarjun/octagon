@@ -112,8 +112,9 @@ async def terminalzone(request: Schemas.TerminalZone, db: Session = Depends(get_
 
 # Pages
 @router.get("/workspace")
-async def workspace(request: Request, user=Depends(oauth2.manager_hod)):
-    return HodTemplates.workspace(request, user)
+async def workspace(request: Request, db: Session = Depends(get_db),
+                            user=Depends(oauth2.manager_hod)):
+    return HodTemplates.workspace(request, user, db)
 
 @router.get("/message")
 async def message(request: Request, user=Depends(oauth2.manager_hod)):

@@ -13,11 +13,27 @@
         <h3 class="pt-md-5 pt-5 pb-5 mt-5 mb-5 mt-md-5 mb-md-4 font-weight-bold" style="font-family: sans-serif;">Welcome {{user}}!🎉</h3>
     </div>
 
+    <section id='take' class="pt-2">
+
+        <h4 class="font-weight-bold">Today's Timetable</h4>
+  
+        <div class="pt-3 pb-5 h5 font-weight-bold horizontal">
+            {% if free_day %}
+            <div class="ui purple horizontal label large shadow">Today is free for you! Enjoy it😂.</div>
+            {% else %}
+            {% for class in classes %}
+                <span class="badge bg-dark shadow">Hour {{ class.hour }}:  {{class.course}} Year {{ class.year }}</span>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+    </section>
+
     <section id='quicklink' class='pb-1'>
 
         <h4 class="font-weight-bold" style="font-family: sans-serif; font-size: larger;">Quick Links</h4>
   
-        <div class="h5 pt-2">
+        <div class="h5 pt-3">
             <a href="http://docs.uoc.ac.in/website/Syll/"><span class="badge bg-primary">Syllabus <i class="external alternate icon"></i></span></a> 
             <a href="http://www.cupbonline.uoc.ac.in/CuPbOnline/online_portal/registration.php"><span class="badge bg-danger">Registration <i class="external alternate icon"></i></span></a> 
             <a href="http://results.uoc.ac.in/"><span class="badge bg-success">Result <i class="external alternate icon"></i></span></a>
