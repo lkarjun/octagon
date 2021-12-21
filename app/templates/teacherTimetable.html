@@ -31,10 +31,10 @@
     <section class="pt-5 pb-3">
 
         <div class="table-responsive shadow rounded">
-            <table class="table ui">
+            <table class="table ui m-3 p-3">
               <tbody>
                 <tr>
-                    <th class="font-weight-bold" style="font-family: sans-serif; font-size: larger;">Monday</th>
+                    <th class="font-weight-bold" style="font-family: sans-serif;">Monday</th>
                     {% if data['Monday'] %}
                     {% for i in data['Monday'] %}
                     {% if i.year %}
@@ -53,7 +53,7 @@
                 </tr>
 
                 <tr>
-                    <th class="font-weight-bold" style="font-family: sans-serif; font-size: larger;">Tuesday</th>
+                    <th class="font-weight-bold" style="font-family: sans-serif;">Tuesday</th>
                     {% if data['Tuesday'] %}
                     {% for i in data['Tuesday'] %}
                     {% if i.year %}
@@ -72,7 +72,7 @@
                 </tr>
 
                 <tr>
-                    <th class="font-weight-bold"  style="font-family: sans-serif; font-size: larger;">Wednesday</th>
+                    <th class="font-weight-bold"  style="font-family: sans-serif;">Wednesday</th>
                     {% if data['Wednesday'] %}
                     {% for i in data['Wednesday'] %}
                     {% if i.year %}
@@ -91,7 +91,7 @@
                 </tr>
 
                 <tr>
-                    <th class="font-weight-bold" style="font-family: sans-serif; font-size: larger;">Thursday</th>
+                    <th class="font-weight-bold" style="font-family: sans-serif;">Thursday</th>
                     {% if data['Thursday'] %}
                     {% for i in data['Thursday'] %}
                     {% if i.year %}
@@ -110,7 +110,7 @@
                 </tr>
 
                 <tr>
-                    <th class="font-weight-bold" style="font-family: sans-serif; font-size: larger;">Friday</th>
+                    <th class="font-weight-bold" style="font-family: sans-serif;">Friday</th>
                     {% if data['Friday'] %}
                     {% for i in data['Friday'] %}
                     {% if i.year %}
@@ -134,7 +134,8 @@
 
     </section>
 
-
+    <br><br><br>
+    <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
 </div>
 
 
