@@ -15,6 +15,9 @@
   </div>
   <div class="content">
     <p>{{ msg.message }}</p>
+    {% if msg.to == "all" %}
+    <p> - {{ msg.hod_department }} Department</p>
+    {% endif %}
   </div>
   {% endfor %}
 
