@@ -17,13 +17,13 @@ def update_profile(request: Schemas.AddTeacher, db: Session, user: models.Teache
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-def get_messages(db: Session, new_five: bool):
-    fake_dep = "bca"
+def get_messages(user, db: Session, new_five: bool):
+
     messages = db.query(models.Message).filter(
-                or_(models.Message.hod_department == fake_dep,
-                    models.Message.hod_department == "all")
+                or_(models.Message.hod_department == user.department,
+                    models.Message.to == "all")
             ).all()
-    if new_five: return messages[::-1][:5]
+    if new_five: return messages[::-1][:2]
     return messages[::-1]
 
 def get_hour_detail(db: Session, user: str, day="Monday"):
@@ -70,17 +70,17 @@ def my_timetable(db: Session, username: str):
 
 # Students
 
-def add_student(request: Schemas.AddStudent, db: Session, user: models.Teachers):
+def add_student(request: Schemas.AddStudent, db: Session):
 
     res = attendence.admit_students(request=request, save_monthly=True, open_monthly=True)
-
+    department = db.query(models.Courses).filter(models.Courses.Course_name_alias == request.course).first()
     new_student = models.Students(
                     id = request.unique_id, name = request.name,\
                     email = request.email, parent_name = request.parent_name,\
                     parent_number = request.parent_number,\
                     parent_number_alt = request.number, course = request.course,\
                     year = request.year,\
-                    department = user.department
+                    department = department.Department
                 )
 
     db.add(new_student)
@@ -91,7 +91,12 @@ def add_student(request: Schemas.AddStudent, db: Session, user: models.Teachers)
 
 
 def delete_student(request: Schemas.DeleteStudent, db: Session):
-    res = attendence.remove_students(request=request, save_monthly=True, open_monthly=True)
+    # req = Schemas.TerminalZone(action = 'nothing', course = request.course, year = request.year)
+    res = attendence.remove_students(request=request, 
+                                     save_monthly=True, 
+                                     open_monthly=True,
+                                     db = db)
+                                     
     student = db.query(models.Students).filter(and_(models.Students.name == request.name,\
                                 models.Students.id == request.unique_id,\
                                 models.Students.year == request.year,

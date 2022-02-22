@@ -63,7 +63,7 @@ async def timetable(request: Request, db: Session = Depends(get_db),
 @router.post('/message', status_code=status.HTTP_204_NO_CONTENT)
 async def message(request: Schemas.Message, db: Session = Depends(get_db),
             user=Depends(oauth2.manager_hod)):
-    return hod.send_message(request, db)
+    return hod.send_message(user, request, db)
 
 @router.post('/CreateTimeTable', status_code=status.HTTP_201_CREATED)
 async def create_time_table(request: Schemas.TimeTable, db: Session = Depends(get_db),
@@ -92,11 +92,11 @@ async def get_current_hour_detail(department: str, day: str, hour: str,
 
 @router.get("/full_message")
 async def get_full_message(request: Request, db: Session = Depends(get_db), user=Depends(oauth2.manager_hod)):
-    return HodTemplates.get_full_messages(request, db)
+    return HodTemplates.get_full_messages(request, db, user)
 
 @router.post("/clear_messages")
 async def clear_message(db: Session = Depends(get_db), user=Depends(oauth2.manager_hod)):
-    return hod.clear_message(db)
+    return hod.clear_message(db, user)
 
 
 @router.post("/update_profile")
@@ -112,8 +112,9 @@ async def terminalzone(request: Schemas.TerminalZone, db: Session = Depends(get_
 
 # Pages
 @router.get("/workspace")
-async def workspace(request: Request, user=Depends(oauth2.manager_hod)):
-    return HodTemplates.workspace(request, user)
+async def workspace(request: Request, db: Session = Depends(get_db),
+                            user=Depends(oauth2.manager_hod)):
+    return HodTemplates.workspace(request, user, db)
 
 @router.get("/message")
 async def message(request: Request, user=Depends(oauth2.manager_hod)):
@@ -179,3 +180,11 @@ async def students(request: Request,
                    user=Depends(oauth2.manager_hod),
                    db: Session = Depends(get_db)):
     return HodTemplates.students(request, user, db)
+
+@router.get("/add-students")
+async def add_student(request: Request,
+                      user = Depends(oauth2.manager_hod),
+                      db: Session = Depends(get_db)
+                    ):
+
+    return HodTemplates.addStudents(request, user, db)

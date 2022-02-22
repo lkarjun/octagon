@@ -122,10 +122,14 @@ class OthersTemplates():
 
 class HodTemplates():
 
-    def workspace(request, user):
+    def workspace(request, user, db):
+        classes = sorted(teacher.get_hour_detail(db, user.user_name), key = lambda x: x.hour)
         tmp = templates.TemplateResponse("hodWorkspace.html",
-                        context={"request": request, "title": "Workspace",
-                            "user": user.name})
+                        context={"request": request, 
+                             "title": "Workspace",
+                             "user": user.name, 
+                             "free_day": False if len(classes) >= 1 else True,
+                             "classes": classes})
         return tmp
 
     def timetable(request, user, db):
@@ -150,6 +154,15 @@ class HodTemplates():
         tmp = templates.TemplateResponse("appointTeacher.html",
                 context={'request': request, "title": "Appoint Teachers", 
                          "teachers": teachers, "depart": user.department})
+        return tmp
+
+
+    def addStudents(request, user, db):
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
+
+        tmp = templates.TemplateResponse("addStudent.html",
+                context={"request": request, "title": "Add Students",
+                         "course": courses, "who": True})
         return tmp
 
     def uoc_notification(request):
@@ -239,8 +252,8 @@ class HodTemplates():
                         context={"request": request, "title": "Message"})
         return tmp
 
-    def get_full_messages(request, db):
-        data = hod.get_full_message(db = db)
+    def get_full_messages(request, db, user):
+        data = hod.get_full_message(db = db, user = user)
         is_data_there = len(data) >= 1
         tmp = templates.get_template("__message.html")
         tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)
@@ -271,13 +284,13 @@ class TeacherTemplates():
                                  "user": user.name})
         return tmp 
 
-    def message(request, db):
+    def message(request, db, user):
         tmp = templates.TemplateResponse("teacherMessageViews.html",
                         context={"request": request, "title": "Messages"})
         return tmp
     
-    def get_messages(request, db, new_five):
-        data = teacher.get_messages(db, new_five)
+    def get_messages(request, db, new_five, user):
+        data = teacher.get_messages(user, db, new_five)
         is_data_there = len(data) >= 1
         tmp = templates.get_template("__message.html")
         tmp = tmp.render(request = request, data = data, is_data_there = is_data_there)
@@ -305,7 +318,7 @@ class TeacherTemplates():
 
         tmp = templates.TemplateResponse("addStudent.html",
                 context={"request": request, "title": "Add Students",
-                         "course": courses})
+                         "course": courses, "who": False})
         return tmp
 
     def profile(request, user):

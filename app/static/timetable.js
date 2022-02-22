@@ -89,11 +89,11 @@ function checkConflict(id){
                         
                         if(result.status == 406){
                             msg = JSON.parse(result.responseText)
-                            error_alert(msg.detail)
+                            error_alert(msg.detail, position = 'top-center')
                             $(id+"f").addClass("error")
                         }
                         else{
-                            error_alert("Something went wrong please contact techincal team...");
+                            error_alert("Something went wrong please contact techincal team...", position = 'top-center');
                         }
                     }
             });

@@ -14,7 +14,7 @@
     </div>
     <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
 
-    <form class="ui form align-items-center p-4" id="dataAnalysis">
+    <form class="ui form align-items-center p-4 shadow rounded" id="dataAnalysis">
         <div class="fields two">
             <div class="field">
                 <label>Course</label>
@@ -44,8 +44,11 @@
             <div class="or" data-text="or"></div>
             <div class="ui button green" onclick="show_attendence()">View Attendence</div>
         </div>
-
+    
     </form>
+    <div class="pt-5 pb-2">
+        <a href="/hod/add-students"><div class="ui button blue wide" >Add / Remove / Edit</div></a>
+    </div>
     <br><br>
     <!--Terminal Zone-->
     <hr class='rounded' style="height: 5px; background-color: orange;">
@@ -65,7 +68,7 @@
                   <i class="help icon"></i>
                   <div class="content">
                     <div class="header">Start New Semester</div>
-                    <div class="description">This action will remove all attendence record.<br> When a new Semester is starts then this action should be performed.</div>
+                    <div class="description">This action will remove all attendence record.<br> When a new Semester is starts, then this action should be performed.</div>
                   </div>
                 </a>
 
@@ -81,7 +84,7 @@
                     <i class="help icon"></i>
                     <div class="content">
                       <div class="header">Remove Student</div>
-                      <div class="description">This action will remove students when the course is over.<br>It will remove all students.</div>
+                      <div class="description">This action will remove students when the course is over.<br>It will remove all students details.</div>
                     </div>
                 </a>
 

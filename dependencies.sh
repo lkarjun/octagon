@@ -17,13 +17,13 @@ sudo apt-get -y update && apt-get install -y --fix-missing \
     liblapack-dev \
     libswscale-dev \
     pkg-config \
-    python3-dev \
+    python3 \
     python3-numpy \
     software-properties-common \
     zip \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
 pip3 install --upgrade pip && \
-    git clone -b 'v19.21' --single-branch https://github.com/davisking/dlib.git && \
+    git clone https://github.com/davisking/dlib.git && \
     cd dlib/ && \
-    python3 setup.py install --set BUILD_SHARED_LIBS=OFF
+    sudo python3 setup.py install

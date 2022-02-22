@@ -36,7 +36,16 @@
           
           <div class="field">
             <label>Tag</label>
-            <input id='tag' required type="text" disabled value="{{ user.tag }}">
+            <select class="ui dropdown" id='tag'>
+              {% if user.tag == "CT" %}
+              <option value="CT" selected>Class Teacher</option>
+              <option value="-" >None</option>
+              {% else %}
+              <option value="-" selected >None</option>
+              <option value="CT" >Class Teacher</option>
+              {% endif %}
+            </select>
+            <!-- <input id='tag' required type="text" disabled value="{{ user.tag }}"> -->
           </div>
   
           <div class="field">
@@ -85,6 +94,9 @@
         <button class="ui button teal" id='upload_button' type="submit">Update Image</button>
 
     </form>
+
+    <br><br>
+    <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
 
 </div>
 
