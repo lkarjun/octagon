@@ -124,14 +124,13 @@ def get_full_message(db: Session, user):
             ).all()
     return messages[::-1]
 
-def clear_message(db: Session):
-    fake_name = "anju"
-    fake_dep = "bca"
+def clear_message(db: Session, user):
+    hod_name = user.user_name
+    hod_dep = user.department
     messages = db.query(models.Message).filter(
-        and_(models.Message.hod_name == fake_name,
-             models.Message.hod_department == fake_dep)
+        and_(models.Message.hod_name == hod_name,
+             models.Message.hod_department == hod_dep)
         )
-    import time;time.sleep(2)
     if not messages.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No Messages in database")
     

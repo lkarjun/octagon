@@ -47,11 +47,11 @@ def get_latest_exam_notifications():
     # text = req.request('GET', BASE_URL_EXAM_NOTIFICATION).data.decode()
     text = requests.get(BASE_URL_EXAM_NOTIFICATION, verify=False).text
     soup = BeautifulSoup(text, features="html.parser")
-    return make_data(soup.find("div", id="ALL").find_all("a"))[:5]
+    return make_data(soup.find("div", id="ALL").find_all("a"))[:3]
 
 def get_latest_notifications():
     # req = urllib3.PoolManager()
     # text = req.request('GET', BASE_URL_NOTIFICATION).data.decode()
     text = requests.get(BASE_URL_NOTIFICATION, verify=False).text
     soup = BeautifulSoup(text, features="html.parser")
-    return make_data(soup.find("div", id="ALL").find_all("a"))[:5]
+    return make_data(soup.find("div", id="ALL").find_all("a"))[:3]

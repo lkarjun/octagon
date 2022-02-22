@@ -21,8 +21,8 @@
             {% if free_day %}
             <div class="ui purple horizontal label large shadow">Today is free for you! Enjoy it😂.</div>
             {% else %}
-            {% for class in classes %}
-                <span class="badge bg-dark shadow">Hour {{ class.hour }}:  {{class.course}} Year {{ class.year }}</span>
+            {% for cl in classes %}
+                <span class="badge bg-success shadow">Hour {{ cl.hour }}:  {{cl.course}} Year {{ cl.year }}</span>
             {% endfor %}
             {% endif %}
         </div>
@@ -36,7 +36,7 @@
         <div class="h5 pt-3">
             <a href="http://docs.uoc.ac.in/website/Syll/"><span class="badge bg-primary">Syllabus <i class="external alternate icon"></i></span></a> 
             <a href="http://www.cupbonline.uoc.ac.in/CuPbOnline/online_portal/registration.php"><span class="badge bg-danger">Registration <i class="external alternate icon"></i></span></a> 
-            <a href="http://results.uoc.ac.in/"><span class="badge bg-success">Result <i class="external alternate icon"></i></span></a>
+            <a href="http://results.uoc.ac.in/"><span class="badge bg-secondary">Result <i class="external alternate icon"></i></span></a>
         </div>
 
     </section>

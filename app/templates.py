@@ -125,11 +125,12 @@ class HodTemplates():
     def workspace(request, user, db):
         classes = sorted(teacher.get_hour_detail(db, user.user_name), key = lambda x: x.hour)
         print(classes)
-        free_day = False if len(classes) >= 1 else True
-        free_day = True
         tmp = templates.TemplateResponse("hodWorkspace.html",
-                        context={"request": request, "title": "Workspace",
-                            "user": user.name, "free_day": free_day, "classes": classes})
+                        context={"request": request, 
+                             "title": "Workspace",
+                             "user": user.name, 
+                             "free_day": False if len(classes) >= 1 else True,
+                             "classes": classes})
         return tmp
 
     def timetable(request, user, db):

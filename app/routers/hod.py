@@ -96,7 +96,7 @@ async def get_full_message(request: Request, db: Session = Depends(get_db), user
 
 @router.post("/clear_messages")
 async def clear_message(db: Session = Depends(get_db), user=Depends(oauth2.manager_hod)):
-    return hod.clear_message(db)
+    return hod.clear_message(db, user)
 
 
 @router.post("/update_profile")
