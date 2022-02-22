@@ -16,7 +16,6 @@ get_db = database.get_db
 
 @router.post('/octagon/login', status_code=status.HTTP_202_ACCEPTED, response_class=temp.RedirectResponse)
 async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    print(data.username)
     hod = db.query(models.Hod).filter(
                         models.Hod.user_name == data.username
                     ).first()
@@ -34,6 +33,7 @@ async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), d
         return temp.OthersTemplates.login_page(request, 'block', 'Cant visible your face!😔 Please try again.')
 
     if not recogize_result:
+        print(f"{data.username} failed to login...")
         return temp.OthersTemplates.login_page(request, 'block', 'Invalid credential!🤔 Please Try again.')
 
     who = 'hod' if hod else 'teacher'
@@ -45,6 +45,7 @@ async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), d
             )
         res = temp.OthersTemplates.login_redirect_page(request, who)
         oauth2.manager_teacher.set_cookie(res, access_token)
+        print(f"Teacher: {data.username} is successfully loged in...")
         return res
         
     access_token = oauth2.manager_hod.create_access_token(
@@ -53,6 +54,7 @@ async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), d
             )
     res = temp.OthersTemplates.login_redirect_page(request, who)
     oauth2.manager_hod.set_cookie(res, access_token)
+    print(f"Hod: {data.username} is successfully loged in...")
     return res
 
 @router.get("/octagon/logout/{who}", status_code=status.HTTP_202_ACCEPTED, response_class=temp.RedirectResponse)

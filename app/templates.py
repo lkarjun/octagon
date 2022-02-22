@@ -124,7 +124,6 @@ class HodTemplates():
 
     def workspace(request, user, db):
         classes = sorted(teacher.get_hour_detail(db, user.user_name), key = lambda x: x.hour)
-        print(classes)
         tmp = templates.TemplateResponse("hodWorkspace.html",
                         context={"request": request, 
                              "title": "Workspace",
