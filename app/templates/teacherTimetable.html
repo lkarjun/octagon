@@ -31,14 +31,14 @@
     <section class="pt-5 pb-3">
 
         <div class="table-responsive shadow rounded">
-            <table class="table ui m-3 p-3">
+            <table class="table ui celled teal">
               <tbody>
                 <tr>
                     <th class="font-weight-bold" style="font-family: sans-serif;">Monday</th>
                     {% if data['Monday'] %}
                     {% for i in data['Monday'] %}
                     {% if i.year %}
-                    <td><div class="ui horizontal label large shadow"><p class="text-danger rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
+                    <td><div class="ui grey w-100 horizontal label large shadow"><p class=" rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
                     {% else %}
                     <td><div class="ui purple horizontal label large shadow">Free</div></td>
                     {% endif %}
@@ -57,7 +57,7 @@
                     {% if data['Tuesday'] %}
                     {% for i in data['Tuesday'] %}
                     {% if i.year %}
-                    <td><div class="ui horizontal label large shadow"><p class="text-danger rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
+                    <td><div class="ui red w-100 horizontal label large shadow"><p class="rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
                     {% else %}
                     <td><div class="ui purple horizontal label large shadow">Free</div></td>
                     {% endif %}
@@ -76,7 +76,7 @@
                     {% if data['Wednesday'] %}
                     {% for i in data['Wednesday'] %}
                     {% if i.year %}
-                    <td><div class="ui horizontal label large shadow"><p class="text-danger rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
+                    <td><div class="ui green w-100 horizontal label large shadow"><p class="rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
                     {% else %}
                     <td><div class="ui purple horizontal label large shadow">Free</div></td>
                     {% endif %}
@@ -95,7 +95,7 @@
                     {% if data['Thursday'] %}
                     {% for i in data['Thursday'] %}
                     {% if i.year %}
-                    <td><div class="ui horizontal label large shadow"><p class="text-danger rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
+                    <td><div class="ui yellow w-100 horizontal label large shadow"><p class="rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
                     {% else %}
                     <td><div class="ui purple horizontal label large shadow">Free</div></td>
                     {% endif %}
@@ -114,7 +114,7 @@
                     {% if data['Friday'] %}
                     {% for i in data['Friday'] %}
                     {% if i.year %}
-                    <td><div class="ui horizontal label large shadow"><p class="text-danger rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
+                    <td><div class="ui pink w-100 horizontal label large shadow"><p class="rounded">Hour {{i.hour}}</p> {{ i.course }} Year {{ i.year }}</div></td>
                     {% else %}
                     <td><div class="ui purple horizontal label large shadow">Free</div></td>
                     {% endif %}
