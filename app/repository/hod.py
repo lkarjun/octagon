@@ -65,7 +65,7 @@ def terminalzone(request: Schemas.TerminalZone, db: Session, user):
                                     db=db, user=user)
     else:
         
-        attendence.remove_students(request = request, db = db, user = user)
+        attendence.remove_students_for_new_semester(request = request, db = db, user = user)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 

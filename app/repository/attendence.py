@@ -224,7 +224,7 @@ def attendence_correction(request: Schemas.AttendenceCorrection, files: Schemas.
     return files
 
 
-def remove_students(request: Schemas.TerminalZone, **kwargs):
+def remove_students_for_new_semester(request: Schemas.TerminalZone, **kwargs):
     db, user = kwargs['db'], kwargs['user']
     students_details = db.query(models.Students).filter(and_(
             models.Students.department == user.department,
