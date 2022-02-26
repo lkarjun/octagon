@@ -26,7 +26,9 @@ def send_mail(message: EmailMessage) -> bool:
         mail_server.send_message(message)
         mail_server.quit()
         return True
-    except:
+    except Exception as e:
+        print("\nMailing Failed: ", e)
+        print()
         return False
 
 def verification_mail(name: str, email: str, id: str):
