@@ -16,14 +16,14 @@
         <div class="col-md-6">
             <section id='take'>
 
-                <h4 class="font-weight-bold">Today's Timetable</h4>
+                <h4 class="font-weight-bold" style="font-family: sans-serif; font-size: larger;">Today's Timetable</h4>
           
-                <div class="pt-3 h5 font-weight-bold horizontal">
+                <div class="pt-3 h5 font-weight-bold horizontal" align="center">
                     {% if free_day %}
-                    <div class="ui purple horizontal label large shadow">Today is free for you! Enjoy it😂.</div>
+                    <div class="ui purple horizontal p-3 label large shadow">Today is free for you! Enjoy it😂.</div>
                     {% else %}
                     {% for class in classes %}
-                        <span class="badge bg-dark shadow">Hour {{ class.hour }}:  {{class.course}} Year {{ class.year }}</span>    
+                        <span class="badge bg-dark p-3 shadow">Hour {{ class.hour }}:  {{class.course}} Year {{ class.year }}</span>    
                     {% endfor %}
                     {% endif %}
                 </div>
@@ -32,11 +32,11 @@
         
             <section id='quicklink' class='pb-1 pt-5'>
         
-                <h4 class="font-weight-bold">Quick Links</h4>
+                <h4 class="font-weight-bold" style="font-family: sans-serif; font-size: larger;">Quick Links</h4>
           
                 <div class="h5 pt-2">
-                    <a href="http://docs.uoc.ac.in/website/Syll/"><span class="badge bg-primary">Syllabus <i class="external alternate icon"></i></span></a> 
-                    <a href="http://results.uoc.ac.in/"><span class="badge bg-success">Result <i class="external alternate icon"></i></span></a>
+                    <a href="http://docs.uoc.ac.in/website/Syll/"><span class="badge bg-primary p-2">Syllabus <i class="external alternate icon"></i></span></a> 
+                    <a href="http://results.uoc.ac.in/"><span class="badge bg-success p-2">Result <i class="external alternate icon"></i></span></a>
                 </div>
         
             </section>
