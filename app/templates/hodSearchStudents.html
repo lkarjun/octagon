@@ -1,0 +1,86 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+
+<script>
+    $("#navMore").addClass("navisel")
+    $("#navSt").addClass("navisel")
+</script>
+
+
+
+<section class="p-4 m-4">
+  
+    <div class="jumbotron text-left">
+      <h3 class="pb-5 pt-4 setfont">Student Details</h3>
+    </div>
+
+    <!--Teachers Search-->
+    <div class="form ui pb-3">
+    <div class="field">
+      <div class="ui search">
+        <div class="ui icon input">
+          <input class="prompt" type="text" id='myInput' placeholder="Search Student">
+          <i class="search icon"></i>
+        </div>
+        <div class="results"></div>
+      </div>
+    </div>
+    </div>
+    <!--Search Ends-->
+
+    <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr class="bg-primary text-light">
+              <th scope="col" class="font-weight-bold">Id</th>
+              <th scope="col" class="font-weight-bold">Name</th>
+              <th scope='col' class="font-weight-bold">Parent Name</th>
+              <th scope='col' class="font-weight-bold">Parent Number</th>
+              <th scope="col" class="font-weight-bold">Course</th>
+              <th scope='col' class="font-weight-bold">Year</th>
+              <th scope='col' class="font-weight-bold">Department</th>
+              
+            </tr>
+          </thead>
+          <tbody id="SearchStudents">
+            {% if list_empty %}
+            <tr>
+                <td colspan="6" class="text-center font-weight-bold">******No Students******</td>
+            </tr>
+            {% else %}
+            {% for i in students %}
+            <tr>
+            <td class="font-weight-bold">{{ i['id'] }}</td>
+            <td>{{ i['name'] }}</td>
+            <td>{{ i['parent_name'] }}</td>
+            <td>{{ i["parent_number"] }}, {{ i["parent_number_alt"] }}</td>
+            <td>{{ i['course'] }}</td>
+            <td>{{ i['year'] }} </td>
+            <td>{{ i['department'] }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+          </tbody>
+        </table>
+    </div>
+
+    <br><br><br>
+  
+    <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
+
+    <br><br><br>
+</section>
+
+
+<script>
+    $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#SearchStudents tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+      });
+</script>
+
+
+{% endblock %}

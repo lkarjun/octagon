@@ -165,6 +165,16 @@ class HodTemplates():
                          "course": courses, "who": True})
         return tmp
 
+    def search_students(request, user, db):
+        students = db.query(models.Students).all()
+        list_empty = False if len(students) else True
+        tmp = templates.TemplateResponse("hodSearchStudents.html",
+                context={"request": request, "title": "Search Students",
+                        "list_empty": list_empty,
+                        "students": students
+                        })
+        return tmp
+
     def uoc_notification(request):
         notifications = hod.uoc.get_notifications()
         return templates.TemplateResponse("uocNotification.html",
