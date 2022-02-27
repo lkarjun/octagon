@@ -26,7 +26,7 @@ def get_messages(user, db: Session, new_five: bool):
     if new_five: return messages[::-1][:2]
     return messages[::-1]
 
-def get_hour_detail(db: Session, user: str, day="Monday"):
+def get_hour_detail(db: Session, user: str, day=None):
     if not day: day = datetime.today().strftime("%A")
 
     classes = db.query(models.Timetable).filter(
