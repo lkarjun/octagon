@@ -294,6 +294,23 @@ class TeacherTemplates():
                                  "user": user.name})
         return tmp 
 
+    def students(request, db, user = None):
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
+        tmp = templates.TemplateResponse("teacherStudentDeatils.html",
+                                        context={"request": request, 
+                                        "title": "Student",
+                                        "course": courses,})
+        return tmp
+
+    
+    def show_student_details(request, course, year, db):
+        details = hod.get_student_details(db, course, year, template=True)
+        tmp = templates.TemplateResponse("_teacherStudentDetails.html",
+                    context={"request": request, "title": "Attendence Sheet",
+                                "details": details, "course": course, "year": year})
+
+        return tmp
+
     def message(request, db, user):
         tmp = templates.TemplateResponse("teacherMessageViews.html",
                         context={"request": request, "title": "Messages"})

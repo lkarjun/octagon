@@ -1,0 +1,87 @@
+{% extends "teacherLayout.html" %}
+{% block content %}
+
+<script>
+    $("#navStudDw").addClass("navisel")
+    $("#navStudDm").addClass("navisel")
+</script>
+
+<div class="ui container pb-5 mb-5">
+
+    <section>
+
+        <div class="jumbotron text-center">
+            <h3 class="pt-5 pb-4 mt-md-5 font-weight-bold" style="font-family: sans-serif;">{{ course.upper() }} Year {{ year }} Students Details</h3>
+        </div>
+        
+        <!--hod Search-->
+        <div class="form ui pb-4 pt-4">
+            <div class="field">
+              <div class="ui search">
+                <div class="ui icon input">
+                  <input class="prompt" type="text" id='StudentSearch' placeholder="Search Student">
+                  <i class="search icon"></i>
+                </div>
+                <div class="results"></div>
+              </div>
+            </div>
+        </div>
+        <!--Search Ends-->
+
+        <div class="table-responsive">
+            <table class="table align-middle table-hover table-borderless">
+                <thead class="table-primary">
+                    <tr>
+                        <th scope="col" class="font-weight-bold">ID</th>
+                        <th scope="col" class="font-weight-bold">NAME</th>
+                        <th scope="col" class="font-weight-bold">EMAIL</th>
+                        <th scope="col" class="font-weight-bold">PARENT NAME</th>
+                        <th scope="col" class="font-weight-bold">PARENT NUMBER</th>
+                        <th scope="col" class="font-weight-bold">STUDENT NUMBER</th>
+                        <!-- <th scope="col" class="font-weight-bold">REMOVE STUDENT</th> -->
+                    </tr>
+                </thead>
+
+                <tbody id='Search'>
+                    {% if details %}
+                    {% for i in details %}
+                    <tr>
+                        <td>{{ i.id }}</td>
+                        <th scope="col" class="font-weight-bold">{{ i.name }}</th>
+                        <td>{{ i.email }}</td>
+                        <td>{{ i.parent_name }}</td>
+                        <td>{{ i.parent_number }}</td>
+                        <td>{{ i.parent_number_alt }}</td>
+                        <!-- <td>
+                            <button type="button" class="btn btn-danger btn-sm px-3">
+                              <i class="x icon"></i>
+                            </button>
+                        </td> -->
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="font-weight-bold text-center">****No Student Admitted****</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </section>
+</div>
+
+
+<br><br>
+<!-- // Student Search -->
+<script>
+    $("#StudentSearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#Search tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+</script>
+
+{% endblock %}
