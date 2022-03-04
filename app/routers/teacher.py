@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, Request, Response, status, UploadFile, File, Form
+from fastapi import (APIRouter, Depends, Request, 
+                    Response, status, UploadFile, 
+                    File, Form, HTTPException)
 from sqlalchemy.orm.session import Session
 from repository import Schemas, teacher
 from database import database
@@ -64,10 +66,33 @@ async def update_profile(request: Schemas.AddTeacher, db: Session = Depends(get_
 
 # Students
 
+@router.get("/students")
+async def students_details(request: Request, 
+                            db: Session = Depends(get_db),
+                            user=Depends(oauth2.manager_teacher)):
+    return TeacherTemplates.students(request, db. user)
+
+@router.get("/students-attendence/details/{course}/{year}", status_code=status.HTTP_200_OK)
+async def student_details(request: Request, course: str, year: int,
+                          db: Session = Depends(get_db),
+                          user=Depends(oauth2.manager_teacher)
+                        ):
+    return TeacherTemplates.show_student_details(request, course, year, db)
+
 @router.post("/add-students", status_code=status.HTTP_204_NO_CONTENT)
 async def add_student(request: Schemas.AddStudent, db: Session = Depends(get_db),
                                 ):
     return teacher.add_student(request, db)
+
+@router.post("/add-students-from-file", status_code=status.HTTP_204_NO_CONTENT)
+async def add_students_from_file(
+                                course: str = Form(...),
+                                year: int = Form(...),
+                                DATA: UploadFile = File(...),
+                                ):
+    if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
+        raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 @router.delete("/delete-student", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_student(request: Schemas.DeleteStudent, db: Session = Depends(get_db)):
