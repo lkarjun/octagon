@@ -9,7 +9,7 @@ from fastapi import HTTPException, status, Response
 import time
 from pathlib import Path
 
-FACE_PATH = Path("security/faces.pkl")
+FACE_PATH = Path("security/Encodings.pkl")
 
 def face_op() -> Dict:
     faces = pickle.load(open(FACE_PATH, "rb"))
