@@ -67,6 +67,23 @@ def get_faces(name: Union[str, bool] = False, delete: bool = False) -> Union[Dic
 
     return faces
 
+def get_all_encodings():
+    return face_op()
+
+def remove_encoding(user_name: str):
+    encodings = get_all_encodings()
+    try:
+        del encodings[user_name]
+        face_dp(encodings)
+        return True
+    except Exception as e:
+        print("="*20)
+        print(f"Failed to remove encodings for the user: {user_name}")
+        print("="*20)
+        return False
+    
+
+
 def put_faces(name: str, encoded_faces: List) -> None:
     faces = get_faces()
     faces[name] = encoded_faces

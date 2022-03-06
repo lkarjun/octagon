@@ -33,6 +33,10 @@ def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User in database") 
 
     teacher.delete(synchronize_session=False)
+    remove_encoding = faceid.remove_encoding(request.user_name)
+    if not remove_encoding:
+        raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, 
+                      detail = f"Failed to remove encodings for the user: {request.user_name}")
     db.commit()
     return Response(status_code=204)
 

@@ -1,6 +1,6 @@
 from sqlalchemy.orm.session import Session
 from database import models
-from security import hashing
+from security import hashing, faceid
 from fastapi import status, HTTPException, Response, BackgroundTasks
 from sqlalchemy import and_, or_
 from repository import Schemas, attendence
@@ -54,6 +54,10 @@ def delete(request: Schemas.DeleteHod, db: Session):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {request.name} and department: {request.department}") 
 
     hod.delete(synchronize_session=False)
+    remove_encoding = faceid.remove_encoding(request.username)
+    if not remove_encoding:
+        raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, 
+                      detail = f"Failed to remove encodings for the user: {request.username}")
     db.commit()
     return Response(status_code=204)
 
