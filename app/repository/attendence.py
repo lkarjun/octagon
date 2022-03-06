@@ -9,9 +9,24 @@ from repository import Schemas
 from calendar import monthrange
 from typing import Callable, Union, List
 import functools
+import sqlite3
 
 # Decorators
 BASE_PATH = Path("repository/AttendenceFiles")
+ATPATH = Path("../database/attendence.db")
+
+#=========================Changing v2.0==============================
+
+def get_sql_connection(func: Callable):
+    @functools.wraps(func)
+    def wrap(*args, **kwargs):
+        connection = sqlite3.connect(ATPATH)
+        func_returns = func(*args, **kwargs, sql_conn=connection)
+        connection.close()
+        return func_returns
+    return wrap
+
+#=======================================================
 
 def get_attendence_files(func: Callable):
     
@@ -64,7 +79,45 @@ def save_files(func: Callable):
         return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     return wraps
-        
+
+#==========================Changing v2.0=============================
+
+def save_df_to_db(sql_conn: sqlite3.Connection, table_name: str, 
+                  df: pd.DataFrame, **kwargs):
+    index = False if 'index' not in kwargs else kwargs['index']
+    if_exists = 'replace' if 'if_exists' not in kwargs else kwargs['if_exists']
+    try:
+        df.to_sql(table_name, sql_conn,
+                  index = index, if_exists = if_exists)
+        return True
+    except Exception as e:
+        return e
+
+#=======================================================
+
+#==========================Changing v2.0=============================
+@get_sql_connection
+def get_db_to_df(sql_conn, *args, **kwargs):
+    if 'query' not in kwargs:
+        raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED)
+    query = kwargs['query']
+    df = pd.read_sql(query, sql_conn)
+    return df
+#=======================================================
+
+#==========================Changing v2.0=============================
+@get_sql_connection
+def createAttendenceFiles(course: str, year: int, sql_conn, **kwargs):
+    table_name = f"{course.upper()}year:{year}"
+    df = pd.DataFrame(columns=['ID', 'NAME'])
+    status = save_df_to_db(sql_conn, table_name, df,
+                            **kwargs)
+    if not status:
+        raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
+                            detail=f'Failed to create files: Exception {status}')
+    return status
+#=======================================================
+
 def createFiles(year: int, course_alias: str):
     attendence = pd.DataFrame(columns = ['StudentsName'])
     monthly_report = pd.DataFrame(columns=['StudentsName'])
