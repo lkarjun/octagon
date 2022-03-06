@@ -40,7 +40,7 @@ can logon to the app using their **Face**.
 #docs_url=None, redoc_url=None
 app = FastAPI(
             debug=True,
-            title="Teachers' Login",
+            title="Octagon",
             openapi_tags=tags_metadata,
             description=description,
             redoc_url=None
