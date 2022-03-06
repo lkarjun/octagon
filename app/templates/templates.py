@@ -5,7 +5,7 @@ from repository import admin, hod, attendence, teacher
 from database import database, models
 from collections import defaultdict
 
-templates = Jinja2Templates('templates')
+templates = Jinja2Templates('templates/html_files')
 
 
 
