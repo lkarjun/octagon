@@ -67,7 +67,7 @@ async def update_profile(request: Schemas.AddTeacher, db: Session = Depends(get_
 # Students
 
 @router.get("/students")
-async def students_details(request: Request, 
+async def students_details_(request: Request, 
                             db: Session = Depends(get_db),
                             user=Depends(oauth2.manager_teacher)):
     return TeacherTemplates.students(request, db. user)
@@ -84,6 +84,8 @@ async def add_student(request: Schemas.AddStudent, db: Session = Depends(get_db)
                                 ):
     return teacher.add_student(request, db)
 
+# =================================================================================================
+# Changes needed here
 @router.post("/add-students-from-file", status_code=status.HTTP_204_NO_CONTENT)
 async def add_students_from_file(
                                 course: str = Form(...),
@@ -93,6 +95,8 @@ async def add_students_from_file(
     if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+# =================================================================================================
 
 @router.delete("/delete-student", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_student(request: Schemas.DeleteStudent, db: Session = Depends(get_db)):

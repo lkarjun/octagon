@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status, UploadFile, File, Form, Response, Request
+from fastapi import APIRouter, Depends, status, UploadFile, File, Form, Response, Request, HTTPException
 from starlette.background import BackgroundTasks
 from templates import AdminTemplates
 from sqlalchemy.orm.session import Session
@@ -68,6 +68,19 @@ async def create_hod(request: Schemas.CreateHod,
                      db: Session = Depends(get_db),
                      user=Depends(oauth2.manager_admin)):
     return admin.create(request, db, bg_task)
+
+# =================================================================================================
+# Changes needed here
+@router.post("/portal/add-hod-from-file", status_code=status.HTTP_204_NO_CONTENT)
+async def add_hod_from_file(
+                            department: str = Form(...),
+                            DATA: UploadFile = File(...),
+                            ):
+    if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
+        raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+# =================================================================================================
 
 @router.delete('/portal/delete_hod', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_hod(request: Schemas.DeleteHod, db: Session = Depends(get_db),\
