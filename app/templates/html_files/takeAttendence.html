@@ -173,7 +173,15 @@
                 </button>
                 
                 <div class="or"></div>
-                <button class="ui button red" onclick="location.reload();">Reset</button>
+                <div id="reset" class="ui button red rounded" onclick="reset()">Reset</div>
+                <script>
+                    function reset(){
+                        $("#take_btn").addClass("disabled")
+                        $("#reset").addClass("loading disabled");
+                        location.reload();
+                    }
+
+                </script>
             </div>
 
         </form>

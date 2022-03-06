@@ -5,7 +5,7 @@ from repository import admin, hod, attendence, teacher
 from database import database, models
 from collections import defaultdict
 
-templates = Jinja2Templates('templates')
+templates = Jinja2Templates('templates/html_files')
 
 
 
@@ -165,6 +165,16 @@ class HodTemplates():
                          "course": courses, "who": True})
         return tmp
 
+    def search_students(request, user, db):
+        students = db.query(models.Students).all()
+        list_empty = False if len(students) else True
+        tmp = templates.TemplateResponse("hodSearchStudents.html",
+                context={"request": request, "title": "Search Students",
+                        "list_empty": list_empty,
+                        "students": students
+                        })
+        return tmp
+
     def uoc_notification(request):
         notifications = hod.uoc.get_notifications()
         return templates.TemplateResponse("uocNotification.html",
@@ -283,6 +293,23 @@ class TeacherTemplates():
                                  "free_day": free_day, "classes": classes,
                                  "user": user.name})
         return tmp 
+
+    def students(request, db, user = None):
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department)
+        tmp = templates.TemplateResponse("teacherStudentDeatils.html",
+                                        context={"request": request, 
+                                        "title": "Student",
+                                        "course": courses,})
+        return tmp
+
+    
+    def show_student_details(request, course, year, db):
+        details = hod.get_student_details(db, course, year, template=True)
+        tmp = templates.TemplateResponse("_teacherStudentDetails.html",
+                    context={"request": request, "title": "Attendence Sheet",
+                                "details": details, "course": course, "year": year})
+
+        return tmp
 
     def message(request, db, user):
         tmp = templates.TemplateResponse("teacherMessageViews.html",

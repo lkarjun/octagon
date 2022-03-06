@@ -32,7 +32,7 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: #ffffff;
+            background: #e0e0e0;
         }
 
         .preloader {
@@ -41,9 +41,9 @@
             height: 40px;
             left: calc(50% - 20px);
             top: calc(50% - 20px);
-            background: #27ae60;
+            background: #1639ad;
             transform: rotate(45deg);
-            animation: preloader 2s linear infinite;
+            animation: preloader 3s linear infinite;
         }
 
         .loadBar {
@@ -52,14 +52,14 @@
             height: 2px;
             left: calc(50% - 100px);
             top: calc(50% + 60px);
-            background: #27ae60;
+            background: #bd2f2f;
         }
 
         .progress {
             position: relative;
             width: 0%;
             height: inherit;
-            background: #e74c3c;
+            background: #00ff15;
         }
 
         @keyframes loading {
@@ -88,7 +88,7 @@
     </style>
     <script>
         $(window).on('load', function () {
-           var rnd = Math.random() * (8000 - 250) + 1000;
+           var rnd = Math.random() * (8000 - 300) + 1000;
            $('.progress').css("animation", "loading " + rnd + "ms linear");
            console.log(rnd);
            setTimeout(function() {
@@ -122,14 +122,15 @@
                         <form action="/octagon/login" method="POST" class="ui form">
                             <div class="field">
                                 <div class="ui input userCred" style="display: none;">
-                                    <input type="password" id="username" placeholder="Enter your username" name="username">
+                                    <input type="password" id="username" placeholder="Username" name="username">
                                 </div>
                             </div>
                             <div class="field">
                                 <input type="text" name='password' id='password' style="display: none;">
                             </div>
         
-                            <button class="ui button blue small fluid userCred" style="display: none;" onclick="capit()" id="btn_login">Recognize</button>
+                            <button class="ui button green rounded shadow small fluid userCred" 
+                                            style="font-family: cursive;" onclick="capit()" id="btn_login">Recognize Me🤗</button>
                         </form>
 
                         <div style="font-family: Comic sans MS; display: none;" id='recognizing-spinner' class="text-light">Recognitizing

@@ -7,23 +7,23 @@
 </script>
 
 <div class="ui container pb-5">
-
+    <br><br><br>
     <div class="jumbotron text-center">
-        <h3 class="pt-md-5 pt-5 pb-5 mt-5 mb-5 mt-md-5 mb-md-4 font-weight-bold" style="font-family: sans-serif;" >Welcome {{user}}! 🎉</h3>
+        <h3 class="pt-md-5 pt-5 pb-5 mt-5 mb-5 mt-md-5 mb-md-4 font-weight-bold" style="font-family: cursive; font-size: x-large;" >Welcome <br>{{user}} <br>🎉🎉🎉</h3>
     </div>
     <br><br>
     <div class="row">
         <div class="col-md-6">
             <section id='take'>
 
-                <h4 class="font-weight-bold">Today's Timetable</h4>
+                <h4 class="font-weight-bold" style="font-family: sans-serif; font-size: larger;">Today's Timetable</h4>
           
-                <div class="pt-3 h5 font-weight-bold horizontal">
+                <div class="pt-3 h5 font-weight-bold horizontal" align="left">
                     {% if free_day %}
-                    <div class="ui purple horizontal label large shadow">Today is free for you! Enjoy it😂.</div>
+                    <div class="ui purple horizontal p-3 label large shadow">Today is free for you! Enjoy it😂.</div>
                     {% else %}
                     {% for class in classes %}
-                        <span class="badge bg-dark shadow">Hour {{ class.hour }}:  {{class.course}} Year {{ class.year }}</span>    
+                        <span class="badge bg-dark p-3 shadow">Hour {{ class.hour }}:  {{class.course}} Year {{ class.year }}</span>    
                     {% endfor %}
                     {% endif %}
                 </div>
@@ -32,11 +32,11 @@
         
             <section id='quicklink' class='pb-1 pt-5'>
         
-                <h4 class="font-weight-bold">Quick Links</h4>
+                <h4 class="font-weight-bold" style="font-family: sans-serif; font-size: larger;">Quick Links</h4>
           
                 <div class="h5 pt-2">
-                    <a href="http://docs.uoc.ac.in/website/Syll/"><span class="badge bg-primary">Syllabus <i class="external alternate icon"></i></span></a> 
-                    <a href="http://results.uoc.ac.in/"><span class="badge bg-success">Result <i class="external alternate icon"></i></span></a>
+                    <a href="http://docs.uoc.ac.in/website/Syll/"><span class="badge bg-primary p-2">Syllabus <i class="external alternate icon"></i></span></a> 
+                    <a href="http://results.uoc.ac.in/"><span class="badge bg-success p-2">Result <i class="external alternate icon"></i></span></a>
                 </div>
         
             </section>
@@ -45,7 +45,7 @@
         <div class="col-md-6">
             <section id="message">
 
-                <h4 class="font-weight-bold pt-md-0 pt-5 pb-md-2" >Latest Messages <a href="/teacher/message"><i class="external alternate icon"></i></a></h4>
+                <h4 class="font-weight-bold pt-md-0 pt-5 pb-md-2" style="font-family: sans-serif; font-size: larger;">Latest Messages <a href="/teacher/message"><i class="external alternate icon"></i></a></h4>
                 
         
                 <div class="ui segment shadow" style="min-height: 70px;" id='message-display'>

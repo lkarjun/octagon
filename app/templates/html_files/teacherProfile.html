@@ -39,10 +39,16 @@
             <select class="ui dropdown" id='tag'>
               {% if user.tag == "CT" %}
               <option value="CT" selected>Class Teacher</option>
+              <option value="TT">Tutor</option>
+              <option value="-" >None</option>
+              {% elif user.tag == "TT" %}
+              <option value="TT" selected>Tutor</option>
+              <option value="CT">Class Teacher</option>
               <option value="-" >None</option>
               {% else %}
               <option value="-" selected >None</option>
               <option value="CT" >Class Teacher</option>
+              <option value="TT">Tutor</option>
               {% endif %}
             </select>
             <!-- <input id='tag' required type="text" disabled value="{{ user.tag }}"> -->

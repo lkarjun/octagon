@@ -168,10 +168,10 @@ function show_attendence(){
     window.location.href = href
 }
 
-function show_details(){
+function show_details(who = "hod"){
     var course = $("#course").val()
     var year = parseInt($("#year").val())
-    var href = "/hod/students-attendence/details/"+course+"/"+year
+    var href = "/"+who+"/students-attendence/details/"+course+"/"+year
     window.location.href = href
 }
 
