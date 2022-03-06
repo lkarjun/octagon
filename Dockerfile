@@ -24,9 +24,9 @@ RUN apt-get -y update && apt-get install -y --fix-missing \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
 RUN pip3 install --upgrade pip && \
-    git clone -b 'v19.21' --single-branch https://github.com/davisking/dlib.git && \
+    git clone https://github.com/davisking/dlib.git && \
     cd dlib/ && \
-    python3 setup.py install --set BUILD_SHARED_LIBS=OFF
+    sudo python3 setup.py install
 
 COPY requirements.txt /app/requirements.txt
 
