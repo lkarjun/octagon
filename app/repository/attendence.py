@@ -109,7 +109,7 @@ def get_db_to_df(sql_conn, *args, **kwargs):
 @get_sql_connection
 def createAttendenceFiles(course: str, year: int, sql_conn, **kwargs):
     table_name = f"{course.upper()}year:{year}"
-    df = pd.DataFrame(columns=['ID', 'NAME'])
+    df = pd.DataFrame(columns=['ST_ID', 'ST_NAME', 'ST_STATUS'])
     status = save_df_to_db(sql_conn, table_name, df,
                             **kwargs)
     if not status:
