@@ -8,7 +8,7 @@ class Hod(Base):
     name = Column(String)
     email = Column(String)
     phone_num = Column(String)
-    user_name = Column(String)
+    username = Column(String)
     department = Column(String)
 
 class Admin(Base):
@@ -35,7 +35,7 @@ class Teachers(Base):
     username = Column(String, unique=True)
     department = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
-    phone_number = Column(String, nullable=True)
+    phone_num = Column(String, nullable=True)
     tag = Column(String)
 
 class Timetable(Base):

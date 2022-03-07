@@ -9,7 +9,7 @@ from octagonmail import octagonmail
 def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):
     new_teacher = models.Teachers(
                     name = request.name, email = request.email,\
-                    phone_number = request.phone_number,\
+                    phone_num = request.phone_num,\
                     department = request.department, tag = request.tag,\
                     username = request.username
                 )
@@ -28,15 +28,15 @@ def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: Backgroun
 
 def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
     teacher = db.query(models.Teachers).filter(and_(models.Teachers.name == request.name,
-                                models.Teachers.username == request.user_name))
+                                models.Teachers.username == request.username))
     if not teacher.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User in database") 
 
     teacher.delete(synchronize_session=False)
-    remove_encoding = faceid.remove_encoding(request.user_name)
+    remove_encoding = faceid.remove_encoding(request.username)
     if not remove_encoding:
         raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, 
-                      detail = f"Failed to remove encodings for the user: {request.user_name}")
+                      detail = f"Failed to remove encodings for the user: {request.username}")
     db.commit()
     return Response(status_code=204)
 
@@ -105,7 +105,7 @@ def get_student_details(db: Session, course: str, year: int, template = False):
 
 def send_message(user, request: Schemas.Message, db: Session):
 
-    hod_name = user.user_name
+    hod_name = user.username
     hod_dep = user.department
 
     message = models.Message(
@@ -120,7 +120,7 @@ def send_message(user, request: Schemas.Message, db: Session):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 def get_full_message(db: Session, user):
-    hod_name = user.user_name
+    hod_name = user.username
     hod_dep = user.department
     messages = db.query(models.Message).filter(
                 and_(models.Message.hod_name == hod_name,
@@ -129,7 +129,7 @@ def get_full_message(db: Session, user):
     return messages[::-1]
 
 def clear_message(db: Session, user):
-    hod_name = user.user_name
+    hod_name = user.username
     hod_dep = user.department
     messages = db.query(models.Message).filter(
         and_(models.Message.hod_name == hod_name,
@@ -197,8 +197,8 @@ def set_timetable(request: Schemas.TimeTable, db: Session):
 def check_timetable(request: Schemas.TimeTableChecker, db: Session):
     name = db.query(models.Teachers).filter(models.Teachers.username == request.name).first()
     if not name:
-        name = db.query(models.Hod).filter(models.Hod.user_name == request.name).first()
-        username = name.user_name
+        name = db.query(models.Hod).filter(models.Hod.username == request.name).first()
+        username = name.username
     else: username = name.username
     checker = db.query(models.Timetable).filter(and_(
                         models.Timetable.days == request.day,
@@ -256,10 +256,10 @@ def current_hour_detail(department: str, day: str, hour: str, db: Session):
 
 def update_profile(request: Schemas.CreateHod, db: Session, user: models.Hod):
     userdetail = db.query(models.Hod).filter(
-                    and_(models.Hod.user_name == user.user_name,
+                    and_(models.Hod.username == user.username,
                          models.Hod.email == user.email))
     userdetail.update(dict(request))
-    faceid.update_username(user.user_name, request.user_name)
+    faceid.update_username(user.username, request.username)
     db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 

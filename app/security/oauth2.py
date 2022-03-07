@@ -76,6 +76,6 @@ async def get_hod(username: str):
     who, username = username.split(";")
     db = database.SessionLocal()
     username = db.query(models.Hod).filter(
-            models.Hod.user_name == username).first()
+            models.Hod.username == username).first()
     db.close()
     return username

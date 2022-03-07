@@ -97,7 +97,7 @@ def save_df_to_db(sql_conn: sqlite3.Connection, table_name: str,
 
 #==========================Changing v2.0=============================
 @get_sql_connection
-def get_db_to_df(sql_conn, *args, **kwargs):
+def get_db_to_df(sql_conn: sqlite3.Connection, *args, **kwargs):
     if 'query' not in kwargs:
         raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED)
     query = kwargs['query']
@@ -107,8 +107,8 @@ def get_db_to_df(sql_conn, *args, **kwargs):
 
 #==========================Changing v2.0=============================
 @get_sql_connection
-def createAttendenceFiles(course: str, year: int, sql_conn, **kwargs):
-    table_name = f"{course.upper()}year:{year}"
+def createAttendenceFile(course: str, year: int, sql_conn: sqlite3.Connection, **kwargs):
+    table_name = f"{course.upper()}year{year}"
     df = pd.DataFrame(columns=['ST_ID', 'ST_NAME', 'ST_STATUS'])
     status = save_df_to_db(sql_conn, table_name, df,
                             **kwargs)

@@ -1,9 +1,9 @@
 //Verification Image Upload
 
-function verification_image_upload(data, user_name, name){
+function verification_image_upload(data, username, name){
   var base = window.location.origin + '/hod/verification_image';
   var form_data = new FormData()
-  form_data.append('username', user_name);
+  form_data.append('username', username);
   form_data.append('image1', $('#vimage1')[0].files[0])
   form_data.append('image2', $('#vimage2')[0].files[0])
   form_data.append('image3', $('#vimage3')[0].files[0])
@@ -109,13 +109,13 @@ $("#Appointment_form").submit((e)=>{
 
   var name = $("#name").val()
   var email = $("#email").val()
-  var phone_number = parseInt($("#number").val())
+  var phone_num = parseInt($("#number").val())
   var username = $("#username").val()
-  var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone_number).slice(7) + username
+  var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone_num).slice(7) + username
   var tag = $("#tag").val()
   var depart = $("#depart").val()
   var data = JSON.stringify({"name": name, "username": username, "department": depart,
-              "email": email, "phone_number": phone_number, "tag": tag})
+              "email": email, "phone_num": phone_num, "tag": tag})
   
   appoint_teacher(data, name)
 })
@@ -133,7 +133,7 @@ $("#Appointment_form").submit((e)=>{
   function remove_teacher(username, name){
     $("#"+username).addClass("bg-danger")
     var base = window.location.origin + '/hod/Deleteteacher';
-    var data = JSON.stringify({"name": name, "user_name": username});
+    var data = JSON.stringify({"name": name, "username": username});
     $.ajax({
       url: base,
       type: 'DELETE',

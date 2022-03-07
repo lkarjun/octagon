@@ -113,7 +113,7 @@
                                         <option value="" disabled selected>Teacher</option>
                                         <option value="none">None</option>
                                         {% for i in hods %}
-                                        <option value="{{ i.user_name }}">{{ i.name }}(H)-({{i.department}})</option>
+                                        <option value="{{ i.username }}">{{ i.name }}(H)-({{i.department}})</option>
                                         {% endfor %}
                                         {% for i in teachers %}
                                         <option value="{{ i.username }}">{{ i.name }}-({{i.department}})</option>
@@ -442,7 +442,7 @@
                                             <option value="" disabled selected>Teacher</option>
                                             <option value="none">None</option>
                                             {% for i in hods %}
-                                            <option value="{{ i.user_name }}">{{ i.name }}(H)-({{i.department}})</option>
+                                            <option value="{{ i.username }}">{{ i.name }}(H)-({{i.department}})</option>
                                             {% endfor %}
                                             {% for i in teachers %}
                                             <option value="{{ i.username }}">{{ i.name }}-({{i.department}})</option>

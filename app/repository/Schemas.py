@@ -7,7 +7,7 @@ class CreateHod(BaseModel):
     name: str
     email: str
     phone_num: int
-    user_name: str
+    username: str
     department: str
 
 class ShowHods(CreateHod):
@@ -63,7 +63,7 @@ class AddTeacher(BaseModel):
     username: str
     department: str
     email: str
-    phone_number: int
+    phone_num: int
     tag: str
 
 class ShowTeacher(AddTeacher):
@@ -72,7 +72,7 @@ class ShowTeacher(AddTeacher):
 
 class DeleteTeacher(BaseModel):
     name: str
-    user_name: str
+    username: str
 
 class TimeTable(BaseModel):
     department: str

@@ -87,19 +87,19 @@ async def delete_hod(request: Schemas.DeleteHod, db: Session = Depends(get_db),\
             user=Depends(oauth2.manager_admin)):
     return admin.delete(request, db)
 
-@router.put('/portal/edit_hod/{user_name}', status_code=status.HTTP_202_ACCEPTED)
-async def update_detail(user_name: str, request: Schemas.CreateHod, db: Session = Depends(get_db),\
+@router.put('/portal/edit_hod/{username}', status_code=status.HTTP_202_ACCEPTED)
+async def update_detail(username: str, request: Schemas.CreateHod, db: Session = Depends(get_db),\
             user=Depends(oauth2.manager_admin)):
-    return admin.update(user_name, request, db)
+    return admin.update(username, request, db)
 
 @router.get('/portal/hods', status_code=status.HTTP_202_ACCEPTED, response_model=List[Schemas.ShowHods])
 async def hods_full_details(db: Session = Depends(get_db), \
             user=Depends(oauth2.manager_admin)):
     return admin.get_all(db)
 
-@router.get('/portal/hods/{user_name}', status_code=status.HTTP_202_ACCEPTED, response_model=Schemas.ShowHods)
-async def hod_detail(db: Session = Depends(get_db), user_name = None, user=Depends(oauth2.manager_admin)):
-    return admin.get_one(db, user_name)
+@router.get('/portal/hods/{username}', status_code=status.HTTP_202_ACCEPTED, response_model=Schemas.ShowHods)
+async def hod_detail(db: Session = Depends(get_db), username = None, user=Depends(oauth2.manager_admin)):
+    return admin.get_one(db, username)
 
 @router.put('/portal/update_password', status_code=status.HTTP_202_ACCEPTED)
 async def update_admin_password(request: Schemas.AdminPass, db: Session = Depends(get_db),\

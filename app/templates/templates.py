@@ -123,7 +123,7 @@ class OthersTemplates():
 class HodTemplates():
 
     def workspace(request, user, db):
-        classes = sorted(teacher.get_hour_detail(db, user.user_name), key = lambda x: x.hour)
+        classes = sorted(teacher.get_hour_detail(db, user.username), key = lambda x: x.hour)
         tmp = templates.TemplateResponse("hodWorkspace.html",
                         context={"request": request, 
                              "title": "Workspace",
@@ -281,14 +281,14 @@ class HodTemplates():
         return tmp
 
     def profile(request, user):
-        scode = user.user_name[-4:]
+        scode = user.username[-4:]
         tmp = templates.TemplateResponse("hodProfile.html",
                     context={'request': request, "title": 'Profile',
                          'user': user, 'scode': scode})
         return tmp
 
     def myclasses(request, db, user):
-        data = teacher.my_timetable(db, user.user_name)
+        data = teacher.my_timetable(db, user.username)
         tmp = templates.TemplateResponse("teacherTimetable.html",
                             context={"request": request, "title": "My Classes",
                                 "data": data, "head": True})

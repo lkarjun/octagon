@@ -73,14 +73,14 @@
         </thead>
         <tbody id='SearchHod'>
           {% for i in hods %}
-          <tr id="{{ i['user_name'] }}">
+          <tr id="{{ i['username'] }}">
             <th scope="row" class="font-weight-bold">{{i['name']}}</th>
             <td>{{ i['email'] }}</td>
             <td>{{ i['phone_num'] }}</td>
-            <td>{{ i['user_name'] }}</td>
+            <td>{{ i['username'] }}</td>
             <td>{{ i['department'] }}</td>
             <td>
-              <button type="button" class="ui button small red" onclick="remove_hod('{{i['user_name']}}')">
+              <button type="button" class="ui button small red" onclick="remove_hod('{{i['username']}}')">
                 Remove
               </button>
             </td>

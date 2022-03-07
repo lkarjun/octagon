@@ -31,24 +31,24 @@ def get_all(db: Session, template=False):
             detail = 'No content in the database')
     return hods
 
-def get_one(db: Session, user_name: str):
-    if user_name is None: return 'Please pass hod name to get details'
-    hod = db.query(models.Hod).filter(models.Hod.user_name == user_name).first()
+def get_one(db: Session, username: str):
+    if username is None: return 'Please pass hod name to get details'
+    hod = db.query(models.Hod).filter(models.Hod.username == username).first()
     if not hod:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
-            detail = f'THERE IS NO HOD IN USER NAME: {user_name}')
+            detail = f'THERE IS NO HOD IN USER NAME: {username}')
     return hod  
 
-def update(user_name: str, request: Schemas.CreateHod, db: Session):
-    hod = db.query(models.Hod).filter(models.Hod.user_name == user_name)
+def update(username: str, request: Schemas.CreateHod, db: Session):
+    hod = db.query(models.Hod).filter(models.Hod.username == username)
     if not hod.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with {user_name}") 
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with {username}") 
     hod.update(dict(request))
     db.commit()
     return 'done'
 
 def delete(request: Schemas.DeleteHod, db: Session):
-    hod = db.query(models.Hod).filter(models.Hod.user_name == request.username)
+    hod = db.query(models.Hod).filter(models.Hod.username == request.username)
     
     if not hod.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {request.name} and department: {request.department}") 
@@ -62,22 +62,22 @@ def delete(request: Schemas.DeleteHod, db: Session):
     return Response(status_code=204)
 
 def create(request: Schemas.CreateHod, db: Session, bg_task: BackgroundTasks):
-    user_name_check = db.query(models.Hod).filter(or_(
-                        models.Hod.user_name == request.user_name,
+    username_check = db.query(models.Hod).filter(or_(
+                        models.Hod.username == request.username,
                         models.Hod.email == request.email,
                         models.Hod.phone_num == request.phone_num
                     )).first()
-    if user_name_check:
+    if username_check:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
-                                detail = f"User already exists: check username '{request.user_name}', email '{request.email}', phone number '{request.phone_num}'")
+                                detail = f"User already exists: check username '{request.username}', email '{request.email}', phone number '{request.phone_num}'")
 
     new_hod = models.Hod(name = request.name, email = request.email, \
-                        phone_num = request.phone_num, user_name = request.user_name, \
+                        phone_num = request.phone_num, username = request.username, \
                         department = request.department)
-    id = hashing.get_unique_id(request.user_name)
+    id = hashing.get_unique_id(request.username)
     pending_verification = models.PendingVerificationImage(
                             id=id, 
-                            user_username=request.user_name, 
+                            user_username=request.username, 
                             user_email = request.email, 
                             hod_or_teacher='H')
                 

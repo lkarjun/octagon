@@ -31,7 +31,7 @@
   
           <div class="field">
             <label>Phone Number</label>
-            <input id='number' required type="text" placeholder="9934223333" value="{{ user.phone_number }}">
+            <input id='number' required type="text" placeholder="9934223333" value="{{ user.phone_num }}">
           </div>
           
           <div class="field">
@@ -110,13 +110,13 @@
     $("#Appointment_form").submit((e)=>{
         var name = $("#name").val()
         var email = $("#email").val()
-        var phone_number = parseInt($("#number").val())
+        var phone_num = parseInt($("#number").val())
         var username = $("#username").val()
-        var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone_number).slice(7) + username
+        var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone_num).slice(7) + username
         var tag = $("#tag").val()
         var depart = $("#depart").val()
         var data = JSON.stringify({"name": name, "username": username, "department": depart,
-              "email": email, "phone_number": phone_number, "tag": tag})
+              "email": email, "phone_num": phone_num, "tag": tag})
         var base = window.location.origin + '/teacher/update_profile';
         $("#upload_button").addClass("loading disabled")
         $.ajax({
