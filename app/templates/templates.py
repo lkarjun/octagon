@@ -160,10 +160,11 @@ class HodTemplates():
     def manage_department(request, user, db):
         teachers = hod.get_techer_details(db, user, template=True)
         hods = db.query(models.Hod).filter(models.Hod.department == user.department).all()
+        total_count = len(list(teachers)) + len(hods)
         tmp = templates.TemplateResponse("hodManage.html",
                 context={'request': request, "title": "Appoint Teachers", 
                          "teachers": teachers, "depart": user.department,
-                         'hods': hods})
+                         'hods': hods, 'total_count': total_count})
         return tmp
 
 
