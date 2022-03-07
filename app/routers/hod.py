@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends, status, Form, UploadFile, File, BackgroundTasks
+from fastapi import APIRouter, Request, Depends, status, Form, UploadFile, File, BackgroundTasks, HTTPException
 from sqlalchemy.orm.session import Session
 from starlette.responses import HTMLResponse, Response
 from repository import hod, Schemas, attendence, admin
@@ -110,6 +110,20 @@ async def terminalzone(request: Schemas.TerminalZone, db: Session = Depends(get_
                        user=Depends(oauth2.manager_hod)):
     return hod.terminalzone(request, db, user)
 
+
+# =================================================================================================
+# Changes needed here
+@router.post("/add-teacher-from-file", status_code=status.HTTP_204_NO_CONTENT)
+async def add_hod_from_file(
+                            department: str = Form(...),
+                            DATA: UploadFile = File(...),
+                            ):
+    if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
+        raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+# =================================================================================================
+
 # Pages
 @router.get("/workspace")
 async def workspace(request: Request, db: Session = Depends(get_db),
@@ -144,6 +158,12 @@ async def timetable(request: Request, user=Depends(oauth2.manager_hod),
 @router.get("/edit-teacher")
 async def appoint_teacher(request: Request,user=Depends(oauth2.manager_hod)):
     return HodTemplates.appoint_teacher(request, user)
+
+@router.get("/mydepartment")
+async def appoint_teacher(request: Request,
+                          user=Depends(oauth2.manager_hod),
+                          db: Session = Depends(get_db)):
+    return HodTemplates.manage_department(request, user, db)
 
 @router.get("/students-attendence/{course}/{year}", status_code=status.HTTP_200_OK)
 async def show_attendence(request: Request, course: str, year: int,

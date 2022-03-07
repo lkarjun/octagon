@@ -1,0 +1,109 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+
+<script>
+    $("#navMore").addClass("navisel")
+    $("#navMDm").addClass("navisel")
+</script>
+
+<br><br>
+<section id='displayTeacher'style="display: block;" class="pb-5 pt-5">
+    
+    <div class="jumbotron">
+      <h3 class="pb-4 text-center" style="font-family: sans-serif;">Department Full Details</h3>
+    </div>
+    <br>
+    
+    <div class="jumbotron">
+        <h5 class="pb-4 text-left" style="font-family: sans-serif;">Total staffs in {{depart}} Department is: {{ total_count }}</h5>
+      </div>
+    <br>
+    
+    <!--Teacher Search-->
+      <div class="form ui pb-3">
+
+          <div class="field">
+            <div class="ui search">
+              <div class="ui icon input">
+                <input class="prompt" type="text" id='myInput' placeholder="Search">
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+            </div>
+        </div>
+
+      </div>
+    <!--Search Ends-->
+    <br>
+    <div class="table-responsive">
+      <table class="table align-middle" id='datatable'>
+        <thead>
+          <tr class="bg-primary text-light">
+            <th scope="col" class="font-weight-bold">Name</th>
+            <th scope='col' class="font-weight-bold">Phone No:</th>
+            <th scope="col" class="font-weight-bold">Tag</th>
+          </tr>
+        </thead>
+        
+        <tbody id='Teachers'>
+        {% for hod in hods%}
+
+          <tr style="background-color: rgb(185, 255, 185);">
+            <td scope="row" class="font-weight-bold">{{ hod.name }}</td>
+            <td>{{ hod.phone_num }}</td>
+            <td>-</td>
+          </tr>
+
+        {% endfor %}
+        
+        {% for teacher in teachers%}
+
+        <tr style="background-color: rgb(248, 233, 150);">
+          <td scope="row" class="font-weight-bold">{{ teacher.name }}</td>
+          <td>{{ teacher.phone_number }}</td>
+          <td>{{ teacher.tag }}</td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+      </table>
+      <div class="ui buttons pt-md-0 pt-4">
+        <button class="ui red button" onclick="export_table('{{ depart }}', 'csv')">Export as Csv</button>
+        <div class="or"></div>
+        <button class="ui yellow button" onclick="export_table('{{ depart }}', 'pdf')">Export as Pdf</button>
+    </div>
+    </div>
+    <br><br>
+</section>
+
+<script>
+      // Teacher Search
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#Teachers tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+</script>
+
+<script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.0.10/jspdf.plugin.autotable.min.js"></script>
+<!-- Html table to pdf -->
+
+<script>
+
+    function export_table(filename, format){
+        var format_type = format;
+        var filename = filename.toUpperCase()+"_DEPARTMENT_DETAILS"
+
+        $("#datatable").tableHTMLExport({
+            type:format_type,
+            filename:filename
+        });
+    }
+
+</script>
+
+{% endblock %}
