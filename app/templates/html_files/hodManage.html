@@ -1,0 +1,93 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+
+<br><br>
+<section id='displayTeacher'style="display: block;" class="pb-5 pt-5">
+    
+    <div class="jumbotron">
+      <h3 class="pb-4 text-center" style="font-family: sans-serif;">Department Full Details</h3>
+    </div>
+    <br><br>
+    
+    <!--Teacher Search-->
+      <div class="form ui pb-3">
+
+          <div class="field">
+            <div class="ui search">
+              <div class="ui icon input">
+                <input class="prompt" type="text" id='myInput' placeholder="Search">
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+            </div>
+        </div>
+
+      </div>
+    <!--Search Ends-->
+    <br>
+    <div class="table-responsive">
+      <table class="table align-middle">
+        <thead>
+          <tr class="bg-primary text-light">
+            <th scope="col" class="font-weight-bold">Name</th>
+            <th scope='col' class="font-weight-bold">Phone No:</th>
+            <th scope="col" class="font-weight-bold">Tag</th>
+          </tr>
+        </thead>
+        
+        <tbody id='Teachers'>
+        <tr style="background-color:rgb(253, 160, 160);">
+            <td colspan="3">
+                <div class="jumbotron">
+                    <h3 class="text-center" style="font-family: sans-serif;">Hod Details</h3>
+                </div>
+            </td>
+        </tr>
+
+
+        {% for hod in hods%}
+
+          <tr>
+            <td scope="row" class="font-weight-bold">{{ hod.name }}</td>
+            <td>{{ hod.phone_num }}</td>
+            <td>-</td>
+          </tr>
+
+        {% endfor %}
+        
+        <tr style="background-color:rgb(253, 160, 160);">
+            <td colspan="3">
+                <div class="jumbotron">
+                    <h3 class="text-center" style="font-family: sans-serif;">Teacher Details</h3>
+                </div>
+            </td>
+        </tr>
+
+        
+        {% for teacher in teachers%}
+
+        <tr>
+          <td scope="row" class="font-weight-bold">{{ teacher.name }}</td>
+          <td>{{ teacher.phone_number }}</td>
+          <td>{{ teacher.tag }}</td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+    <br><br>
+</section>
+
+<script>
+      // Teacher Search
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#Teachers tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+</script>
+
+{% endblock %}

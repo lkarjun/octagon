@@ -153,7 +153,17 @@ class HodTemplates():
         db.close()
         tmp = templates.TemplateResponse("appointTeacher.html",
                 context={'request': request, "title": "Appoint Teachers", 
-                         "teachers": teachers, "depart": user.department})
+                        "teachers": teachers,
+                        "depart": user.department})
+        return tmp
+
+    def manage_department(request, user, db):
+        teachers = hod.get_techer_details(db, user, template=True)
+        hods = db.query(models.Hod).filter(models.Hod.department == user.department).all()
+        tmp = templates.TemplateResponse("hodManage.html",
+                context={'request': request, "title": "Appoint Teachers", 
+                         "teachers": teachers, "depart": user.department,
+                         'hods': hods})
         return tmp
 
 
