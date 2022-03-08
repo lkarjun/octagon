@@ -72,7 +72,7 @@ async def update_user_profile(data: Schemas.Staff_v2_0,
 async def students_details_(request: Request, 
                             db: Session = Depends(get_db),
                             user=Depends(oauth2.manager_teacher)):
-    return TeacherTemplates.students(request, db. user)
+    return TeacherTemplates.students(request, db, user)
 
 @router.get("/students-attendence/details/{course}/{year}", status_code=status.HTTP_200_OK)
 async def student_details(request: Request, course: str, year: int,

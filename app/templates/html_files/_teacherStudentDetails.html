@@ -29,15 +29,20 @@
         <!--Search Ends-->
 
         <div class="table-responsive">
-            <table class="table align-middle table-hover table-borderless">
+            <table class="table align-middle table-hover table-borderless rounded">
                 <thead class="table-primary">
                     <tr>
-                        <th scope="col" class="font-weight-bold">ID</th>
-                        <th scope="col" class="font-weight-bold">NAME</th>
-                        <th scope="col" class="font-weight-bold">EMAIL</th>
-                        <th scope="col" class="font-weight-bold">PARENT NAME</th>
-                        <th scope="col" class="font-weight-bold">PARENT NUMBER</th>
-                        <th scope="col" class="font-weight-bold">STUDENT NUMBER</th>
+                        <th scope="col" class="font-weight-bold">Admission Number</th>
+                        <th scope="col" class="font-weight-bold">Reg Number</th>
+                        <th scope="col" class="font-weight-bold">Name</th>
+                        <th scope="col" class="font-weight-bold">Course</th>
+                        <th scope="col" class="font-weight-bold">Year</th>
+                        <th scope="col" class="font-weight-bold">Status</th>
+                        <th scope="col" class="font-weight-bold">Gender</th>
+                        <th scope="col" class="font-weight-bold">Parent Phone</th>
+                        <th scope="col" class="font-weight-bold">State</th>
+                        <th scope="col" class="font-weight-bold">Religion</th>
+                        <th scope="col" class="font-weight-bold">Social Status</th>
                         <!-- <th scope="col" class="font-weight-bold">REMOVE STUDENT</th> -->
                     </tr>
                 </thead>
@@ -46,12 +51,17 @@
                     {% if details %}
                     {% for i in details %}
                     <tr>
-                        <td>{{ i.id }}</td>
+                        <th>{{ i.unique_id }}</th>
+                        <th>{{ i.reg_number }}</th>
                         <th scope="col" class="font-weight-bold">{{ i.name }}</th>
-                        <td>{{ i.email }}</td>
-                        <td>{{ i.parent_name }}</td>
-                        <td>{{ i.parent_number }}</td>
-                        <td>{{ i.parent_number_alt }}</td>
+                        <td>{{ i.course }}</td>
+                        <td>{{ i.year }}</td>
+                        <td class="font-weight-bold">{{ i.status }}</td>
+                        <td>{{ i.gender }}</td>
+                        <td>{{ i.parent_phone }}</td>
+                        <td>{{ i.state }}</td>
+                        <td>{{ i.religion }}</td>
+                        <td>{{ i.social_status }}</td>
                         <!-- <td>
                             <button type="button" class="btn btn-danger btn-sm px-3">
                               <i class="x icon"></i>
@@ -61,7 +71,7 @@
                     {% endfor %}
                     {% else %}
                     <tr>
-                        <td colspan="6" class="font-weight-bold text-center">****No Student Admitted****</td>
+                        <td colspan="11" class="font-weight-bold text-center">****No Student Admitted****</td>
                     </tr>
                     {% endif %}
                 </tbody>
