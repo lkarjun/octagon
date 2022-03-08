@@ -56,7 +56,7 @@
                                 {% if i|float <= 0.4 %}
                                 <td class="text-light" style="background-color: #FF8A80">{{ i }}</td>
                                 {% else %}
-                                <td class="text-light" style="background-color: #66BB6A;">{{ i }}</td>
+                                <td class="text-dark" style="background-color: #ffffff;">{{ i }}</td>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
@@ -68,11 +68,9 @@
 
             </table>
             {% if data_in %}
-            <div class="ui buttons small">
-                <button class="ui button red" onclick="export_table('csv')">Export as Csv</button>
-                <div class="or"></div>
-                <button class="ui yellow button" onclick="export_table('pdf')">Export as Pdf</button>
-            </div>
+
+            <button class="ui button red" onclick="export_table('csv')">Export as Csv</button>
+            
             {% endif %}
         </div>
 

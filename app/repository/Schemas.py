@@ -57,8 +57,9 @@ class Student_v2_0(BaseModel):
     year: int = 1
 
 class StudentsAttendence_v2_0(BaseModel): 
-    ids: List[str]
-    names: List[str]
+    datas: List
+    # ids: List[str]
+    # names: List[str]
 
 class TakeAttendence_v2_0(BaseModel):
     course: str

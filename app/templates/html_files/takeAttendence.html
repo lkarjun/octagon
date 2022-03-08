@@ -65,8 +65,8 @@
 
         <script>
 
-            function append_student_name(name){
-                $('#present_students').append(new Option(name, name))
+            function append_student_name(data){
+                $('#present_students').append(new Option(data[1], data[0]))
             }
 
             
@@ -93,11 +93,11 @@
                     contentType: "application/json",
 
                     success: function(result){
-
+                        console.log(result)
                         $("#setclass_btn").removeClass("loading");
                         $("#take_btn").removeClass("disabled")
                         $("#present_students").empty()
-                        result.names.forEach(append_student_name)
+                        result.datas.forEach(append_student_name)
 
                         swal({
                             title: "Student Names Updated!",

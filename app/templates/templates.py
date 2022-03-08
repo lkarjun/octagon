@@ -239,7 +239,7 @@ class HodTemplates():
         db = database.SessionLocal()
         details = hod.get_student_details(db, course, year, template=True)
         db.close()
-        tmp = templates.TemplateResponse("studentDetails.html",
+        tmp = templates.TemplateResponse("_teacherStudentDetails.html",
                     context={"request": request, "title": "Attendence Sheet",
                                 "details": details, "course": course, "year": year})
 
@@ -254,7 +254,7 @@ class HodTemplates():
 
 
     def show_report(request, data):
-        final_report = attendence.attendence_analysing(request=data, open_daily=True).values
+        final_report = attendence.attendence_analysing(data=data).values
         tmp = templates.get_template("__attendencereport.html")
         tmp = tmp.render(request = request, final_report = final_report)
         return tmp

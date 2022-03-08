@@ -3,8 +3,8 @@ $("#dataAnalysis").submit((e)=>{
     dataAnalysis()
 })
 
-function append_student_name(name){
-    $('#students_names').append(new Option(name, name))
+function append_student_name(data){
+    $('#students_names').append(new Option(data[1], data[0]))
 }
 
 
@@ -258,7 +258,7 @@ function get_studence_name(){
         success: function(result){
             $("#get_st_name_btn").removeClass("loading disabled")
             $("#students_name").empty()
-            result.names.forEach(append_student_name)
+            result.datas.forEach(append_student_name)
             swal({
                 title: "Student Names Updated!",
                 text: "Please choose students name.",
