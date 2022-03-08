@@ -6,6 +6,23 @@ from fastapi import HTTPException, status, Response, BackgroundTasks
 from security import faceid, hashing
 from octagonmail import octagonmail
 
+#================================v2.0===========================================
+def appoint_teacher_v2_0(data: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):
+    new_teacher = models.Teachers(**data.dict())
+    id = hashing.get_unique_id(data.username)
+    pending_verification = models.PendingVerificationImage(
+                            id=id, 
+                            user_username=data.username, 
+                            user_email = data.email, 
+                            hod_or_teacher='T')
+    db.add(new_teacher)
+    db.add(pending_verification)
+    db.commit()
+    db.refresh(new_teacher)
+    bg_task.add_task(octagonmail.verification_mail, data.name, data.email, id)
+    return Response(status_code=204)
+#===========================================================================
+
 def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):
     new_teacher = models.Teachers(
                     name = request.name, email = request.email,\
@@ -27,16 +44,16 @@ def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: Backgroun
     return Response(status_code=204)
 
 def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
-    teacher = db.query(models.Teachers).filter(and_(models.Teachers.name == request.name,
+    teacher = db.query(models.Teachers).filter(and_(models.Teachers.id == request.name,
                                 models.Teachers.username == request.username))
     if not teacher.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User in database") 
 
     teacher.delete(synchronize_session=False)
     remove_encoding = faceid.remove_encoding(request.username)
-    if not remove_encoding:
-        raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, 
-                      detail = f"Failed to remove encodings for the user: {request.username}")
+    # if not remove_encoding:
+    #     raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, 
+    #                   detail = f"Failed to remove encodings for the user: {request.username}")
     db.commit()
     return Response(status_code=204)
 
@@ -254,10 +271,10 @@ def current_hour_detail(department: str, day: str, hour: str, db: Session):
                         for i in current_hour]
     return detail
 
-def update_profile(request: Schemas.CreateHod, db: Session, user: models.Hod):
+def update_profile(request: Schemas.Staff_v2_0, db: Session, user: models.Hod):
     userdetail = db.query(models.Hod).filter(
                     and_(models.Hod.username == user.username,
-                         models.Hod.email == user.email))
+                         models.Hod.id == user.id))
     userdetail.update(dict(request))
     faceid.update_username(user.username, request.username)
     db.commit()

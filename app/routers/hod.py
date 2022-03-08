@@ -13,14 +13,15 @@ get_db = database.get_db
 
 
 # Teacher Related
-
+#================================v2.0===========================================
 @router.post("/Addteacher_v2_0", status_code = status.HTTP_204_NO_CONTENT)
-async def appoint_hod(data: Schemas.Staff_v2_0, 
+async def appoint_teacher(data: Schemas.Staff_v2_0, 
                       bg_task: BackgroundTasks,
                       db: Session = Depends(get_db),
                       user = Depends(oauth2.manager_admin)):
-    print(data)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return hod.appoint_teacher_v2_0(data, db, bg_task)
+
+#==============================================================================
 
 @router.post('/Addteacher', status_code=status.HTTP_204_NO_CONTENT)
 async def add_teacher(request: Schemas.AddTeacher, 
@@ -108,9 +109,9 @@ async def clear_message(db: Session = Depends(get_db), user=Depends(oauth2.manag
 
 
 @router.post("/update_profile")
-async def update_profile(request: Schemas.CreateHod, db: Session = Depends(get_db), 
+async def update_profile(data: Schemas.Staff_v2_0, db: Session = Depends(get_db), 
                 user=Depends(oauth2.manager_hod)):
-    return hod.update_profile(request, db, user)
+    return hod.update_profile(data, db, user)
 
 
 @router.post("/terminalzone")
