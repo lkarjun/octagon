@@ -339,7 +339,7 @@
     var name = $('#name').val()
     var email = $('#email').val()
     var phone = parseInt($('#number').val())
-    var username = make_username(phone)
+    var username = make_username(name, phone)
     var department = $('#department_options').val()
     var jdate = $("#jdate").val().toString()
     var dob = $("#dob").val().toString()
@@ -354,6 +354,7 @@
     var tag = $("#tag").val()
 
     var data = JSON.stringify({"id": id, "name": name, "email": email,
+                "username": username,
                 "phone_num": phone, "department": department,
                 "tag": tag, "joining_date": jdate, "dob": dob,
                 "higher_qualification": hq, "net_qualification": nq,
@@ -365,7 +366,7 @@
   })
   
 
-  function make_username(phone){
+  function make_username(name, phone){
     var username = $('#username').val()
     var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone).slice(7) + username
     return username
