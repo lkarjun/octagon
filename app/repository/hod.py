@@ -46,9 +46,13 @@ def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: Backgroun
 def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
     teacher = db.query(models.Teachers).filter(and_(models.Teachers.id == request.name,
                                 models.Teachers.username == request.username))
+    pending_verification = db.query(models.PendingVerificationImage).filter(models.PendingVerificationImage.user_username == request.username)
     if not teacher.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User in database") 
 
+    if pending_verification.first():
+        pending_verification.delete(synchronize_session=False)
+    
     teacher.delete(synchronize_session=False)
     remove_encoding = faceid.remove_encoding(request.username)
     # if not remove_encoding:
