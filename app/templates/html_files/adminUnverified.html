@@ -44,8 +44,7 @@
         <table class="table align-middle">
           <thead>
             <tr class="bg-primary text-light">
-              <th scope="col" class="font-weight-bold">Id</th>
-              <th scope="col" class="font-weight-bold">Username</th>
+              <th scope="col" class="font-weight-bold">Key</th>
               <th scope='col' class="font-weight-bold">Email</th>
               <!-- <th scope="col" class="font-weight-bold">Hod</th> -->
               <th scope="col" class="font-weight-bold">Alert</th>
@@ -58,7 +57,6 @@
             <tr id="{{ i['id'] }}">
                 <td class="font-weight-bold">{{ i['id'] }} <i class="external alternate icon blue" 
                             onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'></i></td>
-                <td>{{i['user_username']}}</td>
                 <td>{{ i['user_email'] }}</td>
                 <!-- <td>{{ i['hod_or_teacher'] }}</td> -->
                 
@@ -94,8 +92,7 @@
         <table class="table align-middle">
           <thead>
             <tr class="bg-primary text-light">
-              <th scope="col" class="font-weight-bold">Id </th>
-              <th scope="col" class="font-weight-bold">Username</th>
+              <th scope="col" class="font-weight-bold">Key </th>
               <th scope='col' class="font-weight-bold">Email</th>
               <!-- <th scope="col" class="font-weight-bold">Teacher</th> -->
               <th scope="col" class="font-weight-bold">Alert</th>
@@ -108,7 +105,6 @@
             <tr id="{{ i['id'] }}">
                 <td class="font-weight-bold">{{ i['id'] }} <i class="external alternate icon blue" 
                             onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'></i></td>
-                <td>{{i['user_username']}}</td>
                 <td>{{ i['user_email'] }}</td>
                 <!-- <td>{{ i['hod_or_teacher'] }}</td> -->
                 
