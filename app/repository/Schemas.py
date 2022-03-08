@@ -27,6 +27,7 @@ class Student_v2_0(BaseModel):
 class Staff_v2_0(BaseModel):
     id: str
     name: str
+    username: str
     email: str
     phone_num: int
     department: str
@@ -54,17 +55,6 @@ class Student_v2_0(BaseModel):
     status: str = "Continue"
     course: str
     year: int = 1
-
-# class AddStudent(BaseModel):
-#     unique_id: str
-#     name: str
-#     email: str
-#     parent_name: str
-#     parent_number: int
-#     number: int
-#     course: str
-#     year: int
-
 
 class StudentsAttendence_v2_0(BaseModel): 
     ids: List[str]

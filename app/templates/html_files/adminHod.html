@@ -290,7 +290,7 @@
 
   
 
-  function appoint_hod_v2_0(data){
+  function appoint_hod_v2_0(name, data){
     console.log(data)
     var base = window.location.origin + '/admin/portal/appoint_hod';
     $.ajax({
@@ -304,7 +304,7 @@
           success: function(result) {
               $("#upload_button").removeClass("loading disabled");
               swal({
-                text: `Successfully Appointed Hod: ${data['name']}`,
+                text: `Successfully Appointed Hod: ${name}`,
                 icon: "success",
                 button: "Okay!",
               })
@@ -362,7 +362,7 @@
                 "religion": rn, "social_status": sc});
 
     $("#upload_button").addClass("loading disabled");
-    appoint_hod_v2_0(data)
+    appoint_hod_v2_0(name, data)
   })
   
 

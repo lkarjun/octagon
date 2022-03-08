@@ -2,7 +2,50 @@ from database.database import Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float, Boolean
 from sqlalchemy.orm import relationship
 
+# ======================================V2.0=========================================================
+# Changes needed here
+
 class Hod(Base):
+    __tablename__ = "Department Heads"
+    id = Column(String, primary_key=True, index=True)
+    name = Column(String)
+    username = Column(String)
+    email = Column(String)
+    phone_num = Column(Integer)
+    department = Column(String)
+    tag = Column(String)
+    joining_date = Column(String)
+    dob = Column(String)
+    higher_qualification = Column(String)
+    net_qualification  = Column(String)
+    designation = Column(String)
+    gender = Column(String)
+    teaching_experience = Column(String)
+    religion = Column(String)
+    social_status = Column(String)
+
+
+class Teachers(Base):
+    __tablename__ = "Teacher"
+    id = Column(String, primary_key=True, index=True)
+    name = Column(String)
+    username = Column(String)
+    email = Column(String)
+    phone_num = Column(Integer)
+    department = Column(String)
+    tag = Column(String)
+    joining_date = Column(String)
+    dob = Column(String)
+    higher_qualification = Column(String)
+    net_qualification  = Column(String)
+    designation = Column(String)
+    gender = Column(String)
+    teaching_experience = Column(String)
+    religion = Column(String)
+    social_status = Column(String)
+# ======================================V2.0=========================================================
+
+class HOD(Base):
     __tablename__ = 'Hod'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
@@ -28,8 +71,8 @@ class Courses(Base):
     Duration = Column(Integer)
     Department = Column(String)
 
-class Teachers(Base):
-    __tablename__ = 'Teachers'
+class TEACHERS(Base):
+    __tablename__ = 'Teachers_OL'
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     username = Column(String, unique=True)

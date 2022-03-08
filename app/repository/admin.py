@@ -49,17 +49,49 @@ def update(username: str, request: Schemas.CreateHod, db: Session):
 
 def delete(request: Schemas.DeleteHod, db: Session):
     hod = db.query(models.Hod).filter(models.Hod.username == request.username)
-    
+    pending_verification = db.query(models.PendingVerificationImage).filter(models.PendingVerificationImage.user_username == request.username)
     if not hod.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {request.name} and department: {request.department}") 
 
     hod.delete(synchronize_session=False)
+    if pending_verification.first():
+        pending_verification.delete(synchronize_session=False)
     remove_encoding = faceid.remove_encoding(request.username)
-    if not remove_encoding:
-        raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, 
-                      detail = f"Failed to remove encodings for the user: {request.username}")
+    # if not remove_encoding:
+    #     print("THIS is wokring")
+    #     raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, 
+    #                   detail = f"Failed to remove encodings for the user: {request.username}")
     db.commit()
     return Response(status_code=204)
+
+# ======================================V2.0=========================================================
+# Changes needed here
+
+def appoint_hod(data: Schemas.Staff_v2_0, db: Session, bg_task: BackgroundTasks):
+    print(data.username)
+    username_check = db.query(models.Hod).filter(or_(
+                            models.Hod.id == data.id,
+                            models.Hod.username == data.username
+                            ))
+
+    if username_check.first():
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                                detail = f"User already exists: check username '{data.username}', id '{data.id}', phone number '{data.phone_num}'")
+
+    new_hod = models.Hod(**data.dict())
+    id = hashing.get_unique_id(data.username)
+    pending_verification = models.PendingVerificationImage(
+                            id=id, 
+                            user_username=data.username, 
+                            user_email = data.email, 
+                            hod_or_teacher='H')
+    db.add(new_hod)
+    db.add(pending_verification)
+    db.commit()
+    db.refresh(new_hod)
+    bg_task.add_task(octagonmail.verification_mail, data.name, data.email, id)
+    return Response(status_code=204)
+# =================================================================================================
 
 def create(request: Schemas.CreateHod, db: Session, bg_task: BackgroundTasks):
     username_check = db.query(models.Hod).filter(or_(

@@ -219,7 +219,7 @@ function remove_hod(username){
 
 // Appointment of hod and Verification image sends
 
-function appoint_hod(data){
+function appoint_hod_old(data){
   console.log(data)
   var base = window.location.origin + '/admin/portal/create_hod';
   $.ajax({
@@ -333,7 +333,7 @@ function verification_image_upload(data, name, username){
   })
 }
 
-$("#Appointment_form").submit((e)=>{
+$("#Appointment_form_old").submit((e)=>{
   e.preventDefault();
   var name = $('#name').val()
   var email = $('#email').val()

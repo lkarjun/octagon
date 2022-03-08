@@ -69,15 +69,16 @@ async def create_hod(request: Schemas.CreateHod,
                      user=Depends(oauth2.manager_admin)):
     return admin.create(request, db, bg_task)
 
+# ======================================V2.0=========================================================
+# Changes needed here
+
 @router.post('/portal/appoint_hod', status_code=status.HTTP_204_NO_CONTENT)
 async def appoint_hod(data: Schemas.Staff_v2_0, 
                       bg_task: BackgroundTasks,
                       db: Session = Depends(get_db),
                       user = Depends(oauth2.manager_admin)):
-    print(data)
-    return True
-# =================================================================================================
-# Changes needed here
+    return admin.appoint_hod(data, db, bg_task)
+
 @router.post("/portal/add-hod-from-file", status_code=status.HTTP_204_NO_CONTENT)
 async def add_hod_from_file(
                             department: str = Form(...),
