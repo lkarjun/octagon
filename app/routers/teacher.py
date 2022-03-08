@@ -84,6 +84,13 @@ async def add_student(request: Schemas.AddStudent, db: Session = Depends(get_db)
                                 ):
     return teacher.add_student(request, db)
 
+@router.post("/add-students-v2-0")
+async def add_student_v2_0(request: Schemas.Student_v2_0,
+                           db: Session = Depends(get_db),
+                         ):
+    print(request)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
 # =================================================================================================
 # Changes needed here
 @router.post("/add-students-from-file", status_code=status.HTTP_204_NO_CONTENT)

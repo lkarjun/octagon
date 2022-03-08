@@ -15,6 +15,11 @@ import sqlite3
 BASE_PATH = Path("repository/AttendenceFiles")
 ATPATH = Path("../database/attendence.db")
 
+def FULL_DATA_QUERY(course: str, year: int):
+    table_name = f'{course.upper()}year{year}'
+    query = f"select * from {table_name}"
+    return query, table_name
+
 #=========================Changing v2.0==============================
 
 def get_sql_connection(func: Callable):
@@ -93,29 +98,45 @@ def save_df_to_db(sql_conn: sqlite3.Connection, table_name: str,
     except Exception as e:
         return e
 
-#=======================================================
-
-#==========================Changing v2.0=============================
 @get_sql_connection
 def get_db_to_df(sql_conn: sqlite3.Connection, *args, **kwargs):
     if 'query' not in kwargs:
         raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED)
     query = kwargs['query']
-    df = pd.read_sql(query, sql_conn)
-    return df
-#=======================================================
+    try:
+        df = pd.read_sql(query, sql_conn).dropna()
+        return df
+    except Exception:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                        detail="Files Not Found.")
+    
 
-#==========================Changing v2.0=============================
 @get_sql_connection
 def createAttendenceFile(course: str, year: int, sql_conn: sqlite3.Connection, **kwargs):
     table_name = f"{course.upper()}year{year}"
     df = pd.DataFrame(columns=['ST_ID', 'ST_NAME', 'ST_STATUS'])
-    status = save_df_to_db(sql_conn, table_name, df,
+    status_ = save_df_to_db(sql_conn, table_name, df,
                             **kwargs)
-    if not status:
-        raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
+    if status_ == True:
+        return status_
+    raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
                             detail=f'Failed to create files: Exception {status}')
-    return status
+
+## Attendence Files Create based on duration
+def createAttendenceFiles(total_year: int, course: str):
+    for year in range(1, total_year + 1): createAttendenceFile(course, year, if_exists = 'replace')
+
+## Attendence Files Deleted based on duration
+@get_sql_connection
+def deleteAttendenceFiles(total_year: int, course: str, sql_conn: sqlite3.Connection):
+    cursor = sql_conn.cursor()
+    for year in range(1, total_year + 1):
+        table_name = f"{course.upper()}year{year}"
+        query = f"Drop TABLE {table_name}"
+        cursor.execute(query)
+        sql_conn.commit()
+    return
+
 #=======================================================
 
 def createFiles(year: int, course_alias: str):
@@ -151,6 +172,77 @@ def admit_students(request: Schemas.AddStudent, files: Schemas.Files, **kwargs):
     files.monthly = pd.DataFrame(data = full_names, columns=files.monthly.columns)
     
     return files
+
+#==========================Changing v2.0=============================
+
+@get_sql_connection
+def admit_students_from_file(data: Schemas.AdmitStudentFromFile_v2_0,
+                             sql_conn: sqlite3.Connection,
+                             **kwargs):
+    table_name = f"{data.course.upper()}year{data.year}"
+    existing_file = get_db_to_df(query = f'select * from {table_name}')
+    existing_file['ST_ID'] = data.file['ST_ID']
+    existing_file['ST_NAME'] = data.file['ST_NAME']
+    existing_file['ST_STATUS'] = data.file['ST_STATUS']
+    status_ = save_df_to_db(sql_conn, table_name, existing_file, **kwargs)
+    if status_ == True:
+        return status_
+    raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
+                            detail=f'Failed to create files: Exception {status_}')
+
+@get_sql_connection
+def admit_student(data: Schemas.Student_v2_0,
+                  file: pd.DataFrame,
+                  sql_conn: sqlite3.Connection,
+                  **kwargs):
+    
+    table_name = f"{data.course.upper()}year{data.year}"
+    existing_file = get_db_to_df(query = f'select * from {table_name}')
+    if file['ST_ID'][0] in existing_file['ST_ID']:
+        raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
+                            detail=f'Duplicate ID Found: Exception {file["ST_ID"]}')
+                            
+    status_ = save_df_to_db(sql_conn, table_name, file, **kwargs)
+    if status_ == True:
+        return status_
+    raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
+                            detail=f'Failed to create files: Exception {status_}')
+
+
+@get_sql_connection
+def remove_students(data: Schemas.DeleteStudent,
+                    sql_conn: sqlite3.Connection,
+                    **kwargs):
+    table_name = f"{data.course.upper()}year{data.year}"
+    df = get_db_to_df(query = f'select * from {table_name}')
+    df = df[df["ST_ID"] != data.unique_id]
+    
+    status_ = save_df_to_db(sql_conn, table_name, df, **kwargs)
+    if status_ == True:
+        return status_
+    raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
+                            detail=f'Failed to create files: Exception {status_}')
+    return df
+
+
+def get_student_names(data: Schemas.set_class):
+    df = get_db_to_df(query = FULL_DATA_QUERY(data.course, data.year)[0])
+    names = df['ST_NAME'].to_list()
+    ids = df['ST_ID'].to_list()
+
+    if not len(names):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+
+    if data.date in df.columns:
+        check_ = df[data.date]
+        if np.any(check_ >= 1):
+            raise HTTPException(status.HTTP_406_NOT_ACCEPTABLE, 
+                        detail=f"{data.date} attendence already taken")
+
+    return Schemas.StudentsAttendence_v2_0(ids = ids, names = names)
+
+
+#=======================================================
 
 @save_files
 @get_attendence_files

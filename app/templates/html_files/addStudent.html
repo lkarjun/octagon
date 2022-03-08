@@ -93,15 +93,106 @@ $("#navStudm").addClass("navisel")
 
         <div class="text-center">
             <div class="ui buttons">
-                <button class="ui button" onclick="$('#upload_file').show();$('#NewStudent').hide();">Upload Csv/Xlsx File</button>
+                <button class="ui button" onclick="$('#upload_file').show();$('#NewStudent_v2_0').hide();">Upload Csv/Xlsx File</button>
                 <div class="or"></div>
-                <button class="ui positive button" onclick="$('#NewStudent').show();$('#upload_file').hide();">Enter Manually</button>
+                <button class="ui positive button" onclick="$('#NewStudent_v2_0').show();$('#upload_file').hide();">Enter Manually</button>
             </div>
         </div>
 
         <br>
 
-        <form class="ui form" id="NewStudent" style="display: none;">
+        <form class="ui form" id="NewStudent_v2_0" style="display: none;">
+            <br>
+            <h3 class="ui dividing header" style="font-family: sans-serif">Enter Student Details</h3>
+    
+            <div class="fields two">
+                <div class="field">
+                    <label for="unique_id">Admission No:</label>
+                    <input required type="text" id="unique_id" placeholder="Admission Number">
+                </div>
+
+                <div class="field">
+                    <label for="unique_id">Registration No:</label>
+                    <input type="text" id="r_number" value = "None" placeholder="Registration Number">
+                </div>
+            </div>
+
+            <div class="three fields">
+<!--             
+                <div class="field">
+                    <label for="unique_id">Admission No:</label>
+                    <input required type="text" id="unique_id" placeholder="Admission Number">
+                </div> -->
+    
+                <div class="field">
+                    <label for="name">Name: </label>
+                    <input required type="text" id="name" placeholder="Full Name">
+                </div>
+    
+                <div class="field">
+                    <label>Gender</label>
+                    <select class="ui dropdown" id='gr'>
+                      <option value="MALE">MALE</option>
+                      <option value="FEMALE">FEMALE</option>
+                      <option value="TRANSGENDER">TRANSGENDER</option>
+                    </select>
+                  </div>
+                  
+                  <div class="field">
+                    <label>Parent Number:</label>
+                    <input required type='number' id='parent_number' placeholder="Parent Phone Number">
+                </div>
+
+            </div>
+    
+            <div class="three fields">
+    
+                <!-- <div class="field">
+                    <label>Parent Number:</label>
+                    <input required type='number' id='parent_number' placeholder="Parent Phone Number">
+                </div> -->
+                
+                
+                <div class="field">
+                    <label>Religion:</label>
+                    <select class="ui dropdown" id='rn'>
+                        <option value="HINDU">HINDU</option>
+                        <option value="MUSLIM">MUSLIM</option>
+                        <option value="CHRISTIAN">CHRISTIAN</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Social Status:</label>
+                    <select class="ui dropdown" id='sc'>
+                      <option value="GENERAL">GENERAL</option>
+                      <option value="OBC">OBC</option>
+                      <option value="SC/ST">SC/ST</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>State:</label>
+                    <select class="ui dropdown" id='state'>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Outside Kerala">Outside Kerala</option>
+                      <option value="Foreign">Foreign</option>
+                      <option value="NRI">NRI</option>
+                    </select>
+                </div>
+            
+            </div>
+        
+        
+            <div class="ui buttons">
+                <button class="ui button green" type="submit" id="appoint_btn">Submit</button>
+                <div class="or"></div>
+                <div class="ui button red" onclick='$("#NewStudent")[0].reset();'>clear</div>
+            </div>
+
+        </form>
+
+        <!-- <form class="ui form" id="NewStudent" style="display: none;">
             <br>
             <h3 class="ui dividing header" style="font-family: sans-serif">Enter Student Details</h3>
     
@@ -172,7 +263,7 @@ $("#navStudm").addClass("navisel")
                 <div class="ui button red" onclick='$("#NewStudent")[0].reset();'>clear</div>
             </div>
 
-        </form>
+        </form> -->
         <br><br>
 
         <div id="upload_file" style="display: none;">
@@ -414,6 +505,51 @@ $("#navStudm").addClass("navisel")
 
         });
     })
+</script>
+
+
+<script>
+    $("#NewStudent_v2_0").submit((e)=>{
+        e.preventDefault()
+        $("#appoint_btn").addClass("loading");
+        var name = $("#name").val()
+        var data = JSON.stringify({
+                        "unique_id": $("#unique_id").val(),
+                        "reg_number": $("#r_number").val(),
+                        "name": name, "gender": $("#gr").val(),
+                        "parent_phone": parseInt($("#parent_number").val()),
+                        "state": $("#state").val(),
+                        "religion": $("#rn").val(),
+                        "social_status": $("#sc").val(),
+                        "course": $("#course").val(), "year": parseInt($("#year").val())
+                    });
+        var base = window.location.origin + '/teacher/add-students-v2-0';
+    
+        $.ajax({
+    
+            url: base,
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            
+            success: function(result){
+                $("#appoint_btn").removeClass("loading");
+                swal({
+                    title: "Added Student!",
+                    text: "Sucessfully Added Student: " + name,
+                    icon: "success",
+                    button: "Okay!",
+                }).then((value) => {location.reload();});
+            },
+            error: function(result){
+                $("#appoint_btn").removeClass("loading")
+                error_alert("Something Went Wrong. Please try to contact the techincal team...");
+            }
+    
+        })
+    })
+    
 </script>
 
 <script src="{{ url_for('static', path='students.js') }}"></script>

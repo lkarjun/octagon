@@ -14,6 +14,14 @@ get_db = database.get_db
 
 # Teacher Related
 
+@router.post("/Addteacher_v2_0", status_code = status.HTTP_204_NO_CONTENT)
+async def appoint_hod(data: Schemas.Staff_v2_0, 
+                      bg_task: BackgroundTasks,
+                      db: Session = Depends(get_db),
+                      user = Depends(oauth2.manager_admin)):
+    print(data)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
 @router.post('/Addteacher', status_code=status.HTTP_204_NO_CONTENT)
 async def add_teacher(request: Schemas.AddTeacher, 
                       bg_task: BackgroundTasks,

@@ -3,6 +3,82 @@ from typing import Optional, List, Union
 from pathlib import Path
 from pandas import DataFrame
 
+
+
+#==========================Changing v2.0=============================
+
+class AdmitStudentFromFile_v2_0(BaseModel):
+    file: DataFrame
+    course: str
+    year: int
+
+    class Config:
+        arbitrary_types_allowed = True
+
+class Student_v2_0(BaseModel):
+    reg_no: str
+    # or unique_id
+    name: str
+    parent_number: str
+    course: str
+    year: int
+
+
+class Staff_v2_0(BaseModel):
+    id: str
+    name: str
+    email: str
+    phone_num: int
+    department: str
+    tag: str
+    joining_date: str
+    dob: str
+    higher_qualification: str
+    net_qualification: str
+    designation: str
+    gender: str
+    teaching_experience: int #year of teaching other than current
+    religion: str
+    social_status: str
+
+
+class Student_v2_0(BaseModel):
+    unique_id: str
+    reg_number: str = "None"
+    name: str
+    gender: str
+    state: str
+    parent_phone: int
+    religion: str
+    social_status: str
+    status: str = "Continue"
+    course: str
+    year: int = 1
+
+# class AddStudent(BaseModel):
+#     unique_id: str
+#     name: str
+#     email: str
+#     parent_name: str
+#     parent_number: int
+#     number: int
+#     course: str
+#     year: int
+
+
+class StudentsAttendence_v2_0(BaseModel): 
+    ids: List[str]
+    names: List[str]
+
+class TakeAttendence_v2_0(BaseModel):
+    course: str
+    year: int
+    take_full_day: bool
+    date: str
+    present: List[str]
+#====================================================================
+
+
 class CreateHod(BaseModel):
     name: str
     email: str

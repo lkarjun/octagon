@@ -101,8 +101,187 @@
     <br><br>
 </section>
 
+
+
+<section id="Addteacher" style="display: none;" class="pb-5 pt-5">
+  <h3 class="" style="font-family: sans-serif;">Appoint New Teacher</h3>
+  <br>
+  <form class="ui form">
+    <div class="field">
+      <label>Department</label>
+      <select class="ui dropdown search disabled" id='depart'>
+        <option value="{{depart}}" class="font-weight-bold">{{depart}}</option>
+      </select>
+    </div>
+  </form>
+  <br>
+  <br>
+  <div class="text-center">
+    <div class="ui buttons">
+        <button class="ui button" onclick="$('#upload_file').show();$('#Appointment_form_v2_0').hide();">Upload Csv/Xlsx File</button>
+        <div class="or"></div>
+        <button class="ui positive button" onclick="$('#Appointment_form_v2_0').show();$('#upload_file').hide();">Enter Manually</button>
+    </div>
+  </div>
+
+  <br>
+  <br>
   
-  <section id="Addteacher" style="display: none;" class="pb-5 pt-5">
+  <form class="ui form" id='Appointment_form_v2_0' style="display: none;">
+    <h4 class="ui dividing header" style="font-family: sans-serif;">Enter Manually</h4>
+    <div class="fields three">
+      <div class="field">
+        <label>Id</label>
+        <input id='id' required type="text" placeholder="Staff ID">
+      </div>
+      <div class="field">
+        <label>Name</label>
+        <input id='name' required type="text" placeholder="Name">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input id='email' required type="email" placeholder="Email">
+      </div>
+      
+    </div>
+
+    <div class="fields three">
+      <div class="field">
+        <label>Phone Number</label>
+        <input id='number' required type="number" placeholder="Phone Number">
+      </div>
+      <div class="field">
+        <label>Tag</label>
+        <select class="ui dropdown" id='tag'>
+          <option value="-" selected>None</option>
+          <option value="CT">Class Teacher</option>
+          <option value="TT">Tutor</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Higher Qualification</label>
+        <select class="ui dropdown" id='hq'>
+          <option value="PHD" selected>PHD</option>
+          <option value="POST DOCTORATE">POST DOCTORATE</option>
+          <option value="PH">PH</option>
+          <option value="MPHIL">MPHIL</option>
+        </select>
+      </div>
+      
+    </div>
+
+    <div class="fields three">
+      <div class="field">
+        <label>Net Qualification</label>
+        <select class="ui dropdown" id='nq'>
+          <option value="Yes" selected>Yes</option>
+          <option value="NO">No</option>
+        </select>
+
+      </div>
+      <div class="field">
+        <label>Designation</label>
+        <select class="ui dropdown" id='dn'>
+          <option value="ASSISTANT PROFESSOR" selected>ASSISTANT PROFESSOR</option>
+          <option value="ASSOCIATE PROFESSOR">ASSOCIATE PROFESSOR</option>
+          <option value="CONTRACT TEACHER">CONTRACT TEACHER</option>
+          <option value="PART TIME TEACHER">PART TIME TEACHER</option>
+        </select>
+
+      </div>
+      <div class="field">
+        <label>Social Status</label>
+        <select class="ui dropdown" id='sc'>
+          <option value="GENERAL">GENERAL</option>
+          <option value="OBC">OBC</option>
+          <option value="SC/ST">SC/ST</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="fields three">
+      <div class="field">
+        <label>Teaching Experience</label>
+        <input id='te' required type="number" placeholder="Year of Experience">
+      </div>
+      
+      <div class="field">
+        <label>Gender</label>
+        <select class="ui dropdown" id='gr'>
+          <option value="MALE">MALE</option>
+          <option value="FEMALE">FEMALE</option>
+          <option value="TRANSGENDER">TRANSGENDER</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Religion</label>
+        <select class="ui dropdown" id='rn'>
+          <option value="HINDU">HINDU</option>
+          <option value="MUSLIM">MUSLIM</option>
+          <option value="CHRISTIAN">CHRISTIAN</option>
+        </select>
+      </div>
+      
+    </div>
+
+    <div class="fields two">
+
+      <div class="field">
+        <label>Date of Birth</label>
+        <input id='dob' required type="date" placeholder="Joining Date">
+      </div>
+      <div class="field">
+        <label>Joining Date</label>
+        <input id='jdate' required type="date" placeholder="Joining Date">
+      </div>
+      <div class="field" style="display: none;">
+        <label>Secret Code</label>
+        <input id='username' required type="password" value="1111" placeholder="4 Digit Secret Code">
+      </div>
+    </div>
+
+    <div class="pt-2 pb-4" id = 'pro' style="display: none;">
+      <div class="progress" style="height: 15px;">
+        <div class="progress-bar bg-success rounded" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+
+    <div class="ui buttons">
+      <button class="ui button green" type="submit" id='appoint_btn'>Appoint</button>
+      <div class="or"></div>
+      <div class="ui button red" onclick='$("#Appointment_form_v2_0")[0].reset();'>clear</div>
+    </div>
+
+  </form>
+
+  <div id="upload_file" style="display: none;">
+
+    <form class="ui form" id="upload_file_form">
+        <h4 class="ui dividing header" style="font-family: sans-serif">Upload Csv or XLSM File</h4>
+        <div class="field">
+            <label for="file" class="ui icon button yellow w-50">
+                <i class="file icon"></i>
+                    Add CSV/XLSM File
+            </label>
+            <input type="file" id="file" style="display:none;" required accept=".csv, .xlxm, .xls">
+        </div>
+        
+        <div class="pt-2 pb-4" id = 'pro' style="display: none;">
+            <div class="progress" style="height: 15px;">
+            <div class="progress-bar bg-success rounded" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+        <button class="ui button green" type="submit" id="upload_btn" >Upload File</button>
+    </form>
+
+</div>
+
+</section>
+
+  
+  <!-- <section id="Addteacher" style="display: block;" class="pb-5 pt-5">
     <h3 class="" style="font-family: sans-serif;">Appoint New Teacher</h3>
     <br>
     <form class="ui form">
@@ -207,7 +386,7 @@
 
   </div>
 
-  </section>
+  </section> -->
 
 </div>
 
@@ -272,6 +451,88 @@
       });
   })
 </script>
+
+<br><br>
+
+
+<script>
+
+  
+
+
+  function appoint_teacher_v2_0(data, name){
+    var base = window.location.origin + '/hod/Addteacher_v2_0';
+    
+    $.ajax({
+      
+      url: base,
+      type: 'POST',
+      data: data,
+      dataType: 'json',
+      contentType: "application/json",
+      success: function(result){
+        $("#appoint_btn").removeClass("loading disabled")
+        $("#pro").hide()
+        swal({
+              title: "Appointed Teacher!",
+              text: "Sucessfully Appointed Teacher " + name,
+              icon: "success",
+              button: "Okay!",
+          })
+      },
+      error: function(result){
+        $("#pro").hide()
+        $("#appoint_btn").removeClass("loading disabled")
+        swal({
+              text: "Something Went Wrong. Please try to contact the techincal team...",
+              icon: "error",
+              button: "Okay"  
+            }).then((value) => {
+              location.reload();
+            })
+      }
+     
+    })
+  }
+
+  $("#Appointment_form_v2_0").submit((e)=>{
+    e.preventDefault();
+    var name = $('#name').val()
+    var email = $('#email').val()
+    var phone = parseInt($('#number').val())
+    var username = make_username(phone)
+    var department = $('#depart').val()
+    var jdate = $("#jdate").val().toString()
+    var dob = $("#dob").val().toString()
+    var sc = $("#sc").val()
+    var te = $("#te").val()
+    var rn = $("#rn").val()
+    var gr = $("#gr").val()
+    var hq = $("#hq").val()
+    var nq = $("#nq").val()
+    var dn = $("#dn").val()
+    var id = $("#id").val()
+    var tag = $("#tag").val()
+
+    var data = JSON.stringify({"id": id, "name": name, "email": email,
+                "phone_num": phone, "department": department,
+                "tag": tag, "joining_date": jdate, "dob": dob,
+                "higher_qualification": hq, "net_qualification": nq,
+                "designation": dn, "gender": gr, "teaching_experience": te,
+                "religion": rn, "social_status": sc});
+    //alert(data)
+    $("#upload_button").addClass("loading disabled");
+    appoint_teacher_v2_0(data, name)
+  })
+  
+
+  function make_username(phone){
+    var username = $('#username').val()
+    var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone).slice(7) + username
+    return username
+  }
+</script>
+
 
 <script src="{{ url_for('static', path='teachers_edit.js') }}"></script>
 {% endblock %}
