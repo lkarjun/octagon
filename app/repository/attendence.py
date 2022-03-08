@@ -13,7 +13,7 @@ import sqlite3
 
 # Decorators
 BASE_PATH = Path("repository/AttendenceFiles")
-ATPATH = Path("../database/attendence.db")
+ATPATH = Path("database/attendence.db")
 
 def FULL_DATA_QUERY(course: str, year: int):
     table_name = f'{course.upper()}year{year}'
@@ -30,6 +30,12 @@ def get_sql_connection(func: Callable):
         connection.close()
         return func_returns
     return wrap
+
+@get_sql_connection
+def get_table_names(sql_conn: sqlite3.Connection):
+    cursor = sql_conn.cursor()
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    return cursor.fetchall()
 
 #=======================================================
 

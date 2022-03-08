@@ -156,7 +156,7 @@ def delete_department(request: Schemas.DeleteDepartment, db: Session):
     if students.first(): students.delete(synchronize_session=False)
     if course.first():
         for i in course:
-            attendence.deleteAttendence(i.Duration, i.Course_name_alias)
+            attendence.deleteAttendenceFiles(i.Duration, i.Course_name_alias)
         course.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
@@ -165,7 +165,7 @@ def add_course(request: Schemas.AddCourse, db: Session):
     course = models.Courses(Course_name = request.course_name, Course_name_alias = request.course_alias,
                             Department = request.department,
                             Duration = request.duration)
-    attendence.createAttendence(request.duration, request.course_alias)
+    attendence.createAttendenceFiles(request.duration, request.course_alias)
     db.add(course)
     db.commit()
     db.refresh(course)
@@ -177,7 +177,7 @@ def delete_course(request: Schemas.DeleteCourse, db: Session):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
                     detail=f"No Course in name {request.course_name}")
     course_ = course.first()
-    attendence.deleteAttendence(course_.Duration, course_.Course_name_alias)
+    attendence.deleteAttendenceFiles(course_.Duration, course_.Course_name_alias)
     course.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
