@@ -179,7 +179,7 @@
                 <option value="HINDU" selected>HINDU</option>
                 <option value="MUSLIM">MUSLIM</option>
                 <option value="CHRISTIAN">CHRISTIAN</option>
-                {% elif user.gender == "MUSLIM" %}
+                {% elif user.religion == "MUSLIM" %}
                 <option value="HINDU">HINDU</option>
                 <option value="MUSLIM" selected>MUSLIM</option>
                 <option value="CHRISTIAN">CHRISTIAN</option>
@@ -203,7 +203,7 @@
               <label>Joining Date</label>
               <input id='jdate' disabled required type="date" placeholder="Date" value="{{user.joining_date}}">
             </div>
-            <div class="field" style="display: none;">
+            <div class="field" style="display: block;">
               <label>Secret Code</label>
               <input id='username' required type="password" value="1111" placeholder="4 Digit Secret Code">
             </div>

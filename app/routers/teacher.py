@@ -1,3 +1,4 @@
+from os import stat
 from fastapi import (APIRouter, Depends, Request, 
                     Response, status, UploadFile, 
                     File, Form, HTTPException)
@@ -59,10 +60,11 @@ async def timetable(request: Request, db: Session = Depends(get_db),
 async def profile(request: Request, user=Depends(oauth2.manager_teacher)):
     return TeacherTemplates.profile(request, user)
 
-@router.post("/update_profile")
-async def update_profile(request: Schemas.AddTeacher, db: Session = Depends(get_db), 
-                user=Depends(oauth2.manager_teacher)):
-    return teacher.update_profile(request, db, user)
+@router.put("/update_profile", status_code=status.HTTP_204_NO_CONTENT)
+async def update_user_profile(data: Schemas.Staff_v2_0, 
+                              user=Depends(oauth2.manager_teacher),
+                              db: Session = Depends(get_db)):
+    return teacher.update_profile(data, db, user)
 
 # Students
 
@@ -84,11 +86,11 @@ async def add_student(request: Schemas.AddStudent, db: Session = Depends(get_db)
                                 ):
     return teacher.add_student(request, db)
 
-@router.post("/add-students-v2-0")
+@router.post("/add-students-v2-0", status_code=status.HTTP_204_NO_CONTENT)
 async def add_student_v2_0(request: Schemas.Student_v2_0,
                            db: Session = Depends(get_db),
                          ):
-    print(request)
+    teacher.add_student_v2_0(request, db)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 # =================================================================================================

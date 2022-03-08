@@ -5,13 +5,14 @@ from sqlalchemy import and_, or_
 from fastapi import HTTPException, status, Response
 from datetime import datetime
 from security import faceid
+import pandas as pd
 
 # Teacher
 
-def update_profile(request: Schemas.AddTeacher, db: Session, user: models.Teachers):
+def update_profile(request: Schemas.Staff_v2_0, db: Session, user: models.Teachers):
     userdetail = db.query(models.Teachers).filter(
                     and_(models.Teachers.username == user.username,
-                         models.Teachers.email == user.email))
+                         models.Teachers.id == user.id))
     userdetail.update(dict(request))
     faceid.update_username(user.username, request.username)
     db.commit()
@@ -69,6 +70,26 @@ def my_timetable(db: Session, username: str):
 
 
 # Students
+
+
+#===========================================v2.0================================
+def add_student_v2_0(request: Schemas.Student_v2_0, db: Session):
+    df_file = pd.DataFrame({'ST_ID': [request.unique_id], 
+                            'ST_NAME': [request.name], 
+                            'ST_STATUS': [request.status]})
+    res = attendence.admit_student_v2_0(df_file, request.course, request.year, if_exists='append')
+    department = db.query(models.Courses).filter(models.Courses.Course_name_alias == request.course).first()
+    request = request.dict()
+    request['department'] = department.Department
+    new_student = models.Students(**request)
+    db.add(new_student)
+    db.commit()
+    db.refresh(new_student)
+
+    return res
+
+#===============================================================================
+
 
 def add_student(request: Schemas.AddStudent, db: Session):
 
