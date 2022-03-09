@@ -18,7 +18,7 @@ get_db = database.get_db
 async def appoint_teacher(data: Schemas.Staff_v2_0, 
                       bg_task: BackgroundTasks,
                       db: Session = Depends(get_db),
-                      user = Depends(oauth2.manager_admin)):
+                      user = Depends(oauth2.manager_hod)):
     return hod.appoint_teacher_v2_0(data, db, bg_task)
 
 #==============================================================================
@@ -124,12 +124,15 @@ async def terminalzone(request: Schemas.TerminalZone, db: Session = Depends(get_
 # Changes needed here
 @router.post("/add-teacher-from-file", status_code=status.HTTP_204_NO_CONTENT)
 async def add_hod_from_file(
+                            bg_task: BackgroundTasks,
                             department: str = Form(...),
                             DATA: UploadFile = File(...),
+                            db: Session = Depends(get_db)
+
                             ):
     if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return hod.appoint_teacher_v2_0_from_file(DATA, db, bg_task)
 
 # =================================================================================================
 

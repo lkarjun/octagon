@@ -2,12 +2,14 @@ from database import models
 from repository import Schemas,uoc, attendence
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
-from fastapi import HTTPException, status, Response, BackgroundTasks
+from fastapi import HTTPException, status, Response, BackgroundTasks, UploadFile
 from security import faceid, hashing
 from octagonmail import octagonmail
+from tqdm import tqdm
+import pandas as pd
 
 #================================v2.0===========================================
-def appoint_teacher_v2_0(data: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):
+def appoint_teacher_v2_0(data: Schemas.Staff_v2_0, db: Session, bg_task: BackgroundTasks):
     new_teacher = models.Teachers(**data.dict())
     id = hashing.get_unique_id(data.username)
     pending_verification = models.PendingVerificationImage(
@@ -21,6 +23,21 @@ def appoint_teacher_v2_0(data: Schemas.AddTeacher, db: Session, bg_task: Backgro
     db.refresh(new_teacher)
     bg_task.add_task(octagonmail.verification_mail, data.name, data.email, id)
     return Response(status_code=204)
+
+def appoint_teacher_v2_0_from_file(Data: UploadFile, db: Session, bg_task: BackgroundTasks):
+    if Data.content_type == "text/csv":
+        df = pd.read_csv(Data.file)
+    elif Data.content_type == 'text/xlxm' or Data.content_type == 'text/xls':
+        df = pd.read_excel(Data.file)
+    else: raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, detail="dataformat mismatched")
+
+    for _, i in tqdm(df.iterrows(), colour='green', desc='Adding Teachers from File'): 
+        print(i.to_dict())
+        i = Schemas.Student_v2_0(**i.to_dict())
+        res = appoint_teacher_v2_0(i, db)
+        if not res:
+            print(f"Failed to add student: {i.name} {i.id}")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 #===========================================================================
 
 def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):
