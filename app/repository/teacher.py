@@ -2,10 +2,11 @@ from database import models
 from repository import Schemas, attendence
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
-from fastapi import HTTPException, status, Response
+from fastapi import HTTPException, UploadFile, status, Response
 from datetime import datetime
 from security import faceid
 import pandas as pd
+from tqdm import tqdm
 
 # Teacher
 
@@ -73,6 +74,20 @@ def my_timetable(db: Session, username: str):
 
 
 #===========================================v2.0================================
+def add_students_from_file_helper(Data: UploadFile, db: Session):
+    if Data.content_type == "text/csv":
+        df = pd.read_csv(Data.file)
+    elif Data.content_type == 'text/xlxm' or Data.content_type == 'text/xls':
+        df = pd.read_excel(Data.file)
+    else: raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, detail="dataformat mismatched")
+
+    for _, i in tqdm(df.iterrows(), colour='green', desc='Adding Students from File'): 
+        i = Schemas.Student_v2_0(**i.to_dict())
+        res = add_student_v2_0(i, db)
+        if not res:
+            print(f"Failed to add student: {i.name} {i.id}")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    
 def add_student_v2_0(request: Schemas.Student_v2_0, db: Session):
     df_file = pd.DataFrame({'ST_ID': [request.unique_id], 
                             'ST_NAME': [request.name], 

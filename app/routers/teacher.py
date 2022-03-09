@@ -100,10 +100,11 @@ async def add_students_from_file(
                                 course: str = Form(...),
                                 year: int = Form(...),
                                 DATA: UploadFile = File(...),
+                                db: Session = Depends(get_db)
                                 ):
     if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return teacher.add_students_from_file_helper(DATA, db)
 
 # =================================================================================================
 
