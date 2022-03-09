@@ -32,12 +32,17 @@ def appoint_teacher_v2_0_from_file(Data: UploadFile, db: Session, bg_task: Backg
     else: raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, detail="dataformat mismatched")
 
     for _, i in tqdm(df.iterrows(), colour='green', desc='Adding Teachers from File'): 
-        print(i.to_dict())
-        i = Schemas.Student_v2_0(**i.to_dict())
+        i['username'] = form_username(i['name'], i['phone_num'])
+        i = Schemas.Staff_v2_0(**i.to_dict())
         res = appoint_teacher_v2_0(i, db)
         if not res:
             print(f"Failed to add student: {i.name} {i.id}")
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+def form_username(name: str, phone: int, scode: int = 1111):
+    phone = str(phone)
+    username = f"{name[:3]}{phone[7:]}{scode}"
+    return username
 #===========================================================================
 
 def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):
