@@ -26,10 +26,18 @@ RUN apt-get -y update && apt-get install -y --fix-missing \
 RUN pip3 install --upgrade pip && \
     git clone https://github.com/davisking/dlib.git && \
     cd dlib/ && \
-    sudo python3 setup.py install
+    python3 setup.py install
 
 COPY requirements.txt /app/requirements.txt
 
+# COPY Pipfile /app/Pipfile
+# COPY Pipfile.lock /app/Pipfile.lock
+
+# RUN pip install pipenv && pipenv sync
 RUN pip install -r /app/requirements.txt
 
-COPY ./app /app
+# COPY ./app /app
+WORKDIR /app
+COPY ./app .
+EXPOSE 5000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5000"]
