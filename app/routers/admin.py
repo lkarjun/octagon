@@ -81,12 +81,15 @@ async def appoint_hod(data: Schemas.Staff_v2_0,
 
 @router.post("/portal/add-hod-from-file", status_code=status.HTTP_204_NO_CONTENT)
 async def add_hod_from_file(
+                            bg_task: BackgroundTasks,
                             department: str = Form(...),
                             DATA: UploadFile = File(...),
+                            db: Session = Depends(get_db),
+                            user = Depends(oauth2.manager_admin)
                             ):
     if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return admin.appoint_hod_v2_0_from_file(DATA, db, bg_task)
 
 # =================================================================================================
 

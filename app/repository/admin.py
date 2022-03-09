@@ -1,11 +1,13 @@
 from sqlalchemy.orm.session import Session
 from database import models
 from security import hashing, faceid
-from fastapi import status, HTTPException, Response, BackgroundTasks
+from fastapi import status, HTTPException, Response, BackgroundTasks, UploadFile
 from sqlalchemy import and_, or_
 from repository import Schemas, attendence
 import time
 from octagonmail import octagonmail
+import pandas as pd
+from tqdm import tqdm
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)
@@ -68,7 +70,6 @@ def delete(request: Schemas.DeleteHod, db: Session):
 # Changes needed here
 
 def appoint_hod(data: Schemas.Staff_v2_0, db: Session, bg_task: BackgroundTasks):
-    print(data.username)
     username_check = db.query(models.Hod).filter(or_(
                             models.Hod.id == data.id,
                             models.Hod.username == data.username
@@ -91,6 +92,27 @@ def appoint_hod(data: Schemas.Staff_v2_0, db: Session, bg_task: BackgroundTasks)
     db.refresh(new_hod)
     bg_task.add_task(octagonmail.verification_mail, data.name, data.email, id)
     return Response(status_code=204)
+
+
+def appoint_hod_v2_0_from_file(Data: UploadFile, db: Session, bg_task: BackgroundTasks):
+    if Data.content_type == "text/csv":
+        df = pd.read_csv(Data.file)
+    elif Data.content_type == 'text/xlxm' or Data.content_type == 'text/xls':
+        df = pd.read_excel(Data.file)
+    else: raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, detail="dataformat mismatched")
+
+    for _, i in tqdm(df.iterrows(), colour='green', desc='Adding Teachers from File'): 
+        i['username'] = form_username(i['name'], i['phone_num'])
+        i = Schemas.Staff_v2_0(**i.to_dict())
+        res = appoint_hod(i, db)
+        if not res:
+            print(f"Failed to add student: {i.name} {i.id}")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+def form_username(name: str, phone: int, scode: int = 1111):
+    phone = str(phone)
+    username = f"{name[:3]}{phone[7:]}{scode}"
+    return username
 # =================================================================================================
 
 def create(request: Schemas.CreateHod, db: Session, bg_task: BackgroundTasks):
