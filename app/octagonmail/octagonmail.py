@@ -32,7 +32,7 @@ def send_mail(message: EmailMessage) -> bool:
         return False
 
 def verification_mail(name: str, email: str, id: str):
-    id = f"http://127.0.0.1:8000/verify/{id}"
+    id = f"https://octagon.azurewebsites.net/verify/{id}"
     html = html_head.format(body=verification_template.format(name=name.upper(), link=id))
     data = {'subject': 'Verification Needed',
             'subtype': 'html',
@@ -43,7 +43,7 @@ def verification_mail(name: str, email: str, id: str):
 
 def greeting_mail(username: str, name: str, email: str):
     print("Greeting is sended")
-    link = f"http://127.0.0.1.8000"
+    link = f"https://octagon.azurewebsites.net/"
     html = html_head.format(body=greeting_template.format(name=name, username=username, email=email, link=link))
     data = {'subject': 'Verification Completed',
             'subtype': 'html',
