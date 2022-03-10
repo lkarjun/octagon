@@ -42,11 +42,11 @@
 <section id='hod' class="p-4 m-4">
 
     <div class="adf">
-        <table class="ui inverted brown padded table selectable">
+        <table class="ui inverted brown padded table selectable text-center">
           <thead>
             <tr>
-              <th scope="col" class="font-weight-bold text-center">Key</th>
               <th scope='col' class="font-weight-bold text-center">Email</th>
+              <th scope="col" class="font-weight-bold text-center">Verify</th>
               <!-- <th scope="col" class="font-weight-bold">Hod</th> -->
               <th scope="col" class="font-weight-bold text-center">Alert</th>
               <th scope="col" class="font-weight-bold text-center">Remove</th>
@@ -56,19 +56,23 @@
             {% if hods.first() %}
             {% for i in hods %}
             <tr id="{{ i['id'] }}">
-                <td class="font-weight-bold">{{ i['id'] }} <i class="external alternate icon blue" 
-                            onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'></i></td>
                 <td>{{ i['user_email'] }}</td>
-                <!-- <td>{{ i['hod_or_teacher'] }}</td> -->
+
+                <td class="font-weight-bold"><button class="ui button small positive w-100" onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'>Verify Now</button>
+                </td>
+
+                <!-- <td class="font-weight-bold">{{ i['id'] }} <i class="external alternate icon blue" 
+                            onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'></i></td> -->
+                
                 
                 <td>
-                    <button type="button" class="ui button small green" onclick="alert_user('{{i['id']}}')">
+                    <button type="button" class="ui button small teal w-100" onclick="alert_user('{{i['id']}}')">
                         Alert
                     </button>
                 </td>
 
                 <td>
-                    <button type="button" class="ui button small red" onclick="remove_pending('{{i['id']}}')">
+                    <button type="button" class="ui button small red w-100" onclick="remove_pending('{{i['id']}}')">
                         Remove
                     </button>
                 </td>
