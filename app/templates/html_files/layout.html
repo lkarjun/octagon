@@ -32,8 +32,9 @@
                 <a class="item navi departt" href="/admin/department">Departments</a>
                 <a class="item navi hodd" href="/admin/hod">Hod</a>
                 <div class="right menu">
-                    <a class="item navi unverified" href="/admin/unverifiedusers"><i class="user circle icon orange"></i></a>
+                    <a class="item navi unverified" href="/admin/unverifiedusers"><i class="user circle icon unverified_icon orange"></i></a>
                     <a class="item navi credd" href="/admin/credential"><i class="lock icon blue"></i></a>
+                    <a class="item navi" onclick="about()"><i class="info icon blue"></i></a>
                     <a class="item navi" href="/admin/logout"><i class="sign out alternate red icon"></i></a>
                 </div>
                 
@@ -56,8 +57,9 @@
                   <a class="item navi teachh" href="/admin/teachers">Teachers Details</a>
                   <a class="item navi departt" href="/admin/department">Departments</a>
                   <a class="item navi hodd" href="/admin/hod">Hod</a>
-                  <a class="item navi unverified" href="/admin/unverifiedusers"><i class="user circle icon orange"></i>Unverified Users</a>
+                  <a class="item navi unverified" href="/admin/unverifiedusers"><i class="user circle icon orange unverified_icon"></i>Unverified Users</a>
                   <a class="item navi credd" href="/admin/credential"><i class="lock icon blue"></i>Credientials</a>
+                  <a onclick="about()" class="item navi"><i class="info icon blue"></i>About</a>
                   <a class="item navi" href="/admin/logout"><i class="sign out alternate icon red"></i>Logout</a>
                 </div>
             </div>
@@ -81,6 +83,19 @@
 
         $(".ui.dropdown").dropdown();
         });
+</script>
+
+<script>
+    function about(){
+        swal({
+            title: "Octagon: Version 2.0 Project 2k21!",
+            text: "Final Year Project(BCA) \
+                   by Lalkrishna, Rishal, Rashitha, Nafla",
+
+            icon: "info",
+            button: "Cool!",
+        })
+    }
 </script>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>

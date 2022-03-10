@@ -10,15 +10,15 @@
         
     <div class="ui buttons small">
 
-        <button class="ui button animated blue"  onclick="show('#dD')">
-            <div class="visible content" style="font-family: 'sans-serif';">Department</div>
+        <button class="ui button animated brown"  onclick="show('#dD')">
+            <div class="visible content" >Department</div>
             <div class="hidden content">
                 <i class="newspaper outline icon"></i>
             </div>
         </button>
   
-        <button class="ui button animated teal" onclick="show('#dH')">
-            <div class="visible content" style="font-family: sans-serif;">Hod</div>
+        <button class="ui button animated grey" onclick="show('#dH')">
+            <div class="visible content" >Department Heads</div>
             <div class="hidden content">
                 <i class="newspaper outline icon"></i>
             </div>
@@ -42,7 +42,7 @@
   <section id='dH' class="p-4 m-4" style="display: none;">
     
     <div class="jumbotron text-left">
-      <h3 class="pb-5 setfont">Hod Details</h3>
+      <h3 class="pb-5 setfont">Department Heads</h3>
     </div>
     
     <!--hod Search-->
@@ -60,9 +60,9 @@
 <!--Search Ends-->
 
     <div class="table-responsive">
-      <table class="ui green table align-middle">
+      <table class="ui green padded text-center table align-middle">
         <thead>
-          <tr class="bg-primary text-light">
+          <tr class="text-light">
             <th scope="col" class="font-weight-bold">ID</th>
             <th scope="col" class="font-weight-bold">Name</th>
             <th scope="col" class="font-weight-bold">Email</th>
@@ -136,9 +136,9 @@
 <!--Search Ends-->
 
     <div class="table-responsive">
-      <table class="table align-middle">
+      <table class="table ui padded text-center align-middle">
         <thead>
-          <tr class="bg-primary text-light">
+          <tr class="text-light">
             <th scope="col" class="font-weight-bold">Department</th>
             <th scope="col" class="font-weight-bold">Alias</th>
             <th scope='col' class="font-weight-bold">Courses</th>
@@ -152,7 +152,7 @@
             <td class="text-uppercase">{{ i['Alias'] }}</td>
             <td class="font-weight-bold text-uppercase">{{ cw[i['Alias']]|join(", ") }}</td>
             <td>
-              <button type="button" class="ui button small red" onclick="remove_departement('{{ i['Alias'] }}')">
+              <button type="button" class="ui button small red w-50" onclick="remove_departement('{{ i['Alias'] }}')">
                 Remove
               </button>
             </td>

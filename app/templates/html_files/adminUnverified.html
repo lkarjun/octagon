@@ -3,11 +3,12 @@
 
 <script>
     $(".unverified").addClass("navisel")
+    $(".unverified_icon").addClass("green")
 </script>
 
 <section id="head" class="pt-5 text-center">
         
-    <div class="ui buttons small">
+    <!-- <div class="ui buttons small">
 
         <button class="ui button animated blue"  onclick="show('#hod')">
             <div class="visible content" style="font-family: 'sans-serif';">Hod's</div>
@@ -33,27 +34,49 @@
           $(id).show();
 
       }
-  </script>
+  </script> -->
 
 </section>
 
 
 <section id='hod' class="p-4 m-4">
 
-    <div class="table-responsive">
-        <table class="table align-middle">
+    <div class="adf">
+        <table class="ui inverted brown padded table selectable">
           <thead>
-            <tr class="bg-primary text-light">
-              <th scope="col" class="font-weight-bold">Key</th>
-              <th scope='col' class="font-weight-bold">Email</th>
+            <tr>
+              <th scope="col" class="font-weight-bold text-center">Key</th>
+              <th scope='col' class="font-weight-bold text-center">Email</th>
               <!-- <th scope="col" class="font-weight-bold">Hod</th> -->
-              <th scope="col" class="font-weight-bold">Alert</th>
-              <th scope="col" class="font-weight-bold">Remove Hod</th>
+              <th scope="col" class="font-weight-bold text-center">Alert</th>
+              <th scope="col" class="font-weight-bold text-center">Remove</th>
             </tr>
           </thead>
           <tbody>
             {% if hods.first() %}
             {% for i in hods %}
+            <tr id="{{ i['id'] }}">
+                <td class="font-weight-bold">{{ i['id'] }} <i class="external alternate icon blue" 
+                            onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'></i></td>
+                <td>{{ i['user_email'] }}</td>
+                <!-- <td>{{ i['hod_or_teacher'] }}</td> -->
+                
+                <td>
+                    <button type="button" class="ui button small green" onclick="alert_user('{{i['id']}}')">
+                        Alert
+                    </button>
+                </td>
+
+                <td>
+                    <button type="button" class="ui button small red" onclick="remove_pending('{{i['id']}}')">
+                        Remove
+                    </button>
+                </td>
+
+            </tr>
+            {% endfor %}
+            {% elif teachers.first()%}
+            {% for i in teachers %}
             <tr id="{{ i['id'] }}">
                 <td class="font-weight-bold">{{ i['id'] }} <i class="external alternate icon blue" 
                             onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'></i></td>
@@ -86,52 +109,6 @@
 </section>
 
 
-<section id="teacher" class="p-4 m-4" style="display: none;">
-
-    <div class="table-responsive">
-        <table class="table align-middle">
-          <thead>
-            <tr class="bg-primary text-light">
-              <th scope="col" class="font-weight-bold">Key </th>
-              <th scope='col' class="font-weight-bold">Email</th>
-              <!-- <th scope="col" class="font-weight-bold">Teacher</th> -->
-              <th scope="col" class="font-weight-bold">Alert</th>
-              <th scope="col" class="font-weight-bold">Remove Teacher</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% if teachers.first() %}
-            {% for i in teachers %}
-            <tr id="{{ i['id'] }}">
-                <td class="font-weight-bold">{{ i['id'] }} <i class="external alternate icon blue" 
-                            onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'></i></td>
-                <td>{{ i['user_email'] }}</td>
-                <!-- <td>{{ i['hod_or_teacher'] }}</td> -->
-                
-                <td>
-                    <button type="button" class="ui button small green" onclick="alert_user('{{i['id']}}')">
-                        Alert
-                    </button>
-                </td>
-
-                <td>
-                    <button type="button" class="ui button small red" onclick="remove_pending('{{i['id']}}')">
-                        Remove
-                    </button>
-                </td>
-
-            </tr>
-            {% endfor %}
-            {% else %}
-            <tr>
-              <td colspan="6" class="text-center font-weight-bold">******No Pending Verifications******</td>
-            </tr>
-            {% endif %}
-          </tbody>
-        </table>
-    </div>
-
-</section>
 
 
 <script>
