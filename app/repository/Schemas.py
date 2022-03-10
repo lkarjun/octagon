@@ -41,6 +41,7 @@ class Staff_v2_0(BaseModel):
     teaching_experience: int #year of teaching other than current
     religion: str
     social_status: str
+    status: str = "Continue"
 
 
 class Student_v2_0(BaseModel):

@@ -23,7 +23,7 @@ class Hod(Base):
     teaching_experience = Column(String)
     religion = Column(String)
     social_status = Column(String)
-
+    status = Column(String, default="status")
 
 class Teachers(Base):
     __tablename__ = "Teacher"
@@ -43,6 +43,7 @@ class Teachers(Base):
     teaching_experience = Column(String)
     religion = Column(String)
     social_status = Column(String)
+    status = Column(String, default="status")
 
 class Students(Base):
     __tablename__ = 'Students'
