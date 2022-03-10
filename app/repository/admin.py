@@ -1,3 +1,4 @@
+from typing import Dict
 from sqlalchemy.orm.session import Session
 from database import models
 from security import hashing, faceid
@@ -101,10 +102,10 @@ def appoint_hod_v2_0_from_file(Data: UploadFile, db: Session, bg_task: Backgroun
         df = pd.read_excel(Data.file)
     else: raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, detail="dataformat mismatched")
 
-    for _, i in tqdm(df.iterrows(), colour='green', desc='Adding Teachers from File'): 
+    for _, i in tqdm(df.iterrows(), colour='green', desc='Adding hod from File'): 
         i['username'] = form_username(i['name'], i['phone_num'])
         i = Schemas.Staff_v2_0(**i.to_dict())
-        res = appoint_hod(i, db)
+        res = appoint_hod(i, db, bg_task)
         if not res:
             print(f"Failed to add student: {i.name} {i.id}")
     return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -34,7 +34,7 @@ def appoint_teacher_v2_0_from_file(Data: UploadFile, db: Session, bg_task: Backg
     for _, i in tqdm(df.iterrows(), colour='green', desc='Adding Teachers from File'): 
         i['username'] = form_username(i['name'], i['phone_num'])
         i = Schemas.Staff_v2_0(**i.to_dict())
-        res = appoint_teacher_v2_0(i, db)
+        res = appoint_teacher_v2_0(i, db, bg_task)
         if not res:
             print(f"Failed to add student: {i.name} {i.id}")
     return Response(status_code=status.HTTP_204_NO_CONTENT)
