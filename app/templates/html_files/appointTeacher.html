@@ -12,7 +12,7 @@
         
     <div class="ui buttons small">
   
-        <button class="ui button animated teal" onclick="show('#displayTeacher')">
+        <button class="ui button animated brown" onclick="show('#displayTeacher')">
             <div class="visible content">Display</div>
             <div class="hidden content">
                 <i class="newspaper outline icon"></i>
@@ -20,7 +20,7 @@
 
         </button>
 
-        <button class="ui button animated blue"  onclick="show('#Addteacher')">
+        <button class="ui button animated grey"  onclick="show('#Addteacher')">
           <div class="visible content">Appoint New Teacher</div>
           <div class="hidden content">
               <i class="edit outline icon"></i>
@@ -63,26 +63,27 @@
       </div>
     <!--Search Ends-->
 
-    <div class="table-responsive">
-      <table class="table align-middle">
+    <div class="table-responsive" style="min-height: 40vh;">
+      <table class="ui green padded text-center table align-middle">
         <thead>
-          <tr class="bg-primary text-light">
+          <tr class="text-light">
             <th scope="col" class="font-weight-bold">ID</th>
             <th scope="col" class="font-weight-bold">Name</th>
             <th scope="col" class="font-weight-bold">Email</th>
             <th scope='col' class="font-weight-bold">Phone No</th>
-            <th scope="col" class="font-weight-bold">Department</th>
+            <!-- <th scope="col" class="font-weight-bold">Department</th> -->
             <th scope="col" class="font-weight-bold">Tag</th>
-            <th scope="col" class="font-weight-bold">Joining Date</th>
-            <th scope="col" class="font-weight-bold">DOB</th>
+            <!-- <th scope="col" class="font-weight-bold">Joining Date</th> -->
+            <!-- <th scope="col" class="font-weight-bold">DOB</th> -->
             <th scope="col" class="font-weight-bold">Higher Qualification</th>
             <th scope="col" class="font-weight-bold">Net Qualification</th>
             <th scope="col" class="font-weight-bold">Designation</th>
-            <th scope="col" class="font-weight-bold">Gender</th>
-            <th scope="col" class="font-weight-bold">Teaching Experience</th>
-            <th scope="col" class="font-weight-bold">Religion</th>
-            <th scope="col" class="font-weight-bold">Social Status</th>
-            <th scope="col" class="font-weight-bold">Remove Hod</th>
+            <!-- <th scope="col" class="font-weight-bold">Gender</th> -->
+            <!-- <th scope="col" class="font-weight-bold">Teaching Experience</th> -->
+            <!-- <th scope="col" class="font-weight-bold">Religion</th> -->
+            <!-- <th scope="col" class="font-weight-bold">Social Status</th> -->
+            <th scope="col" class="font-weight-bold">Change Status</th>
+            <th scope="col" class="font-weight-bold">Remove Teacher</th>
           </tr>
         </thead>
         
@@ -91,21 +92,65 @@
           {% for i in teachers%}
 
           <tr id="{{ i['username'] }}">
-            <th scope="row" class="font-weight-bold">{{i['id']}}</th>
-            <th scope="row" class="font-weight-bold">{{i['name']}}</th>
-            <td>{{ i['email'] }}</td>
-            <td>{{ i['phone_num'] }}</td>
-            <td>{{ i['department'] }}</td>
-            <td>{{ i['tag'] }}</td>
-            <td>{{ i['joining_date'] }}</td>
-            <td>{{ i['dob'] }}</td>
-            <td>{{ i['higher_qualification'] }}</td>
-            <td>{{ i['net_qualification'] }}</td>
-            <td>{{ i['designation'] }}</td>
-            <td>{{ i['gender'] }}</td>
-            <td>{{ i['teaching_experience'] }} Year</td>
-            <td>{{ i['religion'] }}</td>
-            <td>{{ i['social_status'] }}</td>
+              <th scope="row" class="font-weight-bold">{{i['id']}}</th>
+              <th scope="row" class="font-weight-bold">{{i['name']}}</th>
+              <td>{{ i['email'] }}</td>
+              <td>{{ i['phone_num'] }}</td>
+              <!-- <td>{{ i['department'] }}</td> -->
+              <td>{{ i['tag'] }}</td>
+              <!-- <td>{{ i['joining_date'] }}</td> -->
+              <!-- <td>{{ i['dob'] }}</td> -->
+              <td>{{ i['higher_qualification'] }}</td>
+              <td>{{ i['net_qualification'] }}</td>
+              <td>{{ i['designation'] }}</td>
+              <!-- <td>{{ i['gender'] }}</td> -->
+              <!-- <td>{{ i['teaching_experience'] }} Year</td> -->
+              <!-- <td>{{ i['religion'] }}</td> -->
+              <!-- <td>{{ i['social_status'] }}</td> -->
+              <td>
+                <select class="ui selection focused dropdown" id='change_status' onchange="change_status('{{i['username']}}')">
+                  {% if i['status'] == 'Continue' %}
+                  <option value="Continue" selected>CONTINUE</option>
+                  <option value="Disontinue">DISCONTINUE</option>
+                  {% else %}
+                  <option value="Continue">CONTINUE</option>
+                  <option value="Discontinue" selected>DISCONTINUE</option>
+                  {% endif %}
+                </select>
+                <script>
+                  function change_status(username){
+                    $("#"+username).addClass("bg-warning")
+                    var status = $("#change_status").val()
+                    var base = window.location.origin + '/hod/change_status';
+                    var data = JSON.stringify({"username": username, "status": status})
+  
+                    $.ajax({
+                      url: base,
+                      type: 'PUT',
+                      async: true,
+                      data: data,
+                      dataType: 'json',
+                      contentType: "application/json",
+                      success: function(result) {
+                        $("#"+username).removeClass("bg-warning");
+                        swal({
+                          text: "Successfully Changed Teacher Status!",
+                          icon: "success",
+                          button: "Okay!",
+                        })
+                      },
+                      error: function(result){
+                        $("#"+username).addClass("bg-warning")
+                        swal({
+                          text: `Something Went Wrong Error Message: ${result.responseJSON.detail}`,
+                          icon: "warning",
+                          button: "Okay!",
+                        })
+                      }
+                    });
+                  }
+                </script>
+              </td>
             <td>
               <button type="button" class="ui button red small" onclick="remove_teacher('{{ i.username }}', '{{ i.id }}')">
                 Remove

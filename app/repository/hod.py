@@ -43,6 +43,19 @@ def form_username(name: str, phone: int, scode: int = 1111):
     phone = str(phone)
     username = f"{name[:3]}{phone[7:]}{scode}"
     return username
+
+def change_status(request: Schemas.Staff_v2_0_status, db: Session):
+    teacher_db = db.query(models.Teachers).filter(models.Teachers.username == request.username)
+    teacher = teacher_db.first()
+    if not teacher:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {request.name} and department: {request.department}") 
+    hod_dict = {'id': teacher.id, 'name': teacher.name, 'username': teacher.username, 'email': teacher.email, 'phone_num': teacher.phone_num, 'department': teacher.department, 'tag': teacher.tag
+                ,'joining_date': teacher.joining_date, 'dob': teacher.dob, 'higher_qualification': teacher.higher_qualification, 'net_qualification': teacher.net_qualification,
+                'designation': teacher.designation, 'gender': teacher.gender, 'teaching_experience': teacher.teaching_experience, 'religion': teacher.religion,
+                'social_status': teacher.social_status, 'status': request.status}
+    teacher_db.update(hod_dict)
+    db.commit()
+    return Response(status_code=204)
 #===========================================================================
 
 def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):

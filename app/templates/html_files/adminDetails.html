@@ -102,7 +102,7 @@
             <td>{{ i['social_status'] }}</td>
             <td>
               <select class="ui selection focused dropdown" id='change_status' onchange="change_status('{{i['username']}}')">
-                {% if i['status'] == 'CONTINUE' %}
+                {% if i['status'] == 'Continue' %}
                 <option value="Continue" selected>CONTINUE</option>
                 <option value="Disontinue">DISCONTINUE</option>
                 {% else %}
@@ -197,7 +197,7 @@
             <td class="text-uppercase">{{ i['Alias'] }}</td>
             <td class="font-weight-bold text-uppercase">{{ cw[i['Alias']]|join(", ") }}</td>
             <td>
-              <button type="button" class="ui button small red w-50" onclick="remove_departement('{{ i['Alias'] }}')">
+              <button type="button" class="ui button small red" onclick="remove_departement('{{ i['Alias'] }}')">
                 Remove
               </button>
             </td>

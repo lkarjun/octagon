@@ -21,6 +21,10 @@ async def appoint_teacher(data: Schemas.Staff_v2_0,
                       user = Depends(oauth2.manager_hod)):
     return hod.appoint_teacher_v2_0(data, db, bg_task)
 
+@router.put("/change_status", status_code=status.HTTP_204_NO_CONTENT)
+async def change_status(request: Schemas.Staff_v2_0_status, db: Session = Depends(get_db),\
+            user=Depends(oauth2.manager_hod)):
+        return hod.change_status(request, db)
 #==============================================================================
 
 @router.post('/Addteacher', status_code=status.HTTP_204_NO_CONTENT)
