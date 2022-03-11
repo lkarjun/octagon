@@ -56,7 +56,7 @@
             {% if hods.first() %}
             {% for i in hods %}
             <tr id="{{ i['id'] }}">
-                <td>{{ i['user_email'] }}</td>
+                <td><div class="ui button small font-weight-bold w-100">{{ i['user_email'] }}</div></td>
 
                 <td class="font-weight-bold"><button class="ui button small positive w-100" onclick='window.location.href = window.location.origin+"/verify/{{i["id"]}}"'>Verify Now</button>
                 </td>

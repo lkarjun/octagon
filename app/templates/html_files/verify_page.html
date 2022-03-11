@@ -120,7 +120,7 @@
                         $("#appoint_btn").removeClass("loading disabled")
                         $("#pro").hide()
                         swal({
-                            text: "Please retake image...",
+                            text: result.responseJSON.detail,
                             icon: "warning",
                             button: "Okay"
                         })
