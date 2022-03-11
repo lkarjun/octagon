@@ -101,10 +101,10 @@
             <td>{{ i['religion'] }}</td>
             <td>{{ i['social_status'] }}</td>
             <td>
-              <select class="ui selection focused dropdown" id='change_status' onchange="change_status('{{i['username']}}')">
+              <select class="ui selection focused dropdown" id="{{ i['username'] }}drop" onchange="change_status('{{i['username']}}')">
                 {% if i['status'] == 'Continue' %}
                 <option value="Continue" selected>CONTINUE</option>
-                <option value="Disontinue">DISCONTINUE</option>
+                <option value="Discontinue">DISCONTINUE</option>
                 {% else %}
                 <option value="Continue">CONTINUE</option>
                 <option value="Discontinue" selected>DISCONTINUE</option>
@@ -113,7 +113,8 @@
               <script>
                 function change_status(username){
                   $("#"+username).addClass("bg-warning")
-                  var status = $("#change_status").val()
+                  var status = $("#"+username+"drop").val()
+                
                   var base = window.location.origin + '/admin/portal/change_status';
                   var data = JSON.stringify({"username": username, "status": status})
 
