@@ -47,8 +47,6 @@ async def teachers_list(request: Request,
     return AdminTemplates.teachers_list(request, db)
 
 
-@router.delete('/portal/remove_teacher')
-
 @router.delete('/portal/remove_pending', status_code=status.HTTP_204_NO_CONTENT)
 async def remove_pending(request: Schemas.PendingVerification,
                          db: Session = Depends(get_db),
