@@ -24,6 +24,7 @@ class Hod(Base):
     religion = Column(String)
     social_status = Column(String)
     status = Column(String, default="status")
+    discontinued_date = Column(String, default="-")
 
 class Teachers(Base):
     __tablename__ = "Teacher"
@@ -44,6 +45,7 @@ class Teachers(Base):
     religion = Column(String)
     social_status = Column(String)
     status = Column(String, default="status")
+    discontinued_date = Column(String, default="-")
 
 class Students(Base):
     __tablename__ = 'Students'

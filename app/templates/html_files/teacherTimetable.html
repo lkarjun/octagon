@@ -10,6 +10,7 @@
 {% if head %}
 <script>
     $("#navMC").addClass("navisel")
+    $("#navMore").addClass("navisel")
 </script>
 {% else %}
 <script>
@@ -21,8 +22,8 @@
 <div class="ui container pt-5 pb-5">
 
     <section class="pt-5">
-        <div class="jumbotron text-left">
-            <h3 class="pb-4 ui dividing header" style="font-family: sans-serif;">
+        <div class="jumbotron text-center">
+            <h3 class="pb-4 ui dividing header" style="font-size: x-large;">
                 My Classes
             </h3>
         </div>
@@ -31,10 +32,10 @@
     <section class="pt-5 pb-3">
 
         <div class="table-responsive shadow rounded">
-            <table class="table ui celled teal">
+            <table class="ui green padded celled text-center table align-middle">
               <tbody>
                 <tr>
-                    <th class="font-weight-bold" style="font-family: sans-serif;">Monday</th>
+                    <th class="font-weight-bold" style="font-size: larger;">Monday</th>
                     {% if data['Monday'] %}
                     {% for i in data['Monday'] %}
                     {% if i.year %}
@@ -53,7 +54,7 @@
                 </tr>
 
                 <tr>
-                    <th class="font-weight-bold" style="font-family: sans-serif;">Tuesday</th>
+                    <th class="font-weight-bold" style="font-size: larger;">Tuesday</th>
                     {% if data['Tuesday'] %}
                     {% for i in data['Tuesday'] %}
                     {% if i.year %}
@@ -72,7 +73,7 @@
                 </tr>
 
                 <tr>
-                    <th class="font-weight-bold"  style="font-family: sans-serif;">Wednesday</th>
+                    <th class="font-weight-bold"  style="font-size: larger;">Wednesday</th>
                     {% if data['Wednesday'] %}
                     {% for i in data['Wednesday'] %}
                     {% if i.year %}
@@ -91,7 +92,7 @@
                 </tr>
 
                 <tr>
-                    <th class="font-weight-bold" style="font-family: sans-serif;">Thursday</th>
+                    <th class="font-weight-bold" style="font-size: larger;">Thursday</th>
                     {% if data['Thursday'] %}
                     {% for i in data['Thursday'] %}
                     {% if i.year %}
@@ -110,7 +111,7 @@
                 </tr>
 
                 <tr>
-                    <th class="font-weight-bold" style="font-family: sans-serif;">Friday</th>
+                    <th class="font-weight-bold" style="font-size: larger;">Friday</th>
                     {% if data['Friday'] %}
                     {% for i in data['Friday'] %}
                     {% if i.year %}

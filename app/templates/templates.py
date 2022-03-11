@@ -4,6 +4,7 @@ from fastapi.responses import RedirectResponse
 from repository import admin, hod, attendence, teacher
 from database import database, models
 from collections import defaultdict
+from sqlalchemy import and_
 
 templates = Jinja2Templates('templates/html_files')
 
@@ -160,10 +161,25 @@ class HodTemplates():
     def manage_department(request, user, db):
         teachers = hod.get_techer_details(db, user, template=True)
         hods = db.query(models.Hod).filter(models.Hod.department == user.department).all()
+        
+        dis_continued_hods = db.query(models.Hod).filter(
+                                and_(models.Hod.department == user.department,
+                                     models.Hod.status != "Continue"
+                                    )).all()
+        dis_continued_teacher = db.query(models.Teachers).filter(
+                                and_(models.Teachers.department == user.department,
+                                     models.Teachers.status != "Continue"
+                                    )).all()
+        
+        dis_continued_students = db.query(models.Students).filter(
+                                and_(models.Students.department == user.department,
+                                     models.Students.status != "Continue"
+                                    )).all()
         courses = db.query(models.Courses).filter(models.Courses.Department == user.department).all()
         students = db.query(models.Students).filter(models.Students.department == user.department).all()
         total_coursees = len(courses)
         total_students = len(students)
+        total_discontinued_staff = len(dis_continued_hods) + len(dis_continued_teacher)
 
         total_count = len(list(teachers)) + len(hods)
         tmp = templates.TemplateResponse("hodManage.html",
@@ -171,7 +187,9 @@ class HodTemplates():
                          "teachers": teachers, "depart": user.department,
                          'hods': hods, 'total_count': total_count, 
                          "total_courses": total_coursees, "courses": courses,
-                         "total_students": total_students})
+                         "total_students": total_students,
+                         "total_discontinued_staff": total_discontinued_staff,
+                         "total_discontinued_students": len(dis_continued_students)})
         return tmp
 
 

@@ -42,6 +42,7 @@ class Staff_v2_0(BaseModel):
     religion: str
     social_status: str
     status: str = "Continue"
+    discontinued_date: str = "-"
 
 
 class Student_v2_0(BaseModel):

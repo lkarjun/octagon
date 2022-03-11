@@ -9,6 +9,7 @@ import time
 from octagonmail import octagonmail
 import pandas as pd
 from tqdm import tqdm
+from datetime import date
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)
@@ -116,6 +117,10 @@ def form_username(name: str, phone: int, scode: int = 1111):
     return username
 
 def change_status(request: Schemas.Staff_v2_0_status, db: Session):
+    if request.status != "Continue":
+        dis_status = str(date.today()) 
+    else: dis_status = "-"
+
     hod_db = db.query(models.Hod).filter(models.Hod.username == request.username)
     hod = hod_db.first()
     if not hod:
@@ -123,7 +128,7 @@ def change_status(request: Schemas.Staff_v2_0_status, db: Session):
     hod_dict = {'id': hod.id, 'name': hod.name, 'username': hod.username, 'email': hod.email, 'phone_num': hod.phone_num, 'department': hod.department, 'tag': hod.tag
                 ,'joining_date': hod.joining_date, 'dob': hod.dob, 'higher_qualification': hod.higher_qualification, 'net_qualification': hod.net_qualification,
                 'designation': hod.designation, 'gender': hod.gender, 'teaching_experience': hod.teaching_experience, 'religion': hod.religion,
-                'social_status': hod.social_status, 'status': request.status}
+                'social_status': hod.social_status, 'status': request.status, 'discontinued_date': dis_status}
     hod_db.update(hod_dict)
     db.commit()
     return Response(status_code=204)

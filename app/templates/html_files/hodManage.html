@@ -20,27 +20,35 @@
 
       <div class="d-flex align-items-center justify-content-center">
         <div class="table-responsive" style="width: auto;">
-          <table class="ui table red align-middle">
+          <table class="ui green padded text-left celled table align-middle" style="min-width: 300px;">
+            <!-- <table class="ui green padded text-center table align-middle"> -->
             <tbody>
               <tr>
                 <th class="text-center font-weight-bold">Courses</th>
-                <th class="text-center">
+                <th class="text-center text-capitalize">
+                {% if total_courses %}
                 {% for c in courses %}
                 {{c.Course_name_alias}},
                 {% endfor %}
+                {% else %}
+                No Courses
+                {% endif %}
                 </th>
-              </tr>
-              <tr>
-                <th class="text-center font-weight-bold">Total Staffs</th>
-                <th class="text-center">{{total_count}}</th>
-              </tr>
-              <tr>
+
                 <th class="text-center font-weight-bold">Total Courses</th>
                 <th class="text-center">{{total_courses}}</th>
               </tr>
               <tr>
+                <th class="text-center font-weight-bold">Total Staffs</th>
+                <th class="text-center">{{total_count}}</th>
+                <th class="text-center font-weight-bold">Total Discontinued Staffs</th>
+                <th class="text-center">{{total_discontinued_staff}}</th>
+              </tr>
+              <tr>
                 <th class="text-center font-weight-bold">Total Students</th>
                 <th class="text-center">{{total_students}}</th>
+                <th class="text-center font-weight-bold">Total Discontinued Students</th>
+                <th class="text-center">{{total_discontinued_students}}</th>
               </tr>
               
             </tbody>
@@ -48,7 +56,11 @@
         </div>
       </div>
     <br>
-    <br><br>
+    <br>
+    <div class="jumbotron">
+      <h3 class="pb-4 text-left" style="font-family: sans-serif;">Staffs Full Details</h3>
+    </div>
+    <br>
     <!--Teacher Search-->
       <div class="form ui pb-3">
 
@@ -84,6 +96,8 @@
             <th scope="col" class="font-weight-bold">Teaching Experience</th>
             <th scope="col" class="font-weight-bold">Religion</th>
             <th scope="col" class="font-weight-bold">Social Status</th>
+            <th scope="col" class="font-weigth-bold">Status</th>
+            <th scope="col" class="font-weigth-bold">Discontinued Date</th>
           </tr>
         </thead>
         
@@ -106,6 +120,8 @@
             <td>{{ i['teaching_experience'] }} Year</td>
             <td>{{ i['religion'] }}</td>
             <td>{{ i['social_status'] }}</td>
+            <td>{{ i['status'] }}</td>
+            <td>{{ i['discontinued_date'] }}</td>
           </tr>
 
         {% endfor %}
@@ -127,6 +143,8 @@
             <td>{{ i['teaching_experience'] }} Year</td>
             <td>{{ i['religion'] }}</td>
             <td>{{ i['social_status'] }}</td>
+            <td>{{ i['status'] }}</td>
+            <td>{{ i['discontinued_date'] }}</td>
         </tr>
 
         {% endfor %}
@@ -137,7 +155,7 @@
     <br><br>
     <button class="ui red button" onclick="export_table('{{ depart }}', 'csv')">Export as Csv</button>
  
-    <br><br>
+    <br><br><br><br>
 </section>
 
 <script>
