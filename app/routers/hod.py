@@ -136,7 +136,7 @@ async def add_hod_from_file(
                             ):
     if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-    return hod.appoint_teacher_v2_0_from_file(DATA, db, bg_task)
+    return hod.appoint_teacher_v2_0_from_file(DATA, department, db, bg_task)
 
 # =================================================================================================
 

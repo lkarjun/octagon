@@ -25,7 +25,7 @@ def appoint_teacher_v2_0(data: Schemas.Staff_v2_0, db: Session, bg_task: Backgro
     bg_task.add_task(octagonmail.verification_mail, data.name, data.email, id)
     return Response(status_code=204)
 
-def appoint_teacher_v2_0_from_file(Data: UploadFile, db: Session, bg_task: BackgroundTasks):
+def appoint_teacher_v2_0_from_file(Data: UploadFile, department:str, db: Session, bg_task: BackgroundTasks):
     if Data.content_type == "text/csv":
         df = pd.read_csv(Data.file)
     elif Data.content_type == 'text/xlxm' or Data.content_type == 'text/xls':
@@ -33,6 +33,7 @@ def appoint_teacher_v2_0_from_file(Data: UploadFile, db: Session, bg_task: Backg
     else: raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, detail="dataformat mismatched")
 
     for _, i in tqdm(df.iterrows(), colour='green', desc='Adding Teachers from File'): 
+        i['department'] = department
         i['username'] = form_username(i['name'], i['phone_num'])
         i = Schemas.Staff_v2_0(**i.to_dict())
         res = appoint_teacher_v2_0(i, db, bg_task)
@@ -43,7 +44,7 @@ def appoint_teacher_v2_0_from_file(Data: UploadFile, db: Session, bg_task: Backg
 def form_username(name: str, phone: int, scode: int = 1111):
     phone = str(phone)
     username = f"{name[:3]}{phone[7:]}{scode}"
-    return username
+    return username.lower()
 
 def change_status(request: Schemas.Staff_v2_0_status, db: Session):
     if request.status != "Continue":

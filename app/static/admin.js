@@ -219,48 +219,48 @@ function remove_hod(username){
 
 // Appointment of hod and Verification image sends
 
-function appoint_hod_old(data){
-  console.log(data)
-  var base = window.location.origin + '/admin/portal/create_hod';
-  $.ajax({
-        url: base,
-        type: 'POST',
-        async: true,
-        data: data,
-        dataType: 'json',
-        contentType: "application/json",
+// function appoint_hod_old(data){
+//   console.log(data)
+//   var base = window.location.origin + '/admin/portal/create_hod';
+//   $.ajax({
+//         url: base,
+//         type: 'POST',
+//         async: true,
+//         data: data,
+//         dataType: 'json',
+//         contentType: "application/json",
 
-        success: function(result) {
-            $("#upload_button").removeClass("loading disabled");
-            swal({
-              text: `Successfully Appointed Hod: ${data['name']}`,
-              icon: "success",
-              button: "Okay!",
-            })
-        },
-        error: function(result){
-            if(result.status == 406){
-              var message = JSON.parse(result.responseText)
-              $("#upload_button").removeClass("loading disabled");
-              swal({
-                text: message.detail,
-                icon: "warning",
-                button: "Okay!",
-              })
-            }
-            else{
-              swal({
-                text: "Something Went Wrong. Please try to contact the techincal team...",
-                icon: "error",
-                button: "Okay!",
-              }).then((value) => {
-                location.reload();
-              });
-            }
-          }
-        });
+//         success: function(result) {
+//             $("#upload_button").removeClass("loading disabled");
+//             swal({
+//               text: `Successfully Appointed Hod: ${data['name']}`,
+//               icon: "success",
+//               button: "Okay!",
+//             })
+//         },
+//         error: function(result){
+//             if(result.status == 406){
+//               var message = JSON.parse(result.responseText)
+//               $("#upload_button").removeClass("loading disabled");
+//               swal({
+//                 text: message.detail,
+//                 icon: "warning",
+//                 button: "Okay!",
+//               })
+//             }
+//             else{
+//               swal({
+//                 text: "Something Went Wrong. Please try to contact the techincal team...",
+//                 icon: "error",
+//                 button: "Okay!",
+//               }).then((value) => {
+//                 location.reload();
+//               });
+//             }
+//           }
+//         });
 
-}
+// }
 
 function verification_image_upload(data, name, username){
   var base = window.location.origin + '/admin/portal/verification_image';

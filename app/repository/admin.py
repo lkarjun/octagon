@@ -72,6 +72,7 @@ def delete(request: Schemas.DeleteHod, db: Session):
 # Changes needed here
 
 def appoint_hod(data: Schemas.Staff_v2_0, db: Session, bg_task: BackgroundTasks):
+    data.username = form_username(data.name, data.phone_num)
     username_check = db.query(models.Hod).filter(or_(
                             models.Hod.id == data.id,
                             models.Hod.username == data.username
@@ -96,14 +97,15 @@ def appoint_hod(data: Schemas.Staff_v2_0, db: Session, bg_task: BackgroundTasks)
     return Response(status_code=204)
 
 
-def appoint_hod_v2_0_from_file(Data: UploadFile, db: Session, bg_task: BackgroundTasks):
+def appoint_hod_v2_0_from_file(Data: UploadFile, department:str, db: Session, bg_task: BackgroundTasks):
     if Data.content_type == "text/csv":
         df = pd.read_csv(Data.file)
     elif Data.content_type == 'text/xlxm' or Data.content_type == 'text/xls':
         df = pd.read_excel(Data.file)
     else: raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, detail="dataformat mismatched")
 
-    for _, i in tqdm(df.iterrows(), colour='green', desc='Adding hod from File'): 
+    for _, i in tqdm(df.iterrows(), colour='green', desc='Adding hod from File'):
+        i['department'] = department
         i['username'] = form_username(i['name'], i['phone_num'])
         i = Schemas.Staff_v2_0(**i.to_dict())
         res = appoint_hod(i, db, bg_task)
@@ -114,7 +116,7 @@ def appoint_hod_v2_0_from_file(Data: UploadFile, db: Session, bg_task: Backgroun
 def form_username(name: str, phone: int, scode: int = 1111):
     phone = str(phone)
     username = f"{name[:3]}{phone[7:]}{scode}"
-    return username
+    return username.lower()
 
 def change_status(request: Schemas.Staff_v2_0_status, db: Session):
     if request.status != "Continue":
