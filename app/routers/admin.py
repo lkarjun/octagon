@@ -91,6 +91,10 @@ async def add_hod_from_file(
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
     return admin.appoint_hod_v2_0_from_file(DATA, db, bg_task)
 
+@router.put("/portal/change_status", status_code=status.HTTP_204_NO_CONTENT)
+async def change_status(request: Schemas.Staff_v2_0_status, db: Session = Depends(get_db),\
+            user=Depends(oauth2.manager_admin)):
+        return admin.change_status(request, db)
 # =================================================================================================
 
 @router.delete('/portal/delete_hod', status_code=status.HTTP_204_NO_CONTENT)

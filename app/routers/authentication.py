@@ -27,6 +27,11 @@ async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), d
     if not (hod or teacher):
         return temp.OthersTemplates.login_page(request, 'block', 'Invalid credential!🤔 Please Try again.')
 
+    if hod and hod.status != "Continue":
+        return temp.OthersTemplates.login_page(request, 'block', "Please contact admin! Status is discontinue👋")
+    if teacher and teacher.status != "Continue":
+        return temp.OthersTemplates.login_page(request, 'block', "Please contact admin! Status is discontinue👋")
+
     try:
         recogize_result = recogize_user(data)
     except:

@@ -68,6 +68,10 @@ class TakeAttendence_v2_0(BaseModel):
     take_full_day: bool
     date: str
     present: List[str]
+
+class Staff_v2_0_status(BaseModel):
+    username: str
+    status: str
 #====================================================================
 
 

@@ -59,7 +59,7 @@
     </div>
 <!--Search Ends-->
 
-    <div class="table-responsive">
+    <div class="table-responsive" style="min-height: 40vh;">
       <table class="ui green padded text-center table align-middle">
         <thead>
           <tr class="text-light">
@@ -78,6 +78,7 @@
             <th scope="col" class="font-weight-bold">Teaching Experience</th>
             <th scope="col" class="font-weight-bold">Religion</th>
             <th scope="col" class="font-weight-bold">Social Status</th>
+            <th scope="col" class="font-weight-bold">Change Status</th>
             <th scope="col" class="font-weight-bold">Remove Hod</th>
           </tr>
         </thead>
@@ -99,6 +100,50 @@
             <td>{{ i['teaching_experience'] }} Year</td>
             <td>{{ i['religion'] }}</td>
             <td>{{ i['social_status'] }}</td>
+            <td>
+              <select class="ui selection focused dropdown" id='change_status' onchange="change_status('{{i['username']}}')">
+                {% if i['status'] == 'CONTINUE' %}
+                <option value="Continue" selected>CONTINUE</option>
+                <option value="Disontinue">DISCONTINUE</option>
+                {% else %}
+                <option value="Continue">CONTINUE</option>
+                <option value="Discontinue" selected>DISCONTINUE</option>
+                {% endif %}
+              </select>
+              <script>
+                function change_status(username){
+                  $("#"+username).addClass("bg-warning")
+                  var status = $("#change_status").val()
+                  var base = window.location.origin + '/admin/portal/change_status';
+                  var data = JSON.stringify({"username": username, "status": status})
+
+                  $.ajax({
+                    url: base,
+                    type: 'PUT',
+                    async: true,
+                    data: data,
+                    dataType: 'json',
+                    contentType: "application/json",
+                    success: function(result) {
+                      $("#"+username).removeClass("bg-warning");
+                      swal({
+                        text: "Successfully Changed Hod Status!",
+                        icon: "success",
+                        button: "Okay!",
+                      })
+                    },
+                    error: function(result){
+                      $("#"+username).addClass("bg-warning")
+                      swal({
+                        text: `Something Went Wrong Error Message: ${result.responseJSON.detail}`,
+                        icon: "warning",
+                        button: "Okay!",
+                      })
+                    }
+                  });
+                }
+              </script>
+            </td>
             <td>
               <button type="button" class="ui button small red" onclick="remove_hod('{{i['username']}}')">
                 Remove

@@ -114,6 +114,19 @@ def form_username(name: str, phone: int, scode: int = 1111):
     phone = str(phone)
     username = f"{name[:3]}{phone[7:]}{scode}"
     return username
+
+def change_status(request: Schemas.Staff_v2_0_status, db: Session):
+    hod_db = db.query(models.Hod).filter(models.Hod.username == request.username)
+    hod = hod_db.first()
+    if not hod:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {request.name} and department: {request.department}") 
+    hod_dict = {'id': hod.id, 'name': hod.name, 'username': hod.username, 'email': hod.email, 'phone_num': hod.phone_num, 'department': hod.department, 'tag': hod.tag
+                ,'joining_date': hod.joining_date, 'dob': hod.dob, 'higher_qualification': hod.higher_qualification, 'net_qualification': hod.net_qualification,
+                'designation': hod.designation, 'gender': hod.gender, 'teaching_experience': hod.teaching_experience, 'religion': hod.religion,
+                'social_status': hod.social_status, 'status': request.status}
+    hod_db.update(hod_dict)
+    db.commit()
+    return Response(status_code=204)
 # =================================================================================================
 
 def create(request: Schemas.CreateHod, db: Session, bg_task: BackgroundTasks):
