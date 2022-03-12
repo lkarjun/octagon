@@ -61,6 +61,7 @@ class Students(Base):
     course = Column(String)
     year = Column(Integer)
     department = Column(String)
+    discontinued_date = Column(String, default="-")
 
 # ======================================V2.0=========================================================
 

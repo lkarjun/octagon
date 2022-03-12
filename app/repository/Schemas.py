@@ -55,6 +55,7 @@ class Student_v2_0(BaseModel):
     religion: str
     social_status: str
     status: str = "Continue"
+    discontinued_date: str = "-"
     course: str
     year: int = 1
 
@@ -238,6 +239,7 @@ class Analysing(BaseModel):
 class ShowAttendence(BaseModel):
     course: str
     year: int
+    month: Union[str, None] = None
 
 class MostAbsentee(BaseModel):
     course: str
