@@ -181,6 +181,10 @@ async def appoint_teacher(request: Request,
                           db: Session = Depends(get_db)):
     return HodTemplates.manage_department(request, user, db)
 
+@router.post("/check_st_detail", status_code=status.HTTP_204_NO_CONTENT)
+async def check_st_detail(request: Schemas.TerminalZone, db: Session = Depends(get_db)):
+    return hod.check_st_details(request, db)
+
 @router.get("/students-attendence/{course}/{year}", status_code=status.HTTP_200_OK)
 async def show_attendence(request: Request, course: str, year: int,
                 user=Depends(oauth2.manager_hod)):

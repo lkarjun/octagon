@@ -40,9 +40,9 @@
         <!-- <button class="ui button blue" type="submit" id="get_report_btn">Report</button> -->
 
         <div class="ui buttons">
-            <div class="ui button teal" onclick="show_details()">View Details</div>
+            <div class="ui button teal" id="vD" onclick="show_details()">View Details</div>
             <div class="or" data-text="or"></div>
-            <div class="ui button green" onclick="show_attendence()">View Attendence</div>
+            <div class="ui button green" id="vA" onclick="show_attendence()">View Attendence</div>
         </div>
     
     </form>
@@ -107,15 +107,58 @@
 <script src="{{ url_for('static', path='attendence.js') }}"></script>
 <script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
 <script>
-    function comming_soon(which_op){
+    function show_attendence(){
+        $("#vA").addClass("loading disabled")
         var course = $("#course").val()
-        var year = $("#year").val()
-        swal(`Type 'yes' to ${which_op} Course: ${course} & Year: ${year}.`, {
-            content: "input",
-        }).then((value) => {
-            if(value.toLowerCase() == 'yes'){
-                terminal_zone(which_op, course, year)
-                swal("Comming Soon")
+        var year = parseInt($("#year").val())
+        check_st_detail(course, year, "attendence_check")
+        //var href = "/hod/students-attendence/"+course+"/"+year
+        //window.location.href = href
+    }
+    
+    function show_details(who = "hod"){
+        $("#vD").addClass("loading disabled")
+        var course = $("#course").val()
+        var year = parseInt($("#year").val())
+        check_st_detail(course, year, "detail_check")
+        //var href = "/"+who+"/students-attendence/details/"+course+"/"+year
+        //window.location.href = href
+    }
+
+    function check_st_detail(course, year, action){
+        var base = window.location.origin + '/hod/check_st_detail';
+        var data = JSON.stringify({'action': action, 'course': course, 'year': year})
+        $.ajax({
+            url: base,
+            type: 'POST',
+            async: true,
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                //alert("okay")
+                if(action == "detail_check")
+                    window.location.href = "/hod/students-attendence/details/"+course+"/"+year
+                else{
+                    window.location.href = "/hod/students-attendence/"+course+"/"+year
+                }
+
+            },
+            error: function(result){
+                $("#vD").removeClass("loading disabled")
+                $("#vA").removeClass("loading disabled")
+                if(result.status == 404){
+
+                    swal({
+                        title: "Not Found!",
+                        text: result.responseJSON.detail,
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+                else{
+                    swal("Something went wrong please try to call the techinal team...")
+                }
             }
         });
     }

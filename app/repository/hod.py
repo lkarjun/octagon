@@ -61,6 +61,14 @@ def change_status(request: Schemas.Staff_v2_0_status, db: Session):
     teacher_db.update(hod_dict)
     db.commit()
     return Response(status_code=204)
+
+def check_st_details(request: Schemas.TerminalZone, db: Session):
+    if request.action == 'detail_check':
+        tmp = get_student_details(db, request.course, request.year)
+    else:
+        attendence._check_attendence_data(request)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    
 #===========================================================================
 
 def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):
@@ -160,8 +168,8 @@ def get_student_details(db: Session, course: str, year: int, template = False):
                             models.Students.year == year).all()
     if not student:
         if template: return False
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
-            detail = 'No content in the database')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail = 'Not admitted students...')
     return student
 
 def send_message(user, request: Schemas.Message, db: Session):

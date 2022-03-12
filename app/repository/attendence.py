@@ -294,6 +294,15 @@ def take_attendence(data: Schemas.TakeAttendence_v2_0, sql_conn: sqlite3.Connect
     raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
                             detail=f'Failed to create files: Exception {status_}')
 
+def _check_attendence_data(request: Schemas.TerminalZone):
+    query, _ = FULL_DATA_QUERY(request.course, request.year)
+    df = get_db_to_df(query = query)
+    column = df.columns[3:][::-1]
+    if len(column):
+        return
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail = 'Not admitted students...')
+
 def show_attendence_data(request: Schemas.ShowAttendence):
     query, _ = FULL_DATA_QUERY(request.course, request.year)
     df = get_db_to_df(query = query)
@@ -371,6 +380,8 @@ def most_absentee(request: Schemas.MostAbsentee, **kwargs):
     most_absentee = zip(most_absentee["ST_NAME"], most_absentee["PERCENTAGE"])
     
     return most_absentee, there_is, (number_of_working_days, number_of_working_days_left)
+
+
 #=======================================================
 
 @save_files
