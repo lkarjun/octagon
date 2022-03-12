@@ -3,12 +3,15 @@
 
 <script>
     $(".navUser").addClass("navisel")
+    $(".profile_icon").removeClass("orange")
 </script>
 
 <div class="ui container pt-5 pb-5">
 
     <form class="ui form p-4" id='Appointment_form_V2_0'>
-        <h3 class="ui dividing header" style="font-family: sans-serif;">Update Details</h3>
+      
+        <h2 class="ui header text-center">Update Details</h2>
+        <br>
         <div class="field">
             <label>Department</label>
             <select class="ui dropdown disabled" id='depart'>
@@ -244,26 +247,26 @@
 
     <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
 
-
-    <form class="ui form p-4" id='imageupdate'>
-        
-        <h3 class="ui dividing header" style="font-family: sans-serif;">Update Verification Image</h3>
-        
+<br>
+    <form class="ui form p-4 shadow" id='imageupdate'>
+      
+        <h3 class="ui text-center header p-2">Update Verification Image</h3>
+        <br>
         <div class="fields three">
             <div class="field">
                 <label>Verification Image 1
-                <input id='vimage1' required type="file" accept="image/*"capture="camera"></label>
+                <input id='vimage1' class="ui button green "  required type="file" accept="image/*"capture="camera"></label>
             </div>
 
             <div class="field">
                 <label>Verification Image 2
-                  <input id='vimage2' required type="file" accept="image/*"capture="camera">
+                  <input id='vimage2' class="ui button green "  required type="file" accept="image/*"capture="camera">
                 </label>
             </div>
 
             <div class="field pb-2 pb-md-0">
                 <label>Verification Image 3
-                  <input id='vimage3' required type="file" accept="image/*"capture="camera">
+                  <input id='vimage3' class="ui button green "  required type="file" accept="image/*"capture="camera">
                 </label>
             </div>
         </div>
@@ -274,12 +277,12 @@
             </div>
         </div>
 
-        <button class="ui button teal" id='upload_button' type="submit">Update Image</button>
+        <button class="ui button yellow" id='upload_button' type="submit">Update Image</button>
   
     </form>
 
 </div>
-
+<br><br><br>
 <script>
 
 $("#imageupdate").submit((e) => {
@@ -320,7 +323,7 @@ $("#imageupdate").submit((e) => {
         success: function(result){
             $("#pro").hide()
             swal({
-                    text: "Verification Images Updated...",
+                    text: "Verification Images Updated🙂",
                     icon: "success",
                     button: "Okay"
                 }).then((value) => {
@@ -332,7 +335,7 @@ $("#imageupdate").submit((e) => {
                 $("#upload_button").removeClass("loading disabled")
                 $("#pro").hide()
                 swal({
-                    text: "Please retake image...",
+                    text: result.responseJSON.detail,
                     icon: "warning",
                     button: "Okay"
                 })
