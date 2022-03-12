@@ -22,8 +22,9 @@
 
     <section class="p-md-5 m-md-5 pb-5 pt-5">
 
-        <form class="ui form pb-md-5 pb-5" id="set_class">
-            <p class="ui dividing header">Set Class</p>
+        <form class="ui form pb-md-5 pb-5" id="set_class" style="display: block;">
+            <h2 class="ui header text-center">Set Class</h2>
+            <br>
             <div class="three fields">
 
                 <div class="field">
@@ -34,7 +35,7 @@
                         {% endfor %}
                     </select>
                 </div>
-    
+                
                 <div class="field">
                     <label>Choose Year</label>
                     <select class="ui dropdown" id="year">
@@ -53,7 +54,9 @@
 
             </div>
 
-            <button type="submit" id="setclass_btn" class="ui button animated teal" >
+            <br>
+
+            <button type="submit" id="setclass_btn" class="ui button animated teal w-100" >
                 <div class="visible content">Set Class</div>
                 <div class="hidden content">
                     <i class="check circle outline icon"></i>
@@ -72,7 +75,6 @@
             
             $("#set_class").submit((e)=>{
                 e.preventDefault();
-
                 $("#setclass_btn").addClass("loading disabled")
 
                 // var date = $("#datePicker").val().toString(),
@@ -93,6 +95,8 @@
                     contentType: "application/json",
 
                     success: function(result){
+                        $("#set_class").hide()
+                        $("#take-attendence-form").show()
                         console.log(result)
                         $("#setclass_btn").removeClass("loading");
                         $("#take_btn").removeClass("disabled")
@@ -142,18 +146,18 @@
 
         <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
 
-        <form class="ui form pb-md-5 pb-5 pt-md-5 pt-5" id="take-attendence-form">
-            <p class="ui dividing header">Take Attendence</p>
-            <div class="fields pb-md-0 pb-3">
-
-                <div class="sixteen wide field">
+        <form class="ui form pb-md-5 pb-5 pt-md-5 pt-5" id="take-attendence-form" style="display: none;">
+            <h2 class="ui text-center header">Take Attendence</h2>
+            <!-- <div class="fields pb-md-0 pb-3"> -->
+            <br>
+                <div class="field">
                     <label>Choose Students Names</label>
                     <select class="ui fluid search dropdown" multiple="" id="present_students">
                         <option value="" disabled selected>Students Name</option>
                     </select>
                 </div>
 
-                <div class="ten wide field">
+                <div class="field">
                     <label>Full Day / Hour Wise</label>
                     <select class="ui fluid search dropdown" id="fdorhw">
                         <option value="hour_wise" selected>Hour Wise</option>
@@ -161,12 +165,12 @@
                     </select>
                 </div>
 
-            </div>
+            <!-- </div> -->
             
             <div class="ui buttons">
 
-                <button type="submit" id="take_btn" class="ui button vertical animated positive disabled" >
-                    <div class="visible content">Submit</div>
+                <button type="submit" id="take_btn" class="ui button vertical animated teal disabled" >
+                    <div class="visible content">Take Attendence</div>
                     <div class="hidden content">
                         <i class="check circle outline icon"></i>
                     </div>

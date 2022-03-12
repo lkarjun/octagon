@@ -1,9 +1,16 @@
+{% if hod %}
+{% extends "commonLayout.html" %}
+{% else %}
 {% extends "teacherLayout.html" %}
+{% endif %}
+
 {% block content %}
 
 <script>
     $("#navStudDw").addClass("navisel")
+    $("#navMore").addClass("navisel")
     $("#navStudDm").addClass("navisel")
+    $("#navSt").addClass("navisel")
 </script>
 
 <div class="ui container pb-5 mb-5">
@@ -29,7 +36,7 @@
         <!--Search Ends-->
 
         <div class="table-responsive">
-            <table class="table align-middle table-hover table-borderless rounded">
+            <table class="table ui celled padded yellow align-middle shadow">
                 <thead class="table-primary">
                     <tr>
                         <th scope="col" class="font-weight-bold">Admission Number</th>
@@ -38,6 +45,7 @@
                         <th scope="col" class="font-weight-bold">Course</th>
                         <th scope="col" class="font-weight-bold">Year</th>
                         <th scope="col" class="font-weight-bold">Status</th>
+                        <th scope="col" class="font-weight-bold">Discontinued Date</th>
                         <th scope="col" class="font-weight-bold">Gender</th>
                         <th scope="col" class="font-weight-bold">Parent Phone</th>
                         <th scope="col" class="font-weight-bold">State</th>
@@ -57,6 +65,7 @@
                         <td>{{ i.course }}</td>
                         <td>{{ i.year }}</td>
                         <td class="font-weight-bold">{{ i.status }}</td>
+                        <td>{{ i.discontinued_date }}</td>
                         <td>{{ i.gender }}</td>
                         <td>{{ i.parent_phone }}</td>
                         <td>{{ i.state }}</td>

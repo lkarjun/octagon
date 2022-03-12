@@ -8,15 +8,43 @@
 <div class="ui container pb-5 mb-5">
 
     <section>
+        <div class="ui form" id=''>
+            <!-- <script>
+                var course = {{data.course}}
+                var year = {{data.year}}
+            </script> -->
+      
+            <div class="jumbotron text-center">
+                <h3 class="pt-5 pb-4 mt-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">{{ data.course.upper() }} Year {{ data.year }} Attendence</h3>
+            </div>
+            <br>
+            <div class="field">
+                <label>Choose Month</label>
+                <select class="ui dropdown" id='month' onchange="set_attendence('{{data.course}}', '{{data.year}}')">
+                    <option value="0">Up to now</option>
+                    <option value="01">January</option>
+                    <option value="02">February</option>
+                    <option value="03">March</option>
+                    <option value="04">April</option>
+                    <option value="05">May</option>
+                    <option value="06">June</option>
+                    <option value="07">July</option>
+                    <option value="08">August</option>
+                    <option value="09">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
+                </select>
+            </div>
 
-        <div class="jumbotron text-center">
-            <h3 class="pt-5 pb-4 mt-md-5 font-weight-bold" style="font-family: 'Exo', sans-serif;">{{ data.course.upper() }} Year {{ data.year }} Attendence</h3>
         </div>
-        
-        <!--hod Search-->
+    </section>
+
+    <section class="pb-4 pt-4">
+        <!-- hod Search-->
         <div class="form ui pb-4 pt-4">
             <div class="field">
-              <div class="ui search">
+              <div class="ui fluid search">
                 <div class="ui icon input">
                   <input class="prompt" type="text" id='StudentSearch' placeholder="Search Student">
                   <i class="search icon"></i>
@@ -25,53 +53,134 @@
               </div>
             </div>
         </div>
-        <!--Search Ends-->
+        <!--Search Ends -->
 
-        <div class="table-responsive pb-5 mb-5">
-            <table class="table align-middle table-hover table-borderless" id='datatable'>
-                <thead class="bg-primary text-light">
+        <div class="row">
+            <div class="col-md-4" id="col4" style="display: block;">
+                <div class="table-responsive pb-5 mb-5">
+                <table class="table align-middle table-hover table-bordered" id='datatable'>
+                    <thead class="bg-light text-dark font-weight-bold text-center" style="font-size: small;">
+                        {% if data_in %}
+                        <tr>
+                            <!-- <th class="font-weight-bold text-center text-dark" style="background-color: #ffffff;">Student <br>Id</th>
+                            <th class="font-weight-bold text-center text-dark" style="background-color: #ffffff;">Student <br>Name</th>
+                            <th class="font-weight-bold text-center text-dark" style="background-color: #ffffff;">Student <br>Status</th> -->
+                          {% for col in column %}
+                            <th scope="col" class="font-weight-bold">{{ col }}</th>
+                          {% endfor %}
+                        </tr>
+                        {% else %}
+                        <th scope='col' class="font-weight-bold text-center">***No Data Avaliable***</th>
+                        {% endif %}
+                    </thead>
                     {% if data_in %}
-                    <tr>
-                      {% for col in column %}
-                        <th scope="col" class="font-weight-bold">{{ col }}</th>
-                      {% endfor %}
-                    </tr>
-                    {% else %}
-                    <th scope='col' class="font-weight-bold text-center">***No Data Avaliable***</th>
-                    {% endif %}
-                </thead>
-                {% if data_in %}
-                <tbody id='Search'>
-
-                    {% for value in values %}
-
-                    <tr>
-                        {% for i in value %}
-                            {% if i|int(-1) == -1 %}
-
-                            <td class="font-weight-bold">{{ i }}</td>
-                            
-                            {% else %}
-
-                                {% if i|float <= 0.4 %}
-                                <td class="text-light" style="background-color: #FF8A80">{{ i }}</td>
-                                {% else %}
-                                <td class="text-dark" style="background-color: #ffffff;">{{ i }}</td>
-                                {% endif %}
-                            {% endif %}
+                    <tbody id='Search'>
+    
+                        {% for value in values %}
+    
+                        <tr>
+                            <!-- {% for i in value %} -->
+                            <td class="font-weight-bold text-center text-dark" style="background-color: #ffffff;">{{ i }}</td>
+                            <!-- <td class="font-weight-bold text-center text-dark" style="background-color: #ffffff;">{{ i }}</td>
+                            <td class="font-weight-bold text-center text-dark" style="background-color: #ffffff;">{{ i }}</td> -->
+                            <!-- {% endfor %} -->
+                        </tr>
+    
                         {% endfor %}
-                    </tr>
-
-                    {% endfor %}
-                </tbody>
+                    </tbody>
+                    {% endif %}
+    
+                </table>
+                {% if data_in %}
+    
+                <!-- <button class="ui button red" onclick="export_table('csv')">Export as Csv</button> -->
+                
                 {% endif %}
+                </div>
+            </div>
+            <div class="col-md-8" id="col8" style="display: none;">
 
-            </table>
-            {% if data_in %}
+                <div id="loading_part" style="display: block;">
+                    <div class="pt-2 pb-3 d-flex align-items-center justify-content-center">
+                        <div  class="text-center">
+                            <div class="spinner-grow" id="loading_part_" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <button class="ui button red" onclick="export_table('csv')">Export as Csv</button>
-            
-            {% endif %}
+                <div id="attendence_data_view_here" style="display: none;">
+
+                </div>
+
+            </div>
+
+            <script>
+                function set_attendence(course, year){
+                    var duration = 0;
+                    $("#col8").removeClass("col-md-12")
+                    $("#col8").addClass("col-md-8")
+                    $("#col4").show()
+
+                    $("#setclass_btn").addClass("loading disabled");
+                    $("#loading_part").show();
+                    $("#loading_part_").removeClass("visually-hidden");
+                    $("#attendence_data_view_here").hide();
+                        // var date = $("#datePicker").val().toString(),
+        
+                    var data = JSON.stringify({"course": course,
+                                               "year": parseInt(year),
+                                               "month": $("#month").val()
+                                                });
+                
+                    var base = window.location.origin + "/hod/get_attendence_data";
+
+                    $.ajax({
+                            url: base,
+                            type: 'POST',
+                            async: true,
+                            data: data,
+                            dataType: 'json',
+                            contentType: "application/json",
+        
+                            success: function(result){
+                                $("#loading_part_").addClass("visually-hidden");
+                                $("#loading_part").hide();
+                                $("#attendence_data_view_here").show();
+                                $("#attendence_data_view_here").html(result);
+                                $("#col8").removeClass("col-md-8")
+                                $("#col8").addClass("col-md-12")
+                                $("#col8").show()
+                                $("#col4").hide()
+                            },
+                            error: function(result){
+                                $("#setclass_btn").removeClass("loading disabled");
+        
+                                if(result.status == 404){
+                                    $("#loading_part_").addClass("visually-hidden");
+                                    $("#loading_part").hide();
+                                    swal({
+                                        title: "Attendence Not Taken!",
+                                        text: result.responseJSON.detail,
+                                        icon: "error",
+                                        button: "Okay!",
+                                    })
+                                }
+                                else{
+                                    $("#loading_part_").addClass("visually-hidden");
+                                    $("#loading_part").hide();
+                                    swal({
+                                        text: "Something went wrong...",
+                                        icon: "error",
+                                        button: "Okay!",
+                                    })
+                                }
+                            }
+        
+                    });
+                }
+            </script>
         </div>
 
     </section>
@@ -97,12 +206,18 @@
         var format_type = format;
         var filename = "AttendenceFile."+format
 
-        $("#datatable").tableHTMLExport({
+        $("#datatable1").tableHTMLExport({
             type:format_type,
             filename:filename,
             orientation:'l'
         });
     }
 
+</script>
+
+<script>
+    $(window).on('load', function () {
+        set_attendence('{{data.course}}', '{{data.year}}');
+    })    
 </script>
 {% endblock %}

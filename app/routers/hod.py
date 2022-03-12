@@ -4,7 +4,7 @@ from starlette.responses import HTMLResponse, Response
 from repository import hod, Schemas, attendence, admin
 from database import database
 from templates import HodTemplates
-from typing import List
+from typing import Dict, List
 from security import oauth2, faceid
 
 router = APIRouter(tags = ['Head Of Department'], prefix='/hod')
@@ -186,6 +186,12 @@ async def show_attendence(request: Request, course: str, year: int,
                 user=Depends(oauth2.manager_hod)):
     data = Schemas.ShowAttendence(course=course, year = year)
     return HodTemplates.show_attendence_data(request, data)
+
+@router.post("/get_attendence_data")
+async def get_attendence_data(data: Schemas.ShowAttendence):
+    import time;time.sleep(1)
+    # column, values = attendence.show_attendence_data(request=data)
+    return HodTemplates.get_attendence_data(data)
 
 @router.get("/students-attendence/details/{course}/{year}", status_code=status.HTTP_200_OK)
 async def student_details(request: Request, course: str, year: int,

@@ -250,8 +250,17 @@ class HodTemplates():
 
         return tmp
 
-    def show_attendence_data(request, data):
+    def get_attendence_data(data):
         column, values = attendence.show_attendence_data(request=data)
+        data_in = len(values) >= 1
+        tmp = templates.get_template("__attendence_files_load.html")
+        tmp = tmp.render(column = column, values = values, 
+                         data = data, data_in = data_in)
+        return tmp
+
+    def show_attendence_data(request, data):
+        # column, values = attendence.show_attendence_data(request=data)
+        column, values = attendence.get_students_attendence_detail(request=data)
         data_in = len(values) >= 1
         tmp = templates.TemplateResponse("showAttendenceData.html",
                     context={"request": request, "title": "Attendence Sheet",
@@ -266,7 +275,7 @@ class HodTemplates():
         db.close()
         tmp = templates.TemplateResponse("_teacherStudentDetails.html",
                     context={"request": request, "title": "Attendence Sheet",
-                                "details": details, "course": course, "year": year})
+                                "details": details, "course": course, "year": year, "hod": True})
 
         return tmp
 
@@ -343,7 +352,7 @@ class TeacherTemplates():
         details = hod.get_student_details(db, course, year, template=True)
         tmp = templates.TemplateResponse("_teacherStudentDetails.html",
                     context={"request": request, "title": "Attendence Sheet",
-                                "details": details, "course": course, "year": year})
+                                "details": details, "course": course, "year": year, "hod": False})
 
         return tmp
 

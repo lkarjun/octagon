@@ -251,6 +251,7 @@ def remove_students(data: Schemas.DeleteStudent,
 
 
 def get_student_names(data: Schemas.set_class):
+    data.date = f"{data.date[8:]}-{data.date[5:7]}-{data.date[:4]}"
     df = get_db_to_df(query = FULL_DATA_QUERY(data.course, data.year)[0])
     names = df['ST_NAME'].to_list()
     ids = df['ST_ID'].to_list()
@@ -268,6 +269,7 @@ def get_student_names(data: Schemas.set_class):
 
 @get_sql_connection
 def take_attendence(data: Schemas.TakeAttendence_v2_0, sql_conn: sqlite3.Connection, **kwargs):
+    data.date = f"{data.date[8:]}-{data.date[5:7]}-{data.date[:4]}"
     query, table_name = FULL_DATA_QUERY(data.course, data.year)
     df = get_db_to_df(query = query)
     attendence = df[data.date].values if data.date in df else np.zeros(len(df))
@@ -288,15 +290,32 @@ def take_attendence(data: Schemas.TakeAttendence_v2_0, sql_conn: sqlite3.Connect
 
     status_ = save_df_to_db(sql_conn, table_name, df, **kwargs)
     if status_ == True:
-        return df
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
     raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
                             detail=f'Failed to create files: Exception {status_}')
 
 def show_attendence_data(request: Schemas.ShowAttendence):
     query, _ = FULL_DATA_QUERY(request.course, request.year)
     df = get_db_to_df(query = query)
+    column = sorted(df.columns[3:][::-1], reverse=True)
+
+    if request.month != "0" and request.month:
+        which_month = request.month
+        if request.month != "0":
+            column = [date for date in column
+                  if str(date[3:5]) == which_month]
+    if not len(column):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Attendence not taken for month {request.month}")
+    column = ['ST_ID', 'ST_NAME', 'ST_STATUS'] + column
+    df = df[column].values
+    return column, df
+
+def get_students_attendence_detail(request: Schemas.ShowAttendence):
+    query, _ = FULL_DATA_QUERY(request.course, request.year)
+    df = get_db_to_df(query=query)
+    df = df[['ST_ID', 'ST_NAME', 'ST_STATUS']]
     column = df.columns
-    df = df.round(2).values
+    df = df.values
     return column, df
 
 def attendence_analysing(data: Schemas.Analysing):
