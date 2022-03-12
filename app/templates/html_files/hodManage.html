@@ -156,6 +156,65 @@
     <button class="ui red button" onclick="export_table('{{ depart }}', 'csv')">Export as Csv</button>
  
     <br><br><br><br>
+
+    <br>
+    {% if dis_continued_students %}
+    <div class="jumbotron">
+      <h3 class="pb-4 text-left" style="font-family: sans-serif;">Discontinued Students Details</h3>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table ui celled padded yellow align-middle shadow" id='datatable1'>
+          <thead class="table-primary">
+              <tr>
+                  <th scope="col" class="font-weight-bold">Admission Number</th>
+                  <th scope="col" class="font-weight-bold">Reg Number</th>
+                  <th scope="col" class="font-weight-bold">Name</th>
+                  <th scope="col" class="font-weight-bold">Course</th>
+                  <th scope="col" class="font-weight-bold">Year</th>
+                  <th scope="col" class="font-weight-bold">Status</th>
+                  <th scope="col" class="font-weight-bold">Discontinued Date</th>
+                  <th scope="col" class="font-weight-bold">Gender</th>
+                  <th scope="col" class="font-weight-bold">Parent Phone</th>
+                  <th scope="col" class="font-weight-bold">State</th>
+                  <th scope="col" class="font-weight-bold">Religion</th>
+                  <th scope="col" class="font-weight-bold">Social Status</th>
+                  <!-- <th scope="col" class="font-weight-bold">REMOVE STUDENT</th> -->
+              </tr>
+          </thead>
+
+          
+          <tbody>
+            {% for i in dis_continued_students %}
+            <tr>
+                <th>{{ i.unique_id }}</th>
+                <th>{{ i.reg_number }}</th>
+                <th scope="col" class="font-weight-bold">{{ i.name }}</th>
+                <td>{{ i.course }}</td>
+                <td>{{ i.year }}</td>
+                <td class="font-weight-bold">{{ i.status }}</td>
+                <td>{{ i.discontinued_date }}</td>
+                <td>{{ i.gender }}</td>
+                <td>{{ i.parent_phone }}</td>
+                <td>{{ i.state }}</td>
+                <td>{{ i.religion }}</td>
+                <td>{{ i.social_status }}</td>
+                <!-- <td>
+                    <button type="button" class="btn btn-danger btn-sm px-3">
+                      <i class="x icon"></i>
+                    </button>
+                </td> -->
+            </tr>
+            {% endfor %}
+        </tbody>
+
+      </table>
+      <br>
+      <button class="ui red button" onclick="export_table2('{{ depart }}', 'csv')">Export as Csv</button>
+    </div>
+    <br><br><br><br>
+    {% endif %}
+    <br>
 </section>
 
 <script>
@@ -184,6 +243,16 @@
             filename:filename
         });
     }
+
+    function export_table2(filename, format){
+      var format_type = format;
+      var filename = filename.toUpperCase()+"_DISCONTINUED_STUDENTS_DETAILS"
+
+      $("#datatable1").tableHTMLExport({
+          type:format_type,
+          filename:filename
+      });
+  }
 
 </script>
 

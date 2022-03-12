@@ -189,7 +189,8 @@ class HodTemplates():
                          "total_courses": total_coursees, "courses": courses,
                          "total_students": total_students,
                          "total_discontinued_staff": total_discontinued_staff,
-                         "total_discontinued_students": len(dis_continued_students)})
+                         "total_discontinued_students": len(dis_continued_students),
+                         "dis_continued_students": dis_continued_students})
         return tmp
 
 
