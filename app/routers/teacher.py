@@ -112,7 +112,7 @@ async def add_students_from_file(
 async def delete_student(request: Schemas.DeleteStudent, db: Session = Depends(get_db)):
     return teacher.delete_student(request, db)
 
-@router.post("/edit-student", response_model=Schemas.AddStudent)
+@router.post("/edit-student", response_model=Schemas.Student_v2_0)
 async def edit_verify_student(request: Schemas.DeleteStudent, db: Session = Depends(get_db)):
     return teacher.edit_verify_student(request, db)
 

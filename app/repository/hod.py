@@ -69,6 +69,24 @@ def check_st_details(request: Schemas.TerminalZone, db: Session):
         attendence._check_attendence_data(request)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
     
+
+def update_students_status(request: Schemas.Students_status_update, db: Session):
+    if not len(request.unique_ids):
+        raise HTTPException(status_code = status.HTTP_406_NOT_ACCEPTABLE, detail="Choose students name")
+    # print(request)
+    for id in request.unique_ids:
+        students_db = db.query(models.Students).filter(and_(
+            models.Students.course == request.course,
+            models.Students.year == request.year,
+            models.Students.unique_id == id
+        ))
+        st = students_db.first().__dict__
+        st.pop('_sa_instance_state', None)
+        st['status'] = request.status
+        students_db.update(st)
+    
+    db.commit()   
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 #===========================================================================
 
 def appoint_teacher(request: Schemas.AddTeacher, db: Session, bg_task: BackgroundTasks):

@@ -128,16 +128,16 @@ def add_student(request: Schemas.AddStudent, db: Session):
 
 def delete_student(request: Schemas.DeleteStudent, db: Session):
     # req = Schemas.TerminalZone(action = 'nothing', course = request.course, year = request.year)
-    res = attendence.remove_students(request=request, 
-                                     save_monthly=True, 
-                                     open_monthly=True,
-                                     db = db)
+    # res = attendence.remove_students(request=request, 
+    #                                  save_monthly=True, 
+    #                                  open_monthly=True,
+    #                                  db = db)
                                      
-    student = db.query(models.Students).filter(and_(models.Students.name == request.name,\
-                                models.Students.id == request.unique_id,\
-                                models.Students.year == request.year,
-                                models.Students.course == request.course
-                            ))
+    student = db.query(models.Students).filter(and_(
+                                                models.Students.unique_id == request.unique_id,\
+                                                models.Students.year == request.year,
+                                                models.Students.course == request.course
+                                            ))
 
     if not student.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User in database") 
@@ -148,11 +148,10 @@ def delete_student(request: Schemas.DeleteStudent, db: Session):
 
 
 def edit_verify_student(request: Schemas.DeleteStudent, db: Session):
-
+    # print(request)
     student = db.query(models.Students).filter(
                 and_(
-                    models.Students.id == request.unique_id,
-                    models.Students.name == request.name,
+                    models.Students.unique_id == request.unique_id,
                     models.Students.course == request.course,
                     models.Students.year == request.year
                 )).first()
@@ -160,11 +159,17 @@ def edit_verify_student(request: Schemas.DeleteStudent, db: Session):
     if not student:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User in database") 
 
-    response = Schemas.AddStudent(unique_id = student.id, name = student.name, email = student.email,\
-                       parent_name = student.parent_name, parent_number = student.parent_number,
-                       number = student.parent_number_alt, course = student.course,
-                       year = student.year
-                    )
+    response = Schemas.Student_v2_0(unique_id = student.unique_id, 
+                                    reg_number = student.reg_number,
+                                    name = student.name, 
+                                    gender = student.gender,
+                                    state = student.state, 
+                                    parent_phone = student.parent_phone,
+                                    religion = student.religion,
+                                    social_status = student.social_status,
+                                    year = student.year, 
+                                    course = student.course
+                                )
 
     return response
 
@@ -172,8 +177,8 @@ def edit_verify_student(request: Schemas.DeleteStudent, db: Session):
 def edit_student(request: Schemas.EditStudent, db: Session):
     student = db.query(models.Students).filter(
                     and_(
-                        models.Students.id == request.old_unique_id,
-                        models.Students.name == request.old_name,
+                        models.Students.unique_id == request.old_unique_id,
+                        # models.Students.name == request.old_name,
                         models.Students.course == request.old_course,
                         models.Students.year == request.old_year)
                     )
@@ -181,12 +186,9 @@ def edit_student(request: Schemas.EditStudent, db: Session):
     if not student.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Not Found")
     
-    updated_details = {'id': request.unique_id, 'name': request.name, 'email': request.email,
-                       'parent_name': request.parent_name, 'parent_number': request.parent_number,
-                       'parent_number_alt': request.number, 'course': request.course, 
-                       'year': request.year}
+    updated_details = Schemas.Student_v2_0(**request.dict())
 
-    student.update(updated_details)
+    student.update(updated_details.dict())
     
     db.commit()
 

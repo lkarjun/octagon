@@ -207,6 +207,16 @@ async def most_absentee(request: Request, data: Schemas.MostAbsentee,
                 user=Depends(oauth2.manager_hod)):
     return HodTemplates.show_most_absentees(request, data)
 
+@router.post("/get_students_name_and_id")
+async def get_students_name_and_id(request: Schemas.get_names):
+    return attendence.get_student_names_for_status_update(data = request)
+
+@router.post("/change_student_status")
+async def update_students_status(request: Schemas.Students_status_update, db: Session = Depends(get_db)):
+    return hod.update_students_status(request, db)
+    print(request)
+    return Response(status_code=204)
+
 @router.post("/get_report")
 async def get_report(request: Request, data: Schemas.Analysing,
                 user=Depends(oauth2.manager_hod)):

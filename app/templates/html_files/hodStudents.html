@@ -39,10 +39,17 @@
 
         <!-- <button class="ui button blue" type="submit" id="get_report_btn">Report</button> -->
 
-        <div class="ui buttons">
-            <div class="ui button teal" id="vD" onclick="show_details()">View Details</div>
-            <div class="or" data-text="or"></div>
-            <div class="ui button green" id="vA" onclick="show_attendence()">View Attendence</div>
+        <div class="p-3">
+            <div class="ui buttons small w-100">
+                <div class="ui button teal" id="vD" onclick="show_details()">View Details</div>
+                <div class="or" data-text="or"></div>
+                <div class="ui button green" id="vA" onclick="show_attendence()">View Attendence</div>
+                <!-- <div class="or" data-text="or"></div> -->
+            </div>
+        </div>
+    
+        <div class="p-3">
+            <div class="ui button yellow w-100" id="vS" onclick="get_names()">Change Status</div>
         </div>
     
     </form>
@@ -54,6 +61,42 @@
             <a href="/hod/search-students"><div class="ui button blue wide" >Search Students</div></a>
         </div>
     </div>
+
+    <br><br>
+    <!--Change Status-->
+    
+
+    <section id="cs_section" style="display: none;">
+        <hr class='rounded' style="height: 5px; background-color: rgb(233, 115, 141);">
+        <div class="pb-md-5 pb-3 pt-md-0 pt-5">
+            <div class="jumbotron text-left pt-md-5">
+                <h3 class="pb-md-5 pb-3 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Change Status</h3>
+            </div>
+        </div>
+
+        <form class="ui form" id="change_status_form">
+            <div class="two fields">
+                <div class="field">
+                    <label>Choose Students</label>
+                    <select required class="ui fluid search dropdown"  multiple="" id='st_names'>
+                        <option value="" disabled selected>Students Name</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Status</label>
+                    <select required class="ui dropdown" id='st_status'>
+                        <option value="Continue">Continue</option>
+                        <option value="Dicontinue">Discontinue</option>
+                    </select>
+                </div>
+            </div>
+            <div class="p-3">
+                <button class="ui button teal w-100" type="submit" id="up_status_btn">Update Status</button>
+            </div>
+        </form>
+
+    </section>
 
     <!-- <div class="pt-5 pb-2">
         <a href="/hod/add-students"><div class="ui button blue wide" >Add / Remove / Edit</div></a>
@@ -107,6 +150,126 @@
 <script src="{{ url_for('static', path='attendence.js') }}"></script>
 <script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
 <script>
+
+    $("#change_status_form").submit((e)=>{
+        e.preventDefault();
+
+        $("#up_status_btn").addClass("loading disabled")
+
+        var course = $("#course").val()
+        var year = parseInt($("#year").val())
+
+        var data = JSON.stringify({"course": course,
+                                   "year": year,
+                                   "unique_ids": $("#st_names").val(),
+                                   "status": $("#st_status").val(),
+                                });
+
+        var base = window.location.origin + '/hod/change_student_status';
+        $.ajax({
+            url: base,
+            type: 'POST',
+            async: true,
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                swal({
+                    title: "Status Updated!",
+                    text: "Sucessfully Updated Students status to  "+$("#st_status").val(),
+                    icon: "success",
+                    button: "Okay!",
+                }).then((value) => {
+                  location.reload();
+                });
+
+            },
+            error: function(result){
+                if(result.status == 406){
+                    $("#up_status_btn").removeClass("loading disabled")
+                    swal({
+                        text: result.responseJSON.detail,
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+                else{
+                    swal({
+                        title: "Error!",
+                        text: "Something Went Wrong",
+                        icon: "error",
+                        button: "Okay!",
+                    }).then((value) => {
+                        location.reload();
+                    });
+
+                }
+            }
+
+        })
+    
+     
+    })
+
+
+
+    function append_student_name(data){
+        $('#st_names').append(new Option(data[1], data[0]))
+    }
+
+    function get_names(){
+        $("#vS").addClass("loading disabled")
+        var course = $("#course").val()
+        var year = parseInt($("#year").val())
+
+        var base = window.location.origin + '/hod/get_students_name_and_id';
+        var data = JSON.stringify({'course': course, 'year': year})
+        $.ajax({
+            url: base,
+            type: 'POST',
+            async: true,
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                //alert("okay")
+                $("#vS").removeClass("loading disabled")
+                $("#cs_section").show();
+                $('html, body').animate({
+                    scrollTop: $("#cs_section").offset().top
+                }, 800);
+                result.datas.forEach(append_student_name)
+                swal({
+                    title: "Student Names Updated!",
+                    text: "Please choose students name...",
+                    icon: "success",
+                    button: "Okay!",
+                })
+
+            },
+            error: function(result){
+                $("#vS").removeClass("loading disabled")
+                if(result.status == 404){
+
+                    swal({
+                        title: "Not Found!",
+                        text: result.responseJSON.detail,
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+                else{
+                    swal({
+                        text: "Something went wrong",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+            }
+        });
+
+    }
+
     function show_attendence(){
         $("#vA").addClass("loading disabled")
         var course = $("#course").val()

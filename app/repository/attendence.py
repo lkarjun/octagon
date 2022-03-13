@@ -249,6 +249,13 @@ def remove_students(data: Schemas.DeleteStudent,
                             detail=f'Failed to create files: Exception {status_}')
     return df
 
+def get_student_names_for_status_update(data: Schemas.get_names):
+    df = get_db_to_df(query = FULL_DATA_QUERY(data.course, data.year)[0])
+    names = df['ST_NAME'].to_list()
+    ids = df['ST_ID'].to_list()
+    if not len(names):
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No Students are there in course {data.course} year {data.year}")
+    return Schemas.StudentsAttendence_v2_0(datas = list(zip(ids, names)))
 
 def get_student_names(data: Schemas.set_class):
     data.date = f"{data.date[8:]}-{data.date[5:7]}-{data.date[:4]}"
@@ -370,7 +377,7 @@ def most_absentee(request: Schemas.MostAbsentee, **kwargs):
     date_columns = df.columns.to_list()
     if not len(date_columns) - 1 : raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
                                                   detail="No attendence taken in this month")
-    number_of_working_days = df.shape[1] - 1
+    number_of_working_days = df.shape[1] - 3
     number_of_working_days_left = 90 - number_of_working_days
 
     analysis = get_analysis(df, date_columns)

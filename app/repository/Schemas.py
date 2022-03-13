@@ -74,6 +74,16 @@ class TakeAttendence_v2_0(BaseModel):
 class Staff_v2_0_status(BaseModel):
     username: str
     status: str
+
+class get_names(BaseModel):
+    course: str
+    year: int
+
+class Students_status_update(BaseModel):
+    course: str
+    year: int
+    unique_ids: List[str]
+    status: str
 #====================================================================
 
 
@@ -191,15 +201,14 @@ class AddStudent(BaseModel):
     course: str
     year: int
 
-class EditStudent(AddStudent):
+class EditStudent(Student_v2_0):
     old_unique_id: str
-    old_name: str
     old_course: str
     old_year: int
 
 class DeleteStudent(BaseModel):
     unique_id: str
-    name: str
+    # name: str
     course: str
     year: int
 
