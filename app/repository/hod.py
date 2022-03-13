@@ -83,6 +83,10 @@ def update_students_status(request: Schemas.Students_status_update, db: Session)
         st = students_db.first().__dict__
         st.pop('_sa_instance_state', None)
         st['status'] = request.status
+        if request.status != "Continue":
+            st['discontinued_date'] = date.today()
+        else:
+            st['discontinued_date'] = "-"
         students_db.update(st)
     
     db.commit()   
