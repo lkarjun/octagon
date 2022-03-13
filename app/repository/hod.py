@@ -8,6 +8,7 @@ from octagonmail import octagonmail
 from tqdm import tqdm
 import pandas as pd
 from datetime import date
+from io import StringIO
 
 #================================v2.0===========================================
 def appoint_teacher_v2_0(data: Schemas.Staff_v2_0, db: Session, bg_task: BackgroundTasks):
@@ -27,9 +28,9 @@ def appoint_teacher_v2_0(data: Schemas.Staff_v2_0, db: Session, bg_task: Backgro
 
 def appoint_teacher_v2_0_from_file(Data: UploadFile, department:str, db: Session, bg_task: BackgroundTasks):
     if Data.content_type == "text/csv":
-        df = pd.read_csv(Data.file)
+        df = pd.read_csv(StringIO(str(Data.file.read(), 'utf-8')), encoding='utf-8')
     elif Data.content_type == 'text/xlxm' or Data.content_type == 'text/xls':
-        df = pd.read_excel(Data.file)
+        df = pd.read_excel(StringIO(str(Data.file.read(), 'utf-8')), encoding='utf-8')
     else: raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, detail="dataformat mismatched")
 
     for _, i in tqdm(df.iterrows(), colour='green', desc='Adding Teachers from File'): 
@@ -65,10 +66,18 @@ def change_status(request: Schemas.Staff_v2_0_status, db: Session):
 def check_st_details(request: Schemas.TerminalZone, db: Session):
     if request.action == 'detail_check':
         tmp = get_student_details(db, request.course, request.year)
+    elif request.action == "attendence_correction":
+        check_attendence_correction(db)
     else:
         attendence._check_attendence_data(request)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
     
+def check_attendence_correction(db: Session):
+    data = db.query(models.Corrections).all()
+    if len(data):
+        return
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail = 'Data not avaliable...')
 
 def update_students_status(request: Schemas.Students_status_update, db: Session):
     if not len(request.unique_ids):

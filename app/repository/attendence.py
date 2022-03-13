@@ -308,7 +308,7 @@ def _check_attendence_data(request: Schemas.TerminalZone):
     if len(column):
         return
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail = 'Not admitted students...')
+                            detail = 'Not admitted students or attendence didnt taken...')
 
 def show_attendence_data(request: Schemas.ShowAttendence):
     query, _ = FULL_DATA_QUERY(request.course, request.year)

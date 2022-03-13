@@ -203,7 +203,7 @@ class HodTemplates():
         return tmp
 
     def search_students(request, user, db):
-        students = db.query(models.Students).all()
+        students = db.query(models.Students).filter(models.Students.status == "Continue").all()
         list_empty = False if len(students) else True
         tmp = templates.TemplateResponse("hodSearchStudents.html",
                 context={"request": request, "title": "Search Students",

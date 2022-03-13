@@ -37,20 +37,53 @@
             </div>
         </div>
 
-        <!-- <button class="ui button blue" type="submit" id="get_report_btn">Report</button> -->
+        <div class="fields four">
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button teal w-100" id="vD" onclick="show_details()">View Details</div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button green w-100" id="vA" onclick="show_attendence()">View Attendence</div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button yellow w-100" id="vS" onclick="get_names()">Change Status</div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button teal w-100" id="vC" onclick="show_attendence_correction()">Attendence Corrections</div>
+                </div>
+            </div>
 
-        <div class="p-3">
+        </div>
+
+        <!-- <div class="fields two">
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button yellow w-100" id="vS" onclick="get_names()">Change Status</div>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button teal w-100" id="vC" onclick="alert('Soon')">View Corrected Data</div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- <div class="p-3">
             <div class="ui buttons small w-100">
                 <div class="ui button teal" id="vD" onclick="show_details()">View Details</div>
                 <div class="or" data-text="or"></div>
                 <div class="ui button green" id="vA" onclick="show_attendence()">View Attendence</div>
-                <!-- <div class="or" data-text="or"></div> -->
-            </div>
-        </div>
+                <div class="or" data-text="or"></div> -->
+            <!-- </div> -->
+        <!-- </div> -->
     
-        <div class="p-3">
-            <div class="ui button yellow w-100" id="vS" onclick="get_names()">Change Status</div>
-        </div>
     
     </form>
 
@@ -270,6 +303,13 @@
 
     }
 
+    function show_attendence_correction(){
+        $("#vC").addClass("loading disabled")
+        var course = $("#course").val()
+        var year = parseInt($("#year").val())
+        check_st_detail(course, year, "attendence_correction")
+    }
+
     function show_attendence(){
         $("#vA").addClass("loading disabled")
         var course = $("#course").val()
@@ -302,14 +342,18 @@
                 //alert("okay")
                 if(action == "detail_check")
                     window.location.href = "/hod/students-attendence/details/"+course+"/"+year
-                else{
+                else if(action == "attendence_check"){
                     window.location.href = "/hod/students-attendence/"+course+"/"+year
+                }
+                else{
+                    swal({text: "Comming Soon", button: "Okay"})
                 }
 
             },
             error: function(result){
                 $("#vD").removeClass("loading disabled")
                 $("#vA").removeClass("loading disabled")
+                $("#vC").removeClass("loading disabled")
                 if(result.status == 404){
 
                     swal({

@@ -10,6 +10,8 @@ from octagonmail import octagonmail
 import pandas as pd
 from tqdm import tqdm
 from datetime import date
+from io import StringIO
+
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)
@@ -99,9 +101,9 @@ def appoint_hod(data: Schemas.Staff_v2_0, db: Session, bg_task: BackgroundTasks)
 
 def appoint_hod_v2_0_from_file(Data: UploadFile, department:str, db: Session, bg_task: BackgroundTasks):
     if Data.content_type == "text/csv":
-        df = pd.read_csv(Data.file)
+        df = pd.read_csv(StringIO(str(Data.file.read(), 'utf-8')), encoding='utf-8')
     elif Data.content_type == 'text/xlxm' or Data.content_type == 'text/xls':
-        df = pd.read_excel(Data.file)
+        df = pd.read_excel(StringIO(str(Data.file.read(), 'utf-8')), encoding='utf-8')
     else: raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, detail="dataformat mismatched")
 
     for _, i in tqdm(df.iterrows(), colour='green', desc='Adding hod from File'):
