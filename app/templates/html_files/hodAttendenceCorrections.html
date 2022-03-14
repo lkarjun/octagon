@@ -1,0 +1,89 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+
+<script>
+    $("#navMore").addClass("navisel")
+    $("#navSt").addClass("navisel")
+</script>
+
+<br>
+<section class="pt-md-3 pt-5 mt-md-2 pb-md-5 pb-5 mb-5" id="choose_detail">
+
+    <div class="jumbotron text-center pt-md-3">
+        <h3 class="pt-4 pb-4 font-weight-bold" style="font-family: sans-serif;">Attendence Correction Details</h3>
+    </div>
+
+    <!--Teachers Search-->
+    <div class="form ui pb-3">
+        <div class="field">
+          <div class="ui search">
+            <div class="ui icon input">
+              <input class="prompt" type="text" id='myInput' placeholder="Search">
+              <i class="search icon"></i>
+            </div>
+            <div class="results"></div>
+          </div>
+        </div>
+    </div>
+    <!--Search Ends-->
+
+    <div class="table-responsive shadow rounded">
+        <table class="table ui celled padded yellow align-middle ">
+          <thead>
+            <tr>
+              <th scope="col" class="font-weight-bold">Students Ids</th>
+              <th scope="col" class="font-weight-bold">Reason</th>
+              <th scope="col" class="font-weight-bold">Percentage Given</th>
+              <th scope="col" class="font-weight-bold">Date</th>
+              <th scope="col" class="font-weight-bold">Course</th>
+              <th scope="col" class="font-weight-bold">Year</th>
+
+          </tr>
+          </thead>
+          <tbody id="SearchStudents">
+            {% for i in corrections %}
+            <tr>
+              <th class="font-weight-bold">{{ i.student_ids }}</th>
+              <th class="font-weight-bold">{{ i.reason }}</th>
+              <th scope="col" class="font-weight-bold">
+
+                {% if i.percentage|float == 0.2 %}
+                1️⃣ Hour
+                {% elif i.percentage|float == 0.4 %}
+                2️⃣ Hour
+                {% elif i.percentage|float == 0.6 %}
+                3️⃣ Hour
+                {% elif i.percentage|float == 0.8 %}
+                4️⃣ Hour
+                {% else %}
+                ✅ Full Day
+                {% endif %}
+
+              </th>
+              <td>{{ i.date }}</td>
+              <td>{{ i.course }}</td>
+              <td class="font-weight-bold">{{ i.year }}</td>
+              <!-- <td>{{ i.gender }}</td> -->
+            </tr>
+            {% endfor %}
+
+          </tbody>
+        </table>
+    </div>
+
+
+</section>
+
+<br>
+<br>
+
+<script>
+    $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#SearchStudents tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          });
+      });
+</script>
+
+{% endblock %}

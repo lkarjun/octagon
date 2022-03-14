@@ -339,7 +339,7 @@ def attendence_analysing(data: Schemas.Analysing):
     if data.last_month:
         which_month = data.which_month
         date_columns = [date for date in df.columns[3:]
-                        if date[5:7] == which_month]
+                        if date[3:5] == which_month]
 
         if not len(date_columns): raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
                                                 detail=f"No attendence taken in {which_month} month")        
@@ -375,7 +375,7 @@ def most_absentee(request: Schemas.MostAbsentee, **kwargs):
     query, _ = FULL_DATA_QUERY(course=request.course, year = request.year)
     df = get_db_to_df(query=query)
     date_columns = df.columns.to_list()
-    if not len(date_columns) - 1 : raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+    if not len(date_columns) - 3 : raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
                                                   detail="No attendence taken in this month")
     number_of_working_days = df.shape[1] - 3
     number_of_working_days_left = 90 - number_of_working_days
@@ -388,6 +388,42 @@ def most_absentee(request: Schemas.MostAbsentee, **kwargs):
     
     return most_absentee, there_is, (number_of_working_days, number_of_working_days_left)
 
+@get_sql_connection
+def attendence_correction_v2_0(sql_conn: sqlite3.Connection, 
+                               request: Schemas.AttendenceCorrection, 
+                               db: Session, department: str):
+    query, table_name = FULL_DATA_QUERY(course=request.course, year = request.year)
+    df = get_db_to_df(query=query)
+    column = request.date
+    column = f"{column[8:]}-{column[5:7]}-{column[:4]}"
+    percentage = request.percentage
+    date_columns = df.columns.to_list()
+    if column not in date_columns:
+        raise HTTPException(status.HTTP_404_NOT_FOUND,
+                            detail="In this date there is no attendence taken")
+        # here raise date not in the column
+    for id in request.student_ids:
+        index_row = df[df['ST_ID'] == id].index[0]
+        current_percent = df.at[index_row, column]
+        value = current_percent+percentage
+        if current_percent <= 1.0 and value <= 1.0:
+            df.at[index_row, column] = round(value, 1)
+        else:
+            df.at[index_row, column] = 1.0
+
+    status_ = save_df_to_db(sql_conn, table_name, df, if_exists='replace')
+    if status_ == False:
+        raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
+                            detail=f'Failed to create files: Exception {status_}')
+    corrections_ = request.dict()
+    corrections_['student_ids'] = ','.join(request.student_ids)
+    corrections_['department'] = department
+    corrections = models.Corrections(**corrections_)
+    
+    db.add(corrections)
+    db.commit()
+    db.refresh(corrections)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 #=======================================================
 

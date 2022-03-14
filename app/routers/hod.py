@@ -63,7 +63,7 @@ async def verification_image(username: str = Form(...),
 @router.post("/students-attendence/corrections", status_code=status.HTTP_204_NO_CONTENT)
 async def attendence_correction(request: Schemas.AttendenceCorrection, 
             db: Session = Depends(get_db), user=Depends(oauth2.manager_hod)):
-    return attendence.attendence_correction(request=request, db=db)
+    return attendence.attendence_correction_v2_0(request=request, db=db, department=user.department)
 
 
 # Hod Functions
@@ -138,6 +138,12 @@ async def add_hod_from_file(
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
     return hod.appoint_teacher_v2_0_from_file(DATA, department, db, bg_task)
 
+
+@router.get("/corrected_attendence_view")
+async def correct_attendence_view(request: Request, 
+                            user = Depends(oauth2.manager_hod), 
+                            db: Session = Depends(get_db)):
+    return HodTemplates.attendence_correction_view(request, db, user)
 # =================================================================================================
 
 # Pages

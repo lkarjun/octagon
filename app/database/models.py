@@ -141,11 +141,12 @@ class TimetableS(Base):
 
 class Corrections(Base):
     __tablename__ = "Attendence Correction"
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     course = Column(String)
     year = Column(String)
+    department = Column(String)
     date = Column(String)
-    student_name = Column(String)
+    student_ids = Column(String)
     reason = Column(String)
     percentage = Column(Float)
 

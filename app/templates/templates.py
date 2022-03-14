@@ -329,6 +329,15 @@ class HodTemplates():
                                 "data": data, "head": True})
         return tmp
 
+    def attendence_correction_view(request, db, user):
+        corrections = db.query(models.Corrections).filter(models.Corrections.department == user.department).all()
+        corrections = corrections[::-1]
+        tmp = templates.TemplateResponse("hodAttendenceCorrections.html",
+                                        context={'request': request, 
+                                                 "title": "Attendence Correction Details",
+                                                 "corrections": corrections})
+        return tmp
+
 class TeacherTemplates():
     
     def workspace(request, db, user):

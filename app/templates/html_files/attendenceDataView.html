@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <button class="ui button green small" type="submit" id="get_report_btn">Show Report</button>
+            <button class="ui button teal" type="submit" id="get_report_btn">Show Report</button>
 
             <!-- <div class="ui buttons blue">
                 <button class="ui button" type="submit" id="get_report_btn">Report</button>
@@ -219,6 +219,7 @@
                                 <label>Choose Percentage</label>
                                 <select required class="ui search dropdown" id="percent">
                                     <option value="1.0" selected>Give Full Day Attendence</option>
+                                    <option value="0.8">Give Four Hour Attendence</option>
                                     <option value="0.6">Give Three Hour Attendence</option>
                                     <option value="0.4">Give Two Hour Attendence</option>
                                     <option value="0.2">Give One Hour Attendence</option>
@@ -230,8 +231,8 @@
                             <input type="date" id="date_giving">
                         </div>
                         <div class="ui buttons two">
-                            <div class="button ui blue" onclick="get_studence_name()" id="get_st_name_btn">Get Student Names</div>
-                            <div onclick="submit_correction()" id="sub_corr_btn" class="button ui teal">Grand Attendence</div>
+                            <div class="button ui blue" onclick="get_names()" id="get_st_name_btn">Get Student Names</div>
+                            <div onclick="submit_correction_v2()" id="sub_corr_btn" class="button ui teal">Grand Attendence</div>
                         </div>
                     </div>
                 </div>
@@ -246,6 +247,117 @@
     <br><br><br>
 
 </div>
+
+<script>
+    function submit_correction_v2(){
+        var base = window.location.origin + '/hod/students-attendence/corrections';   
+        var reason = $("#reason_attendence").val()
+        var date = $("#date_giving").val()
+        var student_ids = $("#students_names").val()
+        $("#sub_corr_btn").addClass("loading disabled")
+        //alert(student_ids)
+        if (date && student_ids != "" && reason != "") {
+            var data = JSON.stringify({
+                                   "course": $("#course").val(),
+                                   "year": parseInt($("#year").val()),
+                                   "date": date.toString(),
+                                   "percentage": $("#percent").val(),
+                                   "student_ids": student_ids,
+                                   "reason":reason
+                                });                    
+            $.ajax({
+                url: base,
+                type: 'POST',
+                async: true,
+                data: data,
+                dataType: 'json',
+                contentType: "application/json",
+                success: function(result){
+                    $("#sub_corr_btn").removeClass("loading disabled")
+                    swal({
+                        title: "Attendence Updated!",
+                        text: "Granded Attendence for Students",
+                        icon: "success",
+                        button: "Okay!",
+                    })
+                },
+                error: function(result){
+                    $("#sub_corr_btn").removeClass("loading disabled")
+                    if(result.status == 404){
+                        swal({
+                            title: "Attendence Not Taken!",
+                            text: "In this date there is no attendence taken",
+                            icon: "error",
+                            button: "Okay!",
+                        })
+                    }
+                    else{
+                        error_alert("Something went wrong, please contact technical team")
+                    
+                    }
+                }
+            })
+        }
+        else{
+            $("#sub_corr_btn").removeClass("loading disabled")
+            warning_alert("Choose the date when you want to give attendance.")
+        }
+    }
+
+    function append_student_name(data){
+        $('#students_names').append(new Option(data[1], data[0]))
+    }
+
+    function get_names(){
+        $("#get_st_name_btn").addClass("loading disabled")
+        var course = $("#course").val()
+        var year = parseInt($("#year").val())
+
+        var base = window.location.origin + '/hod/get_students_name_and_id';
+        var data = JSON.stringify({'course': course, 'year': year})
+        $.ajax({
+            url: base,
+            type: 'POST',
+            async: true,
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                //alert("okay")
+                $("#get_st_name_btn").removeClass("loading disabled")
+                result.datas.forEach(append_student_name)
+                swal({
+                    title: "Student Names Updated!",
+                    text: "Please choose students name...",
+                    icon: "success",
+                    button: "Okay!",
+                })
+
+            },
+            error: function(result){
+                $("#vS").removeClass("loading disabled")
+                if(result.status == 404){
+
+                    swal({
+                        title: "Not Found!",
+                        text: result.responseJSON.detail,
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+                else{
+                    swal({
+                        text: "Something went wrong",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+            }
+        });
+
+    }
+
+</script>
 
 <script src="{{ url_for('static', path='attendence.js') }}"></script>
 <script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>

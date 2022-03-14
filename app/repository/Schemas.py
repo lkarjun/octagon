@@ -255,7 +255,7 @@ class MostAbsentee(BaseModel):
     year: int
 
 class AttendenceCorrection(BaseModel):
-    names: List[str]
+    student_ids: List[str]
     date: str
     percentage: float
     reason: str
