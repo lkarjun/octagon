@@ -313,16 +313,7 @@ def display_timetable(request: Schemas.TimeTableEdit, db: Session):
                                 models.TimetableS.course == request.course))
     if not timetable.first(): raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No Timetable sets course: {request.course} and year: {request.year}")
-
-    result = {'Monday': [], 'Tuesday': [], 'Wednesday': [], 'Thursday': [], 'Friday': []}
-
-    for i, day in zip(timetable, result):
-        result[day].append(i.hour_1)
-        result[day].append(i.hour_2)
-        result[day].append(i.hour_3)
-        result[day].append(i.hour_4)
-        result[day].append(i.hour_5)
-    return result
+    return Response(status_code=204)
 
 def remove_timetable(request: Schemas.TimeTableEdit, db: Session):
     timetable = db.query(models.Timetable).filter(and_(models.Timetable.course == request.course,

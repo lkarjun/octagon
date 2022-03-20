@@ -88,7 +88,7 @@ async def check_teacher_allocation(request: Schemas.TimeTableChecker,
             db: Session = Depends(get_db), user=Depends(oauth2.manager_hod)):
     return hod.check_timetable(request, db)
 
-@router.post('/display_timetable')
+@router.post('/display_timetable', status_code=status.HTTP_204_NO_CONTENT)
 async def display_timetable(request: Schemas.TimeTableEdit, db: Session = Depends(get_db),
                     user=Depends(oauth2.manager_hod)):
     return hod.display_timetable(request, db)
@@ -176,6 +176,12 @@ async def take_attendence(request: Request, user=Depends(oauth2.manager_hod)):
 async def timetable(request: Request, user=Depends(oauth2.manager_hod),
                     db: Session = Depends(get_db)):
     return HodTemplates.timetable(request, user, db)
+
+@router.get('/timetable/{course}/{year}')
+async def timetable_view(request: Request, course: str, year: int,
+                         user = Depends(oauth2.manager_hod), 
+                         db: Session = Depends(get_db)):
+    return HodTemplates.timetable_view(request, db, course, year, user)
 
 @router.get("/edit-teacher")
 async def appoint_teacher(request: Request,user=Depends(oauth2.manager_hod)):

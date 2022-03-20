@@ -65,7 +65,12 @@ function checkConflict(id){
     
     if (value == "none"){
         $(id+"f").addClass("error");
-        warning_alert('Choose a valid name '+value);   
+        swal({
+            text: 'Choose Valid Option ',
+            icon: "warning",
+            button: "Okay!",
+        })
+        // warning_alert('Choose a valid name '+value);   
     }
     else{
         var base = window.location.origin + '/hod/check_teacher';            
@@ -89,11 +94,22 @@ function checkConflict(id){
                         
                         if(result.status == 406){
                             msg = JSON.parse(result.responseText)
-                            error_alert(msg.detail, position = 'top-center')
+                            // error_alert(msg.detail, position = 'top-center')
+                            swal({
+                                title: "Warning!",
+                                text: msg.detail,
+                                icon: "warning",
+                                button: "Okay!",
+                            })
                             $(id+"f").addClass("error")
                         }
                         else{
-                            error_alert("Something went wrong please contact techincal team...", position = 'top-center');
+                            swal({
+                                title: "Error!",
+                                text: "Something Went Wrong, Please Contact Techincal Team!",
+                                icon: "error",
+                                button: "Okay!",
+                            })
                         }
                     }
             });
@@ -149,23 +165,39 @@ $("#CourseAndYear").submit((e)=>{
              error: function(result){
                     $("#finalize").removeClass("loading")
                         if(result.status == 422){
-                            warning_alert("Please fill all necessary columns...")
+                            swal({
+                                title: "Error!",
+                                text: "Please fill all necessary columns...",
+                                icon: "warning",
+                                button: "Okay!",
+                            })
                         }
                         else{
-                            error_alert("Something went wrong please try to contact techinal team...")
+                            swal({
+                                title: "Error!",
+                                text: "Something Went Wrong, Please Contact Techincal Team!",
+                                icon: "error",
+                                button: "Okay!",
+                            })
                             }
                         }
     });
 })
 
 
-$("#RemoveTT").submit((e)=>{
-    e.preventDefault()
-    var course = $("#courseR").val()
-    var year = parseInt($("#yearR").val())
-    var depart = $("#departR").val()
+function removeTimeTable(){
+    var course = $("#course").val()
+    var year = parseInt($("#year").val())
+    var depart = $("#department").val()
     var data = JSON.stringify({"course": course, "year": year, "department": depart})
-
+    if(course == null || year == null){
+        swal({
+            text: "Please Choose Course & Year",
+            icon: "warning",
+            button: "Okay!",
+        })
+    }
+    else{
     var base = window.location.origin + '/hod/delete_timetable';
     $.ajax({
         url: base,
@@ -194,11 +226,16 @@ $("#RemoveTT").submit((e)=>{
                     })
             }
             else{
-                error_alert("Something went wrong please try to call the techinal team...")
+                swal({
+                    title: "Error!",
+                    text: "Something Went Wrong, Please Contact Techincal Team!",
+                    icon: "error",
+                    button: "Okay!",
+                })
             }
         }
     });
-})
+}}
 
 
 function setTimeTable(data, result){
@@ -241,14 +278,22 @@ function setTimeTable(data, result){
     $("#vf5").html(Friday[4])
 }
 
-$("#viewTT").submit((e)=>{
-    e.preventDefault()
-    var course = $("#courseV").val()
-    var year = parseInt($("#yearV").val())
-    var depart = $("#departV").val()
+function view_time_table(){
+    var course = $("#course").val()
+    var year = parseInt($("#year").val())
+    var depart = $("#department").val()
     var data = JSON.stringify({"course": course, "year": year, "department": depart})
-
+    
     var base = window.location.origin + '/hod/display_timetable';
+    if(course == null || year == null){
+        swal({
+            text: "Please Choose Course & Year",
+            icon: "warning",
+            button: "Okay!",
+        })
+    }
+    else{
+    $("#viewBTN").addClass("loading disabled")
     $.ajax({
         url: base,
         type: 'POST',
@@ -257,13 +302,14 @@ $("#viewTT").submit((e)=>{
         dataType: 'json',
         contentType: "application/json",
         success: function(result){
-            var data = course+" "+year+" year"
-            setTimeTable(data, result)
+            $("#viewBTN").removeClass("loading disabled")
+            window.location = window.location.origin + `/hod/timetable/${course}/${year}`
         },
     error: function(result){
         
         if(result.status == 404){
             var msg = JSON.parse(result.responseText)
+            $("#viewBTN").removeClass("loading disabled")
             swal({
                     title: "Not Found!",
                     text: msg.detail,
@@ -272,9 +318,15 @@ $("#viewTT").submit((e)=>{
                 })
         }
         else{
-            error_alert("Something went wrong please try to call the techinal team...")
+            $("#viewBTN").removeClass("loading disabled")
+            swal({
+                title: "Error!",
+                text: "Something Went Wrong, Please Contact Techincal Team!",
+                icon: "error",
+                button: "Okay!",
+            })
         }
         
         }
     });
-})
+}}

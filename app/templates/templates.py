@@ -338,6 +338,25 @@ class HodTemplates():
                                                  "corrections": corrections})
         return tmp
 
+    def timetable_view(request, db, course, year, user):
+        all_ = db.query(models.Hod).all() + db.query(models.Teachers).all()
+        all_ = {i.username: i.name for i in all_}
+        timetables = db.query(models.Timetable).filter(and_(
+            models.Timetable.course == course,
+            models.Timetable.year == year,
+            models.Timetable.department == user.department
+        )).all()
+        timetablesS = db.query(models.TimetableS).filter(and_(
+            models.TimetableS.course == course,
+            models.TimetableS.year == year,
+            models.TimetableS.department == user.department
+        )).all()
+        tmp = templates.TemplateResponse("hodTimeTableView.html",
+                        context={"request": request, "title": "TimeTable View",
+                                 "course": course, 'year': year, "timetables": timetables,
+                                 "timetablesS":timetablesS, "all_":all_})
+        return tmp
+
 class TeacherTemplates():
     
     def workspace(request, db, user):
