@@ -143,6 +143,37 @@ def deleteAttendenceFiles(total_year: int, course: str, sql_conn: sqlite3.Connec
         sql_conn.commit()
     return
 
+## Start new sem
+@get_sql_connection
+def start_new_semester_v2(sql_conn: sqlite3.Connection, data: Schemas.TerminalZone, **kwargs):
+    query, table_name = FULL_DATA_QUERY(data.course, data.year)
+    df = get_db_to_df(query=query)
+    df = df[['ST_ID', 'ST_NAME', 'ST_STATUS']]
+    sql_conn.execute(f"Drop table {table_name}")
+    sql_conn.commit()
+
+    status_ = save_df_to_db(sql_conn, table_name, df, **kwargs)
+    if status_ == True:
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
+    raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED,
+                            detail=f'Failed to remove files: Exception {status_}')
+
+## remove students when the course is over...
+@get_sql_connection
+def remove_students_for_new_semester_v2(sql_conn: sqlite3.Connection, request: Schemas.TerminalZone, **kwargs):
+    db, user = kwargs['db'], kwargs['user']
+    students_details = db.query(models.Students).filter(and_(
+            models.Students.department == user.department,
+            models.Students.course == request.course,
+            models.Students.year == request.year
+        ))
+    students_details.delete(synchronize_session=False)
+    db.commit()
+    query, table_name = FULL_DATA_QUERY(request.course, request.year)
+    sql_conn.execute(f"Drop table {table_name}")
+    sql_conn.commit()
+    return createAttendenceFile(request.course, request.year)
+    # createFiles(request.year, request.course)
 #=======================================================
 
 def createFiles(year: int, course_alias: str):

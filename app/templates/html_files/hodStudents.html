@@ -142,9 +142,9 @@
             <h3 class="pb-md-5 pb-5 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Terminal Zone</h3>
         </div>
         <div class="ui buttons small three">
-            <div class="ui button yellow" onclick="comming_soon('Start New Semester')">Start New Semester</div>
-            <div class="ui button green" onclick="comming_soon('Promote Students')">Promote Students</div>
-            <div class="ui button red" onclick="comming_soon('Remove Students')">Remove Students</div>
+            <div class="ui button yellow" onclick="terminal_zone('sts')">Start New Semester</div>
+            <div class="ui button green" onclick="comming_soon('ps')">Promote Students</div>
+            <div class="ui button red" onclick="terminal_zone('rs')">Remove Students</div>
         </div>
         
         <div class="pt-5 mt-2">
@@ -372,7 +372,10 @@
 </script>
 
 <script>
-function terminal_zone(which_op, course, year){
+function terminal_zone(which_op){
+    var mapper = {'sts': 'Start New Semester', 'ps': "Promote Students", 'rs': "Remove Students"}
+    var course = $("#course").val()
+    var year = parseInt($("#year").val())
     var base = window.location.origin + '/hod/terminalzone';
     var data = JSON.stringify({'action': which_op, 'course': course, 'year': year})
     $.ajax({
@@ -385,7 +388,7 @@ function terminal_zone(which_op, course, year){
         success: function(result){
             swal({
                     title: `${which_op}!`,
-                    text: `Successfully ${which_op}--course: ${course} year: ${year}.`,
+                    text: `Successfully ${mapper[which_op]} --course: ${course} year: ${year}.`,
                     icon: "success",
                     button: "Okay!",
                 })
@@ -395,7 +398,7 @@ function terminal_zone(which_op, course, year){
             if(result.status == 404){
                 var msg = JSON.parse(result.responseText)
                 swal({
-                        title: "Not Performed The Action!",
+                        title: `Not Performed The Action! ${mapper[which_op]}`,
                         text: msg.detail,
                         icon: "error",
                         button: "Okay!",

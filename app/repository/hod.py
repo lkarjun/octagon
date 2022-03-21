@@ -141,16 +141,10 @@ def remove_teacher(request: Schemas.DeleteTeacher, db: Session):
     return Response(status_code=204)
 
 def terminalzone(request: Schemas.TerminalZone, db: Session, user):
-    if request.action == 'Start New Semester':
-        
-        attendence.start_new_semester(
-                        request = request,
-                        open_monthly = True,
-                        save_monthly = True,
-        )
+    if request.action == 'sts':
+        attendence.start_new_semester_v2(data = request)
 
-
-    elif request.action == 'Promote Students':
+    elif request.action == 'ps':
 
         course_duration = db.query(models.Courses).filter(models.Courses.Course_name_alias == request.course).first()
         if request.year > course_duration.Duration:
@@ -167,9 +161,11 @@ def terminalzone(request: Schemas.TerminalZone, db: Session, user):
                                     open_monthly = True,
                                     save_monthly = True,
                                     db=db, user=user)
-    else:
+    elif request.action == 'rs':
         
-        attendence.remove_students_for_new_semester(request = request, db = db, user = user)
+        attendence.remove_students_for_new_semester_v2(request = request, db = db, user = user)
+
+    else: return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
