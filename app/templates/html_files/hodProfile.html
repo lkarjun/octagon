@@ -286,6 +286,7 @@
 <script>
 
 $("#imageupdate").submit((e) => {
+    e.preventDefault();
     var base = window.location.origin + '/hod/verification_image';
     var form_data = new FormData()
     var username = $('#name').val().toLowerCase().slice(0,3) + String($('#number').val()).slice(7) + $('#username').val()
@@ -359,6 +360,7 @@ $("#imageupdate").submit((e) => {
 
 <script>
     $("#Appointment_form_V2_0").submit((e)=>{
+        e.preventDefault();
         var name = $('#name').val()
         var email = $('#email').val()
         var phone = parseInt($('#number').val())
