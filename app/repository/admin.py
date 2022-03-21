@@ -218,12 +218,18 @@ def add_course(request: Schemas.AddCourse, db: Session):
 
 def delete_course(request: Schemas.DeleteCourse, db: Session):
     course = db.query(models.Courses).filter(models.Courses.Course_name_alias == request.course_name)
+    timetable = db.query(models.Timetable).filter(models.Timetable.course == request.course_name)
+    timetableS = db.query(models.TimetableS).filter(models.TimetableS.course == request.course_name)
+    students = db.query(models.Students).filter(models.Students.course == request.course_name)
     if not course.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
                     detail=f"No Course in name {request.course_name}")
     course_ = course.first()
     attendence.deleteAttendenceFiles(course_.Duration, course_.Course_name_alias)
     course.delete(synchronize_session=False)
+    if timetableS.first(): timetableS.delete(synchronize_session=False)
+    if timetable.first(): timetable.delete(synchronize_session=False)
+    if students.first(): students.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
 
