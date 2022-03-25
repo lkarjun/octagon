@@ -15,11 +15,87 @@
     <link rel="stylesheet" href="{{ url_for('static', path='nav.css') }}">
     <title>{{ title }}</title>
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='Favicon/favicon-32x32.png') }}">
+
     <style>
+
         .setfont{
             font-family:"sans-serif";
         }
+
+        .hidden {
+            opacity: 0;
+        }
+
+        #loader {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .preloader {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            left: calc(50% - 20px);
+            top: calc(50% - 20px);
+            background: #e7b719;
+            transform: rotate(45deg);
+            animation: preloader 3s linear infinite;
+        }
+
+        .loadBar {
+            position: absolute;
+            width: 200px;
+            height: 2px;
+            left: calc(50% - 100px);
+            top: calc(50% + 60px);
+            background: #ffffff;
+        }
+
+        .progress {
+            position: relative;
+            width: 0%;
+            height: inherit;
+            background: #000000;
+        }
+
+        @keyframes loading {
+
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+
+        }
+
+        @keyframes preloader {
+
+            0%, 100% {
+                transform: rotate(45deg);
+            }
+
+            60% {
+                transform: rotate(405deg);
+            }
+
+        }
     </style>
+    <script>
+        $(window).on('load', function () {
+           var rnd = Math.random() + 500;
+           $('.progress').css("animation", "loading " + rnd + "ms linear");
+           console.log(rnd);
+           setTimeout(function() {
+               $('#loader').hide();
+               $('#page').removeClass('hidden');
+               $('.userCred').show();
+           }, rnd);
+       });
+    </script>
 </head>
 <body style="background-color: #f5f5f5;" class="setfont">
     
@@ -64,12 +140,22 @@
                 </div>
             </div>
         </div>
-        
-        {% block content %}
-
-        {% endblock %}
-
     </div>
+
+        <div id="loader">
+            <div class="preloader"></div>
+            <!-- <div class="loadBar">
+                <div class="progress"></div>    
+            </div> -->
+        </div>
+
+    <div class="hidden ui container" id="page">
+        {% block content %}
+    
+        {% endblock %}
+    </div>
+        
+
 
 
 <script>$('.tabular.menu .item').tab();
