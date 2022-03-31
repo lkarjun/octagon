@@ -79,6 +79,7 @@
             <th scope="col" class="font-weight-bold">Religion</th>
             <th scope="col" class="font-weight-bold">Social Status</th>
             <th scope="col" class="font-weight-bold">Change Status</th>
+            <th scope="col" class="font-weight-bold">Discontinued Date</th>
             <th scope="col" class="font-weight-bold">Remove Hod</th>
           </tr>
         </thead>
@@ -145,6 +146,7 @@
                 }
               </script>
             </td>
+            <td>{{ i['discontinued_date'] }}</td>
             <td>
               <button type="button" class="ui button small red" onclick="remove_hod('{{i['username']}}')">
                 Remove

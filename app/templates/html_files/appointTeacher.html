@@ -83,6 +83,7 @@
             <!-- <th scope="col" class="font-weight-bold">Religion</th> -->
             <!-- <th scope="col" class="font-weight-bold">Social Status</th> -->
             <th scope="col" class="font-weight-bold">Change Status</th>
+            <th scope="col" class="font-weight-bold">Discontinued Date</th>
             <th scope="col" class="font-weight-bold">Remove Teacher</th>
           </tr>
         </thead>
@@ -156,6 +157,7 @@
                 Remove
               </button>
             </td>
+            <td>{{ i['discontinued_date'] }}</td>
           </tr>
 
           {% endfor %}
