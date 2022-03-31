@@ -9,7 +9,7 @@ from fastapi import HTTPException, status, Response
 import time
 from pathlib import Path
 
-FACE_PATH = Path("security/faces.pkl")
+FACE_PATH = Path("database/Encodings.pkl")
 
 def face_op() -> Dict:
     faces = pickle.load(open(FACE_PATH, "rb"))
@@ -38,15 +38,24 @@ def read_images(image1, image2, image3):
     image1 = np.array(Image.open(BytesIO(image1)))
     image2 = np.array(Image.open(BytesIO(image2)))
     image3 = np.array(Image.open(BytesIO(image3)))
-    encodings = [get_encoding(image1), get_encoding(image2),
-                    get_encoding(image3)]
+    encodings = [get_encoding(image1, 1), get_encoding(image2, 2),
+                    get_encoding(image3, 3)]
     return encodings
 
-def get_encoding(image: TypeVar('numpy.ndarray')) -> TypeVar('numpy.ndarray'):
+def get_encoding(image: TypeVar('numpy.ndarray'), image_name = None) -> TypeVar('numpy.ndarray'):
     '''return len of 128 encoded vector'''
-    encodings = fr.face_encodings(image)
+    try:
+        encodings = fr.face_encodings(image)
+    except Exception as e:
+        # print()
+        raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=str(e))
+
     if not (len(encodings) == 1 and len(encodings[0]) == 128):
-        raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Please Retake image")
+        if image_name:
+            detail = f"Please Retake Verification Image {image_name}"
+        else:
+            detail = "Please Retake Verification Image"
+        raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail=detail)
     return encodings
 
 def decoded_image(base64_image: str) -> None:
@@ -70,15 +79,15 @@ def get_faces(name: Union[str, bool] = False, delete: bool = False) -> Union[Dic
 def get_all_encodings():
     return face_op()
 
-def remove_encoding(user_name: str):
+def remove_encoding(username: str):
     encodings = get_all_encodings()
     try:
-        del encodings[user_name]
+        del encodings[username]
         face_dp(encodings)
         return True
     except Exception as e:
         print("="*20)
-        print(f"Failed to remove encodings for the user: {user_name}")
+        print(f"Failed to remove encodings for the user: {username}")
         print("="*20)
         return False
     

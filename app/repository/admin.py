@@ -1,11 +1,17 @@
+from typing import Dict
 from sqlalchemy.orm.session import Session
 from database import models
 from security import hashing, faceid
-from fastapi import status, HTTPException, Response, BackgroundTasks
+from fastapi import status, HTTPException, Response, BackgroundTasks, UploadFile
 from sqlalchemy import and_, or_
 from repository import Schemas, attendence
 import time
 from octagonmail import octagonmail
+import pandas as pd
+from tqdm import tqdm
+from datetime import date
+from io import StringIO
+
 
 def change_admin_pass(request: Schemas.AdminPass, db: Session):
     admin_pass = db.query(models.Admin).filter(models.Admin.name == request.username)
@@ -31,53 +37,124 @@ def get_all(db: Session, template=False):
             detail = 'No content in the database')
     return hods
 
-def get_one(db: Session, user_name: str):
-    if user_name is None: return 'Please pass hod name to get details'
-    hod = db.query(models.Hod).filter(models.Hod.user_name == user_name).first()
+def get_one(db: Session, username: str):
+    if username is None: return 'Please pass hod name to get details'
+    hod = db.query(models.Hod).filter(models.Hod.username == username).first()
     if not hod:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
-            detail = f'THERE IS NO HOD IN USER NAME: {user_name}')
+            detail = f'THERE IS NO HOD IN USER NAME: {username}')
     return hod  
 
-def update(user_name: str, request: Schemas.CreateHod, db: Session):
-    hod = db.query(models.Hod).filter(models.Hod.user_name == user_name)
+def update(username: str, request: Schemas.CreateHod, db: Session):
+    hod = db.query(models.Hod).filter(models.Hod.username == username)
     if not hod.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with {user_name}") 
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with {username}") 
     hod.update(dict(request))
     db.commit()
     return 'done'
 
 def delete(request: Schemas.DeleteHod, db: Session):
-    hod = db.query(models.Hod).filter(models.Hod.user_name == request.username)
-    
+    hod = db.query(models.Hod).filter(models.Hod.username == request.username)
+    pending_verification = db.query(models.PendingVerificationImage).filter(models.PendingVerificationImage.user_username == request.username)
     if not hod.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {request.name} and department: {request.department}") 
 
     hod.delete(synchronize_session=False)
+    if pending_verification.first():
+        pending_verification.delete(synchronize_session=False)
     remove_encoding = faceid.remove_encoding(request.username)
-    if not remove_encoding:
-        raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, 
-                      detail = f"Failed to remove encodings for the user: {request.username}")
+    # if not remove_encoding:
+    #     print("THIS is wokring")
+    #     raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, 
+    #                   detail = f"Failed to remove encodings for the user: {request.username}")
     db.commit()
     return Response(status_code=204)
 
+# ======================================V2.0=========================================================
+# Changes needed here
+
+def appoint_hod(data: Schemas.Staff_v2_0, db: Session, bg_task: BackgroundTasks):
+    data.username = form_username(data.name, data.phone_num)
+    username_check = db.query(models.Hod).filter(or_(
+                            models.Hod.id == data.id,
+                            models.Hod.username == data.username
+                            ))
+
+    if username_check.first():
+        raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
+                                detail = f"User already exists: check username '{data.username}', id '{data.id}', phone number '{data.phone_num}'")
+
+    new_hod = models.Hod(**data.dict())
+    id = hashing.get_unique_id(data.username)
+    pending_verification = models.PendingVerificationImage(
+                            id=id, 
+                            user_username=data.username, 
+                            user_email = data.email, 
+                            hod_or_teacher='H')
+    db.add(new_hod)
+    db.add(pending_verification)
+    db.commit()
+    db.refresh(new_hod)
+    bg_task.add_task(octagonmail.verification_mail, data.name, data.email, id)
+    return Response(status_code=204)
+
+
+def appoint_hod_v2_0_from_file(Data: UploadFile, department:str, db: Session, bg_task: BackgroundTasks):
+    if Data.content_type == "text/csv":
+        df = pd.read_csv(StringIO(str(Data.file.read(), 'utf-8')), encoding='utf-8')
+    elif Data.content_type == 'text/xlxm' or Data.content_type == 'text/xls':
+        df = pd.read_excel(StringIO(str(Data.file.read(), 'utf-8')), encoding='utf-8')
+    else: raise HTTPException(status_code=status.HTTP_304_NOT_MODIFIED, detail="dataformat mismatched")
+
+    for _, i in tqdm(df.iterrows(), colour='green', desc='Adding hod from File'):
+        i['department'] = department
+        i['username'] = form_username(i['name'], i['phone_num'])
+        i = Schemas.Staff_v2_0(**i.to_dict())
+        res = appoint_hod(i, db, bg_task)
+        if not res:
+            print(f"Failed to add student: {i.name} {i.id}")
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+def form_username(name: str, phone: int, scode: int = 1111):
+    phone = str(phone)
+    username = f"{name[:3]}{phone[7:]}{scode}"
+    return username.lower()
+
+def change_status(request: Schemas.Staff_v2_0_status, db: Session):
+    if request.status != "Continue":
+        dis_status = str(date.today()) 
+    else: dis_status = "-"
+
+    hod_db = db.query(models.Hod).filter(models.Hod.username == request.username)
+    hod = hod_db.first()
+    if not hod:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Alert No User with name: {request.name} and department: {request.department}") 
+    hod_dict = {'id': hod.id, 'name': hod.name, 'username': hod.username, 'email': hod.email, 'phone_num': hod.phone_num, 'department': hod.department, 'tag': hod.tag
+                ,'joining_date': hod.joining_date, 'dob': hod.dob, 'higher_qualification': hod.higher_qualification, 'net_qualification': hod.net_qualification,
+                'designation': hod.designation, 'gender': hod.gender, 'teaching_experience': hod.teaching_experience, 'religion': hod.religion,
+                'social_status': hod.social_status, 'status': request.status, 'discontinued_date': dis_status}
+    hod_db.update(hod_dict)
+    db.commit()
+    return Response(status_code=204)
+# =================================================================================================
+
 def create(request: Schemas.CreateHod, db: Session, bg_task: BackgroundTasks):
-    user_name_check = db.query(models.Hod).filter(or_(
-                        models.Hod.user_name == request.user_name,
+    username_check = db.query(models.Hod).filter(or_(
+                        models.Hod.username == request.username,
                         models.Hod.email == request.email,
                         models.Hod.phone_num == request.phone_num
                     )).first()
-    if user_name_check:
+    if username_check:
         raise HTTPException(status_code=status.HTTP_406_NOT_ACCEPTABLE,
-                                detail = f"User already exists: check username '{request.user_name}', email '{request.email}', phone number '{request.phone_num}'")
+                                detail = f"User already exists: check username '{request.username}', email '{request.email}', phone number '{request.phone_num}'")
 
     new_hod = models.Hod(name = request.name, email = request.email, \
-                        phone_num = request.phone_num, user_name = request.user_name, \
+                        phone_num = request.phone_num, username = request.username, \
                         department = request.department)
-    id = hashing.get_unique_id(request.user_name)
+    id = hashing.get_unique_id(request.username)
     pending_verification = models.PendingVerificationImage(
                             id=id, 
-                            user_username=request.user_name, 
+                            user_username=request.username, 
                             user_email = request.email, 
                             hod_or_teacher='H')
                 
@@ -124,7 +201,7 @@ def delete_department(request: Schemas.DeleteDepartment, db: Session):
     if students.first(): students.delete(synchronize_session=False)
     if course.first():
         for i in course:
-            attendence.deleteAttendence(i.Duration, i.Course_name_alias)
+            attendence.deleteAttendenceFiles(i.Duration, i.Course_name_alias)
         course.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
@@ -133,7 +210,7 @@ def add_course(request: Schemas.AddCourse, db: Session):
     course = models.Courses(Course_name = request.course_name, Course_name_alias = request.course_alias,
                             Department = request.department,
                             Duration = request.duration)
-    attendence.createAttendence(request.duration, request.course_alias)
+    attendence.createAttendenceFiles(request.duration, request.course_alias)
     db.add(course)
     db.commit()
     db.refresh(course)
@@ -141,12 +218,18 @@ def add_course(request: Schemas.AddCourse, db: Session):
 
 def delete_course(request: Schemas.DeleteCourse, db: Session):
     course = db.query(models.Courses).filter(models.Courses.Course_name_alias == request.course_name)
+    timetable = db.query(models.Timetable).filter(models.Timetable.course == request.course_name)
+    timetableS = db.query(models.TimetableS).filter(models.TimetableS.course == request.course_name)
+    students = db.query(models.Students).filter(models.Students.course == request.course_name)
     if not course.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,\
                     detail=f"No Course in name {request.course_name}")
     course_ = course.first()
-    attendence.deleteAttendence(course_.Duration, course_.Course_name_alias)
+    attendence.deleteAttendenceFiles(course_.Duration, course_.Course_name_alias)
     course.delete(synchronize_session=False)
+    if timetableS.first(): timetableS.delete(synchronize_session=False)
+    if timetable.first(): timetable.delete(synchronize_session=False)
+    if students.first(): students.delete(synchronize_session=False)
     db.commit()
     return Response(status_code=204)
 

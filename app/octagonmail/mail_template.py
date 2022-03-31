@@ -64,3 +64,22 @@ greeting_template = '''
     </div>
 
 '''
+
+
+message_template = '''
+
+    <div style="background-color: hsl(0, 0%, 94%); padding: 30px; border-radius: 5px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <h2 style="font-weight: 500; text-shadow: 2px 2px 5px red;">Hey Octagon User!</h2>
+        <h4 style="font-weight: 500; text-shadow: 2px 2px 5px red;">{subject}</h4>
+        <p>{title}</p>
+        <p>
+        {message_content}
+        </p>
+
+       <hr style="border: 2px solid green; border-radius: 4px;">
+  
+
+        <p>Thanks<br>Team Octagon</p>
+    </div>
+
+'''

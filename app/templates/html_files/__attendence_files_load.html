@@ -1,0 +1,54 @@
+<div class="table-responsive">
+    <table class="table align-middle table-hover table-bordered" id='datatable1'>
+        <thead class="bg-light text-dark font-weight-bold text-center" style="font-size: small;">
+            {% if data_in %}
+            <tr>
+              {% for col in column %}
+                <th scope="col" class="font-weight-bold">{{ col }}</th>
+              {% endfor %}
+            </tr>
+            {% else %}
+            <th scope='col' class="font-weight-bold text-center">***No Data Avaliable***</th>
+            {% endif %}
+        </thead>
+        {% if data_in %}
+        <tbody id='Search'>
+
+            {% for value in values %}
+
+            <tr>
+                {% for i in value %}
+                    {% if i is string  %}
+
+                    <td class="font-weight-bold text-center text-dark" style="background-color: #ffffff;">{{ i }}</td>
+                    
+                    {% else %}
+
+                        {% if i|float == 0.0 %}
+                        <td class="text-light text-center" style="background-color: #ffffff; font-size: x-large;">🆎</td>
+                        {% elif i|float == 0.2 %}
+                        <td class="text-light text-center" style="background-color: #ffffff; font-size: x-large;">1️⃣</td>
+                        {% elif i|float == 0.4 %}
+                        <td class="text-light text-center" style="background-color: #ffffff; font-size: x-large;">2️⃣</td>
+                        {% elif i|float == 0.6 %}
+                        <td class="text-light text-center" style="background-color: #ffffff; font-size: x-large;">3️⃣</td>
+                        {% elif i|float == 0.8 %}
+                        <td class="text-light text-center" style="background-color: #ffffff; font-size: x-large;">4️⃣</td>
+                        {% else %}
+                        <td class="text-dark text-center" style="background-color: #ffffff; font-size: x-large;">✅</td>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+
+            {% endfor %}
+        </tbody>
+        {% endif %}
+
+    </table>
+    {% if data_in %}
+
+    <button class="ui button red" onclick="export_table('csv')">Export as Csv</button>
+    
+    {% endif %}
+</div>

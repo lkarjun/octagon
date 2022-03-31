@@ -15,7 +15,7 @@ def verify(request: Request, bg_task: BackgroundTasks, username: str, image1, im
     if user.first().hod_or_teacher == 'T':
         user_details = db.query(models.Teachers).filter(models.Teachers.username == username).first()
     else:
-        user_details = db.query(models.Hod).filter(models.Hod.user_name == username).first()
+        user_details = db.query(models.Hod).filter(models.Hod.username == username).first()
     db.close()
     face_status =  faceid.verification_image(username, image1, image2, image3)
     if face_status.status_code == 204:
@@ -36,7 +36,7 @@ def remove_pending(request: Schemas.PendingVerification, db: Session):
     if pending_data.first().hod_or_teacher == 'T':
         user = db.query(models.Teachers).filter(models.Teachers.username == username)
     else:
-        user = db.query(models.Hod).filter(models.Hod.user_name == username)
+        user = db.query(models.Hod).filter(models.Hod.username == username)
 
     user.delete(synchronize_session=False)
     pending_data.delete(synchronize_session=False)

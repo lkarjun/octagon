@@ -219,53 +219,53 @@ function remove_hod(username){
 
 // Appointment of hod and Verification image sends
 
-function appoint_hod(data){
-  console.log(data)
-  var base = window.location.origin + '/admin/portal/create_hod';
-  $.ajax({
-        url: base,
-        type: 'POST',
-        async: true,
-        data: data,
-        dataType: 'json',
-        contentType: "application/json",
+// function appoint_hod_old(data){
+//   console.log(data)
+//   var base = window.location.origin + '/admin/portal/create_hod';
+//   $.ajax({
+//         url: base,
+//         type: 'POST',
+//         async: true,
+//         data: data,
+//         dataType: 'json',
+//         contentType: "application/json",
 
-        success: function(result) {
-            $("#upload_button").removeClass("loading disabled");
-            swal({
-              text: `Successfully Appointed Hod: ${data['name']}`,
-              icon: "success",
-              button: "Okay!",
-            })
-        },
-        error: function(result){
-            if(result.status == 406){
-              var message = JSON.parse(result.responseText)
-              $("#upload_button").removeClass("loading disabled");
-              swal({
-                text: message.detail,
-                icon: "warning",
-                button: "Okay!",
-              })
-            }
-            else{
-              swal({
-                text: "Something Went Wrong. Please try to contact the techincal team...",
-                icon: "error",
-                button: "Okay!",
-              }).then((value) => {
-                location.reload();
-              });
-            }
-          }
-        });
+//         success: function(result) {
+//             $("#upload_button").removeClass("loading disabled");
+//             swal({
+//               text: `Successfully Appointed Hod: ${data['name']}`,
+//               icon: "success",
+//               button: "Okay!",
+//             })
+//         },
+//         error: function(result){
+//             if(result.status == 406){
+//               var message = JSON.parse(result.responseText)
+//               $("#upload_button").removeClass("loading disabled");
+//               swal({
+//                 text: message.detail,
+//                 icon: "warning",
+//                 button: "Okay!",
+//               })
+//             }
+//             else{
+//               swal({
+//                 text: "Something Went Wrong. Please try to contact the techincal team...",
+//                 icon: "error",
+//                 button: "Okay!",
+//               }).then((value) => {
+//                 location.reload();
+//               });
+//             }
+//           }
+//         });
 
-}
+// }
 
-function verification_image_upload(data, name, user_name){
+function verification_image_upload(data, name, username){
   var base = window.location.origin + '/admin/portal/verification_image';
   var form_data = new FormData()
-  form_data.append('username', user_name);
+  form_data.append('username', username);
   form_data.append('image1', $('#vimage1')[0].files[0])
   form_data.append('image2', $('#vimage2')[0].files[0])
   form_data.append('image3', $('#vimage3')[0].files[0])
@@ -299,7 +299,7 @@ function verification_image_upload(data, name, user_name){
       console.log("Verification Images uploaded");
       $("#upload_button").removeClass("loading disabled");
       $("#pro").hide()
-      appoint_hod(data, name, user_name)
+      appoint_hod(data, name, username)
     },
     error: function(result){
       if(result.status == 415){
@@ -333,7 +333,7 @@ function verification_image_upload(data, name, user_name){
   })
 }
 
-$("#Appointment_form").submit((e)=>{
+$("#Appointment_form_old").submit((e)=>{
   e.preventDefault();
   var name = $('#name').val()
   var email = $('#email').val()
@@ -341,7 +341,7 @@ $("#Appointment_form").submit((e)=>{
   var username = $('#username').val()
   var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone).slice(7) + username
   var department = $('#department_options').val()
-  var data = JSON.stringify({"name": name, "email": email, "phone_num": phone, "user_name": username, "department": department})
+  var data = JSON.stringify({"name": name, "email": email, "phone_num": phone, "username": username, "department": department})
   $("#upload_button").addClass("loading disabled");
   appoint_hod(data)
 })

@@ -3,11 +3,95 @@ from typing import Optional, List, Union
 from pathlib import Path
 from pandas import DataFrame
 
+
+
+#==========================Changing v2.0=============================
+
+class AdmitStudentFromFile_v2_0(BaseModel):
+    file: DataFrame
+    course: str
+    year: int
+
+    class Config:
+        arbitrary_types_allowed = True
+
+class Student_v2_0(BaseModel):
+    reg_no: str
+    # or unique_id
+    name: str
+    parent_number: str
+    course: str
+    year: int
+
+
+class Staff_v2_0(BaseModel):
+    id: str
+    name: str
+    username: str
+    email: str
+    phone_num: int
+    department: str
+    tag: str
+    joining_date: str
+    dob: str
+    higher_qualification: str
+    net_qualification: str
+    designation: str
+    gender: str
+    teaching_experience: int #year of teaching other than current
+    religion: str
+    social_status: str
+    status: str = "Continue"
+    discontinued_date: str = "-"
+
+
+class Student_v2_0(BaseModel):
+    unique_id: str
+    reg_number: str = "None"
+    name: str
+    gender: str
+    state: str
+    parent_phone: int
+    religion: str
+    social_status: str
+    status: str = "Continue"
+    discontinued_date: str = "-"
+    course: str
+    year: int = 1
+
+class StudentsAttendence_v2_0(BaseModel): 
+    datas: List
+    # ids: List[str]
+    # names: List[str]
+
+class TakeAttendence_v2_0(BaseModel):
+    course: str
+    year: int
+    take_full_day: bool
+    date: str
+    present: List[str]
+
+class Staff_v2_0_status(BaseModel):
+    username: str
+    status: str
+
+class get_names(BaseModel):
+    course: str
+    year: int
+
+class Students_status_update(BaseModel):
+    course: str
+    year: int
+    unique_ids: List[str]
+    status: str
+#====================================================================
+
+
 class CreateHod(BaseModel):
     name: str
     email: str
     phone_num: int
-    user_name: str
+    username: str
     department: str
 
 class ShowHods(CreateHod):
@@ -63,7 +147,7 @@ class AddTeacher(BaseModel):
     username: str
     department: str
     email: str
-    phone_number: int
+    phone_num: int
     tag: str
 
 class ShowTeacher(AddTeacher):
@@ -72,7 +156,7 @@ class ShowTeacher(AddTeacher):
 
 class DeleteTeacher(BaseModel):
     name: str
-    user_name: str
+    username: str
 
 class TimeTable(BaseModel):
     department: str
@@ -117,15 +201,14 @@ class AddStudent(BaseModel):
     course: str
     year: int
 
-class EditStudent(AddStudent):
+class EditStudent(Student_v2_0):
     old_unique_id: str
-    old_name: str
     old_course: str
     old_year: int
 
 class DeleteStudent(BaseModel):
     unique_id: str
-    name: str
+    # name: str
     course: str
     year: int
 
@@ -165,13 +248,14 @@ class Analysing(BaseModel):
 class ShowAttendence(BaseModel):
     course: str
     year: int
+    month: Union[str, None] = None
 
 class MostAbsentee(BaseModel):
     course: str
     year: int
 
 class AttendenceCorrection(BaseModel):
-    names: List[str]
+    student_ids: List[str]
     date: str
     percentage: float
     reason: str

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Exo&family=Pattaya&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.css" rel="stylesheet"/>
@@ -14,11 +15,87 @@
     <link rel="stylesheet" href="{{ url_for('static', path='nav.css') }}">
     <title>{{ title }}</title>
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='Favicon/favicon-32x32.png') }}">
+
     <style>
+
         .setfont{
             font-family:"sans-serif";
         }
+
+        .hidden {
+            opacity: 0;
+        }
+
+        #loader {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .preloader {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            left: calc(50% - 20px);
+            top: calc(50% - 20px);
+            background: #e7b719;
+            transform: rotate(45deg);
+            animation: preloader 3s linear infinite;
+        }
+
+        .loadBar {
+            position: absolute;
+            width: 200px;
+            height: 2px;
+            left: calc(50% - 100px);
+            top: calc(50% + 60px);
+            background: #ffffff;
+        }
+
+        .progress {
+            position: relative;
+            width: 0%;
+            height: inherit;
+            background: #000000;
+        }
+
+        @keyframes loading {
+
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+
+        }
+
+        @keyframes preloader {
+
+            0%, 100% {
+                transform: rotate(45deg);
+            }
+
+            60% {
+                transform: rotate(405deg);
+            }
+
+        }
     </style>
+    <script>
+        $(window).on('load', function () {
+           var rnd = Math.random() + 500;
+           $('.progress').css("animation", "loading " + rnd + "ms linear");
+           console.log(rnd);
+           setTimeout(function() {
+               $('#loader').hide();
+               $('#page').removeClass('hidden');
+               $('.userCred').show();
+           }, rnd);
+       });
+    </script>
 </head>
 <body style="background-color: #f5f5f5;" class="setfont">
     
@@ -31,8 +108,9 @@
                 <a class="item navi departt" href="/admin/department">Departments</a>
                 <a class="item navi hodd" href="/admin/hod">Hod</a>
                 <div class="right menu">
-                    <a class="item navi unverified" href="/admin/unverifiedusers"><i class="user circle icon orange"></i></a>
+                    <a class="item navi unverified" href="/admin/unverifiedusers"><i class="user circle icon unverified_icon orange"></i></a>
                     <a class="item navi credd" href="/admin/credential"><i class="lock icon blue"></i></a>
+                    <a class="item navi" onclick="about()"><i class="info icon blue"></i></a>
                     <a class="item navi" href="/admin/logout"><i class="sign out alternate red icon"></i></a>
                 </div>
                 
@@ -55,18 +133,29 @@
                   <a class="item navi teachh" href="/admin/teachers">Teachers Details</a>
                   <a class="item navi departt" href="/admin/department">Departments</a>
                   <a class="item navi hodd" href="/admin/hod">Hod</a>
-                  <a class="item navi unverified" href="/admin/unverifiedusers"><i class="user circle icon orange"></i>Unverified Users</a>
+                  <a class="item navi unverified" href="/admin/unverifiedusers"><i class="user circle icon orange unverified_icon"></i>Unverified Users</a>
                   <a class="item navi credd" href="/admin/credential"><i class="lock icon blue"></i>Credientials</a>
+                  <a onclick="about()" class="item navi"><i class="info icon blue"></i>About</a>
                   <a class="item navi" href="/admin/logout"><i class="sign out alternate icon red"></i>Logout</a>
                 </div>
             </div>
         </div>
-        
-        {% block content %}
-
-        {% endblock %}
-
     </div>
+
+        <div id="loader">
+            <div class="preloader"></div>
+            <!-- <div class="loadBar">
+                <div class="progress"></div>    
+            </div> -->
+        </div>
+
+    <div class="hidden ui container" id="page">
+        {% block content %}
+    
+        {% endblock %}
+    </div>
+        
+
 
 
 <script>$('.tabular.menu .item').tab();
@@ -80,6 +169,19 @@
 
         $(".ui.dropdown").dropdown();
         });
+</script>
+
+<script>
+    function about(){
+        swal({
+            title: "Octagon: Version 2.0 Project 2k21!",
+            text: "Final Year Project(BCA) \
+                   by Lalkrishna, Rishal, Rashitha, Nafla",
+
+            icon: "info",
+            button: "Cool!",
+        })
+    }
 </script>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.6.0/mdb.min.js"></script>

@@ -1,3 +1,4 @@
+from os import stat
 from fastapi import (APIRouter, Depends, Request, 
                     Response, status, UploadFile, 
                     File, Form, HTTPException)
@@ -59,10 +60,11 @@ async def timetable(request: Request, db: Session = Depends(get_db),
 async def profile(request: Request, user=Depends(oauth2.manager_teacher)):
     return TeacherTemplates.profile(request, user)
 
-@router.post("/update_profile")
-async def update_profile(request: Schemas.AddTeacher, db: Session = Depends(get_db), 
-                user=Depends(oauth2.manager_teacher)):
-    return teacher.update_profile(request, db, user)
+@router.put("/update_profile", status_code=status.HTTP_204_NO_CONTENT)
+async def update_user_profile(data: Schemas.Staff_v2_0, 
+                              user=Depends(oauth2.manager_teacher),
+                              db: Session = Depends(get_db)):
+    return teacher.update_profile(data, db, user)
 
 # Students
 
@@ -70,7 +72,7 @@ async def update_profile(request: Schemas.AddTeacher, db: Session = Depends(get_
 async def students_details_(request: Request, 
                             db: Session = Depends(get_db),
                             user=Depends(oauth2.manager_teacher)):
-    return TeacherTemplates.students(request, db. user)
+    return TeacherTemplates.students(request, db, user)
 
 @router.get("/students-attendence/details/{course}/{year}", status_code=status.HTTP_200_OK)
 async def student_details(request: Request, course: str, year: int,
@@ -84,6 +86,13 @@ async def add_student(request: Schemas.AddStudent, db: Session = Depends(get_db)
                                 ):
     return teacher.add_student(request, db)
 
+@router.post("/add-students-v2-0", status_code=status.HTTP_204_NO_CONTENT)
+async def add_student_v2_0(request: Schemas.Student_v2_0,
+                           db: Session = Depends(get_db),
+                         ):
+    teacher.add_student_v2_0(request, db)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
 # =================================================================================================
 # Changes needed here
 @router.post("/add-students-from-file", status_code=status.HTTP_204_NO_CONTENT)
@@ -91,10 +100,11 @@ async def add_students_from_file(
                                 course: str = Form(...),
                                 year: int = Form(...),
                                 DATA: UploadFile = File(...),
+                                db: Session = Depends(get_db)
                                 ):
     if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return teacher.add_students_from_file_helper(DATA, db)
 
 # =================================================================================================
 
@@ -102,7 +112,7 @@ async def add_students_from_file(
 async def delete_student(request: Schemas.DeleteStudent, db: Session = Depends(get_db)):
     return teacher.delete_student(request, db)
 
-@router.post("/edit-student", response_model=Schemas.AddStudent)
+@router.post("/edit-student", response_model=Schemas.Student_v2_0)
 async def edit_verify_student(request: Schemas.DeleteStudent, db: Session = Depends(get_db)):
     return teacher.edit_verify_student(request, db)
 

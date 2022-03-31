@@ -37,13 +37,53 @@
             </div>
         </div>
 
-        <!-- <button class="ui button blue" type="submit" id="get_report_btn">Report</button> -->
+        <div class="fields four">
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button teal w-100" id="vD" onclick="show_details()">View Details</div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button green w-100" id="vA" onclick="show_attendence()">View Attendence</div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button yellow w-100" id="vS" onclick="get_names()">Change Status</div>
+                </div>
+            </div>
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button teal w-100" id="vC" onclick="show_attendence_correction()">Attendence Corrections</div>
+                </div>
+            </div>
 
-        <div class="ui buttons">
-            <div class="ui button teal" onclick="show_details()">View Details</div>
-            <div class="or" data-text="or"></div>
-            <div class="ui button green" onclick="show_attendence()">View Attendence</div>
         </div>
+
+        <!-- <div class="fields two">
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button yellow w-100" id="vS" onclick="get_names()">Change Status</div>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="p-3">
+                    <div class="ui button teal w-100" id="vC" onclick="alert('Soon')">View Corrected Data</div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- <div class="p-3">
+            <div class="ui buttons small w-100">
+                <div class="ui button teal" id="vD" onclick="show_details()">View Details</div>
+                <div class="or" data-text="or"></div>
+                <div class="ui button green" id="vA" onclick="show_attendence()">View Attendence</div>
+                <div class="or" data-text="or"></div> -->
+            <!-- </div> -->
+        <!-- </div> -->
+    
     
     </form>
 
@@ -54,6 +94,42 @@
             <a href="/hod/search-students"><div class="ui button blue wide" >Search Students</div></a>
         </div>
     </div>
+
+    <br><br>
+    <!--Change Status-->
+    
+
+    <section id="cs_section" style="display: none;">
+        <hr class='rounded' style="height: 5px; background-color: rgb(233, 115, 141);">
+        <div class="pb-md-5 pb-3 pt-md-0 pt-5">
+            <div class="jumbotron text-left pt-md-5">
+                <h3 class="pb-md-5 pb-3 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Change Status</h3>
+            </div>
+        </div>
+
+        <form class="ui form" id="change_status_form">
+            <div class="two fields">
+                <div class="field">
+                    <label>Choose Students</label>
+                    <select required class="ui fluid search dropdown"  multiple="" id='st_names'>
+                        <option value="" disabled selected>Students Name</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Status</label>
+                    <select required class="ui dropdown" id='st_status'>
+                        <option value="Continue">Continue</option>
+                        <option value="Discontinue">Discontinue</option>
+                    </select>
+                </div>
+            </div>
+            <div class="p-3">
+                <button class="ui button teal w-100" type="submit" id="up_status_btn">Update Status</button>
+            </div>
+        </form>
+
+    </section>
 
     <!-- <div class="pt-5 pb-2">
         <a href="/hod/add-students"><div class="ui button blue wide" >Add / Remove / Edit</div></a>
@@ -66,9 +142,9 @@
             <h3 class="pb-md-5 pb-5 pt-md-2  font-weight-bold" style="font-family: 'Exo', sans-serif;">Terminal Zone</h3>
         </div>
         <div class="ui buttons small three">
-            <div class="ui button yellow" onclick="comming_soon('Start New Semester')">Start New Semester</div>
-            <div class="ui button green" onclick="comming_soon('Promote Students')">Promote Students</div>
-            <div class="ui button red" onclick="comming_soon('Remove Students')">Remove Students</div>
+            <div class="ui button yellow" onclick="terminal_zone('sts')">Start New Semester</div>
+            <div class="ui button green" onclick="comming_soon('ps')">Promote Students</div>
+            <div class="ui button red" onclick="terminal_zone('rs')">Remove Students</div>
         </div>
         
         <div class="pt-5 mt-2">
@@ -107,22 +183,199 @@
 <script src="{{ url_for('static', path='attendence.js') }}"></script>
 <script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
 <script>
-    function comming_soon(which_op){
+
+    $("#change_status_form").submit((e)=>{
+        e.preventDefault();
+
+        $("#up_status_btn").addClass("loading disabled")
+
         var course = $("#course").val()
-        var year = $("#year").val()
-        swal(`Type 'yes' to ${which_op} Course: ${course} & Year: ${year}.`, {
-            content: "input",
-        }).then((value) => {
-            if(value.toLowerCase() == 'yes'){
-                terminal_zone(which_op, course, year)
-                swal("Comming Soon")
+        var year = parseInt($("#year").val())
+
+        var data = JSON.stringify({"course": course,
+                                   "year": year,
+                                   "unique_ids": $("#st_names").val(),
+                                   "status": $("#st_status").val(),
+                                });
+
+        var base = window.location.origin + '/hod/change_student_status';
+        $.ajax({
+            url: base,
+            type: 'POST',
+            async: true,
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                swal({
+                    title: "Status Updated!",
+                    text: "Sucessfully Updated Students status to  "+$("#st_status").val(),
+                    icon: "success",
+                    button: "Okay!",
+                }).then((value) => {
+                  location.reload();
+                });
+
+            },
+            error: function(result){
+                if(result.status == 406){
+                    $("#up_status_btn").removeClass("loading disabled")
+                    swal({
+                        text: result.responseJSON.detail,
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+                else{
+                    swal({
+                        title: "Error!",
+                        text: "Something Went Wrong",
+                        icon: "error",
+                        button: "Okay!",
+                    }).then((value) => {
+                        location.reload();
+                    });
+
+                }
+            }
+
+        })
+    
+     
+    })
+
+
+
+    function append_student_name(data){
+        $('#st_names').append(new Option(data[1], data[0]))
+    }
+
+    function get_names(){
+        $("#vS").addClass("loading disabled")
+        var course = $("#course").val()
+        var year = parseInt($("#year").val())
+
+        var base = window.location.origin + '/hod/get_students_name_and_id';
+        var data = JSON.stringify({'course': course, 'year': year})
+        $.ajax({
+            url: base,
+            type: 'POST',
+            async: true,
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                //alert("okay")
+                $("#vS").removeClass("loading disabled")
+                $("#cs_section").show();
+                $('html, body').animate({
+                    scrollTop: $("#cs_section").offset().top
+                }, 800);
+                result.datas.forEach(append_student_name)
+                swal({
+                    title: "Student Names Updated!",
+                    text: "Please choose students name...",
+                    icon: "success",
+                    button: "Okay!",
+                })
+
+            },
+            error: function(result){
+                $("#vS").removeClass("loading disabled")
+                if(result.status == 404){
+
+                    swal({
+                        title: "Not Found!",
+                        text: result.responseJSON.detail,
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+                else{
+                    swal({
+                        text: "Something went wrong",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+            }
+        });
+
+    }
+
+    function show_attendence_correction(){
+        $("#vC").addClass("loading disabled")
+        var course = $("#course").val()
+        var year = parseInt($("#year").val())
+        check_st_detail(course, year, "attendence_correction")
+    }
+
+    function show_attendence(){
+        $("#vA").addClass("loading disabled")
+        var course = $("#course").val()
+        var year = parseInt($("#year").val())
+        check_st_detail(course, year, "attendence_check")
+        //var href = "/hod/students-attendence/"+course+"/"+year
+        //window.location.href = href
+    }
+    
+    function show_details(who = "hod"){
+        $("#vD").addClass("loading disabled")
+        var course = $("#course").val()
+        var year = parseInt($("#year").val())
+        check_st_detail(course, year, "detail_check")
+        //var href = "/"+who+"/students-attendence/details/"+course+"/"+year
+        //window.location.href = href
+    }
+
+    function check_st_detail(course, year, action){
+        var base = window.location.origin + '/hod/check_st_detail';
+        var data = JSON.stringify({'action': action, 'course': course, 'year': year})
+        $.ajax({
+            url: base,
+            type: 'POST',
+            async: true,
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                //alert("okay")
+                if(action == "detail_check")
+                    window.location.href = "/hod/students-attendence/details/"+course+"/"+year
+                else if(action == "attendence_check"){
+                    window.location.href = "/hod/students-attendence/"+course+"/"+year
+                }
+                else{
+                    window.location.href = "/hod/corrected_attendence_view"
+                }
+
+            },
+            error: function(result){
+                $("#vD").removeClass("loading disabled")
+                $("#vA").removeClass("loading disabled")
+                $("#vC").removeClass("loading disabled")
+                if(result.status == 404){
+
+                    swal({
+                        title: "Not Found!",
+                        text: result.responseJSON.detail,
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+                else{
+                    swal("Something went wrong please try to call the techinal team...")
+                }
             }
         });
     }
 </script>
 
 <script>
-function terminal_zone(which_op, course, year){
+function terminal_zone(which_op){
+    var mapper = {'sts': 'Start New Semester', 'ps': "Promote Students", 'rs': "Remove Students"}
+    var course = $("#course").val()
+    var year = parseInt($("#year").val())
     var base = window.location.origin + '/hod/terminalzone';
     var data = JSON.stringify({'action': which_op, 'course': course, 'year': year})
     $.ajax({
@@ -135,7 +388,7 @@ function terminal_zone(which_op, course, year){
         success: function(result){
             swal({
                     title: `${which_op}!`,
-                    text: `Successfully ${which_op}--course: ${course} year: ${year}.`,
+                    text: `Successfully ${mapper[which_op]} --course: ${course} year: ${year}.`,
                     icon: "success",
                     button: "Okay!",
                 })
@@ -145,7 +398,7 @@ function terminal_zone(which_op, course, year){
             if(result.status == 404){
                 var msg = JSON.parse(result.responseText)
                 swal({
-                        title: "Not Performed The Action!",
+                        title: `Not Performed The Action! ${mapper[which_op]}`,
                         text: msg.detail,
                         icon: "error",
                         button: "Okay!",

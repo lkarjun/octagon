@@ -47,8 +47,6 @@ async def teachers_list(request: Request,
     return AdminTemplates.teachers_list(request, db)
 
 
-@router.delete('/portal/remove_teacher')
-
 @router.delete('/portal/remove_pending', status_code=status.HTTP_204_NO_CONTENT)
 async def remove_pending(request: Schemas.PendingVerification,
                          db: Session = Depends(get_db),
@@ -67,19 +65,34 @@ async def create_hod(request: Schemas.CreateHod,
                      bg_task: BackgroundTasks,
                      db: Session = Depends(get_db),
                      user=Depends(oauth2.manager_admin)):
-    return admin.create(request, db, bg_task)
+    return Response(status_code=204)
 
-# =================================================================================================
+# ======================================V2.0=========================================================
 # Changes needed here
+
+@router.post('/portal/appoint_hod', status_code=status.HTTP_204_NO_CONTENT)
+async def appoint_hod(data: Schemas.Staff_v2_0, 
+                      bg_task: BackgroundTasks,
+                      db: Session = Depends(get_db),
+                      user = Depends(oauth2.manager_admin)):
+    return admin.appoint_hod(data, db, bg_task)
+
 @router.post("/portal/add-hod-from-file", status_code=status.HTTP_204_NO_CONTENT)
 async def add_hod_from_file(
+                            bg_task: BackgroundTasks,
                             department: str = Form(...),
                             DATA: UploadFile = File(...),
+                            db: Session = Depends(get_db),
+                            user = Depends(oauth2.manager_admin)
                             ):
     if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
+    return admin.appoint_hod_v2_0_from_file(DATA, department, db, bg_task)
 
+@router.put("/portal/change_status", status_code=status.HTTP_204_NO_CONTENT)
+async def change_status(request: Schemas.Staff_v2_0_status, db: Session = Depends(get_db),\
+            user=Depends(oauth2.manager_admin)):
+        return admin.change_status(request, db)
 # =================================================================================================
 
 @router.delete('/portal/delete_hod', status_code=status.HTTP_204_NO_CONTENT)
@@ -87,19 +100,19 @@ async def delete_hod(request: Schemas.DeleteHod, db: Session = Depends(get_db),\
             user=Depends(oauth2.manager_admin)):
     return admin.delete(request, db)
 
-@router.put('/portal/edit_hod/{user_name}', status_code=status.HTTP_202_ACCEPTED)
-async def update_detail(user_name: str, request: Schemas.CreateHod, db: Session = Depends(get_db),\
+@router.put('/portal/edit_hod/{username}', status_code=status.HTTP_202_ACCEPTED)
+async def update_detail(username: str, request: Schemas.CreateHod, db: Session = Depends(get_db),\
             user=Depends(oauth2.manager_admin)):
-    return admin.update(user_name, request, db)
+    return admin.update(username, request, db)
 
 @router.get('/portal/hods', status_code=status.HTTP_202_ACCEPTED, response_model=List[Schemas.ShowHods])
 async def hods_full_details(db: Session = Depends(get_db), \
             user=Depends(oauth2.manager_admin)):
     return admin.get_all(db)
 
-@router.get('/portal/hods/{user_name}', status_code=status.HTTP_202_ACCEPTED, response_model=Schemas.ShowHods)
-async def hod_detail(db: Session = Depends(get_db), user_name = None, user=Depends(oauth2.manager_admin)):
-    return admin.get_one(db, user_name)
+@router.get('/portal/hods/{username}', status_code=status.HTTP_202_ACCEPTED, response_model=Schemas.ShowHods)
+async def hod_detail(db: Session = Depends(get_db), username = None, user=Depends(oauth2.manager_admin)):
+    return admin.get_one(db, username)
 
 @router.put('/portal/update_password', status_code=status.HTTP_202_ACCEPTED)
 async def update_admin_password(request: Schemas.AdminPass, db: Session = Depends(get_db),\

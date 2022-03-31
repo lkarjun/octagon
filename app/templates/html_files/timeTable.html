@@ -7,61 +7,118 @@
   </script>
 
 <div class="ui container">
-        
-    <section id="head" class="pt-5 pb-5 text-center">
-        
-        <div class="ui buttons small">
-            <button class="ui button animated teal"  onclick="show('#CreateTimeTable')">
-                <div class="visible content">Draft</div>
-                <div class="hidden content">
-                    <i class="edit outline icon"></i>
-                </div>
-            </button>
+    <br><br>
+    <section id="head">
+
+        <div class="pt-md-3 pt-5 mt-md-2 pb-md-5 pb-5 mb-5 d-flex align-items-center justify-content-center" style="height: 70vh;">
             
-            <button class="ui button animated blue" onclick="show('#viewTimeTable')">
-                <div class="visible content">View</div>
-                <div class="hidden content">
-                    <i class="newspaper outline icon"></i>
+            <div>
+                <div class="jumbotron text-center pt-md-3">
+                    <h3 class="pt-4 pb-4 font-weight-bold" style="font-size: x-large;">TimeTable</h3>
                 </div>
-
-            </button>
-
-            <button class="ui button red animated" onclick="show('#removeTimeTable')">
-                <div class="visible content">Remove</div>
-                <div class="hidden content">
-                    <i class="trash icon"></i>
-                </div>
-
-            </button>
-        </div>
-                
-        <script>
-            function show(id){
-                $("#CreateTimeTable").hide();
-                $("#viewTimeTable").hide();
-                $("#removeTimeTable").hide();
-                $(id).show();
-
-            }
-        </script>
-
-    </section>
         
-    <section id="CreateTimeTable" class="pb-5 mb-5" style="display: block;">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="jumbotron text-left pb-4">
-                    <h3 style="font-family: sans-serif;">Draft New Time Table</h3>
-                </div>
-                <form class="ui form align-items-center" id='CourseAndYear'>
-                    <div class="fields three">
-                        <div class="field">
+                <!-- <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);"> -->
+        
+                <div class="ui form align-items-center p-4 m-4 shadow rounded">
+                    <div class="fields two">
+                        <div style="display: none;">
                             <select class="ui search dropdown disabled" id='department' required>
                                 <!-- <option value="" disabled selected>Department</option> -->
                                 <option value='{{department}}' class="font-weight-bold text-uppercase">{{department}}</option>
                                 <!-- {% for i in department %}
                                 <option value="{{ i.Alias }}">{{ i.Alias }}</option>
                                 {% endfor %} -->
+                            </select>
+                        </div>
+        
+                        <div class="field">
+                            <select class="ui search dropdown" id='course' required>
+                                <option value="" disabled selected>Choose Course</option>
+                                {% for i in courses %}
+                                <option value="{{ i.Course_name_alias }}">{{ i.Course_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="field">
+                            <select class="ui search dropdown" required id='year'>
+                                <option value="" disabled selected>Choose Year</option>
+                                <option value="1">Year 1</option>
+                                <option value="2">Year 2</option>
+                                <option value="3">Year 3</option>
+                                <option value="4">Year 4</option>
+                                <option value="5">Year 5</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="ui buttons small w-100">
+                        <button class="ui button animated positive"  onclick="show('#CreateTimeTable')">
+                            <div class="visible content">Draft</div>
+                            <div class="hidden content">
+                                <i class="edit outline icon"></i>
+                            </div>
+                        </button>
+                        
+                        <button id="viewBTN" class="ui button animated" onclick="view_time_table()">
+                            <div class="visible content">View</div>
+                            <div class="hidden content">
+                                <i class="newspaper outline icon"></i>
+                            </div>
+            
+                        </button>
+            
+                        <button class="ui button red animated" type="submit" onclick="removeTimeTable()">
+                            <div class="visible content">Remove</div>
+                            <div class="hidden content">
+                                <i class="trash icon"></i>
+                            </div>
+            
+                        </button>
+                    </div>
+                </div>
+            </div> 
+        
+        </div>
+
+        <script>
+            function show(id){
+                $("#CreateTimeTable").hide();
+                $("#viewTimeTable").hide();
+                $("#removeTimeTable").hide();
+
+                if(id == "#CreateTimeTable"){
+                    if($("#course").val() == null || $("#year").val() == null){
+                        swal({
+                            text: "Please Choose Course & Year",
+                            icon: "warning",
+                            button: "Okay!",
+                        })
+                    }
+                    else{
+                        $(id).show();
+                        $("#head").hide(1500);
+                        $("#draftHead").text(`Draft TimeTable for Course: ${$("#course").val()} Year: ${$("#year").val()}`);
+                    }
+                }
+            }
+        </script>
+
+    </section>
+        
+    <section id="CreateTimeTable" class="pb-5 mb-5 pt-5" style="display: none;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="jumbotron text-left pb-4">
+                    <h3 id="draftHead"></h3>
+                </div>
+                <form class="ui form align-items-center" id='CourseAndYear'>
+                    <!-- <div class="fields three">
+                        <div class="field">
+                            <select class="ui search dropdown disabled" id='department' required>
+             
+                                <option value='{{department}}' class="font-weight-bold text-uppercase">{{department}}</option>
+                      
                             </select>
                         </div>
 
@@ -84,8 +141,8 @@
                                 <option value="5">Year 5</option>
                             </select>
                         </div>
-                    </div>
-                    <button type="submit" class = "ui teal button disabled" id="finalize">Finalize</button>
+                    </div> -->
+                    <button type="submit" class = "ui teal button disabled w-100" id="finalize">Finalize</button>
                 </form>
             </div>
 
@@ -113,7 +170,7 @@
                                         <option value="" disabled selected>Teacher</option>
                                         <option value="none">None</option>
                                         {% for i in hods %}
-                                        <option value="{{ i.user_name }}">{{ i.name }}(H)-({{i.department}})</option>
+                                        <option value="{{ i.username }}">{{ i.name }}(H)-({{i.department}})</option>
                                         {% endfor %}
                                         {% for i in teachers %}
                                         <option value="{{ i.username }}">{{ i.name }}-({{i.department}})</option>
@@ -442,7 +499,7 @@
                                             <option value="" disabled selected>Teacher</option>
                                             <option value="none">None</option>
                                             {% for i in hods %}
-                                            <option value="{{ i.user_name }}">{{ i.name }}(H)-({{i.department}})</option>
+                                            <option value="{{ i.username }}">{{ i.name }}(H)-({{i.department}})</option>
                                             {% endfor %}
                                             {% for i in teachers %}
                                             <option value="{{ i.username }}">{{ i.name }}-({{i.department}})</option>
@@ -792,7 +849,7 @@
 
     </section>
 
-    <section id="viewTimeTable" style="display: none;">
+    <!-- <section id="viewTimeTable" style="display: none;">
         <div class="jumbotron text-left">
             <h3 class="pb-4" style="font-family: sans-serif;">View Time Table</h3>
         </div>
@@ -898,7 +955,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
 <script src="{{ url_for('static', path='timetable.js') }}"></script>
 <script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>

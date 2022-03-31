@@ -36,6 +36,140 @@
       <h4 class="ui dividing header" style="font-family: sans-serif">Enter Details</h4>
       <div class="fields three">
         <div class="field">
+          <label>Id</label>
+          <input id='id' required type="text" placeholder="Staff ID">
+        </div>
+        <div class="field">
+          <label>Name</label>
+          <input id='name' required type="text" placeholder="Name">
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <input id='email' required type="email" placeholder="Email">
+        </div>
+        
+      </div>
+
+      <div class="fields three">
+        <div class="field">
+          <label>Phone Number</label>
+          <input id='number' required type="number" placeholder="Phone Number">
+        </div>
+        <div class="field">
+          <label>Tag</label>
+          <select class="ui dropdown" id='tag'>
+            <option value="-" selected>None</option>
+            <option value="CT">Class Teacher</option>
+            <option value="TT">Tutor</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Higher Qualification</label>
+          <select class="ui dropdown" id='hq'>
+            <option value="PHD" selected>PHD</option>
+            <option value="POST DOCTORATE">POST DOCTORATE</option>
+            <option value="PH">PH</option>
+            <option value="MPHIL">MPHIL</option>
+          </select>
+        </div>
+        
+      </div>
+
+      <div class="fields three">
+        <div class="field">
+          <label>Net Qualification</label>
+          <select class="ui dropdown" id='nq'>
+            <option value="Yes" selected>Yes</option>
+            <option value="NO">No</option>
+          </select>
+
+        </div>
+        <div class="field">
+          <label>Designation</label>
+          <select class="ui dropdown" id='dn'>
+            <option value="ASSISTANT PROFESSOR" selected>ASSISTANT PROFESSOR</option>
+            <option value="ASSOCIATE PROFESSOR">ASSOCIATE PROFESSOR</option>
+            <option value="CONTRACT TEACHER">CONTRACT TEACHER</option>
+            <option value="PART TIME TEACHER">PART TIME TEACHER</option>
+          </select>
+
+        </div>
+        <!-- <div class="field">
+          <label>Job Status</label>
+          <select class="ui dropdown" id='js'>
+            <option value="CONTINUE" selected>CONTINUE</option>
+            <option value="LEFT">LEFT</option>
+            <option value="RETIREMENT">RETIREMENT</option>
+            <option value="TRANSFER">TRANSFER</option>
+          </select>
+        </div> -->
+        
+        <div class="field">
+          <label>Social Status</label>
+          <select class="ui dropdown" id='sc'>
+            <option value="GENERAL">GENERAL</option>
+            <option value="OBC">OBC</option>
+            <option value="SC/ST">SC/ST</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="fields three">
+        <div class="field">
+          <label>Teaching Experience</label>
+          <input id='te' required type="number" placeholder="Year of Experience">
+        </div>
+        
+        <div class="field">
+          <label>Gender</label>
+          <select class="ui dropdown" id='gr'>
+            <option value="MALE">MALE</option>
+            <option value="FEMALE">FEMALE</option>
+            <option value="TRANSGENDER">TRANSGENDER</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Religion</label>
+          <select class="ui dropdown" id='rn'>
+            <option value="HINDU">HINDU</option>
+            <option value="MUSLIM">MUSLIM</option>
+            <option value="CHRISTIAN">CHRISTIAN</option>
+          </select>
+        </div>
+        
+      </div>
+
+      <div class="fields two">
+
+        <div class="field">
+          <label>Date of Birth</label>
+          <input id='dob' required type="date" placeholder="Joining Date">
+        </div>
+        <div class="field">
+          <label>Joining Date</label>
+          <input id='jdate' required type="date" placeholder="Joining Date">
+        </div>
+        <div class="field" style="display: none;">
+          <label>Secret Code</label>
+          <input id='username' required type="password" value="1111" placeholder="4 Digit Secret Code">
+        </div>
+      </div>
+
+  
+      <div class="ui buttons pt-4">
+        <button class="ui button positive" id='upload_button' type="submit">Submit</button>
+        <div class="or"></div>
+        <div class="ui red button" onclick='$("#Appointment_form")[0].reset();'>Clear</div>
+      </div>
+
+    </form>
+
+    <!-- <form class="ui form pb-5 pt-4" id='Appointment_form' style="display: block;">
+      <h4 class="ui dividing header" style="font-family: sans-serif">Enter Details</h4>
+      <div class="fields three">
+        <div class="field">
           <label>Name</label>
           <input id='name' required type="text" placeholder="Name">
         </div>
@@ -62,7 +196,7 @@
         <div class="ui red button" onclick='$("#Appointment_form")[0].reset();'>Clear</div>
       </div>
 
-    </form>
+    </form> -->
 
   <div id="upload_file" style="display: none;">
 
@@ -87,32 +221,6 @@
   </div>
 
     <hr class='rounded' style="height: 5px; background-color: rgb(255, 0, 106);">
-
-    <!-- <form class="ui form pt-5 pb-5" id="Hod_remove">
-      <h3 class="ui dividing header">Remove Hod</h3>
-      <div class="fields two">
-        <div class="field">
-          <label>Name</label>
-          <select class="ui search dropdown" id="hod_name">
-            <option value="none" selected>None</option>
-            {% for i in hods %}
-              <option value="{{ i['user_name'] }}">{{ i['name'] }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="field">
-          <label>Department</label>
-          <select class="ui search dropdown" id='department_options2'>
-          </select>
-        </div>
-        <script>$('#department_options option').clone().appendTo('#department_options2');</script>
-      </div>
-
-      <div class="pt-3 pt-md-0">
-        <button class="ui button red font-weight-bold">Remove</button>
-      </div>
-    </form> -->
-    
     </section>
 
 
@@ -154,7 +262,7 @@
                   $("#pro").hide()
                   $("#upload_btn").removeClass("loading disabled")
                   swal({
-                          text: "Appointed Students",
+                          text: "Appointed Hods",
                           icon: "success",
                           button: "Okay"
                       }).then((value) => {
@@ -177,4 +285,92 @@
           });
       })
   </script>
+
+  <script>
+
+  
+
+  function appoint_hod_v2_0(name, data){
+    console.log(data)
+    var base = window.location.origin + '/admin/portal/appoint_hod';
+    $.ajax({
+          url: base,
+          type: 'POST',
+          async: true,
+          data: data,
+          dataType: 'json',
+          contentType: "application/json",
+  
+          success: function(result) {
+              $("#upload_button").removeClass("loading disabled");
+              swal({
+                text: `Successfully Appointed Hod: ${name}`,
+                icon: "success",
+                button: "Okay!",
+              })
+          },
+          error: function(result){
+              if(result.status == 406){
+                var message = JSON.parse(result.responseText)
+                $("#upload_button").removeClass("loading disabled");
+                swal({
+                  text: message.detail,
+                  icon: "warning",
+                  button: "Okay!",
+                })
+              }
+              else{
+                swal({
+                  text: "Something Went Wrong. Please try to contact the techincal team...",
+                  icon: "error",
+                  button: "Okay!",
+                }).then((value) => {
+                  location.reload();
+                });
+              }
+            }
+          });
+  
+  }
+
+
+  $("#Appointment_form").submit((e)=>{
+    e.preventDefault();
+    var name = $('#name').val()
+    var email = $('#email').val()
+    var phone = parseInt($('#number').val())
+    var username = make_username(name, phone)
+    var department = $('#department_options').val()
+    var jdate = $("#jdate").val().toString()
+    var dob = $("#dob").val().toString()
+    var sc = $("#sc").val()
+    var te = $("#te").val()
+    var rn = $("#rn").val()
+    var gr = $("#gr").val()
+    var hq = $("#hq").val()
+    var nq = $("#nq").val()
+    var dn = $("#dn").val()
+    var id = $("#id").val()
+    var tag = $("#tag").val()
+
+    var data = JSON.stringify({"id": id, "name": name, "email": email,
+                "username": username,
+                "phone_num": phone, "department": department,
+                "tag": tag, "joining_date": jdate, "dob": dob,
+                "higher_qualification": hq, "net_qualification": nq,
+                "designation": dn, "gender": gr, "teaching_experience": te,
+                "religion": rn, "social_status": sc});
+
+    $("#upload_button").addClass("loading disabled");
+    appoint_hod_v2_0(name, data)
+  })
+  
+
+  function make_username(name, phone){
+    var username = $('#username').val()
+    var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone).slice(7) + username
+    return username
+  }
+</script>
+
 {% endblock %}

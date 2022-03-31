@@ -17,7 +17,7 @@ get_db = database.get_db
 @router.post('/octagon/login', status_code=status.HTTP_202_ACCEPTED, response_class=temp.RedirectResponse)
 async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     hod = db.query(models.Hod).filter(
-                        models.Hod.user_name == data.username
+                        models.Hod.username == data.username
                     ).first()
 
     teacher = db.query(models.Teachers).filter(
@@ -26,6 +26,11 @@ async def login(request: Request, data: OAuth2PasswordRequestForm = Depends(), d
                     
     if not (hod or teacher):
         return temp.OthersTemplates.login_page(request, 'block', 'Invalid credential!🤔 Please Try again.')
+
+    if hod and hod.status != "Continue":
+        return temp.OthersTemplates.login_page(request, 'block', "Please contact admin! Status is discontinue👋")
+    if teacher and teacher.status != "Continue":
+        return temp.OthersTemplates.login_page(request, 'block', "Please contact admin! Status is discontinue👋")
 
     try:
         recogize_result = recogize_user(data)

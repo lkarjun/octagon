@@ -10,8 +10,8 @@
 
 <section class="p-4 m-4">
   
-    <div class="jumbotron text-left">
-      <h3 class="pb-5 pt-4 setfont">Student Details</h3>
+    <div class="jumbotron">
+      <h3 class="pb-5 pt-4 setfont text-center" style="font-size: x-large;">Student Details</h3>
     </div>
 
     <!--Teachers Search-->
@@ -29,34 +29,48 @@
     <!--Search Ends-->
 
     <div class="table-responsive shadow rounded">
-        <table class="table ui celled yellow align-middle">
+        <table class="table ui celled padded yellow align-middle ">
           <thead>
-            <tr class="text-light">
-              <th scope="col" class="font-weight-bold">Id</th>
+            <tr>
+              <th scope="col" class="font-weight-bold">Admission Number</th>
+              <th scope="col" class="font-weight-bold">Reg Number</th>
               <th scope="col" class="font-weight-bold">Name</th>
-              <th scope='col' class="font-weight-bold">Parent Name</th>
-              <th scope='col' class="font-weight-bold">Parent Number</th>
               <th scope="col" class="font-weight-bold">Course</th>
-              <th scope='col' class="font-weight-bold">Year</th>
-              <th scope='col' class="font-weight-bold">Department</th>
-              
-            </tr>
+              <th scope="col" class="font-weight-bold">Year</th>
+              <th scope="col" class="font-weight-bold">Status</th>
+              <th scope="col" class="font-weight-bold">Gender</th>
+              <!-- <th scope="col" class="font-weight-bold">Parent Phone</th> -->
+              <!-- <th scope="col" class="font-weight-bold">State</th> -->
+              <!-- <th scope="col" class="font-weight-bold">Religion</th> -->
+              <!-- <th scope="col" class="font-weight-bold">Social Status</th> -->
+              <!-- <th scope="col" class="font-weight-bold">REMOVE STUDENT</th> -->
+          </tr>
           </thead>
           <tbody id="SearchStudents">
             {% if list_empty %}
             <tr>
-                <td colspan="6" class="text-center font-weight-bold">******No Students******</td>
+                <td colspan="7" class="text-center font-weight-bold">
+                  <div class="ui divided  list">
+                    <a class="item">
+                      <div class="ui red horizontal label w-50">No Students Admitted</div>
+                    </a>
+                  </div>
+                </td>
             </tr>
             {% else %}
             {% for i in students %}
             <tr>
-            <td class="font-weight-bold">{{ i['id'] }}</td>
-            <td>{{ i['name'] }}</td>
-            <td>{{ i['parent_name'] }}</td>
-            <td>{{ i["parent_number"] }}, {{ i["parent_number_alt"] }}</td>
-            <td>{{ i['course'] }}</td>
-            <td>{{ i['year'] }} </td>
-            <td>{{ i['department'] }}</td>
+              <th>{{ i.unique_id }}</th>
+              <th>{{ i.reg_number }}</th>
+              <th scope="col" class="font-weight-bold">{{ i.name }}</th>
+              <td>{{ i.course }}</td>
+              <td>{{ i.year }}</td>
+              <td class="font-weight-bold">{{ i.status }}</td>
+              <td>{{ i.gender }}</td>
+              <!-- <td>{{ i.parent_phone }}</td> -->
+              <!-- <td>{{ i.state }}</td> -->
+              <!-- <td>{{ i.religion }}</td> -->
+              <!-- <td>{{ i.social_status }}</td> -->
             </tr>
             {% endfor %}
             {% endif %}

@@ -1,0 +1,259 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+
+<script>
+    $("#navMore").addClass("navisel")
+    $("#navMDm").addClass("navisel")
+</script>
+
+<br><br>
+<section id='displayTeacher'style="display: block;" class="pb-5 pt-5">
+    
+    <div class="jumbotron">
+      <h3 class="pb-4 text-center" style="font-family: sans-serif;">Department Full Details</h3>
+    </div>
+    <br>
+    
+    <!-- <div class="jumbotron">
+        <h5 class="pb-4 text-left" style="font-family: sans-serif;">Total staffs in {{depart}} Department is: {{ total_courses }}</h5>
+      </div> -->
+
+      <div class="d-flex align-items-center justify-content-center">
+        <div class="table-responsive" style="width: auto;">
+          <table class="ui green padded text-left celled table align-middle" style="min-width: 300px;">
+            <!-- <table class="ui green padded text-center table align-middle"> -->
+            <tbody>
+              <tr>
+                <th class="text-center font-weight-bold">Courses</th>
+                <th class="text-center text-capitalize">
+                {% if total_courses %}
+                {% for c in courses %}
+                {{c.Course_name_alias}},
+                {% endfor %}
+                {% else %}
+                No Courses
+                {% endif %}
+                </th>
+
+                <th class="text-center font-weight-bold">Total Courses</th>
+                <th class="text-center">{{total_courses}}</th>
+              </tr>
+              <tr>
+                <th class="text-center font-weight-bold">Total Staffs</th>
+                <th class="text-center">{{total_count}}</th>
+                <th class="text-center font-weight-bold">Total Discontinued Staffs</th>
+                <th class="text-center">{{total_discontinued_staff}}</th>
+              </tr>
+              <tr>
+                <th class="text-center font-weight-bold">Total Students</th>
+                <th class="text-center">{{total_students}}</th>
+                <th class="text-center font-weight-bold">Total Discontinued Students</th>
+                <th class="text-center">{{total_discontinued_students}}</th>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <br>
+    <br>
+    <div class="jumbotron">
+      <h3 class="pb-4 text-left" style="font-family: sans-serif;">Staffs Full Details</h3>
+    </div>
+    <br>
+    <!--Teacher Search-->
+      <div class="form ui pb-3">
+
+          <div class="field">
+            <div class="ui search">
+              <div class="ui icon input">
+                <input class="prompt" type="text" id='myInput' placeholder="Search">
+                <i class="search icon"></i>
+              </div>
+              <div class="results"></div>
+            </div>
+        </div>
+
+      </div>
+    <!--Search Ends-->
+    <br>
+    <div class="table-responsive">
+      <table class="ui table yellow align-middle" id='datatable'>
+        <thead>
+          <tr class="bg-primary text-light">
+            <th scope="col" class="font-weight-bold">ID</th>
+            <th scope="col" class="font-weight-bold">Name</th>
+            <th scope="col" class="font-weight-bold">Email</th>
+            <th scope='col' class="font-weight-bold">Phone No</th>
+            <th scope="col" class="font-weight-bold">Department</th>
+            <th scope="col" class="font-weight-bold">Tag</th>
+            <th scope="col" class="font-weight-bold">Joining Date</th>
+            <th scope="col" class="font-weight-bold">DOB</th>
+            <th scope="col" class="font-weight-bold">Higher Qualification</th>
+            <th scope="col" class="font-weight-bold">Net Qualification</th>
+            <th scope="col" class="font-weight-bold">Designation</th>
+            <th scope="col" class="font-weight-bold">Gender</th>
+            <th scope="col" class="font-weight-bold">Teaching Experience</th>
+            <th scope="col" class="font-weight-bold">Religion</th>
+            <th scope="col" class="font-weight-bold">Social Status</th>
+            <th scope="col" class="font-weigth-bold">Status</th>
+            <th scope="col" class="font-weigth-bold">Discontinued Date</th>
+          </tr>
+        </thead>
+        
+        <tbody id='Teachers'>
+        {% for i in hods%}
+
+          <tr style="background-color: rgb(185, 255, 185);">
+            <th scope="row" class="font-weight-bold">{{i['id']}}</th>
+            <th scope="row" class="font-weight-bold">{{i['name']}}</th>
+            <td>{{ i['email'] }}</td>
+            <td>{{ i['phone_num'] }}</td>
+            <td>{{ i['department'] }}</td>
+            <td>{{ i['tag'] }}</td>
+            <td>{{ i['joining_date'] }}</td>
+            <td>{{ i['dob'] }}</td>
+            <td>{{ i['higher_qualification'] }}</td>
+            <td>{{ i['net_qualification'] }}</td>
+            <td>{{ i['designation'] }}</td>
+            <td>{{ i['gender'] }}</td>
+            <td>{{ i['teaching_experience'] }} Year</td>
+            <td>{{ i['religion'] }}</td>
+            <td>{{ i['social_status'] }}</td>
+            <td>{{ i['status'] }}</td>
+            <td>{{ i['discontinued_date'] }}</td>
+          </tr>
+
+        {% endfor %}
+        
+        {% for i in teachers%}
+        <tr style="background-color: rgb(248, 233, 150);">
+            <th scope="row" class="font-weight-bold">{{i['id']}}</th>
+            <th scope="row" class="font-weight-bold">{{i['name']}}</th>
+            <td>{{ i['email'] }}</td>
+            <td>{{ i['phone_num'] }}</td>
+            <td>{{ i['department'] }}</td>
+            <td>{{ i['tag'] }}</td>
+            <td>{{ i['joining_date'] }}</td>
+            <td>{{ i['dob'] }}</td>
+            <td>{{ i['higher_qualification'] }}</td>
+            <td>{{ i['net_qualification'] }}</td>
+            <td>{{ i['designation'] }}</td>
+            <td>{{ i['gender'] }}</td>
+            <td>{{ i['teaching_experience'] }} Year</td>
+            <td>{{ i['religion'] }}</td>
+            <td>{{ i['social_status'] }}</td>
+            <td>{{ i['status'] }}</td>
+            <td>{{ i['discontinued_date'] }}</td>
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+    <br><br>
+    <button class="ui red button" onclick="export_table('{{ depart }}', 'csv')">Export as Csv</button>
+ 
+    <br><br><br><br>
+
+    <br>
+    {% if dis_continued_students %}
+    <div class="jumbotron">
+      <h3 class="pb-4 text-left" style="font-family: sans-serif;">Discontinued Students Details</h3>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table ui celled padded yellow align-middle shadow" id='datatable1'>
+          <thead class="table-primary">
+              <tr>
+                  <th scope="col" class="font-weight-bold">Admission Number</th>
+                  <th scope="col" class="font-weight-bold">Reg Number</th>
+                  <th scope="col" class="font-weight-bold">Name</th>
+                  <th scope="col" class="font-weight-bold">Course</th>
+                  <th scope="col" class="font-weight-bold">Year</th>
+                  <th scope="col" class="font-weight-bold">Status</th>
+                  <th scope="col" class="font-weight-bold">Discontinued Date</th>
+                  <th scope="col" class="font-weight-bold">Gender</th>
+                  <th scope="col" class="font-weight-bold">Parent Phone</th>
+                  <th scope="col" class="font-weight-bold">State</th>
+                  <th scope="col" class="font-weight-bold">Religion</th>
+                  <th scope="col" class="font-weight-bold">Social Status</th>
+                  <!-- <th scope="col" class="font-weight-bold">REMOVE STUDENT</th> -->
+              </tr>
+          </thead>
+
+          
+          <tbody>
+            {% for i in dis_continued_students %}
+            <tr>
+                <th>{{ i.unique_id }}</th>
+                <th>{{ i.reg_number }}</th>
+                <th scope="col" class="font-weight-bold">{{ i.name }}</th>
+                <td>{{ i.course }}</td>
+                <td>{{ i.year }}</td>
+                <td class="font-weight-bold">{{ i.status }}</td>
+                <td>{{ i.discontinued_date }}</td>
+                <td>{{ i.gender }}</td>
+                <td>{{ i.parent_phone }}</td>
+                <td>{{ i.state }}</td>
+                <td>{{ i.religion }}</td>
+                <td>{{ i.social_status }}</td>
+                <!-- <td>
+                    <button type="button" class="btn btn-danger btn-sm px-3">
+                      <i class="x icon"></i>
+                    </button>
+                </td> -->
+            </tr>
+            {% endfor %}
+        </tbody>
+
+      </table>
+      <br>
+      <button class="ui red button" onclick="export_table2('{{ depart }}', 'csv')">Export as Csv</button>
+    </div>
+    <br><br><br><br>
+    {% endif %}
+    <br>
+</section>
+
+<script>
+      // Teacher Search
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#Teachers tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+</script>
+
+<script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.0.10/jspdf.plugin.autotable.min.js"></script>
+<!-- Html table to pdf -->
+
+<script>
+
+    function export_table(filename, format){
+        var format_type = format;
+        var filename = filename.toUpperCase()+"_DEPARTMENT_DETAILS"
+
+        $("#datatable").tableHTMLExport({
+            type:format_type,
+            filename:filename
+        });
+    }
+
+    function export_table2(filename, format){
+      var format_type = format;
+      var filename = filename.toUpperCase()+"_DISCONTINUED_STUDENTS_DETAILS"
+
+      $("#datatable1").tableHTMLExport({
+          type:format_type,
+          filename:filename
+      });
+  }
+
+</script>
+
+{% endblock %}

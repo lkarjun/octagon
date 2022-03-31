@@ -4,6 +4,7 @@ from fastapi.responses import RedirectResponse
 from repository import admin, hod, attendence, teacher
 from database import database, models
 from collections import defaultdict
+from sqlalchemy import and_
 
 templates = Jinja2Templates('templates/html_files')
 
@@ -123,7 +124,7 @@ class OthersTemplates():
 class HodTemplates():
 
     def workspace(request, user, db):
-        classes = sorted(teacher.get_hour_detail(db, user.user_name), key = lambda x: x.hour)
+        classes = sorted(teacher.get_hour_detail(db, user.username), key = lambda x: x.hour)
         tmp = templates.TemplateResponse("hodWorkspace.html",
                         context={"request": request, 
                              "title": "Workspace",
@@ -153,7 +154,43 @@ class HodTemplates():
         db.close()
         tmp = templates.TemplateResponse("appointTeacher.html",
                 context={'request': request, "title": "Appoint Teachers", 
-                         "teachers": teachers, "depart": user.department})
+                        "teachers": teachers,
+                        "depart": user.department})
+        return tmp
+
+    def manage_department(request, user, db):
+        teachers = hod.get_techer_details(db, user, template=True)
+        hods = db.query(models.Hod).filter(models.Hod.department == user.department).all()
+        
+        dis_continued_hods = db.query(models.Hod).filter(
+                                and_(models.Hod.department == user.department,
+                                     models.Hod.status != "Continue"
+                                    )).all()
+        dis_continued_teacher = db.query(models.Teachers).filter(
+                                and_(models.Teachers.department == user.department,
+                                     models.Teachers.status != "Continue"
+                                    )).all()
+        
+        dis_continued_students = db.query(models.Students).filter(
+                                and_(models.Students.department == user.department,
+                                     models.Students.status != "Continue"
+                                    )).all()
+        courses = db.query(models.Courses).filter(models.Courses.Department == user.department).all()
+        students = db.query(models.Students).filter(models.Students.department == user.department).all()
+        total_coursees = len(courses)
+        total_students = len(students)
+        total_discontinued_staff = len(dis_continued_hods) + len(dis_continued_teacher)
+
+        total_count = len(list(teachers)) + len(hods)
+        tmp = templates.TemplateResponse("hodManage.html",
+                context={'request': request, "title": "Appoint Teachers", 
+                         "teachers": teachers, "depart": user.department,
+                         'hods': hods, 'total_count': total_count, 
+                         "total_courses": total_coursees, "courses": courses,
+                         "total_students": total_students,
+                         "total_discontinued_staff": total_discontinued_staff,
+                         "total_discontinued_students": len(dis_continued_students),
+                         "dis_continued_students": dis_continued_students})
         return tmp
 
 
@@ -166,7 +203,7 @@ class HodTemplates():
         return tmp
 
     def search_students(request, user, db):
-        students = db.query(models.Students).all()
+        students = db.query(models.Students).filter(models.Students.status == "Continue").all()
         list_empty = False if len(students) else True
         tmp = templates.TemplateResponse("hodSearchStudents.html",
                 context={"request": request, "title": "Search Students",
@@ -214,8 +251,17 @@ class HodTemplates():
 
         return tmp
 
-    def show_attendence_data(request, data):
+    def get_attendence_data(data):
         column, values = attendence.show_attendence_data(request=data)
+        data_in = len(values) >= 1
+        tmp = templates.get_template("__attendence_files_load.html")
+        tmp = tmp.render(column = column, values = values, 
+                         data = data, data_in = data_in)
+        return tmp
+
+    def show_attendence_data(request, data):
+        # column, values = attendence.show_attendence_data(request=data)
+        column, values = attendence.get_students_attendence_detail(request=data)
         data_in = len(values) >= 1
         tmp = templates.TemplateResponse("showAttendenceData.html",
                     context={"request": request, "title": "Attendence Sheet",
@@ -228,9 +274,9 @@ class HodTemplates():
         db = database.SessionLocal()
         details = hod.get_student_details(db, course, year, template=True)
         db.close()
-        tmp = templates.TemplateResponse("studentDetails.html",
+        tmp = templates.TemplateResponse("_teacherStudentDetails.html",
                     context={"request": request, "title": "Attendence Sheet",
-                                "details": details, "course": course, "year": year})
+                                "details": details, "course": course, "year": year, "hod": True})
 
         return tmp
 
@@ -243,7 +289,7 @@ class HodTemplates():
 
 
     def show_report(request, data):
-        final_report = attendence.attendence_analysing(request=data, open_daily=True).values
+        final_report = attendence.attendence_analysing(data=data).values
         tmp = templates.get_template("__attendencereport.html")
         tmp = tmp.render(request = request, final_report = final_report)
         return tmp
@@ -270,17 +316,45 @@ class HodTemplates():
         return tmp
 
     def profile(request, user):
-        scode = user.user_name[-4:]
+        scode = user.username[-4:]
         tmp = templates.TemplateResponse("hodProfile.html",
                     context={'request': request, "title": 'Profile',
                          'user': user, 'scode': scode})
         return tmp
 
     def myclasses(request, db, user):
-        data = teacher.my_timetable(db, user.user_name)
+        data = teacher.my_timetable(db, user.username)
         tmp = templates.TemplateResponse("teacherTimetable.html",
                             context={"request": request, "title": "My Classes",
                                 "data": data, "head": True})
+        return tmp
+
+    def attendence_correction_view(request, db, user):
+        corrections = db.query(models.Corrections).filter(models.Corrections.department == user.department).all()
+        corrections = corrections[::-1]
+        tmp = templates.TemplateResponse("hodAttendenceCorrections.html",
+                                        context={'request': request, 
+                                                 "title": "Attendence Correction Details",
+                                                 "corrections": corrections})
+        return tmp
+
+    def timetable_view(request, db, course, year, user):
+        all_ = db.query(models.Hod).all() + db.query(models.Teachers).all()
+        all_ = {i.username: i.name for i in all_}
+        timetables = db.query(models.Timetable).filter(and_(
+            models.Timetable.course == course,
+            models.Timetable.year == year,
+            models.Timetable.department == user.department
+        )).all()
+        timetablesS = db.query(models.TimetableS).filter(and_(
+            models.TimetableS.course == course,
+            models.TimetableS.year == year,
+            models.TimetableS.department == user.department
+        )).all()
+        tmp = templates.TemplateResponse("hodTimeTableView.html",
+                        context={"request": request, "title": "TimeTable View",
+                                 "course": course, 'year': year, "timetables": timetables,
+                                 "timetablesS":timetablesS, "all_":all_})
         return tmp
 
 class TeacherTemplates():
@@ -307,7 +381,7 @@ class TeacherTemplates():
         details = hod.get_student_details(db, course, year, template=True)
         tmp = templates.TemplateResponse("_teacherStudentDetails.html",
                     context={"request": request, "title": "Attendence Sheet",
-                                "details": details, "course": course, "year": year})
+                                "details": details, "course": course, "year": year, "hod": False})
 
         return tmp
 

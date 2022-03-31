@@ -93,15 +93,106 @@ $("#navStudm").addClass("navisel")
 
         <div class="text-center">
             <div class="ui buttons">
-                <button class="ui button" onclick="$('#upload_file').show();$('#NewStudent').hide();">Upload Csv/Xlsx File</button>
+                <button class="ui button" onclick="$('#upload_file').show();$('#NewStudent_v2_0').hide();">Upload Csv/Xlsx File</button>
                 <div class="or"></div>
-                <button class="ui positive button" onclick="$('#NewStudent').show();$('#upload_file').hide();">Enter Manually</button>
+                <button class="ui positive button" onclick="$('#NewStudent_v2_0').show();$('#upload_file').hide();">Enter Manually</button>
             </div>
         </div>
 
         <br>
 
-        <form class="ui form" id="NewStudent" style="display: none;">
+        <form class="ui form" id="NewStudent_v2_0" style="display: none;">
+            <br>
+            <h3 class="ui dividing header" style="font-family: sans-serif">Enter Student Details</h3>
+    
+            <div class="fields two">
+                <div class="field">
+                    <label for="unique_id">Admission No:</label>
+                    <input required type="text" id="unique_id" placeholder="Admission Number">
+                </div>
+
+                <div class="field">
+                    <label for="unique_id">Registration No:</label>
+                    <input type="text" id="r_number" value = "None" placeholder="Registration Number">
+                </div>
+            </div>
+
+            <div class="three fields">
+<!--             
+                <div class="field">
+                    <label for="unique_id">Admission No:</label>
+                    <input required type="text" id="unique_id" placeholder="Admission Number">
+                </div> -->
+    
+                <div class="field">
+                    <label for="name">Name: </label>
+                    <input required type="text" id="name" placeholder="Full Name">
+                </div>
+    
+                <div class="field">
+                    <label>Gender</label>
+                    <select class="ui dropdown" id='gr'>
+                      <option value="Male">MALE</option>
+                      <option value="Female">FEMALE</option>
+                      <option value="Transgender">TRANSGENDER</option>
+                    </select>
+                  </div>
+                  
+                  <div class="field">
+                    <label>Parent Number:</label>
+                    <input required type='number' id='parent_number' placeholder="Parent Phone Number">
+                </div>
+
+            </div>
+    
+            <div class="three fields">
+    
+                <!-- <div class="field">
+                    <label>Parent Number:</label>
+                    <input required type='number' id='parent_number' placeholder="Parent Phone Number">
+                </div> -->
+                
+                
+                <div class="field">
+                    <label>Religion:</label>
+                    <select class="ui dropdown" id='rn'>
+                        <option value="Hindu">HINDU</option>
+                        <option value="Muslim">MUSLIM</option>
+                        <option value="Christian">CHRISTIAN</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Social Status:</label>
+                    <select class="ui dropdown" id='sc'>
+                      <option value="General">GENERAL</option>
+                      <option value="Obc">OBC</option>
+                      <option value="Sc/St">SC/ST</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>State:</label>
+                    <select class="ui dropdown" id='state'>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Outside Kerala">Outside Kerala</option>
+                      <option value="Foreign">Foreign</option>
+                      <option value="Nri">NRI</option>
+                    </select>
+                </div>
+            
+            </div>
+        
+        
+            <div class="ui buttons">
+                <button class="ui button green" type="submit" id="appoint_btn">Submit</button>
+                <div class="or"></div>
+                <div class="ui button red" onclick='$("#NewStudent")[0].reset();'>clear</div>
+            </div>
+
+        </form>
+
+        <!-- <form class="ui form" id="NewStudent" style="display: none;">
             <br>
             <h3 class="ui dividing header" style="font-family: sans-serif">Enter Student Details</h3>
     
@@ -172,7 +263,7 @@ $("#navStudm").addClass("navisel")
                 <div class="ui button red" onclick='$("#NewStudent")[0].reset();'>clear</div>
             </div>
 
-        </form>
+        </form> -->
         <br><br>
 
         <div id="upload_file" style="display: none;">
@@ -201,9 +292,9 @@ $("#navStudm").addClass("navisel")
     
     <section id="Edit" class="p-md-5 m-md-5 pb-5 pt-5" style="display: none;">
 
-        <form class="ui form pb-md-5 pb-5" id="editVerify">
+        <form class="ui form pb-md-5 pb-5" id="editVerify_V2">
             <h3 class="ui dividing header" style="font-family: sans-serif">Verify First</h3>
-            <div class="four fields">
+            <div class="three fields">
 
                 <div class="field">
                     <label >Unique Id</label>
@@ -211,13 +302,8 @@ $("#navStudm").addClass("navisel")
                 </div>
 
                 <div class="field">
-                    <label >Name</label>
-                    <input type="text" id="edName" required placeholder="Name">
-                </div>
-
-                <div class="field">
                     <label >Choose Course</label>
-                    <select class="ui dropdown" id='edCourse1'></select>
+                    <select class="ui dropdown" required id='edCourse1'></select>
                 </div>
     
                 <div class="field">
@@ -231,20 +317,23 @@ $("#navStudm").addClass("navisel")
                     </select>
                 </div>
             </div>
-            <div class="ui buttons">
-                <button class="ui button green" id = 'appoint_btn2' type="submit">Verify</button>
+            <div class="ui buttons w-50">
+                <button class="ui button teal" id = 'appoint_btn2' type="submit">Verify</button>
                 <div class="or"></div>
-                <div class="ui button red" onclick='reset_edit()'>clear</div>
+                <div class="ui button yellow" onclick='reset_edit()'>clear</div>
             </div>
         </form>
 
-        <form class="ui form" id="editstudent">
+        <form class="ui form" id="editstudent_V2">
             <h3 class="ui dividing header" style="font-family: sans-serif">Edit Student Details</h3>
     
-            <div class="three fields">
+            <!-- <div class="three fields">
             
                 <div class="field">
-                    <input type="text" name="id" id='id4' placeholder="Unique Id">
+                    <input type="text" name="unique_id" id='id4' placeholder="Unique Id">
+                </div>
+                <div class="field">
+                    <input type="text" name="reg_number" id='id4' placeholder="Unique Id">
                 </div>
     
                 <div class="field">
@@ -271,8 +360,86 @@ $("#navStudm").addClass("navisel")
                     <input type='text' name='snumber' id='snumber4' placeholder="Phone Number 2">
                 </div>
             
-            </div>
+            </div> -->
         
+            <div class="fields two">
+                <div class="field">
+                    <label for="unique_id">Admission No:</label>
+                    <input required type="text" id="edunique_id" placeholder="Admission Number">
+                </div>
+
+                <div class="field">
+                    <label for="unique_id">Registration No:</label>
+                    <input type="text" id="edr_number" value = "None" placeholder="Registration Number">
+                </div>
+            </div>
+
+            <div class="three fields">
+<!--             
+                <div class="field">
+                    <label for="unique_id">Admission No:</label>
+                    <input required type="text" id="unique_id" placeholder="Admission Number">
+                </div> -->
+    
+                <div class="field">
+                    <label for="name">Name: </label>
+                    <input required type="text" id="edname" placeholder="Full Name">
+                </div>
+    
+                <div class="field">
+                    <label>Gender</label>
+                    <select class="ui dropdown" id='edgr'>
+                      <option value="Male">MALE</option>
+                      <option value="Female">FEMALE</option>
+                      <option value="Transgender">TRANSGENDER</option>
+                    </select>
+                  </div>
+                  
+                  <div class="field">
+                    <label>Parent Number:</label>
+                    <input required type='number' id='edparent_number' placeholder="Parent Phone Number">
+                </div>
+
+            </div>
+    
+            <div class="three fields">
+    
+                <!-- <div class="field">
+                    <label>Parent Number:</label>
+                    <input required type='number' id='parent_number' placeholder="Parent Phone Number">
+                </div> -->
+                
+                
+                <div class="field">
+                    <label>Religion:</label>
+                    <select class="ui dropdown" id='edrn1'>
+                        <option value="Hindu">HINDU</option>
+                        <option value="Muslim">MUSLIM</option>
+                        <option value="Christian">CHRISTIAN</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Social Status:</label>
+                    <select class="ui dropdown" id='edsc'>
+                      <option value="General">GENERAL</option>
+                      <option value="Obc">OBC</option>
+                      <option value="SC/ST">SC/ST</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>State:</label>
+                    <select class="ui dropdown" id='edstate'>
+                      <option value="Kerala">Kerala</option>
+                      <option value="Outside Kerala">Outside Kerala</option>
+                      <option value="Foreign">Foreign</option>
+                      <option value="Nri">NRI</option>
+                    </select>
+                </div>
+            
+            </div>
+
             <div class="two fields">
                 
                 <div class="field">
@@ -292,12 +459,12 @@ $("#navStudm").addClass("navisel")
                 </div>
     
             </div>
-
+            <button class="ui button teal disabled edbtndis w-100" id="appoint_btn_ed" type="submit">Submit</button>
+<!-- 
             <div class="ui buttons">
-                <button class="ui button green disabled edbtndis" id="appoint_btn_ed" type="submit">Submit</button>
                 <div class="or"></div>
                 <div class="ui button red disabled edbtndis" onclick='$("#editstudent")[0].reset();'>clear</div>
-            </div>
+            </div> -->
 
         </form>
 
@@ -306,19 +473,19 @@ $("#navStudm").addClass("navisel")
 
     <section id="Remove" class="p-md-5 m-md-5 pb-5 pt-5" style="display: none;">
         
-        <form class="ui form pb-md-5 pb-5" id="removeStudent">
+        <form class="ui form pb-md-5 pb-5" id="removeStudent_V2">
             <h3 class="ui dividing header" style="font-family: sans-serif">Remove Student</h3>
-            <div class="four fields">
+            <div class="three fields">
 
                 <div class="field">
                     <label >Unique Id</label>
                     <input type="text" id="id1" required placeholder="Unique Id">
                 </div>
 
-                <div class="field">
+                <!-- <div class="field">
                     <label>Full Name</label>
                     <input type="text" id="rmName" required placeholder="Name">
-                </div>
+                </div> -->
 
                 <div class="field">
                     <label >Choose Course</label>
@@ -336,10 +503,10 @@ $("#navStudm").addClass("navisel")
                     </select>
                 </div>
             </div>
-            <div class="ui buttons">
+            <div class="ui buttons w-100">
                 <button class="ui button orange" type="submit" id="appoint_btn1">Remove</button>
                 <div class="or"></div>
-                <div class="ui button red" onclick='$("#removeStudent")[0].reset();'>clear</div>
+                <div class="ui button red" onclick='$("#removeStudent_V2")[0].reset();'>clear</div>
             </div>
         </form>
 
@@ -416,5 +583,237 @@ $("#navStudm").addClass("navisel")
     })
 </script>
 
+
+<script>
+    $("#NewStudent_v2_0").submit((e)=>{
+        e.preventDefault()
+        $("#appoint_btn").addClass("loading");
+        var name = $("#name").val()
+        var data = JSON.stringify({
+                        "unique_id": $("#unique_id").val(),
+                        "reg_number": $("#r_number").val(),
+                        "name": name, "gender": $("#gr").val(),
+                        "parent_phone": parseInt($("#parent_number").val()),
+                        "state": $("#state").val(),
+                        "religion": $("#rn").val(),
+                        "social_status": $("#sc").val(),
+                        "course": $("#course").val(), "year": parseInt($("#year").val())
+                    });
+        var base = window.location.origin + '/teacher/add-students-v2-0';
+    
+        $.ajax({
+    
+            url: base,
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            
+            success: function(result){
+                $("#appoint_btn").removeClass("loading");
+                swal({
+                    title: "Added Student!",
+                    text: "Sucessfully Added Student: " + name,
+                    icon: "success",
+                    button: "Okay!",
+                }).then((value) => {location.reload();});
+            },
+            error: function(result){
+                $("#appoint_btn").removeClass("loading")
+                error_alert("Something Went Wrong. Please try to contact the techincal team...");
+            }
+    
+        })
+    })
+    
+</script>
+
 <script src="{{ url_for('static', path='students.js') }}"></script>
+
+<script>
+
+    function reset_edit(){
+        $("#editVerify_V2")[0].reset();
+        $("#appoint_btn2").removeClass("disabled")
+        $("#editstudent_V2")[0].reset()
+        $(".edbtndis").addClass("disabled")
+    }
+    
+
+    function set_details(data){
+        console.log(data.name)
+        $("#edunique_id").val(data.unique_id)
+        $("#edr_number").val(data.reg_number)
+        $("#edname").val(data.name)
+        $("#edrn1").val(data.religion).change()
+        $("#edgr").val(data.gender).change()
+        $("#edstate").val(data.state).change()
+        $("#edsc").val(data.social_status).change()
+        $("#edparent_number").val(data.parent_phone)
+        $("#course4").val(data.course).change()
+        $("#year4").val(data.year).change()
+        $(".edbtndis").removeClass("disabled")
+    }
+
+    $("#editVerify_V2").submit((e)=>{
+        e.preventDefault();
+        $("#appoint_btn2").addClass("loading disabled");
+        var name = $("#id2").val()
+        var data = JSON.stringify(
+            {"unique_id": $("#id2").val(),
+            "course": $("#edCourse1").val(), "year": parseInt($("#edYear1").val())}
+        );
+        
+        var base = window.location.origin + '/teacher/edit-student';
+    
+        $.ajax({
+    
+            url: base,
+            type: 'POST',
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                $("#appoint_btn2").removeClass("loading disabled");
+                $("#appoint_btn2").addClass("disabled")
+                set_details(result)
+                console.log(result)
+            },
+            error: function(result){
+                $("#appoint_btn2").removeClass("loading disabled");
+                if(result.status == 404){
+                    swal({
+                        title: "Not Found!",
+                        text: name + " details not found in database",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+                else{
+                    swal({
+                        title: "Error!",
+                        text: "Something Went Wrong. Please try to contact the techincal team...",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                   // error_alert("Something Went Wrong. Please try to contact the techincal team...");
+                }
+            }
+        })
+    })
+
+
+    $("#editstudent_V2").submit((e)=>{
+        e.preventDefault();
+    
+        $("#appoint_btn_ed").addClass("loading disabled");
+        var name = $("#edname").val()
+        var data = JSON.stringify({
+                        "old_unique_id": $("#id2").val(),
+                        "old_course": $("#edCourse1").val(),
+                        "old_year": parseInt($("#edYear1").val()),
+                        "unique_id": $("#edunique_id").val(),
+                        "reg_number": $("#edr_number").val(),
+                        "name": name, "gender": $("#edgr").val(),
+                        "parent_phone": parseInt($("#edparent_number").val()),
+                        "state": $("#edstate").val(),
+                        "religion": $("#edrn1").val(),
+                        "social_status": $("#edsc").val(),
+                        "course": $("#course4").val(), 
+                        "year": parseInt($("#year4").val())
+                    });
+        //alert(data)
+        var base = window.location.origin + '/teacher/edit-student';
+    
+        $.ajax({
+    
+            url: base,
+            type: 'PUT',
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+                $("#appoint_btn_ed").removeClass("loading disabled");
+                swal({
+                    title: "Updated Student Details!",
+                    text: "Sucessfully Updated Student: " + name,
+                    icon: "success",
+                    button: "Okay!",
+                }).then((value) => {location.reload();});
+            },
+            error: function(result){
+                $("#appoint_btn_ed").removeClass("loading disabled");
+                if(result.status == 404){
+                    swal({
+                        title: "Not Found!",
+                        text: name + "details not found in database",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+                else{
+                    swal({
+                        title: "Error!",
+                        text: "Something Went Wrong. Please try to contact the techincal team...",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+            }
+        })
+    })
+
+
+    $("#removeStudent_V2").submit((e)=>{
+        e.preventDefault();
+        $("#appoint_btn1").addClass("loading disabled");
+        var name = $("#id1").val()
+        var data = JSON.stringify(
+                    {"unique_id": $("#id1").val(),
+                    "course": $("#course1").val(), "year": parseInt($("#year1").val())}
+                );
+        var base = window.location.origin + '/teacher/delete-student';
+    
+        $.ajax({
+    
+            url: base,
+            type: 'DELETE',
+            data: data,
+            dataType: 'json',
+            contentType: "application/json",
+            success: function(result){
+    
+                $("#appoint_btn1").removeClass("loading disabled");
+                swal({
+                    title: "Removed Student!",
+                    text: "Sucessfully Remove Student: " + name,
+                    icon: "success",
+                    button: "Okay!",
+                }).then((value) => {location.reload();});
+            
+            },
+            error: function(result){
+                if(result.status == 404){
+                    swal({
+                        title: "Not Found!",
+                        text: name + " not found in database",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                    $("#appoint_btn1").removeClass("loading disabled");
+                }
+                else{
+                    $("#appoint_btn1").removeClass("loading disabled");
+                    swal({
+                        title: "Error!",
+                        text: "Something Went Wrong. Please try to contact the techincal team...",
+                        icon: "error",
+                        button: "Okay!",
+                    })
+                }
+            }
+        })
+    
+    })
+</script>
 {% endblock %}

@@ -1,0 +1,72 @@
+{% extends "commonLayout.html" %}
+{% block content %}
+
+<script>
+    $("#navTTdw").addClass("navisel")
+    $("#navTTdm").addClass("navisel")
+</script>
+
+
+<div class="ui container">
+    <br><br>
+
+    <div class="p-4">
+        <div class="jumbotron text-center pt-md-3">
+            <h3 class="pt-4 pb-4 font-weight-bold" style="font-size: x-large;">{{course.upper() }} Year : {{ year }} TimeTable</h3>
+        </div>
+    
+    
+        <div class="table-responsive shadow rounded">
+            <table class="ui padded table align-middle green" id='datatable'>
+              <thead>
+                <tr class="text-left">
+                  <th scope="col" class="font-weight-bold">Days</th>
+                  <th scope="col" class="font-weight-bold">Hour 1</th>
+                  <th scope="col" class="font-weight-bold">Hour 2</th>
+                  <th scope='col' class="font-weight-bold">Hour 3</th>
+                  <th scope='col' class="font-weight-bold">Hour 4</th>
+                  <th scope='col' class="font-weight-bold">Hour 5</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in range(5) %}
+                <tr>
+                    <td class="font-weight-bold">{{timetables[i].days}}</th>
+                    <td>{{timetablesS[i].hour_1}}<br>{{all_[timetables[i].hour_1]}}</td>
+                    <td>{{timetablesS[i].hour_2}}<br>{{all_[timetables[i].hour_2]}}</td>
+                    <td>{{timetablesS[i].hour_3}}<br>{{all_[timetables[i].hour_3]}}</td>
+                    <td>{{timetablesS[i].hour_4}}<br>{{all_[timetables[i].hour_4]}}</td>
+                    <td>{{timetablesS[i].hour_5}}<br>{{all_[timetables[i].hour_5]}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+
+        <div class="ui buttons pt-md-4 pt-5 pb-4">
+            <button class="ui button" onclick="export_table('csv')">Export as CSV</button>
+            <div class="or"></div>
+            <button class="ui positive button" onclick="export_table('pdf')">Export as PDF</button>
+        </div>
+    </div>
+
+</div>
+
+<br><br>
+
+<script>
+    function export_table(format){
+        var format_type = format;
+        var filename = "TimeTable-{{course}}:{{year}}."+format
+
+        $("#datatable").tableHTMLExport({
+            type:format_type,
+            filename:filename
+        });
+    }
+</script>
+
+<script src="{{ url_for('static', path='tableHTMLExport.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.0.10/jspdf.plugin.autotable.min.js"></script>
+{% endblock %}

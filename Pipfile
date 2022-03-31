@@ -20,6 +20,7 @@ urllib3 = {extras = ["secure"], version = "*"}
 gunicorn = "*"
 requests = "*"
 jinja2 = "*"
+tqdm = "*"
 
 [dev-packages]
 ipykernel = "*"
@@ -27,4 +28,4 @@ notebook = "*"
 jupyter = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.9"

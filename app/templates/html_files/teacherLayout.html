@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Exo&family=Pattaya&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.3.0/mdb.min.css" rel="stylesheet"/>
@@ -15,6 +16,88 @@
     <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
     <title>{{ title }}</title>
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='Favicon/favicon-32x32.png') }}">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .hidden {
+            opacity: 0;
+        }
+
+        #loader {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .preloader {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            left: calc(50% - 20px);
+            top: calc(50% - 20px);
+            background: #e7b719;
+            transform: rotate(45deg);
+            animation: preloader 3s linear infinite;
+        }
+
+        .loadBar {
+            position: absolute;
+            width: 200px;
+            height: 2px;
+            left: calc(50% - 100px);
+            top: calc(50% + 60px);
+            background: #ffffff;
+        }
+
+        .progress {
+            position: relative;
+            width: 0%;
+            height: inherit;
+            background: #000000;
+        }
+
+        @keyframes loading {
+
+            0% {
+                width: 0%;
+            }
+
+            100% {
+                width: 100%;
+            }
+
+        }
+
+        @keyframes preloader {
+
+            0%, 100% {
+                transform: rotate(45deg);
+            }
+
+            60% {
+                transform: rotate(405deg);
+            }
+
+        }
+    </style>
+    <script>
+        $(window).on('load', function () {
+           var rnd = Math.random() + 500;
+           $('.progress').css("animation", "loading " + rnd + "ms linear");
+           console.log(rnd);
+           setTimeout(function() {
+               $('#loader').hide();
+               $('#page').removeClass('hidden');
+               $('.userCred').show();
+           }, rnd);
+       });
+    </script>
 </head>
 <body style="background-color: #f5f5f5; font-family: sans-serif;">
     
@@ -62,8 +145,15 @@
             </div>
         </div>
     </div>
+
+    <div id="loader">
+        <div class="preloader"></div>
+        <!-- <div class="loadBar">
+            <div class="progress"></div>    
+        </div> -->
+    </div>
     
-    <div class="container-fluid">
+    <div class="container-fluid hidden" id = "page">
         {% block content %}
 
         {% endblock %}
@@ -89,7 +179,7 @@
 <script>
     function about(){
         swal({
-            title: "Version 1.0 Project 2k21!",
+            title: "Octagon: Version 2.0 Project 2k21!",
             text: "Final Year Project(BCA) \
                    by Lalkrishna, Rishal, Rashitha, Nafla",
 

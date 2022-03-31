@@ -1,12 +1,12 @@
 {% for data in final_report %}
-{% if data[2]|float >=75 %}
+{% if data[4]|float >=75 %}
 <tr class="negative">
 {% else %}
 <tr class="negative table-danger">
 {% endif %}
-    <td class="font-weight-bold">{{ data[0] }}</td>
-    <td>{{ data[1] }}</td>
-    <td>{{ data[2] }}%</td>
+    <td class="font-weight-bold">{{ data[1] }}</td>
     <td>{{ data[3] }}</td>
+    <td>{{ data[4] }}%</td>
+    <td>{{ data[5] }}</td>
 </tr>
 {% endfor %}

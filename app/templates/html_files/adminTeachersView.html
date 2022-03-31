@@ -27,31 +27,48 @@
     <!--Search Ends-->
 
     <div class="table-responsive">
-        <table class="table align-middle">
+        <table class="ui green table padded text-center align-middle">
           <thead>
-            <tr class="bg-primary text-light">
+            <tr class="text-light">
+              <th scope="col" class="font-weight-bold">ID</th>
               <th scope="col" class="font-weight-bold">Name</th>
               <th scope="col" class="font-weight-bold">Email</th>
-              <th scope='col' class="font-weight-bold">Phone No:</th>
-              <th scope='col' class="font-weight-bold">User Name</th>
-              <th scope="col" class="font-weight-bold">TAG</th>
-              <th scope='col' class="font-weight-bold">Department</th>
+              <th scope='col' class="font-weight-bold">Phone No</th>
+              <th scope="col" class="font-weight-bold">Department</th>
+              <th scope="col" class="font-weight-bold">Tag</th>
+              <th scope="col" class="font-weight-bold">Joining Date</th>
+              <th scope="col" class="font-weight-bold">DOB</th>
+              <th scope="col" class="font-weight-bold">Higher Qualification</th>
+              <th scope="col" class="font-weight-bold">Net Qualification</th>
+              <th scope="col" class="font-weight-bold">Designation</th>
+              <th scope="col" class="font-weight-bold">Gender</th>
+              <th scope="col" class="font-weight-bold">Teaching Experience</th>
+              <th scope="col" class="font-weight-bold">Religion</th>
+              <th scope="col" class="font-weight-bold">Social Status</th>
             </tr>
           </thead>
           <tbody id="SearchDepartment">
             {% if list_empty %}
             <tr>
-                <td colspan="6" class="text-center font-weight-bold">******No Teachers Appointed******</td>
+                <td colspan="16" class="text-center font-weight-bold">******No Teachers Appointed******</td>
             </tr>
             {% else %}
             {% for i in teachers %}
-            <tr id = '{{ i["username"] }}'>
-            <td class="font-weight-bold">{{ i['name'] }}</td>
+            <th scope="row" class="font-weight-bold">{{i['id']}}</th>
+            <th scope="row" class="font-weight-bold">{{i['name']}}</th>
             <td>{{ i['email'] }}</td>
-            <td>{{ i['phone_number'] }}</td>
-            <td>{{ i["username"] }}</td>
-            <td>{{ i['tag'] }}</td>
+            <td>{{ i['phone_num'] }}</td>
             <td>{{ i['department'] }}</td>
+            <td>{{ i['tag'] }}</td>
+            <td>{{ i['joining_date'] }}</td>
+            <td>{{ i['dob'] }}</td>
+            <td>{{ i['higher_qualification'] }}</td>
+            <td>{{ i['net_qualification'] }}</td>
+            <td>{{ i['designation'] }}</td>
+            <td>{{ i['gender'] }}</td>
+            <td>{{ i['teaching_experience'] }} Year</td>
+            <td>{{ i['religion'] }}</td>
+            <td>{{ i['social_status'] }}</td>
             </tr>
             {% endfor %}
             {% endif %}

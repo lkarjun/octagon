@@ -12,7 +12,7 @@
         
     <div class="ui buttons small">
   
-        <button class="ui button animated teal" onclick="show('#displayTeacher')">
+        <button class="ui button animated brown" onclick="show('#displayTeacher')">
             <div class="visible content">Display</div>
             <div class="hidden content">
                 <i class="newspaper outline icon"></i>
@@ -20,7 +20,7 @@
 
         </button>
 
-        <button class="ui button animated blue"  onclick="show('#Addteacher')">
+        <button class="ui button animated grey"  onclick="show('#Addteacher')">
           <div class="visible content">Appoint New Teacher</div>
           <div class="hidden content">
               <i class="edit outline icon"></i>
@@ -41,7 +41,6 @@
   </script>
 
   </section>
-  
   <section id='displayTeacher'style="display: block;" class="pb-5">
     
     <div class="jumbotron text-left">
@@ -64,34 +63,101 @@
       </div>
     <!--Search Ends-->
 
-    <div class="table-responsive">
-      <table class="table align-middle">
+    <div class="table-responsive" style="min-height: 40vh;">
+      <table class="ui green padded text-center table align-middle">
         <thead>
-          <tr class="bg-primary text-light">
+          <tr class="text-light">
+            <th scope="col" class="font-weight-bold">ID</th>
             <th scope="col" class="font-weight-bold">Name</th>
             <th scope="col" class="font-weight-bold">Email</th>
-            <th scope='col' class="font-weight-bold">Phone No:</th>
-            <th scope="col" class="font-weight-bold">User Name</th>
+            <th scope='col' class="font-weight-bold">Phone No</th>
+            <!-- <th scope="col" class="font-weight-bold">Department</th> -->
             <th scope="col" class="font-weight-bold">Tag</th>
-            <td scope="col" class="font-weight-bold">Remove Teacher</td>
+            <!-- <th scope="col" class="font-weight-bold">Joining Date</th> -->
+            <!-- <th scope="col" class="font-weight-bold">DOB</th> -->
+            <th scope="col" class="font-weight-bold">Higher Qualification</th>
+            <th scope="col" class="font-weight-bold">Net Qualification</th>
+            <th scope="col" class="font-weight-bold">Designation</th>
+            <!-- <th scope="col" class="font-weight-bold">Gender</th> -->
+            <!-- <th scope="col" class="font-weight-bold">Teaching Experience</th> -->
+            <!-- <th scope="col" class="font-weight-bold">Religion</th> -->
+            <!-- <th scope="col" class="font-weight-bold">Social Status</th> -->
+            <th scope="col" class="font-weight-bold">Change Status</th>
+            <th scope="col" class="font-weight-bold">Discontinued Date</th>
+            <th scope="col" class="font-weight-bold">Remove Teacher</th>
           </tr>
         </thead>
         
         <tbody id='Teachers'>
 
-          {% for teacher in teachers%}
+          {% for i in teachers%}
 
-          <tr id="{{ teacher.username }}">
-            <td scope="row" class="font-weight-bold">{{ teacher.name }}</td>
-            <td>{{ teacher.email }}</td>
-            <td>{{ teacher.phone_number }}</td>
-            <td>{{ teacher.username }}</td>
-            <td>{{ teacher.tag }}</td>
+          <tr id="{{ i['username'] }}">
+              <th scope="row" class="font-weight-bold">{{i['id']}}</th>
+              <th scope="row" class="font-weight-bold">{{i['name']}}</th>
+              <td>{{ i['email'] }}</td>
+              <td>{{ i['phone_num'] }}</td>
+              <!-- <td>{{ i['department'] }}</td> -->
+              <td>{{ i['tag'] }}</td>
+              <!-- <td>{{ i['joining_date'] }}</td> -->
+              <!-- <td>{{ i['dob'] }}</td> -->
+              <td>{{ i['higher_qualification'] }}</td>
+              <td>{{ i['net_qualification'] }}</td>
+              <td>{{ i['designation'] }}</td>
+              <!-- <td>{{ i['gender'] }}</td> -->
+              <!-- <td>{{ i['teaching_experience'] }} Year</td> -->
+              <!-- <td>{{ i['religion'] }}</td> -->
+              <!-- <td>{{ i['social_status'] }}</td> -->
+              <td>
+                <select class="ui selection focused dropdown" id='change_status' onchange="change_status('{{i['username']}}')">
+                  {% if i['status'] == 'Continue' %}
+                  <option value="Continue" selected>CONTINUE</option>
+                  <option value="Discontinue">DISCONTINUE</option>
+                  {% else %}
+                  <option value="Continue">CONTINUE</option>
+                  <option value="Discontinue" selected>DISCONTINUE</option>
+                  {% endif %}
+                </select>
+                <script>
+                  function change_status(username){
+                    $("#"+username).addClass("bg-warning")
+                    var status = $("#change_status").val()
+                    var base = window.location.origin + '/hod/change_status';
+                    var data = JSON.stringify({"username": username, "status": status})
+  
+                    $.ajax({
+                      url: base,
+                      type: 'PUT',
+                      async: true,
+                      data: data,
+                      dataType: 'json',
+                      contentType: "application/json",
+                      success: function(result) {
+                        $("#"+username).removeClass("bg-warning");
+                        swal({
+                          text: "Successfully Changed Teacher Status!",
+                          icon: "success",
+                          button: "Okay!",
+                        })
+                      },
+                      error: function(result){
+                        $("#"+username).addClass("bg-warning")
+                        swal({
+                          text: `Something Went Wrong Error Message: ${result.responseJSON.detail}`,
+                          icon: "warning",
+                          button: "Okay!",
+                        })
+                      }
+                    });
+                  }
+                </script>
+              </td>
             <td>
-              <button type="button" class="ui button red small" onclick="remove_teacher('{{ teacher.username }}', '{{ teacher.name }}')">
+              <button type="button" class="ui button red small" onclick="remove_teacher('{{ i.username }}', '{{ i.id }}')">
                 Remove
               </button>
             </td>
+            <td>{{ i['discontinued_date'] }}</td>
           </tr>
 
           {% endfor %}
@@ -100,13 +166,214 @@
       </table>
     </div>
     <br><br>
-  </section>
+</section>
+
+
+
+<section id="Addteacher" style="display: none;" class="pb-5 pt-5">
+  <h3 class="" style="font-family: sans-serif;">Appoint New Teacher</h3>
+  <br>
+  <form class="ui form">
+    <div class="field">
+      <label>Department</label>
+      <select class="ui dropdown search disabled" id='depart'>
+        <option value="{{depart}}" class="font-weight-bold">{{depart}}</option>
+      </select>
+    </div>
+  </form>
+  <br>
+  <br>
+  <div class="text-center">
+    <div class="ui buttons">
+        <button class="ui button" onclick="$('#upload_file').show();$('#Appointment_form_v2_0').hide();">Upload Csv/Xlsx File</button>
+        <div class="or"></div>
+        <button class="ui positive button" onclick="$('#Appointment_form_v2_0').show();$('#upload_file').hide();">Enter Manually</button>
+    </div>
+  </div>
+
+  <br>
+  <br>
   
-  <section id="Addteacher" style="display: none;" class="pb-5">
+  <form class="ui form" id='Appointment_form_v2_0' style="display: none;">
+    <h4 class="ui dividing header" style="font-family: sans-serif;">Enter Manually</h4>
+    <div class="fields three">
+      <div class="field">
+        <label>Id</label>
+        <input id='id' required type="text" placeholder="Staff ID">
+      </div>
+      <div class="field">
+        <label>Name</label>
+        <input id='name' required type="text" placeholder="Name">
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input id='email' required type="email" placeholder="Email">
+      </div>
+      
+    </div>
 
-    <form class="ui form" id='Appointment_form'>
-      <p class="ui dividing header" style="font-family: sans-serif;">Appoint New Teacher</p>
+    <div class="fields three">
+      <div class="field">
+        <label>Phone Number</label>
+        <input id='number' required type="number" placeholder="Phone Number">
+      </div>
+      <div class="field">
+        <label>Tag</label>
+        <select class="ui dropdown" id='tag'>
+          <option value="-" selected>None</option>
+          <option value="CT">Class Teacher</option>
+          <option value="TT">Tutor</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Higher Qualification</label>
+        <select class="ui dropdown" id='hq'>
+          <option value="PHD" selected>PHD</option>
+          <option value="POST DOCTORATE">POST DOCTORATE</option>
+          <option value="PH">PH</option>
+          <option value="MPHIL">MPHIL</option>
+        </select>
+      </div>
+      
+    </div>
 
+    <div class="fields three">
+      <div class="field">
+        <label>Net Qualification</label>
+        <select class="ui dropdown" id='nq'>
+          <option value="Yes" selected>Yes</option>
+          <option value="NO">No</option>
+        </select>
+
+      </div>
+      <div class="field">
+        <label>Designation</label>
+        <select class="ui dropdown" id='dn'>
+          <option value="ASSISTANT PROFESSOR" selected>ASSISTANT PROFESSOR</option>
+          <option value="ASSOCIATE PROFESSOR">ASSOCIATE PROFESSOR</option>
+          <option value="CONTRACT TEACHER">CONTRACT TEACHER</option>
+          <option value="PART TIME TEACHER">PART TIME TEACHER</option>
+        </select>
+
+      </div>
+      <div class="field">
+        <label>Social Status</label>
+        <select class="ui dropdown" id='sc'>
+          <option value="GENERAL">GENERAL</option>
+          <option value="OBC">OBC</option>
+          <option value="SC/ST">SC/ST</option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="fields three">
+      <div class="field">
+        <label>Teaching Experience</label>
+        <input id='te' required type="number" placeholder="Year of Experience">
+      </div>
+      
+      <div class="field">
+        <label>Gender</label>
+        <select class="ui dropdown" id='gr'>
+          <option value="MALE">MALE</option>
+          <option value="FEMALE">FEMALE</option>
+          <option value="TRANSGENDER">TRANSGENDER</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Religion</label>
+        <select class="ui dropdown" id='rn'>
+          <option value="HINDU">HINDU</option>
+          <option value="MUSLIM">MUSLIM</option>
+          <option value="CHRISTIAN">CHRISTIAN</option>
+        </select>
+      </div>
+      
+    </div>
+
+    <div class="fields two">
+
+      <div class="field">
+        <label>Date of Birth</label>
+        <input id='dob' required type="date" placeholder="Joining Date">
+      </div>
+      <div class="field">
+        <label>Joining Date</label>
+        <input id='jdate' required type="date" placeholder="Joining Date">
+      </div>
+      <div class="field" style="display: none;">
+        <label>Secret Code</label>
+        <input id='username' required type="password" value="1111" placeholder="4 Digit Secret Code">
+      </div>
+    </div>
+
+    <div class="pt-2 pb-4" id = 'pro' style="display: none;">
+      <div class="progress" style="height: 15px;">
+        <div class="progress-bar bg-success rounded" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+
+    <div class="ui buttons">
+      <button class="ui button green" type="submit" id='appoint_btn'>Appoint</button>
+      <div class="or"></div>
+      <div class="ui button red" onclick='$("#Appointment_form_v2_0")[0].reset();'>clear</div>
+    </div>
+
+  </form>
+
+  <div id="upload_file" style="display: none;">
+
+    <form class="ui form" id="upload_file_form">
+        <h4 class="ui dividing header" style="font-family: sans-serif">Upload Csv or XLSM File</h4>
+        <div class="field">
+            <label for="file" class="ui icon button yellow w-50">
+                <i class="file icon"></i>
+                    Add CSV/XLSM File
+            </label>
+            <input type="file" id="file" style="display:none;" required accept=".csv, .xlxm, .xls">
+        </div>
+        
+        <div class="pt-2 pb-4" id = 'pro' style="display: none;">
+            <div class="progress" style="height: 15px;">
+            <div class="progress-bar bg-success rounded" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+        <button class="ui button green" type="submit" id="upload_btn" >Upload File</button>
+    </form>
+
+</div>
+
+</section>
+
+  
+  <!-- <section id="Addteacher" style="display: block;" class="pb-5 pt-5">
+    <h3 class="" style="font-family: sans-serif;">Appoint New Teacher</h3>
+    <br>
+    <form class="ui form">
+      <div class="field">
+        <label>Department</label>
+        <select class="ui dropdown search disabled" id='depart'>
+          <option value="{{depart}}" class="font-weight-bold">{{depart}}</option>
+        </select>
+      </div>
+    </form>
+    <br>
+    <br>
+    <div class="text-center">
+      <div class="ui buttons">
+          <button class="ui button" onclick="$('#upload_file').show();$('#Appointment_form').hide();">Upload Csv/Xlsx File</button>
+          <div class="or"></div>
+          <button class="ui positive button" onclick="$('#Appointment_form').show();$('#upload_file').hide();">Enter Manually</button>
+      </div>
+    </div>
+
+    <br>
+    <br>
+    
+    <form class="ui form" id='Appointment_form' style="display: none;">
+      <h4 class="ui dividing header" style="font-family: sans-serif;">Enter Manually</h4>
       <div class="fields three">
           <div class="field">
             <label>Name</label>
@@ -164,9 +431,177 @@
 
     </form>
 
-  </section>
+    <div id="upload_file" style="display: none;">
+
+      <form class="ui form" id="upload_file_form">
+          <h4 class="ui dividing header" style="font-family: sans-serif">Upload Csv or XLSM File</h4>
+          <div class="field">
+              <label for="file" class="ui icon button yellow w-50">
+                  <i class="file icon"></i>
+                      Add CSV/XLSM File
+              </label>
+              <input type="file" id="file" style="display:none;" required accept=".csv, .xlxm, .xls">
+          </div>
+          
+          <div class="pt-2 pb-4" id = 'pro' style="display: none;">
+              <div class="progress" style="height: 15px;">
+              <div class="progress-bar bg-success rounded" role="progressbar" style="width: 10%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+          </div>
+          <button class="ui button green" type="submit" id="upload_btn" >Upload File</button>
+      </form>
+
+  </div>
+
+  </section> -->
 
 </div>
+
+<script>
+  $("#upload_file_form").submit((e)=>{
+      e.preventDefault()
+      var form_data = new FormData()
+      form_data.append("department", $("#depart").val())
+      form_data.append('DATA', $('#file')[0].files[0])
+      $("#upload_btn").addClass("loading disabled")
+
+      var base = window.location.origin + '/hod/add-teacher-from-file';
+      $("#pro").show()
+      $.ajax({
+
+          xhr: function() {
+              var xhr = new window.XMLHttpRequest();
+              xhr.upload.addEventListener("progress", function(evt) {
+              if (evt.lengthComputable) {
+                var percentComplete = Math.round((evt.loaded / evt.total) * 100);
+                $(".progress-bar").width(percentComplete + '%');
+                $(".progress-bar").html(percentComplete+'%');
+                  }
+              }, false);
+              return xhr;
+          },
+          url: base,
+          type: 'POST',
+          data: form_data,
+          cache: false,
+      
+          contentType: false,
+          processData: false,
+          beforeSend: function(){
+              $(".progress-bar").width('0%');
+              $('#uploadStatus').html('<img src="images/loading.gif"/>');
+          },
+          success: function(result){
+              $("#pro").hide()
+              $("#upload_btn").removeClass("loading disabled")
+              swal({
+                      text: "Appointed Teachers",
+                      icon: "success",
+                      button: "Okay"
+                  }).then((value) => {
+                      location.reload();
+              })
+          },
+
+          error: function(result){
+              if(result.status == 415){
+                  $("#pro").hide()
+                  $("#upload_btn").removeClass("loading disabled")
+                  swal({
+                      text: "Unsupported Format, Supported Formats: csv, xlsm, xls",
+                      icon: "warning",
+                      button: "Okay"
+                  })
+              }
+          }
+
+      });
+  })
+</script>
+
+<br><br>
+
+
+<script>
+
+  
+
+
+  function appoint_teacher_v2_0(data, name){
+    var base = window.location.origin + '/hod/Addteacher_v2_0';
+    
+    $.ajax({
+      
+      url: base,
+      type: 'POST',
+      data: data,
+      dataType: 'json',
+      contentType: "application/json",
+      success: function(result){
+        $("#appoint_btn").removeClass("loading disabled")
+        $("#pro").hide()
+        swal({
+              title: "Appointed Teacher!",
+              text: "Sucessfully Appointed Teacher " + name,
+              icon: "success",
+              button: "Okay!",
+          })
+      },
+      error: function(result){
+        $("#pro").hide()
+        $("#appoint_btn").removeClass("loading disabled")
+        swal({
+              text: "Something Went Wrong. Please try to contact the techincal team...",
+              icon: "error",
+              button: "Okay"  
+            }).then((value) => {
+              location.reload();
+            })
+      }
+     
+    })
+  }
+
+  $("#Appointment_form_v2_0").submit((e)=>{
+    e.preventDefault();
+    var name = $('#name').val()
+    var email = $('#email').val()
+    var phone = parseInt($('#number').val())
+    var username = make_username(name, phone)
+    var department = $('#depart').val()
+    var jdate = $("#jdate").val().toString()
+    var dob = $("#dob").val().toString()
+    var sc = $("#sc").val()
+    var te = $("#te").val()
+    var rn = $("#rn").val()
+    var gr = $("#gr").val()
+    var hq = $("#hq").val()
+    var nq = $("#nq").val()
+    var dn = $("#dn").val()
+    var id = $("#id").val()
+    var tag = $("#tag").val()
+
+    var data = JSON.stringify({"id": id, "name": name, "email": email,
+                "phone_num": phone, 
+                "username": username,
+                "department": department,
+                "tag": tag, "joining_date": jdate, "dob": dob,
+                "higher_qualification": hq, "net_qualification": nq,
+                "designation": dn, "gender": gr, "teaching_experience": te,
+                "religion": rn, "social_status": sc});
+    //alert(data)
+    $("#upload_button").addClass("loading disabled");
+    appoint_teacher_v2_0(data, name)
+  })
+  
+
+  function make_username(name, phone){
+    var username = $('#username').val()
+    var username = name.replaceAll(/\s/g,'').toLowerCase().slice(0,3) + String(phone).slice(7) + username
+    return username
+  }
+</script>
+
 
 <script src="{{ url_for('static', path='teachers_edit.js') }}"></script>
 {% endblock %}
