@@ -139,13 +139,16 @@ class HodTemplates():
         # courses = admin.get_all_course(db)
         teachers = hod.get_full_teacher_details(db)
         hods = admin.get_all(db, template=True)
+        created_list = db.execute(f"select course, year from Timetables").all()
+
         # depart = db.query(models.)
         # depart = admin.get_all_departments(db)
         # db.close()
         return templates.TemplateResponse('timeTable.html', 
                 context={'request': request, 'title': 'Time Table', 
                         'courses': courses, 'teachers': teachers, 
-                        'hods': hods, 'department': user.department})
+                        'hods': hods, 'department': user.department, 
+                        'created_list': set(created_list)})
 
     def appoint_teacher(request, user):
         db = database.SessionLocal()
