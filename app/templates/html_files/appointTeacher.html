@@ -119,12 +119,12 @@
                   {% endif %}
                 </select>
               </td>
+            <td>{{ i['discontinued_date'] }}</td>
             <td>
               <button type="button" class="ui button red small" onclick="remove_teacher('{{ i.username }}', '{{ i.id }}')">
                 Remove
               </button>
             </td>
-            <td>{{ i['discontinued_date'] }}</td>
           </tr>
 
           {% endfor %}

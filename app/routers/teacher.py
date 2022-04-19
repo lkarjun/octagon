@@ -95,13 +95,13 @@ async def add_student_v2_0(request: Schemas.Student_v2_0,
 
 # =================================================================================================
 # Changes needed here
-@router.post("/add-students-from-file", status_code=status.HTTP_204_NO_CONTENT)
-async def add_students_from_file(
-                                course: str = Form(...),
-                                year: int = Form(...),
-                                DATA: UploadFile = File(...),
-                                db: Session = Depends(get_db)
-                                ):
+@router.post("/add-students-from-file-v2.0", status_code=status.HTTP_204_NO_CONTENT)
+def add_students_from_file(
+                            course: str = Form(...),
+                            year: int = Form(...),
+                            DATA: UploadFile = File(...),
+                            db: Session = Depends(get_db)
+                            ):
     if DATA.content_type not in ['text/csv', 'text/xlxm', 'text/xls']:
         raise HTTPException(status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
     return teacher.add_students_from_file_helper(DATA, db)
