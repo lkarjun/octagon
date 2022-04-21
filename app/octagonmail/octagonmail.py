@@ -7,7 +7,7 @@ from typing import Dict, List
 from octagonmail.mail_template import *
 
 send_address = "noreply.octagon@gmail.com"
-passs = "Project@2021"
+passs = "Project@2022"
 
 def get_message(data: Dict) -> EmailMessage:
     """ for sending report """
