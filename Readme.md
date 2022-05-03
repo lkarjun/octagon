@@ -1,4 +1,5 @@
-# Octagon🛑
+# Hi there 👋👋
+## Octagon🛑
 The project Octagon is a final year academic project. <br>
 Octagon supports eight functionalities:<b>
   - Face Verification, 
@@ -16,7 +17,7 @@ Octagon supports eight functionalities:<b>
   <img src="https://user-images.githubusercontent.com/58617251/166411113-41945bb0-65a1-4a08-bb15-3dad60bcbaa0.png" width="600" height="350">
 </p>
 
-## Data Flow Diagrams
+### Data Flow Diagrams
 
 <table>
 
@@ -35,7 +36,7 @@ Octagon supports eight functionalities:<b>
 </table>
 
 
-## Application ScreenShots
+### Application ScreenShots
 
 
 <table>
@@ -69,12 +70,12 @@ Octagon supports eight functionalities:<b>
 
 
 
-## To Run Application
+### To Run Application
 
-### Build Docker
+#### Build Docker
 
 * docker build -t octagon .
 
-### Run Docker
+#### Run Docker
 
 * docker run -d -p 80:80 octagon
