@@ -10,9 +10,9 @@
     <br><br>
     <section id="head">
 
-        <div class="pt-md-3 pt-5 mt-md-2 pb-md-5 pb-5 mb-5 d-flex align-items-center justify-content-center" style="height: 70vh;">
+        <div class="pt-md-3 pt-5 mt-md-2 pb-md-5 pb-5 mb-5 d-flex align-items-center justify-content-center row" style="height: 70vh;">
             
-            <div>
+            <div class="col-md-12">
                 <div class="jumbotron text-center pt-md-3">
                     <h3 class="pt-4 pb-4 font-weight-bold" style="font-size: x-large;">TimeTable</h3>
                 </div>
@@ -78,6 +78,35 @@
                     </div>
                 </div>
             </div> 
+
+            <div class="col-md-12 p-5">
+                <div class="jumbotron text-center pt-md-3 pb-md-5 pb-sm-5">
+                    <h3 class="pt-4 pb-4 font-weight-bold" style="font-size: x-large;">TimeTable Already Created</h3>
+
+                    <table class="ui celled table teal padded">
+                        <thead>
+                          <tr>
+                              <th class="font-weight-bold">COURSE</th>
+                              <th class="font-weight-bold">YEAR</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% if created_list %}
+                          {% for i in created_list %}
+                          <tr>
+                              <td>{{ i[0] }}</td>
+                              <td>{{ i[1] }}</td>
+                          </tr>
+                          {% endfor %}
+                          {% else %}
+                          <tr><td colspan="2" class="text-center font-weight-bold">No TimeTable</td></tr>
+                          {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br><br>
         
         </div>
 

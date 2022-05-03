@@ -251,3 +251,35 @@ def reset_pass(request: Schemas.AdminPass, db: Session):
     current.update({'name': request.username, 'password': hashing_pass})
     db.commit()
     return "Password changed successfully..."
+
+
+
+#================================================v2.2==================================================
+
+class AdminTemplate:
+
+    def __init__(self, db: Session):
+        ...
+
+class Admin(AdminTemplate):
+
+    def __init__(self, db: Session):
+        super(AdminTemplate, self).__init__()
+        ...
+
+    def reset_password(self, request: Schemas.AdminPass):
+        ...
+
+    def add_course(self, request: Schemas.AddCourse):
+        ...
+    
+    def delete_course(self, request: Schemas.DeleteCourse):
+        ...
+
+    def add_department(self, request: Schemas.DeleteDepartment):
+        ...
+
+    def delete_department(self, request: Schemas.DeleteDepartment):
+        ...
+
+    

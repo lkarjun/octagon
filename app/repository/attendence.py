@@ -353,14 +353,14 @@ def show_attendence_data(request: Schemas.ShowAttendence):
                   if str(date[3:5]) == which_month]
     if not len(column):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Attendence not taken for month {request.month}")
-    column = ['ST_ID', 'ST_NAME', 'ST_STATUS'] + column
+    column = ['ST_ID', 'ST_NAME'] + column
     df = df[column].values
     return column, df
 
 def get_students_attendence_detail(request: Schemas.ShowAttendence):
     query, _ = FULL_DATA_QUERY(request.course, request.year)
     df = get_db_to_df(query=query)
-    df = df[['ST_ID', 'ST_NAME', 'ST_STATUS']]
+    df = df[['ST_ID', 'ST_NAME']]
     column = df.columns
     df = df.values
     return column, df
